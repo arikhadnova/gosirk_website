@@ -30,6 +30,7 @@
                         <option value="implentasi_partner" <?= (isset($_GET['page']) && $_GET['page'] == 'implentasi_partner') ? 'selected' : '' ?>>Implementasi Partner</option>
                         <option value="konsultan" <?= (isset($_GET['page']) && $_GET['page'] == 'konsultan') ? 'selected' : '' ?>>Konsultansi</option>
                         <option value="ggc" <?= (isset($_GET['page']) && $_GET['page'] == 'ggc') ? 'selected' : '' ?>>GoSirk Green Community</option>
+                        <option value="go_ngompos_project" <?= (isset($_GET['page']) && $_GET['page'] == 'go_ngompos_project') ? 'selected' : '' ?>>Go Ngompos Project</option>
                     </select>
                 </div>
             </div>

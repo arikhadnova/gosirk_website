@@ -5,7 +5,8 @@ $pages = [
     'partner' => 'Implementasi Partner',
     'konsultan' => 'Konsultan',
     'gi' => 'GoSirk Institute',
-    'ggc' => 'GoSirk Green Community'
+    'ggc' => 'GoSirk Green Community',
+    'go_ngompos_project' => 'Go Ngompos Project'
 ];
 ?>
 
@@ -50,13 +51,21 @@ $pages = [
                                     <div class="p-4 bg-light rounded-4 border text-center mb-4">
                                         <div class="small fw-bold text-muted mb-3 text-uppercase tracking-wider">Current Hero Layout Preview</div>
                                         <div class="hero-preview-container position-relative rounded-3 overflow-hidden shadow-sm mx-auto" style="max-width: 800px; height: 350px;">
-                                            <?php 
-                                                $imageUrl = $hero->image;
-                                                if ($imageUrl && !filter_var($imageUrl, FILTER_VALIDATE_URL)) {
-                                                    $imageUrl = ASSETS_URL . 'img/' . $imageUrl;
-                                                }
+                                            <?php
+                                                $decodedImages = json_decode($hero->image ?? '', true);
+                                                $heroImages = is_array($decodedImages) ? $decodedImages : [$hero->image ?? ''];
+                                                $heroImages = array_values(array_filter(array_map('trim', $heroImages), function ($image) {
+                                                    return $image && (filter_var($image, FILTER_VALIDATE_URL) || file_exists(__DIR__ . '/../../../assets/img/' . $image));
+                                                }));
+                                                $previewImages = array_map(function ($image) {
+                                                    if ($image && !filter_var($image, FILTER_VALIDATE_URL)) {
+                                                        return ASSETS_URL . 'img/' . $image;
+                                                    }
+                                                    return $image;
+                                                }, $heroImages);
+                                                $imageUrl = $previewImages[0] ?? '';
                                             ?>
-                                            <div class="preview-bg" style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?= $imageUrl; ?>') center/cover no-repeat; width: 100%; height: 100%;"></div>
+                                            <div class="preview-bg" data-preview-bg style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?= $imageUrl; ?>') center/cover no-repeat; width: 100%; height: 100%;"></div>
                                             <div class="preview-content position-absolute top-50 start-50 translate-middle w-100 px-4 text-white">
                                                 <?php if($hero->tag_id): ?>
                                                     <span class="badge bg-primary mb-2"><?= $hero->tag_id; ?></span>
@@ -65,6 +74,57 @@ $pages = [
                                                 <p class="small opacity-75 mb-0" style="max-width: 600px; margin: 0 auto;"><?= $hero->subtitle_id; ?></p>
                                             </div>
                                         </div>
+                                        <?php if (true): ?>
+                                            <div class="hero-slider-manager text-start mt-4" data-max-slides="5">
+                                                <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
+                                                    <div>
+                                                        <label class="form-label small fw-bold text-dark mb-1">Hero Slider Images</label>
+                                                        <div class="text-muted extra-small">Rekomendasi: 1920x900px, format JPG/PNG/WebP.</div>
+                                                    </div>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <label class="small fw-bold text-muted mb-0" for="<?= $key; ?>-transition">Transition</label>
+                                                        <select name="hero_transition" id="<?= $key; ?>-transition" class="form-select form-select-sm rounded-pill" style="width: 130px;">
+                                                            <?php $homeTransition = $data['hero_transitions'][$key] ?? 'slide'; ?>
+                                                            <option value="slide" <?= $homeTransition === 'slide' ? 'selected' : ''; ?>>Slide</option>
+                                                            <option value="fade" <?= $homeTransition === 'fade' ? 'selected' : ''; ?>>Fade</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="hero-slide-slots d-grid gap-2">
+                                                    <?php foreach (array_slice($heroImages, 0, 5) as $index => $heroImage): 
+                                                        $previewImage = $previewImages[$index] ?? '';
+                                                    ?>
+                                                        <div class="hero-slide-slot" data-slide-slot>
+                                                            <div class="hero-slide-thumb-wrap position-relative flex-shrink-0">
+                                                                <button type="button" class="hero-slide-thumb-btn border-0 p-0 rounded-3 overflow-hidden" data-preview-image="<?= htmlspecialchars($previewImage, ENT_QUOTES); ?>">
+                                                                    <img src="<?= htmlspecialchars($previewImage, ENT_QUOTES); ?>" alt="Slide <?= $index + 1; ?>" class="hero-slide-thumb w-100 h-100 object-fit-cover">
+                                                                </button>
+                                                                <button type="button" class="hero-slide-remove" aria-label="Hapus slide">X</button>
+                                                            </div>
+                                                            <input type="hidden" name="hero_existing_images[]" value="<?= htmlspecialchars($heroImage, ENT_QUOTES); ?>">
+                                                            <input type="file" name="hero_slide_images[]" class="hero-slide-input d-none" accept="image/*">
+                                                        </div>
+                                                    <?php endforeach; ?>
+
+                                                    <?php if (count($heroImages) < 5): ?>
+                                                        <div class="hero-slide-slot border-dashed" data-slide-slot data-empty-slot="true">
+                                                            <div class="hero-slide-thumb-wrap position-relative flex-shrink-0">
+                                                                <button type="button" class="hero-slide-thumb-btn is-empty border-0 p-0 rounded-3 overflow-hidden bg-light text-muted">
+                                                                    <i class="fas fa-plus"></i>
+                                                                    <img src="" alt="" class="hero-slide-thumb w-100 h-100 object-fit-cover d-none">
+                                                                </button>
+                                                                <button type="button" class="hero-slide-remove d-none" aria-label="Hapus slide">X</button>
+                                                            </div>
+                                                            <input type="hidden" name="hero_existing_images[]" value="">
+                                                            <input type="file" name="hero_slide_images[]" class="hero-slide-input d-none" accept="image/*">
+                                                        </div>
+                                                    <?php endif; ?>
+                                                </div>
+
+                                                <div class="text-muted extra-small mt-2">Maksimal 5 gambar. Max 5MB/file.</div>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -79,35 +139,43 @@ $pages = [
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Tag / Hashtag</label>
                                         <input type="text" name="tag_id" class="form-control" value="<?= htmlspecialchars($hero->tag_id); ?>">
-                                        <input type="hidden" name="tag_en" value="<?= htmlspecialchars($hero->tag_en); ?>">
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Hero Title (HTML allowed)</label>
                                         <textarea name="title_id" class="form-control" rows="2"><?= htmlspecialchars($hero->title_id); ?></textarea>
-                                        <input type="hidden" name="title_en" value="<?= htmlspecialchars($hero->title_en); ?>">
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Hero Subtitle</label>
                                         <textarea name="subtitle_id" class="form-control" rows="3"><?= htmlspecialchars($hero->subtitle_id); ?></textarea>
-                                        <input type="hidden" name="subtitle_en" value="<?= htmlspecialchars($hero->subtitle_en); ?>">
                                     </div>
 
                                     <div class="mt-2">
-                                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                                     </div>
                                 </div>
 
-                                <div class="col-12 mt-4">
-                                    <div class="p-3 bg-light rounded-3 border">
-                                        <label class="form-label small fw-bold text-dark">Change Hero Background Image</label>
-                                        <div class="d-flex align-items-center">
-                                            <input type="file" name="hero_image" class="form-control me-3" accept="image/*">
-                                            <div class="text-muted small">Max 2MB. Recommended 1920x1080px.</div>
+                                <?php if (in_array($key, ['ggc', 'go_ngompos_project'])): ?>
+                                <?php
+                                    $logoFile = $data['hero_logos'][$key] ?? ($key === 'ggc' ? 'logo-ggc.png' : 'logo-go-ngompos.svg');
+                                    $logoUrl = $logoFile && filter_var($logoFile, FILTER_VALIDATE_URL) ? $logoFile : ASSETS_URL . 'img/' . $logoFile;
+                                ?>
+                                <div class="col-12 px-4">
+                                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 p-3 bg-light rounded-3">
+                                        <div>
+                                            <label class="form-label small fw-bold text-dark mb-1">Hero Logo</label>
+                                            <div class="text-muted extra-small">Klik logo untuk mengganti. Rekomendasi: SVG/PNG transparan, lebar 500px.</div>
+                                        </div>
+                                        <div class="hero-logo-upload" data-logo-upload>
+                                            <button type="button" class="hero-logo-thumb border-0 rounded-3 bg-white p-3 shadow-sm">
+                                                <img src="<?= htmlspecialchars($logoUrl, ENT_QUOTES); ?>" alt="<?= htmlspecialchars($name, ENT_QUOTES); ?> Logo" class="hero-logo-preview">
+                                            </button>
+                                            <input type="file" name="hero_logo" class="hero-logo-input d-none" accept="image/*,.svg">
                                         </div>
                                     </div>
                                 </div>
+                                <?php endif; ?>
 
                                 <div class="col-12 mt-5 text-end pt-3 border-top">
                                     <button type="submit" class="btn btn-primary px-5 py-2 fw-bold shadow-sm">
@@ -149,4 +217,238 @@ $pages = [
     .border-dashed {
         border-style: dashed !important;
     }
+    .hero-slide-slots {
+        display: flex !important;
+        flex-wrap: wrap;
+        gap: 14px !important;
+    }
+    .hero-slide-slot {
+        width: 122px;
+        padding: 6px;
+        border: 1px solid #dee2e6;
+        border-radius: 12px;
+        background: #fff;
+    }
+    .hero-slide-thumb-btn {
+        cursor: pointer;
+        width: 108px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .hero-slide-thumb-btn.is-empty {
+        font-size: 1.25rem;
+    }
+    .hero-slide-remove {
+        position: absolute;
+        top: -7px;
+        right: -7px;
+        z-index: 2;
+        width: 22px;
+        height: 22px;
+        border: 0;
+        border-radius: 999px;
+        background: #dc3545;
+        color: #fff;
+        font-size: 11px;
+        font-weight: 700;
+        line-height: 22px;
+        padding: 0;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    }
+    .hero-logo-thumb {
+        width: 150px;
+        height: 92px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
+    .hero-logo-preview {
+        max-width: 100%;
+        max-height: 64px;
+        object-fit: contain;
+    }
 </style>
+
+<script>
+    document.querySelectorAll('.hero-slider-manager').forEach(function(manager) {
+        const form = manager.closest('form');
+        const slots = manager.querySelector('.hero-slide-slots');
+        const maxSlides = parseInt(manager.dataset.maxSlides || '5', 10);
+        const previewBg = form.querySelector('[data-preview-bg]');
+
+        function updatePreview(imageUrl) {
+            if (!imageUrl || !previewBg) return;
+            previewBg.style.background = "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('" + imageUrl + "') center/cover no-repeat";
+        }
+
+        function renumberSlots() {
+            return;
+        }
+
+        function filledSlotsCount() {
+            return Array.from(slots.querySelectorAll('[data-slide-slot]')).filter(function(slot) {
+                return !slot.dataset.emptySlot || slot.querySelector('.hero-slide-input').files.length > 0;
+            }).length;
+        }
+
+        function addEmptySlot() {
+            if (slots.querySelector('[data-empty-slot="true"]') || slots.querySelectorAll('[data-slide-slot]').length >= maxSlides) return;
+
+            const slot = document.createElement('div');
+            slot.className = 'hero-slide-slot border-dashed';
+            slot.dataset.slideSlot = '';
+            slot.dataset.emptySlot = 'true';
+            slot.innerHTML = `
+                <div class="hero-slide-thumb-wrap position-relative flex-shrink-0">
+                    <button type="button" class="hero-slide-thumb-btn is-empty border-0 p-0 rounded-3 overflow-hidden bg-light text-muted">
+                        <i class="fas fa-plus"></i>
+                        <img src="" alt="" class="hero-slide-thumb w-100 h-100 object-fit-cover d-none">
+                    </button>
+                    <button type="button" class="hero-slide-remove d-none" aria-label="Hapus slide">X</button>
+                </div>
+                <input type="hidden" name="hero_existing_images[]" value="">
+                <input type="file" name="hero_slide_images[]" class="hero-slide-input d-none" accept="image/*">
+            `;
+            slots.appendChild(slot);
+        }
+
+        slots.addEventListener('click', function(event) {
+            const removeButton = event.target.closest('.hero-slide-remove');
+            if (removeButton) {
+                const slot = removeButton.closest('[data-slide-slot]');
+                slot.remove();
+                addEmptySlot();
+                renumberSlots();
+                const firstPreview = slots.querySelector('.hero-slide-thumb-btn[data-preview-image]');
+                if (firstPreview) {
+                    firstPreview.click();
+                }
+                return;
+            }
+
+            const thumbButton = event.target.closest('.hero-slide-thumb-btn');
+            if (thumbButton && thumbButton.dataset.previewImage) {
+                slots.querySelectorAll('.hero-slide-thumb-btn').forEach(function(button) {
+                    button.classList.remove('active');
+                });
+                thumbButton.classList.add('active');
+                updatePreview(thumbButton.dataset.previewImage);
+            }
+
+            if (thumbButton) {
+                const slot = thumbButton.closest('[data-slide-slot]');
+                const input = slot.querySelector('.hero-slide-input');
+                if (input) input.click();
+            }
+        });
+
+        slots.addEventListener('change', function(event) {
+            const input = event.target.closest('.hero-slide-input');
+            if (!input || !input.files.length) return;
+
+            const slot = input.closest('[data-slide-slot]');
+            const file = input.files[0];
+            const imageUrl = URL.createObjectURL(file);
+            const thumbButton = slot.querySelector('.hero-slide-thumb-btn');
+            const thumbImage = slot.querySelector('.hero-slide-thumb');
+            const plusIcon = slot.querySelector('.fa-plus');
+            const removeButton = slot.querySelector('.hero-slide-remove');
+
+            slot.removeAttribute('data-empty-slot');
+            slot.classList.remove('border-dashed');
+            thumbButton.classList.remove('is-empty', 'bg-light', 'text-muted');
+            thumbButton.dataset.previewImage = imageUrl;
+            thumbImage.src = imageUrl;
+            thumbImage.classList.remove('d-none');
+            if (plusIcon) plusIcon.classList.add('d-none');
+            removeButton.classList.remove('d-none');
+
+            updatePreview(imageUrl);
+            addEmptySlot();
+            renumberSlots();
+
+            if (filledSlotsCount() > maxSlides) {
+                alert('Maksimal ' + maxSlides + ' gambar untuk hero slider.');
+                input.value = '';
+                slot.remove();
+                addEmptySlot();
+                renumberSlots();
+            }
+        });
+
+        const firstPreview = slots.querySelector('.hero-slide-thumb-btn[data-preview-image]');
+        if (firstPreview) {
+            firstPreview.classList.add('active');
+        }
+    });
+
+    document.querySelectorAll('[data-single-hero-manager]').forEach(function(manager) {
+        const form = manager.closest('form');
+        const slot = manager.querySelector('[data-single-hero-slot]');
+        const thumbButton = manager.querySelector('.hero-slide-thumb-btn');
+        const thumbImage = manager.querySelector('.hero-slide-thumb');
+        const plusIcon = manager.querySelector('.fa-plus');
+        const removeButton = manager.querySelector('.hero-slide-remove');
+        const input = manager.querySelector('.single-hero-input');
+        const removeInput = manager.querySelector('[data-remove-hero-image]');
+        const previewBg = form.querySelector('[data-preview-bg]');
+
+        function updatePreview(imageUrl) {
+            if (!previewBg) return;
+            previewBg.style.background = imageUrl
+                ? "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('" + imageUrl + "') center/cover no-repeat"
+                : "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6))";
+        }
+
+        thumbButton.addEventListener('click', function() {
+            input.click();
+        });
+
+        input.addEventListener('change', function() {
+            if (!input.files.length) return;
+
+            const imageUrl = URL.createObjectURL(input.files[0]);
+            slot.classList.remove('border-dashed');
+            thumbButton.classList.remove('is-empty', 'bg-light', 'text-muted');
+            thumbButton.dataset.previewImage = imageUrl;
+            thumbImage.src = imageUrl;
+            thumbImage.classList.remove('d-none');
+            if (plusIcon) plusIcon.classList.add('d-none');
+            removeButton.classList.remove('d-none');
+            removeInput.value = '0';
+            updatePreview(imageUrl);
+        });
+
+        removeButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            input.value = '';
+            removeInput.value = '1';
+            slot.classList.add('border-dashed');
+            thumbButton.classList.add('is-empty', 'bg-light', 'text-muted');
+            thumbButton.dataset.previewImage = '';
+            thumbImage.src = '';
+            thumbImage.classList.add('d-none');
+            if (plusIcon) plusIcon.classList.remove('d-none');
+            removeButton.classList.add('d-none');
+            updatePreview('');
+        });
+    });
+
+    document.querySelectorAll('[data-logo-upload]').forEach(function(manager) {
+        const button = manager.querySelector('.hero-logo-thumb');
+        const input = manager.querySelector('.hero-logo-input');
+        const preview = manager.querySelector('.hero-logo-preview');
+
+        button.addEventListener('click', function() {
+            input.click();
+        });
+
+        input.addEventListener('change', function() {
+            if (!input.files.length) return;
+            preview.src = URL.createObjectURL(input.files[0]);
+        });
+    });
+</script>

@@ -63,6 +63,9 @@
             <a href="<?= BASE_URL; ?>admin/hero" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'hero') ? 'active' : '' ?>">
                 <i class="fas fa-image"></i> Hero Section
             </a>
+            <a href="<?= BASE_URL; ?>admin/page_sections" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_sections') ? 'active' : '' ?>">
+                <i class="fas fa-align-left"></i> Page Sections
+            </a>
             <a href="<?= BASE_URL; ?>admin/founders" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'founders') ? 'active' : '' ?>">
                 <i class="fas fa-user-tie"></i> Founders
             </a>
@@ -79,6 +82,9 @@
             </a>
             <a href="<?= BASE_URL; ?>admin/impact/ggc" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_ggc') ? 'active' : '' ?>">
                 <i class="fas fa-leaf"></i> GGC Impact
+            </a>
+            <a href="<?= BASE_URL; ?>admin/impact/go_ngompos_project" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_go_ngompos_project') ? 'active' : '' ?>">
+                <i class="fas fa-seedling"></i> Go Ngompos Impact
             </a>
             <a href="<?= BASE_URL; ?>admin/impact/clocc" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_clocc') ? 'active' : '' ?>">
                 <i class="fas fa-users"></i> CLOCC Impact

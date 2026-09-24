@@ -26,12 +26,10 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Judul Artikel</label>
                         <input type="text" name="title_id" class="form-control" value="<?= $article->title_id; ?>" required>
-                        <input type="hidden" name="title_en" value="<?= $article->title_en; ?>">
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Konten Artikel</label>
                         <textarea name="content_id" class="form-control" rows="15"><?= $article->content_id; ?></textarea>
-                        <input type="hidden" name="content_en" value="<?= htmlspecialchars($article->content_en); ?>">
                         <div class="form-text text-muted mt-2">
                             <i class="fas fa-info-circle me-1"></i> Kapasitas maksimal konten adalah 16MB (MediumText).
                         </div>

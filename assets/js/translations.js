@@ -15,6 +15,7 @@ const resources = {
                 "ecosystem": "Ekosistem Kami",
                 "gi": "GoSirk Institute",
                 "ggc": "GoSirk Green Community",
+                "gnp": "Go Ngompos Project",
                 "blog_pub": "Blog & Publikasi",
                 "blog": "Blog",
                 "pub_gosirk": "Publikasi GoSirk",
@@ -136,6 +137,10 @@ const resources = {
                     "ggc": {
                         "title": "GoSirk Green Community",
                         "desc": "Solusi nyata dalam pengelolaan sampah berbasis komunitas"
+                    },
+                    "gnp": {
+                        "title": "Go Ngompos Project",
+                        "desc": "Gerakan pengolahan sampah organik menjadi kompos dari rumah dan komunitas"
                     }
                 },
                 "partners": {
@@ -734,6 +739,40 @@ const resources = {
                     "btn": "Hubungi Kami"
                 }
             },
+            "gnp": {
+                "hero": {
+                    "subtitle": "Gerakan pengolahan sampah organik menjadi kompos dari rumah, sekolah, kantor, dan komunitas.",
+                    "cta_program": "Program Kami"
+                },
+                "impact": {
+                    "title_bg": "Impact",
+                    "title": "DAMPAK YANG INGIN DIBANGUN",
+                    "subtitle": "Mendorong kebiasaan mengolah sampah organik dari sumbernya.",
+                    "m1_unit": "PRAKTIK", "m1_label": "Pemilahan Organik", "m1_note": "Membiasakan pemilahan sampah dapur dan taman sejak dari rumah.",
+                    "m2_unit": "AKSI", "m2_label": "Pengomposan Mandiri", "m2_note": "Memperkenalkan metode kompos sederhana yang bisa diterapkan sehari-hari.",
+                    "m3_unit": "MANFAAT", "m3_label": "Kompos Bernilai", "m3_note": "Mengubah sisa organik menjadi nutrisi untuk tanaman dan ruang hijau.",
+                    "m4_unit": "KOMUNITAS", "m4_label": "Gerakan Bersama", "m4_note": "Menghubungkan warga, sekolah, dan komunitas dalam aksi sirkular."
+                },
+                "about": {
+                    "badge": "TENTANG PROGRAM",
+                    "title": "MENGENAL <span class=\"text-success\">GO NGOMPOS PROJECT</span>",
+                    "p1": "Go Ngompos Project adalah inisiatif GoSirk untuk mengajak masyarakat mengurangi sampah organik yang terbuang ke TPA melalui praktik pengomposan yang mudah dan dekat dengan keseharian.",
+                    "p2": "Program ini menggabungkan edukasi, pendampingan, dan kampanye perubahan perilaku agar rumah tangga, sekolah, kantor, dan komunitas mampu mengelola sampah organiknya sendiri."
+                },
+                "programs": {
+                    "title_bg": "Programs",
+                    "title": "PROGRAM UTAMA",
+                    "subtitle": "Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.",
+                    "p1_badge": "Edukasi", "p1_title": "Kelas Ngompos", "p1_desc": "Sesi belajar praktik pemilahan organik dan metode kompos sederhana.",
+                    "p2_badge": "Pendampingan", "p2_title": "Kompos Komunitas", "p2_desc": "Pendampingan titik kompos bersama di lingkungan warga atau institusi.",
+                    "p3_badge": "Pemanfaatan", "p3_title": "Kebun Sirkular", "p3_desc": "Pemanfaatan kompos untuk tanaman pangan, toga, dan ruang hijau komunitas."
+                },
+                "cta": {
+                    "title": "Ayo Mulai Ngompos Bersama",
+                    "desc": "Ubah sisa organik menjadi dampak baik bagi lingkungan, tanaman, dan komunitas.",
+                    "btn": "Hubungi Kami"
+                }
+            },
             "blog": {
                 "badge": "CERITA KAMI",
                 "title": "Berita & Artikel",
@@ -845,6 +884,7 @@ const resources = {
                 "ecosystem": "Our Ecosystem",
                 "gi": "GoSirk Institute",
                 "ggc": "GoSirk Green Community",
+                "gnp": "Go Ngompos Project",
                 "blog_pub": "Blog & Publication",
                 "blog": "Blog",
                 "pub_gosirk": "GoSirk Publication",
@@ -965,6 +1005,10 @@ const resources = {
                     "ggc": {
                         "title": "GoSirk Green Community",
                         "desc": "Real solutions in community-based waste management"
+                    },
+                    "gnp": {
+                        "title": "Go Ngompos Project",
+                        "desc": "A movement to turn organic waste into compost from homes and communities"
                     }
                 },
                 "partners": {
@@ -1556,6 +1600,40 @@ const resources = {
                 "cta": {
                     "title": "Let's Build Impact Together",
                     "desc": "We believe the right collaboration can create sustainable environmental change. Together with the community, we can contribute more to the earth.",
+                    "btn": "Contact Us"
+                }
+            },
+            "gnp": {
+                "hero": {
+                    "subtitle": "A movement to turn organic waste into compost from homes, schools, offices, and communities.",
+                    "cta_program": "Our Programs"
+                },
+                "impact": {
+                    "title_bg": "Impact",
+                    "title": "THE IMPACT WE WANT TO BUILD",
+                    "subtitle": "Encouraging organic waste processing habits from the source.",
+                    "m1_unit": "PRACTICE", "m1_label": "Organic Sorting", "m1_note": "Building the habit of sorting kitchen and garden waste from home.",
+                    "m2_unit": "ACTION", "m2_label": "Independent Composting", "m2_note": "Introducing simple composting methods that can be practiced every day.",
+                    "m3_unit": "BENEFIT", "m3_label": "Valuable Compost", "m3_note": "Turning organic leftovers into nutrients for plants and green spaces.",
+                    "m4_unit": "COMMUNITY", "m4_label": "Collective Movement", "m4_note": "Connecting residents, schools, and communities in circular action."
+                },
+                "about": {
+                    "badge": "ABOUT THE PROGRAM",
+                    "title": "GETTING TO KNOW <span class=\"text-success\">GO NGOMPOS PROJECT</span>",
+                    "p1": "Go Ngompos Project is a GoSirk initiative inviting communities to reduce organic waste sent to landfill through composting practices that are simple and close to daily life.",
+                    "p2": "This program combines education, mentoring, and behavior-change campaigns so households, schools, offices, and communities can manage their own organic waste."
+                },
+                "programs": {
+                    "title_bg": "Programs",
+                    "title": "MAIN PROGRAMS",
+                    "subtitle": "Practical steps to build a consistent composting habit.",
+                    "p1_badge": "Education", "p1_title": "Composting Class", "p1_desc": "Hands-on learning sessions for organic sorting and simple composting methods.",
+                    "p2_badge": "Mentoring", "p2_title": "Community Compost", "p2_desc": "Mentoring shared composting points in neighborhoods or institutions.",
+                    "p3_badge": "Utilization", "p3_title": "Circular Garden", "p3_desc": "Using compost for food crops, medicinal plants, and community green spaces."
+                },
+                "cta": {
+                    "title": "Let's Start Composting Together",
+                    "desc": "Turn organic leftovers into positive impact for the environment, plants, and communities.",
                     "btn": "Contact Us"
                 }
             },

@@ -36,15 +36,13 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small">Pertanyaan</label>
                                 <input type="text" name="question_id" class="form-control bg-light border-0" value="<?= $faq->question_id ?>" required>
-                                <input type="hidden" name="question_en" value="<?= $faq->question_en ?>">
                             </div>
                             <div>
                                 <label class="form-label fw-bold extra-small">Jawaban</label>
                                 <textarea name="answer_id" class="form-control bg-light border-0" rows="4" required><?= $faq->answer_id ?></textarea>
-                                <input type="hidden" name="answer_en" value="<?= $faq->answer_en ?>">
                             </div>
                             <div class="mt-3">
-                                <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                                <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                             </div>
                         </div>
                     </div>

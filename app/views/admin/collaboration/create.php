@@ -19,7 +19,6 @@
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Judul Dokumen</label>
                         <input type="text" name="title_id" class="form-control" placeholder="Contoh: Roadmap Keberlanjutan 2026" required>
-                        <input type="hidden" name="title_en" value="">
                     </div>
                     <div class="col-md-12 mt-0">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

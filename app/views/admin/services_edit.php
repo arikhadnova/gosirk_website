@@ -22,15 +22,13 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Layanan</label>
                         <input type="text" name="name_id" class="form-control form-control-lg" value="<?= $service->name_id; ?>" required>
-                        <input type="hidden" name="name_en" value="<?= $service->name_en; ?>">
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi Layanan</label>
                         <textarea name="description_id" class="form-control" rows="8"><?= $service->description_id; ?></textarea>
-                        <input type="hidden" name="description_en" value="<?= $service->description_en; ?>">
                     </div>
                     <div class="mt-3">
-                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                     </div>
                 </div>
             </div>

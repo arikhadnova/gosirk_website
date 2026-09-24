@@ -21,6 +21,7 @@ if (!isset($settings)) {
                     <a href="<?= BASE_URL ?>about" data-i18n="nav.about">Tentang</a>
                     <a href="<?= BASE_URL ?>gi" data-i18n="nav.gi">GoSirk Institute</a>
                     <a href="<?= BASE_URL ?>ggc" data-i18n="nav.ggc">GoSirk Green Community</a>
+                    <a href="<?= BASE_URL ?>go_ngompos_project" data-i18n="nav.gnp">Go Ngompos Project</a>
                     <a href="<?= BASE_URL ?>blog" data-i18n="nav.blog">Blog</a>
                     <a href="<?= BASE_URL ?>publication" data-i18n="nav.pub_gosirk">Publikasi</a>
                     <a href="<?= BASE_URL ?>contact" data-i18n="nav.contact">Kontak</a>
@@ -35,6 +36,18 @@ if (!isset($settings)) {
                 </div>
                 <div class="col-md-3 mb-4">
                     <h6 data-i18n="footer.contact">Hubungi kami</h6>
+                    <?php
+                        $whatsappNumber = $settings['contact_whatsapp'] ?? '6282286002109';
+                        $whatsappNumberClean = preg_replace('/[^0-9]/', '', $whatsappNumber);
+                        $whatsappLink = "https://wa.me/{$whatsappNumberClean}";
+                    ?>
+                    <p class="small fst-italic mb-1">Gratis konsultasi layanan</p>
+                    <div class="d-flex align-items-start mb-2 gap-2">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <a href="<?= $whatsappLink ?>" target="_blank" class="text-decoration-none">+<?= ltrim($whatsappNumberClean, '0') ?></a>
+                        </div>
+                    </div>
                     <p><i class="fas fa-envelope me-2"></i> <?= $settings['contact_email'] ?? 'medcom.gosirk@gmail.com' ?></p>
                     <div class="footer-socials">
                         <?php if (!empty($settings['social_instagram'])) : ?>

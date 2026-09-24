@@ -43,7 +43,6 @@
                                     data-bs-target="#editVillageModal"
                                     data-id="<?= $v->id ?>"
                                     data-name-id="<?= htmlspecialchars($v->name_id) ?>"
-                                    data-name-en="<?= htmlspecialchars($v->name_en) ?>"
                                     data-order="<?= $v->order_priority ?>">
                                 <i class="fas fa-edit text-primary"></i>
                             </button>
@@ -100,7 +99,6 @@
     <div class="modal-dialog">
         <form action="<?= BASE_URL ?>admin/pilot_villages_update" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" id="edit-id">
-            <input type="hidden" name="name_en" id="edit-name-en">
             <div class="modal-content border-0 shadow rounded-4">
                 <div class="modal-header border-bottom p-4">
                     <h5 class="modal-title fw-bold">Edit Desa Pilot</h5>
@@ -143,7 +141,6 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             document.getElementById('edit-id').value = this.dataset.id;
             document.getElementById('edit-name-id').value = this.dataset.nameId;
-            if(document.getElementById('edit-name-en')) document.getElementById('edit-name-en').value = this.dataset.nameEn;
             document.getElementById('edit-order').value = this.dataset.order;
         });
     });

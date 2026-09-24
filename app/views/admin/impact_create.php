@@ -27,7 +27,6 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold">Label Dampak</label>
                         <input type="text" name="label_id" class="form-control" placeholder="Contoh: Mitra Kerja Sama" required>
-                        <input type="hidden" name="label_en" value="">
                     </div>
                 </div>
             </div>
@@ -45,6 +44,7 @@
                                 <option value="home" <?= $selected_page == 'home' ? 'selected' : '' ?>>Home Page</option>
                                 <option value="gi" <?= $selected_page == 'gi' ? 'selected' : '' ?>>GoSirk Institute</option>
                                 <option value="ggc" <?= $selected_page == 'ggc' ? 'selected' : '' ?>>GoSirk Green Community</option>
+                                <option value="go_ngompos_project" <?= $selected_page == 'go_ngompos_project' ? 'selected' : '' ?>>Go Ngompos Project</option>
                                 <option value="clocc" <?= $selected_page == 'clocc' ? 'selected' : '' ?>>CLOCC Impact</option>
                             </select>
                         </div>
@@ -124,6 +124,12 @@ document.addEventListener('DOMContentLoaded', function() {
             { val: 'Sustainability', label: 'Sustainability Impact' },
             { val: 'Social', label: 'Project & Social Impact' },
             { val: 'Collapse', label: 'Collapse (Detail GGC)' }
+        ],
+        'go_ngompos_project': [
+            { val: 'Main', label: 'Main (Stats Utama Go Ngompos)' },
+            { val: 'Sustainability', label: 'Sustainability Impact' },
+            { val: 'Social', label: 'Project & Social Impact' },
+            { val: 'Collapse', label: 'Collapse (Detail Go Ngompos)' }
         ],
         'clocc': [
             { val: 'WP 1', label: 'WP 1: Training & Capacity Building' },

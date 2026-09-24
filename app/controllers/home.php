@@ -15,6 +15,9 @@ class home extends Controller {
             'services_cs' => $this->model('ServiceItem_model')->getByCategory('cs'),
             'company_profile' => $this->model('Collaboration_model')->getActiveDocumentsByType('company_profile')[0] ?? null,
             'hero' => $this->model('Hero_model')->getByPage('home'),
+            'hero_transition' => $this->model('Setting_model')->getByKey('home_hero_transition') ?: 'slide',
+            'ggc_hero_logo' => $this->model('Setting_model')->getByKey('ggc_hero_logo') ?: 'logo-ggc.png',
+            'go_ngompos_project_hero_logo' => $this->model('Setting_model')->getByKey('go_ngompos_project_hero_logo') ?: 'logo-go-ngompos.svg',
 
         ];
 

@@ -10,12 +10,28 @@
 </section>
 
 <!-- Tentang Kami -->
+<?php
+$aboutSection = $data['about_section'] ?? null;
+$aboutBadgeId = $aboutSection->badge_id ?? 'Tentang Kami';
+$aboutBadgeEn = $aboutSection->badge_en ?? 'About Us';
+$aboutTitleId = $aboutSection->title_id ?? 'Membangun Masa Depan Berkelanjutan';
+$aboutTitleEn = $aboutSection->title_en ?? 'Building a Sustainable Future';
+$aboutContentId = $aboutSection->content_id ?? 'PT Gocircular Solutions Indonesia (GoSirk) adalah perusahaan swasta dengan orientasi bisnis sosial yang kuat, didedikasikan untuk mengembangkan solusi inovatif dan ramah lingkungan dalam pengelolaan sampah.';
+$aboutContentEn = $aboutSection->content_en ?? 'PT Gocircular Solutions Indonesia (GoSirk) is a private company with a strong social business orientation, dedicated to developing innovative and environmentally friendly waste management solutions.';
+$aboutContent2Id = $aboutSection->content_2_id ?? 'Kami berkomitmen untuk menciptakan sistem pengelolaan sampah yang berkelanjutan melalui implementasi bisnis sirkular dan program-program yang memberikan manfaat bagi lingkungan serta memberdayakan usaha lokal di sektor pengelolaan sampah.';
+$aboutContent2En = $aboutSection->content_2_en ?? 'We are committed to creating sustainable waste management systems through circular business implementation and programs that benefit the environment while empowering local waste management businesses.';
+$aboutContent3Id = $aboutSection->content_3_id ?? 'Kami percaya pada kekuatan kolaborasi dan komunitas, bekerja bersama dengan usaha-usaha lokal untuk mendorong pertumbuhan, menciptakan lapangan kerja, dan meningkatkan standar praktik pengelolaan sampah.';
+$aboutContent3En = $aboutSection->content_3_en ?? 'We believe in the power of collaboration and community, working together with local enterprises to encourage growth, create jobs, and improve waste management practice standards.';
+$aboutImage = $aboutSection->image ?? 'about-2.jpg';
+$aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $aboutImage : ASSETS_URL . 'img/' . $aboutImage;
+?>
+<?php if (!$aboutSection || ((int) ($aboutSection->is_active ?? 1)) === 1): ?>
 <section id="about" class="py-5 bg-white">
     <div class="container py-4">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="about-image-wrapper">
-                    <img src="<?= ASSETS_URL ?>img/about-2.jpg" class="about-image" alt="About Presentation">
+                    <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="about-image" alt="About Presentation">
                     <div class="logo-overlay m-3">
                          <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="Logo">
                     </div>
@@ -23,21 +39,22 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <h5 class="text-primary fw-bold text-uppercase mb-3" data-i18n="about.intro.title">Tentang Kami</h5>
-                <h2 class="fw-bold mb-4 display-6" data-i18n="about.intro.subtitle">Membangun Masa Depan Berkelanjutan</h2>
-                <p class="text-secondary lead fs-6" data-i18n="about.intro.p1">
-                    PT Gocircular Solutions Indonesia (GoSirk) adalah perusahaan swasta dengan orientasi bisnis sosial yang kuat, didedikasikan untuk mengembangkan solusi inovatif dan ramah lingkungan dalam pengelolaan sampah.
+                <h5 class="text-primary fw-bold text-uppercase mb-3" data-lang-id="<?= htmlspecialchars($aboutBadgeId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutBadgeEn, ENT_QUOTES) ?>"><?= $aboutBadgeId ?></h5>
+                <h2 class="fw-bold mb-4 display-6" data-lang-id="<?= htmlspecialchars($aboutTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutTitleEn, ENT_QUOTES) ?>"><?= $aboutTitleId ?></h2>
+                <p class="text-secondary lead fs-6" data-lang-id="<?= htmlspecialchars($aboutContentId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContentEn, ENT_QUOTES) ?>">
+                    <?= $aboutContentId ?>
                 </p>
-                <p class="text-secondary fs-6" data-i18n="about.intro.p2">
-                    Kami berkomitmen untuk menciptakan sistem pengelolaan sampah yang berkelanjutan melalui implementasi bisnis sirkular dan program-program yang memberikan manfaat bagi lingkungan serta memberdayakan usaha lokal di sektor pengelolaan sampah.
+                <p class="text-secondary fs-6" data-lang-id="<?= htmlspecialchars($aboutContent2Id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContent2En, ENT_QUOTES) ?>">
+                    <?= $aboutContent2Id ?>
                 </p>
-                <p class="text-secondary fs-6" data-i18n="about.intro.p3">
-                    Kami percaya pada kekuatan kolaborasi dan komunitas, bekerja bersama dengan usaha-usaha lokal untuk mendorong pertumbuhan, menciptakan lapangan kerja, dan meningkatkan standar praktik pengelolaan sampah.
+                <p class="text-secondary fs-6" data-lang-id="<?= htmlspecialchars($aboutContent3Id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContent3En, ENT_QUOTES) ?>">
+                    <?= $aboutContent3Id ?>
                 </p>
             </div>
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Visi -->
 <section class="py-5 bg-light">

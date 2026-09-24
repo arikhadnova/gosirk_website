@@ -55,6 +55,11 @@
                             <input type="file" name="cover_image" class="form-control form-control-sm">
                             <small class="text-muted extra-small d-block mt-1">Muncul di listing card dan hero detail page.</small>
                         </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-bold">URL Video YouTube</label>
+                            <input type="url" name="video_url" class="form-control form-control-sm" placeholder="https://www.youtube.com/watch?v=...">
+                            <small class="text-muted extra-small d-block mt-1">Video akan ditampilkan di atas sorotan foto.</small>
+                        </div>
                     </div>
 
                     <div class="mb-4">
@@ -70,27 +75,6 @@
                         <button type="button" class="btn btn-sm btn-outline-primary mt-1" id="add-logo"><i class="fas fa-plus me-1"></i> Tambah Logo</button>
                     </div>
 
-                    <hr class="my-4 border-dashed">
-
-                    <!-- NEW: Metrics Section moved here -->
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-chart-line me-1 text-primary"></i> INDIKATOR DAMPAK (Metrics)</label>
-                        <div id="metrics-container">
-                            <div class="row g-2 mb-2 metric-row">
-                                <div class="col-4">
-                                    <input type="text" name="metrics_vals[]" class="form-control form-control-sm" placeholder="Nilai (e.g. 90%)">
-                                </div>
-                                <div class="col-7">
-                                    <input type="text" name="metrics_labels[]" class="form-control form-control-sm" placeholder="Label (e.g. Reduksi Sampah)">
-                                </div>
-                                <div class="col-1 text-end">
-                                    <button type="button" class="btn btn-sm btn-link text-danger remove-metric p-0"><i class="fas fa-times"></i></button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-metric"><i class="fas fa-plus me-1"></i> Tambah Metrik</button>
-                        <input type="hidden" name="metrics_id" id="metrics_json">
-                    </div>
                 </div>
             </div>
 
@@ -106,13 +90,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark"><i class="fas fa-bullseye me-1 text-primary"></i> 2. TARGET & SASARAN</label>
-                        <textarea name="targets_id" class="form-control" rows="4" placeholder="Contoh:&#10;Peningkatan kapasitas 100 warga&#10;Reduksi sampah 50%"></textarea>
-                        <small class="text-muted extra-small">Gunakan baris baru untuk setiap poin (akan menjadi list bullet).</small>
-                    </div>
-
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-walking me-1 text-primary"></i> 3. PENDEKATAN KERJA (Approach)</label>
+                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-walking me-1 text-primary"></i> 2. PENDEKATAN KERJA (Approach)</label>
                         <div id="approach-container">
                             <div class="p-3 bg-light rounded-3 mb-2 approach-row">
                                 <div class="mb-2">
@@ -131,7 +109,7 @@
                     </div>
 
                     <div class="mb-0">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> 4. SOROTAN DOKUMENTASI (Highlights)</label>
+                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> 3. SOROTAN DOKUMENTASI (Highlights)</label>
                         <div id="highlights-container">
                                 <div class="p-3 bg-light rounded-3 mb-2 highlight-row">
                                 <div class="row g-2 align-items-center">
@@ -181,23 +159,9 @@
                             <option value="NGO">NGO/Foundation</option>
                         </select>
                     </div>
-                    <div class="row g-3 mb-4">
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-dark">Tahun Mulai</label>
-                            <input type="text" name="year_start" class="form-control" placeholder="2024">
-                        </div>
-                        <div class="col-6">
-                            <label class="form-label small fw-bold text-dark">Tahun Selesai</label>
-                            <input type="text" name="year_end" class="form-control" placeholder="2025">
-                        </div>
-                    </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Client Name</label>
                         <input type="text" name="client_name" class="form-control" placeholder="Nama instansi/perusahaan mitra...">
-                    </div>
-                    <div class="mb-0">
-                        <label class="form-label small fw-bold text-dark">Project Tags</label>
-                        <input type="text" name="tags" class="form-control" placeholder="Circular Economy, Waste Management, etc.">
                     </div>
                 </div>
             </div>
@@ -325,21 +289,6 @@
         });
     };
 
-    // Metric Template
-    const metricTemplate = `
-        <div class="row g-2 mb-2 metric-row">
-            <div class="col-4">
-                <input type="text" name="metrics_vals[]" class="form-control form-control-sm" placeholder="Nil value">
-            </div>
-            <div class="col-7">
-                <input type="text" name="metrics_labels[]" class="form-control form-control-sm" placeholder="Label">
-            </div>
-            <div class="col-1 text-end">
-                <button type="button" class="btn btn-sm btn-link text-danger remove-metric p-0"><i class="fas fa-times"></i></button>
-            </div>
-        </div>`;
-    setupDynamicList('metrics-container', 'add-metric', 'metric-row', 'remove-metric', metricTemplate);
-
     // Approach Template
     const approachTemplate = `
         <div class="p-3 bg-light rounded-3 mb-2 approach-row">
@@ -385,15 +334,6 @@
     // Form Submission: Package JSON
     const form = document.querySelector('form');
     form.addEventListener('submit', function(e) {
-        // Build Metrics JSON
-        const metrics = [];
-        document.querySelectorAll('.metric-row').forEach(row => {
-            const val = row.querySelector('input[name="metrics_vals[]"]').value;
-            const label = row.querySelector('input[name="metrics_labels[]"]').value;
-            if (val || label) metrics.push({ val, label });
-        });
-        document.getElementById('metrics_json').value = JSON.stringify(metrics);
-
         // Build Approach JSON
         const approaches = [];
         document.querySelectorAll('.approach-row').forEach(row => {

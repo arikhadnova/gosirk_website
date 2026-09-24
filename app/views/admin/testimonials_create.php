@@ -29,19 +29,18 @@
                                 <option value="implentasi_partner">Implementasi Partner</option>
                                 <option value="konsultan">Konsultansi</option>
                                 <option value="ggc">GoSirk Green Community</option>
+                                <option value="go_ngompos_project">Go Ngompos Project</option>
                             </select>
                         </div>
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
                             <input type="text" name="role_id" class="form-control bg-light border-0" placeholder="Contoh: Kepala Desa" required>
-                            <input type="hidden" name="role_en" value="">
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
                             <textarea name="content_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis testimoni dalam bahasa Indonesia..." required></textarea>
-                            <input type="hidden" name="content_en" value="">
                         </div>
                         <div class="col-12">
                             <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

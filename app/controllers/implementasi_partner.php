@@ -9,9 +9,11 @@ class implementasi_partner extends Controller {
             'faqs' => $this->model('Faq_model')->getByPage('implentasi_partner'),
             'partners' => $this->model('Partner_model')->getAll(),
             'portfolios' => $this->model('Portfolio_model')->getByShowPartner(),
-            'villages' => $this->model('PilotVillage_model')->getAll()
+            'villages' => $this->model('PilotVillage_model')->getAll(),
+            'hero_transition' => $this->model('Setting_model')->getByKey('partner_hero_transition') ?: 'slide',
+            'about_section' => $this->model('PageSection_model')->getByPageAndSection('partner', 'about')
         ];
-        $this->views('layouts/header');
+        $this->views('layouts/header', $data);
         $this->views('implentasi_partner/index', $data);
         $this->views('layouts/footer');
     }

@@ -21,12 +21,10 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Publikasi</label>
                         <input type="text" name="title_id" class="form-control" placeholder="Contoh: Laporan Tahunan 2025" required>
-                        <input type="hidden" name="title_en" value="">
                     </div>
                     <div class="mb-0">
                         <label class="form-label small fw-bold text-dark">Deskripsi Singkat</label>
                         <textarea name="description_id" class="form-control" rows="5" placeholder="Tulis ringkasan isi publikasi..."></textarea>
-                        <input type="hidden" name="description_en" value="">
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

@@ -12,7 +12,9 @@ class gi extends Controller {
             'testimonials' => $this->model('Testimonial_model')->getByPage('gi'),
             'faqs' => $this->model('Faq_model')->getByPage('gi'),
             'highlight_video' => $this->model('GiVideo_model')->getHighlight(),
-            'playlist_videos' => $this->model('GiVideo_model')->getByType('playlist')
+            'playlist_videos' => $this->model('GiVideo_model')->getByType('playlist'),
+            'hero_transition' => $this->model('Setting_model')->getByKey('gi_hero_transition') ?: 'slide',
+            'about_section' => $this->model('PageSection_model')->getByPageAndSection('gi', 'about')
         ];
         $this->views('layouts/header', $data);
         $this->views('gi/index', $data);

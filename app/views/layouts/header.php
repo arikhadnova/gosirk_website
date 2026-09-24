@@ -32,7 +32,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
         echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/home.css?v=' . time() . '">';
     } elseif ($page == 'contact') {
         echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/contact.css">';
-    } elseif ($page == 'ggc') {
+    } elseif ($page == 'ggc' || $page == 'go_ngompos_project') {
         echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/ggc.css?v=' . time() . '">';
     } elseif ($page == 'partnership') {
         echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/partnership.css?v=' . time() . '">';
@@ -274,6 +274,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
                         <ul class="dropdown-menu border-0 shadow">
                             <li><a class="dropdown-item small py-2" href="<?= BASE_URL ?>gi" data-i18n="nav.gi">GoSirk Institute</a></li>
                             <li><a class="dropdown-item small py-2" href="<?= BASE_URL ?>ggc" data-i18n="nav.ggc">GoSirk Green Community</a></li>
+                            <li><a class="dropdown-item small py-2" href="<?= BASE_URL ?>go_ngompos_project" data-i18n="nav.gnp">Go Ngompos Project</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

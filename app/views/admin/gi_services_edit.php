@@ -22,13 +22,11 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul Layanan</label>
                         <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Training dan Workshop" value="<?= $service->title_id; ?>" required>
-                        <input type="hidden" name="title_en" value="">
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Deskripsi Singkat</label>
                         <textarea name="description_id" class="form-control" rows="3" placeholder="Ringkasan layanan untuk kartu di halaman utama..."><?= $service->description_id; ?></textarea>
-                        <input type="hidden" name="description_en" value="">
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -58,7 +56,6 @@
                         </div>
                         <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-point"><i class="fas fa-plus me-1"></i> Tambah Poin Program</button>
                         <input type="hidden" name="program_points_id" id="points_json">
-                        <input type="hidden" name="program_points_en" value="">
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -66,7 +63,6 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark"><i class="fas fa-align-left me-1 text-primary"></i> KONTEN DETAIL (Rich Text)</label>
                         <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="15"><?= $service->detail_content_id; ?></textarea>
-                        <input type="hidden" name="detail_content_en" value="">
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -142,12 +138,10 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Lokasi Layanan</label>
                         <input type="text" name="location_id" class="form-control" placeholder="Contoh: Online / Offline (Disesuaikan)" value="<?= $service->location_id ?: 'Online / Offline (Disesuaikan)'; ?>">
-                        <input type="hidden" name="location_en" value="">
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Sifat Layanan</label>
                         <input type="text" name="service_type_id" class="form-control" placeholder="Contoh: Profesional & Adaptif" value="<?= $service->service_type_id ?: 'Profesional & Adaptif'; ?>">
-                        <input type="hidden" name="service_type_en" value="">
                     </div>
                     <hr class="my-4">
                     <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm">

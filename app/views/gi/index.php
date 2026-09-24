@@ -13,12 +13,20 @@
 <!-- HERO SECTION -->
 <?php
 $heroGI = $data['hero'];
-$bgGI = $heroGI->image;
-if ($bgGI && !filter_var($bgGI, FILTER_VALIDATE_URL)) {
-    $bgGI = ASSETS_URL . 'img/' . $bgGI;
-}
+$heroGIImages = json_decode($heroGI->image ?? '', true);
+$heroGIImages = is_array($heroGIImages) ? $heroGIImages : [$heroGI->image ?? ''];
+$heroGIImages = array_values(array_filter(array_map(function ($image) {
+    return $image && !filter_var($image, FILTER_VALIDATE_URL) ? ASSETS_URL . 'img/' . $image : $image;
+}, $heroGIImages)));
+if (empty($heroGIImages)) $heroGIImages[] = ASSETS_URL . 'img/gosirk_institute_hero.png';
+$heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
 ?>
-<section class="hero-gi d-flex align-items-center justify-content-center" style="background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2)), url('<?= $bgGI ?>') center/cover no-repeat !important;">
+<section class="hero-gi d-flex align-items-center justify-content-center hero-media-shell">
+    <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
+        <?php foreach (array_slice($heroGIImages, 0, 5) as $index => $slide): ?>
+            <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+        <?php endforeach; ?>
+    </div>
     <div class="container text-center position-relative z-2">
         <h1 class="display-3 fw-bold text-gi-gold mb-3" data-lang-id="<?= $heroGI->title_id ?>" data-lang-en="<?= $heroGI->title_en ?>" data-i18n-html="true">
             <?= $heroGI->title_id ?>
@@ -35,6 +43,35 @@ if ($bgGI && !filter_var($bgGI, FILTER_VALIDATE_URL)) {
         </div>
     </div>
 </section>
+
+<style>
+    .hero-media-shell { position: relative; overflow: hidden; background: #0b1120; }
+    .hero-media-slider, .hero-media-slide { position: absolute; inset: 0; }
+    .hero-media-slider { z-index: 0; }
+    .hero-media-slide { background-size: cover; background-position: center; }
+    .hero-media-slider-fade .hero-media-slide { opacity: 0; transform: scale(1.03); transition: opacity 1s ease, transform 6s ease; }
+    .hero-media-slider-fade .hero-media-slide.active { opacity: 1; transform: scale(1); }
+    .hero-media-slider-slide .hero-media-slide { opacity: 1; transform: translateX(100%); transition: transform 0.85s ease; }
+    .hero-media-slider-slide .hero-media-slide.active { transform: translateX(0); z-index: 2; }
+    .hero-media-slider-slide .hero-media-slide.previous { transform: translateX(-100%); z-index: 1; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.hero-media-slider').forEach(function(slider) {
+        const slides = slider.querySelectorAll('.hero-media-slide');
+        if (slides.length <= 1) return;
+        let active = 0;
+        setInterval(function() {
+            const previous = active;
+            slides[previous].classList.remove('active', 'previous');
+            active = (active + 1) % slides.length;
+            slides[previous].classList.add('previous');
+            slides[active].classList.add('active');
+            setTimeout(function() { slides[previous].classList.remove('previous'); }, 900);
+        }, 5000);
+    });
+});
+</script>
 
 <!-- STATS SECTION -->
 <section class="gi-stats">
@@ -103,19 +140,31 @@ if ($bgGI && !filter_var($bgGI, FILTER_VALIDATE_URL)) {
 </section>
 
 <!-- ABOUT SECTION -->
+<?php
+$aboutSection = $data['about_section'] ?? null;
+$aboutBadgeId = $aboutSection->badge_id ?? 'Tentang Kami';
+$aboutBadgeEn = $aboutSection->badge_en ?? 'About Us';
+$aboutTitleId = $aboutSection->title_id ?? 'Membangun Ekosistem Pengetahuan Sirkular';
+$aboutTitleEn = $aboutSection->title_en ?? 'Building a Circular Knowledge Ecosystem';
+$aboutContentId = $aboutSection->content_id ?? 'GoSirk Institute merupakan bagian dari unit strategis dalam ekosistem bisnis PT GO Circular Solutions Indonesia (GoSirk) dalam membangun sistem manajemen pengetahuan yang terstruktur di bidang pengelolaan sampah. Sebagai unit khusus dalam lini usaha Capacity Building, GoSirk Institute menjadi wadah untuk mengembangkan dan menyebarluaskan pembelajaran, praktik baik, serta inovasi-inovasi yang lahir dari pengalaman nyata di lapangan.';
+$aboutContentEn = $aboutSection->content_en ?? 'GoSirk Institute is part of a strategic unit within PT GO Circular Solutions Indonesia (GoSirk) business ecosystem to build a structured knowledge management system in waste management. As a dedicated Capacity Building unit, GoSirk Institute serves as a platform to develop and share learning, good practices, and innovations born from real field experience.';
+$aboutImage = $aboutSection->image ?? 'gi-1.jpeg';
+$aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $aboutImage : ASSETS_URL . 'img/' . $aboutImage;
+?>
+<?php if (!$aboutSection || ((int) ($aboutSection->is_active ?? 1)) === 1): ?>
 <section class="py-5 section-gap">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
-                <h5 class="text-primary fw-bold text-uppercase mb-3" data-i18n="gi.about_badge">Tentang Kami</h5>
-                <h2 class="fw-bold mb-4 display-6" data-i18n="gi.about_title">Membangun Ekosistem Pengetahuan Sirkular</h2>
-                <p class="text-muted mb-4" style="text-align: justify; line-height: 1.8;" data-i18n="gi.about_desc">
-                    GoSirk Institute merupakan bagian dari unit strategis dalam ekosistem bisnis PT GO Circular Solutions Indonesia (GoSirk) dalam membangun sistem manajemen pengetahuan yang terstruktur di bidang pengelolaan sampah. Sebagai unit khusus dalam lini usaha Capacity Building, GoSirk Institute menjadi wadah untuk mengembangkan dan menyebarluaskan pembelajaran, praktik baik, serta inovasi-inovasi yang lahir dari pengalaman nyata di lapangan.
+                <h5 class="text-primary fw-bold text-uppercase mb-3" data-lang-id="<?= htmlspecialchars($aboutBadgeId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutBadgeEn, ENT_QUOTES) ?>"><?= $aboutBadgeId ?></h5>
+                <h2 class="fw-bold mb-4 display-6" data-lang-id="<?= htmlspecialchars($aboutTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutTitleEn, ENT_QUOTES) ?>"><?= $aboutTitleId ?></h2>
+                <p class="text-muted mb-4" style="text-align: justify; line-height: 1.8;" data-lang-id="<?= htmlspecialchars($aboutContentId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContentEn, ENT_QUOTES) ?>">
+                    <?= $aboutContentId ?>
                 </p>
             </div>
             <div class="col-lg-6 position-relative">
                 <div class="about-image-wrapper position-relative">
-                    <img src="<?= ASSETS_URL ?>img/gi-1.jpeg" alt="Tentang GoSirk Institute" class="img-fluid rounded-4 shadow-lg position-relative z-2">
+                    <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" alt="Tentang GoSirk Institute" class="img-fluid rounded-4 shadow-lg position-relative z-2">
                     <!-- Logo Overlay like About Page -->
                     <div class="bg-white bg-opacity-75 rounded-3 shadow-sm position-absolute m-3" style="top: 20px; left: 20px; z-index: 5; display: flex; align-items: center; justify-content: center;">
                         <img src="<?= ASSETS_URL ?>img/logo-gi.png" alt="GI Logo" class="img-fluid" style="max-height: 80px;">
@@ -127,6 +176,7 @@ if ($bgGI && !filter_var($bgGI, FILTER_VALIDATE_URL)) {
         </div>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- SERVICES SECTION -->
 <section id="services" class="py-5 bg-white">

@@ -24,12 +24,12 @@ class Portfolio_model {
         $query = "INSERT INTO " . $this->table . " 
                   (title_id, title_en, subtitle_id, subtitle_en, description_id, description_en, 
                    icon_name, cover_image, main_category, home_category, partnership_category, gi_category, partner_type, year_start, year_end, 
-                   show_home, show_partnership, show_gi, client_name, tags, 
+                   show_home, show_partnership, show_gi, client_name, tags, video_url, 
                    detail_content_id, detail_content_en, targets_id, targets_en, metrics_id, metrics_en, approach_id, approach_en, highlights, project_logos) 
                   VALUES 
                   (:title_id, :title_en, :subtitle_id, :subtitle_en, :description_id, :description_en, 
                    :icon_name, :cover_image, :main_category, :home_category, :partnership_category, :gi_category, :partner_type, :year_start, :year_end, 
-                   :show_home, :show_partnership, :show_gi, :client_name, :tags, 
+                   :show_home, :show_partnership, :show_gi, :client_name, :tags, :video_url, 
                    :detail_content_id, :detail_content_en, :targets_id, :targets_en, :metrics_id, :metrics_en, :approach_id, :approach_en, :highlights, :project_logos)";
         
         $this->db->query($query);
@@ -53,6 +53,7 @@ class Portfolio_model {
         $this->db->bind(':show_gi', $data['show_gi'] ?? 0);
         $this->db->bind(':client_name', $data['client_name']);
         $this->db->bind(':tags', $data['tags']);
+        $this->db->bind(':video_url', $data['video_url']);
         $this->db->bind(':detail_content_id', $data['detail_content_id']);
         $this->db->bind(':detail_content_en', $data['detail_content_en']);
         $this->db->bind(':targets_id', $data['targets_id']);
@@ -89,6 +90,7 @@ class Portfolio_model {
                   show_gi = :show_gi, 
                   client_name = :client_name, 
                   tags = :tags,
+                  video_url = :video_url,
                   detail_content_id = :detail_content_id,
                   detail_content_en = :detail_content_en,
                   targets_id = :targets_id,
@@ -123,6 +125,7 @@ class Portfolio_model {
         $this->db->bind(':show_gi', $data['show_gi'] ?? 0);
         $this->db->bind(':client_name', $data['client_name']);
         $this->db->bind(':tags', $data['tags']);
+        $this->db->bind(':video_url', $data['video_url']);
         $this->db->bind(':detail_content_id', $data['detail_content_id']);
         $this->db->bind(':detail_content_en', $data['detail_content_en']);
         $this->db->bind(':targets_id', $data['targets_id']);

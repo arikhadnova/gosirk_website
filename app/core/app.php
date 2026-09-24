@@ -59,8 +59,21 @@ class App {
 
     public function parseUrl() 
     {
-        if(isset($_GET['url'])) {
-            $url = rtrim($_GET['url'], '/');
+        $url = $_GET['url'] ?? null;
+
+        // Fallback for servers without .htaccess rewrites (eg. nginx / Laravel Herd)
+        if ($url === null && isset($_SERVER['REQUEST_URI'])) {
+            $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?: '';
+            $basePath = parse_url(BASE_URL, PHP_URL_PATH) ?: '/';
+            if (strpos($path, $basePath) === 0) {
+                $path = substr($path, strlen($basePath));
+            }
+            $path = trim(preg_replace('#^index\.php#', '', ltrim($path, '/')), '/');
+            $url = $path !== '' ? $path : null;
+        }
+
+        if($url !== null) {
+            $url = rtrim($url, '/');
             $url = filter_var($url, FILTER_SANITIZE_URL);
             $url = explode('/', $url);
             return $url;

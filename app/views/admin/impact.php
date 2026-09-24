@@ -17,6 +17,7 @@ $page_names = [
     'home' => 'Home Page',
     'gi' => 'GoSirk Institute',
     'ggc' => 'GoSirk Green Community',
+    'go_ngompos_project' => 'Go Ngompos Project',
     'clocc' => 'CLOCC Impact'
 ];
 $display_name = $page_names[$page_target] ?? 'Impact Data';

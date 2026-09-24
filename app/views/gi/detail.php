@@ -346,17 +346,6 @@
                             </span>
                         </div>
                     </div>
-                    
-                    <div class="sidebar-info-item">
-                        <i class="fas fa-clock"></i>
-                        <div class="sidebar-info-text">
-                            <small data-i18n="gi.detail.service_type">Sifat Layanan</small>
-                            <span data-lang-id="<?= $s->service_type_id ?: 'Profesional & Adaptif'; ?>" data-lang-en="<?= $s->service_type_en ?: 'Professional & Adaptive'; ?>">
-                                <?= $s->service_type_id ?: 'Profesional & Adaptif'; ?>
-                            </span>
-                        </div>
-                    </div>
-                    
 
                 </div>
             </div>

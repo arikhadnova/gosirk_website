@@ -43,9 +43,7 @@
                                     data-bs-target="#editActionModal"
                                     data-id="<?= $a->id ?>"
                                     data-title-id="<?= htmlspecialchars($a->title_id) ?>"
-                                    data-title-en="<?= htmlspecialchars($a->title_en) ?>"
                                     data-desc-id="<?= htmlspecialchars($a->description_id) ?>"
-                                    data-desc-en="<?= htmlspecialchars($a->description_en) ?>"
                                     data-order="<?= $a->order_priority ?>">
                                 <i class="fas fa-edit text-primary"></i>
                             </button>
@@ -111,8 +109,6 @@
     <div class="modal-dialog modal-lg">
         <form action="<?= BASE_URL ?>admin/ggc_actions_update" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" id="edit-id">
-            <input type="hidden" name="title_en" id="edit-title-en">
-            <input type="hidden" name="description_en" id="edit-desc-en">
             <div class="modal-content border-0 shadow rounded-4">
                 <div class="modal-header border-bottom p-4">
                     <h5 class="modal-title fw-bold text-success">Edit Aksi GGC</h5>
@@ -166,9 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             document.getElementById('edit-id').value = this.dataset.id;
             document.getElementById('edit-title-id').value = this.dataset.titleId;
-            if(document.getElementById('edit-title-en')) document.getElementById('edit-title-en').value = this.dataset.titleEn;
             document.getElementById('edit-desc-id').value = this.dataset.descId;
-            if(document.getElementById('edit-desc-en')) document.getElementById('edit-desc-en').value = this.dataset.descEn;
             document.getElementById('edit-order').value = this.dataset.order;
         });
     });

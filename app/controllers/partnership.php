@@ -10,7 +10,8 @@ class partnership extends Controller {
             'impacts' => $this->model('Impact_model')->getByPage('partnership'),
             'testimonials' => $this->model('Testimonial_model')->getByPage('partnership'),
             'faqs' => $this->model('Faq_model')->getByPage('partnership'),
-            'settings' => $this->model('Setting_model')->getAll()
+            'settings' => $this->model('Setting_model')->getAll(),
+            'hero_transition' => $this->model('Setting_model')->getByKey('partner_hero_transition') ?: 'slide'
         ];
         $this->views('layouts/header', $data);
         $this->views('partnership/index', $data);

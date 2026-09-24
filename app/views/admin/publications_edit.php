@@ -16,43 +16,17 @@
         <div class="col-lg-8">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <ul class="nav nav-tabs-premium border-0 mb-0" id="langTab" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="id-tab" data-bs-toggle="tab" data-bs-target="#id-content" type="button" role="tab">
-                                <img src="https://flagcdn.com/w20/id.png" class="me-2" alt="ID"> Bahasa Indonesia
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="en-tab" data-bs-toggle="tab" data-bs-target="#en-content" type="button" role="tab">
-                                <img src="https://flagcdn.com/w20/gb.png" class="me-2" alt="EN"> English
-                            </button>
-                        </li>
-                    </ul>
+                    <h5 class="fw-bold mb-1">Konten Publikasi</h5>
+                    <p class="text-muted extra-small mb-0">Versi English akan diperbarui otomatis saat disimpan.</p>
                 </div>
                 <div class="card-body p-4">
-                    <div class="tab-content">
-                        <!-- ID Tab -->
-                        <div class="tab-pane fade show active" id="id-content" role="tabpanel">
-                            <div class="mb-4">
-                                <label class="form-label">Judul Publikasi (ID)</label>
-                                <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" required>
-                            </div>
-                            <div class="mb-0">
-                                <label class="form-label">Deskripsi Singkat (ID)</label>
-                                <textarea name="description_id" class="form-control" rows="5"><?= $publication->description_id; ?></textarea>
-                            </div>
-                        </div>
-                        <!-- EN Tab -->
-                        <div class="tab-pane fade" id="en-content" role="tabpanel">
-                            <div class="mb-4">
-                                <label class="form-label">Publication Title (EN)</label>
-                                <input type="text" name="title_en" class="form-control" value="<?= $publication->title_en; ?>" required>
-                            </div>
-                            <div class="mb-0">
-                                <label class="form-label">Short Description (EN)</label>
-                                <textarea name="description_en" class="form-control" rows="5"><?= $publication->description_en; ?></textarea>
-                            </div>
-                        </div>
+                    <div class="mb-4">
+                        <label class="form-label">Judul Publikasi</label>
+                        <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" required>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">Deskripsi Singkat</label>
+                        <textarea name="description_id" class="form-control" rows="5"><?= $publication->description_id; ?></textarea>
                     </div>
                 </div>
             </div>

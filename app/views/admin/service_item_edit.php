@@ -26,15 +26,13 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
                         <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $item->title_id ?>" placeholder="Masukkan judul dalam Bahasa Indonesia" required>
-                        <input type="hidden" name="title_en" value="<?= $item->title_en ?>">
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
                         <textarea name="description_id" class="form-control" rows="8" placeholder="Masukkan deskripsi detail dalam Bahasa Indonesia..." required><?= $item->description_id ?></textarea>
-                        <input type="hidden" name="description_en" value="<?= $item->description_en ?>">
                     </div>
                     <div class="mt-3">
-                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                     </div>
                 </div>
             </div>

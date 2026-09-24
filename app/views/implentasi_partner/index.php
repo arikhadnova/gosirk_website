@@ -634,13 +634,22 @@
     <!-- HERO SECTION -->
     <?php
     $heroPartner = $data['hero'];
-    $bgPartner = $heroPartner ? $heroPartner->image : 'IMG_8084.jpg';
-    if ($bgPartner && !filter_var($bgPartner, FILTER_VALIDATE_URL)) {
-        $bgPartner = ASSETS_URL . 'img/' . $bgPartner;
-    }
+    $partnerHeroImageData = $heroPartner ? ($heroPartner->image ?? '') : 'IMG_8084.jpg';
+    $partnerHeroImages = json_decode($partnerHeroImageData, true);
+    $partnerHeroImages = is_array($partnerHeroImages) ? $partnerHeroImages : [$partnerHeroImageData];
+    $partnerHeroImages = array_values(array_filter(array_map(function ($image) {
+        return $image && !filter_var($image, FILTER_VALIDATE_URL) ? ASSETS_URL . 'img/' . $image : $image;
+    }, $partnerHeroImages)));
+    if (empty($partnerHeroImages)) $partnerHeroImages[] = ASSETS_URL . 'img/IMG_8084.jpg';
+    $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
     ?>
-    <section class="hero-partner" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= $bgPartner ?>') center/cover no-repeat !important;">
-        <div class="container">
+    <section class="hero-partner hero-media-shell">
+        <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
+            <?php foreach (array_slice($partnerHeroImages, 0, 5) as $index => $slide): ?>
+                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+            <?php endforeach; ?>
+        </div>
+        <div class="container position-relative">
             <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n="partner.main_title">
                 <?= $heroPartner ? $heroPartner->title_id : 'IMPLEMENTASI PARTNER' ?>
             </h1>
@@ -655,24 +664,67 @@
         </div>
     </section>
 
+    <style>
+        .hero-media-shell { position: relative; overflow: hidden; background: #0b1120; }
+        .hero-media-slider, .hero-media-slide { position: absolute; inset: 0; }
+        .hero-media-slider { z-index: 0; }
+        .hero-media-shell > .container { z-index: 1; }
+        .hero-media-slide { background-size: cover; background-position: center; }
+        .hero-media-slider-fade .hero-media-slide { opacity: 0; transform: scale(1.03); transition: opacity 1s ease, transform 6s ease; }
+        .hero-media-slider-fade .hero-media-slide.active { opacity: 1; transform: scale(1); }
+        .hero-media-slider-slide .hero-media-slide { opacity: 1; transform: translateX(100%); transition: transform 0.85s ease; }
+        .hero-media-slider-slide .hero-media-slide.active { transform: translateX(0); z-index: 2; }
+        .hero-media-slider-slide .hero-media-slide.previous { transform: translateX(-100%); z-index: 1; }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.hero-media-slider').forEach(function(slider) {
+            const slides = slider.querySelectorAll('.hero-media-slide');
+            if (slides.length <= 1) return;
+            let active = 0;
+            setInterval(function() {
+                const previous = active;
+                slides[previous].classList.remove('active', 'previous');
+                active = (active + 1) % slides.length;
+                slides[previous].classList.add('previous');
+                slides[active].classList.add('active');
+                setTimeout(function() { slides[previous].classList.remove('previous'); }, 900);
+            }, 5000);
+        });
+    });
+    </script>
+
     <!-- MITRA PENGEMBANGAN PROYEK & IMPLEMENTASI SECTION -->
     <section id="mitra-pengembangan" class="py-5 bg-white">
         <div class="container">
             <!-- ABOUT SECTION - Centralized like Konsultansi -->
+            <?php
+            $aboutSection = $data['about_section'] ?? null;
+            $aboutBadgeId = $aboutSection->badge_id ?? 'MITRA PENGEMBANGAN';
+            $aboutBadgeEn = $aboutSection->badge_en ?? 'DEVELOPMENT PARTNER';
+            $aboutTitleId = $aboutSection->title_id ?? 'Tentang Layanan Kami';
+            $aboutTitleEn = $aboutSection->title_en ?? 'About Our Service';
+            $aboutContentId = $aboutSection->content_id ?? 'GO Sirk berperan sebagai <b>mitra pengembangan dan implementasi proyek</b> untuk mentransformasi sampah menjadi solusi yang <b>berkelanjutan, inklusif, dan inovatif</b>. Kami mendampingi mitra sejak tahap perencanaan hingga pelaksanaan di lapangan untuk memastikan proyek berjalan <b>efektif secara teknis</b>, terukur, serta menghasilkan <b>dampak sosial dan lingkungan</b> yang nyata.';
+            $aboutContentEn = $aboutSection->content_en ?? 'GO Sirk acts as a <b>project development and implementation partner</b> to transform waste into <b>sustainable, inclusive, and innovative</b> solutions. We assist partners from planning to field execution to ensure projects run <b>effectively from a technical standpoint</b>, are measurable, and create real <b>social and environmental impact</b>.';
+            $aboutContent2Id = $aboutSection->content_2_id ?? '<b>Fokus utama</b> kami adalah memastikan keberhasilan implementasi melalui penguatan kolaborasi, tata kelola, dan model operasional yang relevan dengan konteks lokal.';
+            $aboutContent2En = $aboutSection->content_2_en ?? 'Our <b>main focus</b> is ensuring implementation success through stronger collaboration, governance, and operating models relevant to the local context.';
+            ?>
+            <?php if (!$aboutSection || ((int) ($aboutSection->is_active ?? 1)) === 1): ?>
             <div class="row justify-content-center mb-5 pb-4">
                 <div class="col-lg-10 text-center">
-                    <span class="section-subheader" data-i18n="partner.dev_subheader">MITRA PENGEMBANGAN</span>
-                    <h2 class="display-6 fw-bold mb-4" style="color: var(--dark-blue);" data-i18n="partner.dev_about_title">Tentang Layanan Kami</h2>
+                    <span class="section-subheader" data-lang-id="<?= htmlspecialchars($aboutBadgeId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutBadgeEn, ENT_QUOTES) ?>"><?= $aboutBadgeId ?></span>
+                    <h2 class="display-6 fw-bold mb-4" style="color: var(--dark-blue);" data-lang-id="<?= htmlspecialchars($aboutTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutTitleEn, ENT_QUOTES) ?>"><?= $aboutTitleId ?></h2>
                     <div class="text-muted fs-5" style="line-height: 1.8;">
-                        <p data-i18n="partner.dev_about_desc1" data-i18n-html="true">
-                            GO Sirk berperan sebagai <b>mitra pengembangan dan implementasi proyek</b> untuk mentransformasi sampah menjadi solusi yang <b>berkelanjutan, inklusif, dan inovatif</b>. Kami mendampingi mitra sejak tahap perencanaan hingga pelaksanaan di lapangan untuk memastikan proyek berjalan <b>efektif secara teknis</b>, terukur, serta menghasilkan <b>dampak sosial dan lingkungan</b> yang nyata.
+                        <p data-lang-id="<?= htmlspecialchars($aboutContentId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContentEn, ENT_QUOTES) ?>">
+                            <?= $aboutContentId ?>
                         </p>
-                        <p class="mb-0" data-i18n="partner.dev_about_desc2" data-i18n-html="true">
-                            <b>Fokus utama</b> kami adalah memastikan keberhasilan implementasi melalui penguatan kolaborasi, tata kelola, dan model operasional yang relevan dengan konteks lokal.
+                        <p class="mb-0" data-lang-id="<?= htmlspecialchars($aboutContent2Id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContent2En, ENT_QUOTES) ?>">
+                            <?= $aboutContent2Id ?>
                         </p>
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
 
     <!-- SERVICE TYPES SECTION - Redesigned like Konsultansi cards -->
             <div class="mb-5">

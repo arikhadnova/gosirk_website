@@ -1,7 +1,7 @@
 <style>
     .portfolio-detail-hero {
-        padding: 60px 0 60px;
-        background-color: #fff;
+        padding: 0;
+        background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
     }
     .status-badge {
         background-color: #e8f0fe;
@@ -25,6 +25,7 @@
         font-size: 0.95rem;
         display: flex;
         align-items: center;
+        justify-content: center;
         gap: 10px;
         margin-bottom: 30px;
     }
@@ -52,6 +53,7 @@
         flex-wrap: wrap;
         gap: 20px;
         align-items: center;
+        justify-content: center;
         margin-bottom: 25px;
     }
     .project-logo-item {
@@ -63,19 +65,55 @@
         object-fit: contain;
     }
     .hero-image-container {
-        border-radius: 20px;
+        border-radius: 0;
         overflow: hidden;
-        height: 400px;
+        height: 540px;
         background-color: #f8f9fa;
         display: flex;
         align-items: center;
         justify-content: center;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        box-shadow: 0 18px 45px rgba(0,0,0,0.08);
+        position: relative;
+    }
+    .hero-image-container::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.28) 45%, rgba(0,0,0,0.08) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+    .hero-image-container .breadcrumb-overlay {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 3;
+        background: transparent;
+        border-radius: 0;
+        padding: 0.75rem 1rem;
+        margin-bottom: 0;
+    }
+    .hero-image-container .breadcrumb-overlay .breadcrumb-item + .breadcrumb-item::before {
+        color: rgba(0,0,0,0.5);
+    }
+    .hero-image-container .breadcrumb-overlay a {
+        color: #343a40;
+    }
+    .hero-image-container .breadcrumb-overlay .active {
+        color: #0d6efd;
+        font-weight: 700;
     }
     .hero-image-container img {
         width: 100%;
         height: 100%;
         object-fit: cover;
+    }
+    .portfolio-hero-content {
+        max-width: 900px;
+        margin: 35px auto 0;
+        text-align: center;
+        padding-bottom: 45px;
     }
     
     .section-header-sm {
@@ -124,6 +162,24 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.05);
         margin-bottom: 20px;
     }
+
+    .portfolio-about-section {
+        background:
+            radial-gradient(circle at 8% 20%, rgba(13, 74, 124, 0.08), transparent 34%),
+            linear-gradient(135deg, #ffffff 0%, #f4f9ff 100%);
+    }
+
+    .portfolio-approach-section {
+        background:
+            radial-gradient(circle at 88% 12%, rgba(34, 197, 94, 0.10), transparent 32%),
+            linear-gradient(135deg, #f7fbff 0%, #f3fbf6 100%);
+    }
+
+    .portfolio-highlights-section {
+        background:
+            radial-gradient(circle at 12% 18%, rgba(13, 110, 253, 0.10), transparent 30%),
+            linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
+    }
     
     .highlight-card {
         border-radius: 15px;
@@ -168,9 +224,39 @@
     .highlight-card:hover .highlight-overlay p {
         transform: translateY(0);
     }
-    
+
+    .portfolio-video-block {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 1.25rem;
+        background: #000;
+        min-height: 250px;
+        box-shadow: 0 18px 45px rgba(0,0,0,0.12);
+    }
+    .portfolio-video-block iframe {
+        width: 100%;
+        height: 100%;
+        min-height: 320px;
+        border: 0;
+    }
+    .portfolio-video-block::before {
+        content: '';
+        display: block;
+        padding-top: 56.25%;
+    }
+    .portfolio-video-block iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+
     .cta-partnership {
-        background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('<?= ASSETS_URL ?>img/partnership-bg.jpg') center/cover;
+        background:
+            linear-gradient(135deg, rgba(8, 48, 84, 0.94) 0%, rgba(13, 74, 124, 0.90) 42%, rgba(22, 128, 83, 0.88) 100%),
+            linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.32)),
+            url('<?= ASSETS_URL ?>img/partnership-bg.jpg') center/cover;
         padding: 100px 0;
         color: white;
         text-align: center;
@@ -184,91 +270,48 @@
 
 <!-- SECTION 1: HERO (Title, Cover, Stats) -->
 <section class="portfolio-detail-hero">
-    <div class="container">
-        <nav aria-label="breadcrumb" class="mb-5">
-            <ol class="breadcrumb mb-0" style="font-size: 0.85rem;">
-                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted" data-i18n="breadcrumb.home">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>partnership" class="text-decoration-none text-muted" data-i18n="breadcrumb.portfolio">Portfolio</a></li>
-                <li class="breadcrumb-item active text-primary fw-bold" aria-current="page" data-i18n="portfolio.detail_title">Detail Proyek</li>
-            </ol>
-        </nav>
-        <div class="row align-items-center">
-            <div class="col-lg-6">
-                <div class="hero-image-container mb-4 mb-lg-0">
-                    <?php if($portfolio->cover_image): ?>
-                        <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" alt="<?= $portfolio->title_id ?>">
-                    <?php else: ?>
-                        <div class="display-1 text-muted"><i class="<?= $portfolio->icon_name ?: 'fas fa-project-diagram' ?>"></i></div>
-                    <?php endif; ?>
-                </div>
-            </div>
-            <div class="col-lg-6 ps-lg-5">
-                <span class="status-badge" data-lang-id="<?= strtoupper($portfolio->partner_type) ?>" data-lang-en="<?= strtoupper($portfolio->partner_type) ?>">
-                    <?= strtoupper($portfolio->partner_type) ?>
-                </span>
-                <h1 class="portfolio-title" data-lang-id="<?= htmlspecialchars($portfolio->title_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->title_en) ?>">
-                    <?= $portfolio->title_id ?>
-                </h1>
-                <div class="portfolio-meta">
-                    <i class="fas fa-calendar-alt text-primary"></i>
-                    <span data-lang-id="<?= htmlspecialchars($portfolio->client_name) ?> | <?= $portfolio->year_start ?> - <?= $portfolio->year_end ?: 'Present' ?>" 
-                          data-lang-en="<?= htmlspecialchars($portfolio->client_name) ?> | <?= $portfolio->year_start ?> - <?= $portfolio->year_end ?: 'Present' ?>">
-                        <?= $portfolio->client_name ?> | <?= $portfolio->year_start ?> - <?= $portfolio->year_end ?: 'Present' ?>
-                    </span>
-                </div>
-                
-                <?php 
-                $project_logos = json_decode($portfolio->project_logos ?: '[]', true);
-                if (!empty($project_logos)): 
-                ?>
-                <div class="project-logos-wrapper">
-                    <?php foreach($project_logos as $logo): ?>
-                    <div class="project-logo-item">
-                        <img src="<?= ASSETS_URL ?>img/portfolio/<?= $logo ?>" alt="Partner Logo">
-                    </div>
-                    <?php endforeach; ?>
-                </div>
-                <?php endif; ?>
-                
-                <?php 
-                $metrics_id = json_decode($portfolio->metrics_id ?: '[]', true);
-                $metrics_en = json_decode($portfolio->metrics_en ?: '[]', true);
-                if (!empty($metrics_id)): 
-                ?>
-                <h6 class="fw-bold text-uppercase small mb-3" data-i18n="portfolio.impact_metrics">Impact Metrics</h6>
-                
-                <div class="impact-metrics-row-id" data-lang-id>
-                    <div class="impact-metrics-row">
-                        <?php foreach($metrics_id as $m): ?>
-                        <div class="metric-item">
-                            <span class="metric-value"><?= htmlspecialchars($m['val'] ?? '') ?></span>
-                            <span class="metric-label"><?= htmlspecialchars($m['label'] ?? '') ?></span>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
-                </div>
+    <div class="container-fluid px-0">
+        <div class="hero-image-container">
+            <nav aria-label="breadcrumb" class="breadcrumb-overlay">
+                <ol class="breadcrumb mb-0" style="font-size: 0.85rem;">
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted" data-i18n="breadcrumb.home">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>partnership" class="text-decoration-none text-muted" data-i18n="breadcrumb.portfolio">Portfolio</a></li>
+                    <li class="breadcrumb-item active text-primary fw-bold" aria-current="page" data-i18n="portfolio.detail_title">Detail Proyek</li>
+                </ol>
+            </nav>
+            <?php if($portfolio->cover_image): ?>
+                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" alt="<?= $portfolio->title_id ?>">
+            <?php else: ?>
+                <div class="display-1 text-muted"><i class="<?= $portfolio->icon_name ?: 'fas fa-project-diagram' ?>"></i></div>
+            <?php endif; ?>
+        </div>
 
-                <div class="impact-metrics-row-en" data-lang-en style="display: none;">
-                    <div class="impact-metrics-row">
-                        <?php 
-                        $display_metrics = !empty($metrics_en) ? $metrics_en : $metrics_id;
-                        foreach($display_metrics as $m): 
-                        ?>
-                        <div class="metric-item">
-                            <span class="metric-value"><?= htmlspecialchars($m['val'] ?? '') ?></span>
-                            <span class="metric-label"><?= htmlspecialchars($m['label'] ?? '') ?></span>
-                        </div>
-                        <?php endforeach; ?>
-                    </div>
+        <div class="portfolio-hero-content">
+            <span class="status-badge" data-lang-id="<?= strtoupper($portfolio->partner_type) ?>" data-lang-en="<?= strtoupper($portfolio->partner_type) ?>">
+                <?= strtoupper($portfolio->partner_type) ?>
+            </span>
+            <h1 class="portfolio-title" data-lang-id="<?= htmlspecialchars($portfolio->title_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->title_en) ?>">
+                <?= $portfolio->title_id ?>
+            </h1>
+            
+            <?php 
+            $project_logos = json_decode($portfolio->project_logos ?: '[]', true);
+            if (!empty($project_logos)): 
+            ?>
+            <div class="project-logos-wrapper">
+                <?php foreach($project_logos as $logo): ?>
+                <div class="project-logo-item">
+                    <img src="<?= ASSETS_URL ?>img/portfolio/<?= $logo ?>" alt="Partner Logo">
                 </div>
-                <?php endif; ?>
+                <?php endforeach; ?>
             </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>
 
-<!-- SECTION 2: ABOUT (Project Description & Sidebar) -->
-<section class="py-5">
+<!-- SECTION 2: Description -->
+<section class="py-5 portfolio-about-section">
     <div class="container">
         <div class="row g-5">
             <div class="col-lg-7">
@@ -277,53 +320,16 @@
                     <?= $portfolio->detail_content_id ?>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="peran-box">
-                    <h5 class="fw-bold mb-3" data-lang-id="<?= htmlspecialchars($portfolio->title_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->title_en) ?>">
-                        <?= $portfolio->title_id ?>
-                    </h5>
-                    <p class="small mb-0 text-muted" data-lang-id="<?= htmlspecialchars($portfolio->subtitle_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->subtitle_en) ?>">
-                        <?= $portfolio->subtitle_id ?>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
 
-<!-- SECTION 3: TARGET (Project Goals) -->
-<?php if(!empty($portfolio->targets_id)): ?>
-<section class="py-5 bg-light">
-    <div class="container">
-        <div class="target-container">
-            <h5 class="fw-bold mb-4 text-center text-uppercase" data-i18n="portfolio.project_targets">TARGET PROYEK</h5>
-            <div class="targets-content" data-lang-id="<?= nl2br(htmlspecialchars($portfolio->targets_id)) ?>" data-lang-en="<?= nl2br(htmlspecialchars($portfolio->targets_en)) ?>">
-                <ul class="list-unstyled d-flex flex-column gap-3">
-                    <?php 
-                    $targets = explode("\n", $portfolio->targets_id);
-                    foreach($targets as $t): 
-                        if(trim($t)):
-                    ?>
-                    <li class="d-flex gap-3">
-                        <i class="fas fa-check-circle text-primary mt-1"></i>
-                        <span><?= htmlspecialchars($t) ?></span>
-                    </li>
-                    <?php 
-                        endif;
-                    endforeach; 
-                    ?>
-                </ul>
-            </div>
         </div>
     </div>
 </section>
-<?php endif; ?>
 
 <?php 
 $approaches = json_decode($portfolio->approach_id ?: '[]', true);
 if (!empty($approaches)): 
 ?>
-<section class="py-5">
+<section class="py-5 portfolio-approach-section">
     <div class="container">
         <div class="row align-items-center g-5">
             <div class="col-lg-5">
@@ -377,9 +383,27 @@ if (!empty($approaches)):
 $highlights = json_decode($portfolio->highlights ?: '[]', true);
 if (!empty($highlights)): 
 ?>
-<section class="py-5 bg-light">
+<section class="py-5 portfolio-highlights-section">
     <div class="container">
         <h4 class="text-center section-header-sm mb-5" data-i18n="portfolio.highlights">Sorotan</h4>
+        <?php
+            $youtube_source = $portfolio->video_url ?? $portfolio->video_link ?? $portfolio->video_source ?? $portfolio->source_video ?? '';
+            $youtube_embed = '';
+            if (!empty($youtube_source)) {
+                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_source, $match)) {
+                    $youtube_embed = 'https://www.youtube.com/embed/' . $match[1];
+                }
+            }
+        ?>
+        <?php if (!empty($youtube_embed)): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="portfolio-video-block">
+                    <iframe src="<?= $youtube_embed ?>?rel=0&showinfo=0" title="Video Proyek" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
         <div class="row g-4">
             <?php foreach($highlights as $h): ?>
             <div class="col-lg-4 col-md-6">

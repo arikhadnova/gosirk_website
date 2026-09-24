@@ -22,10 +22,9 @@
                     <div class="col-md-12">
                         <label class="form-label fw-bold">Judul Dokumen</label>
                         <input type="text" name="title_id" class="form-control" value="<?= $data['doc']->title_id; ?>" required>
-                        <input type="hidden" name="title_en" value="<?= $data['doc']->title_en; ?>">
                     </div>
                     <div class="col-md-12 mt-0">
-                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                     </div>
 
                     <div class="col-md-6">

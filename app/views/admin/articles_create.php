@@ -25,12 +25,10 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Artikel</label>
                         <input type="text" name="title_id" class="form-control" placeholder="Contoh: Menuju Indonesia Bebas Sampah" required>
-                        <input type="hidden" name="title_en" value="">
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Konten Artikel</label>
                         <textarea name="content_id" class="form-control" rows="15" placeholder="Tulis isi artikel di sini..."></textarea>
-                        <input type="hidden" name="content_en" value="">
                         <div class="form-text text-muted mt-2">
                             <i class="fas fa-info-circle me-1"></i> Kapasitas teks maksimal 16MB.
                         </div>

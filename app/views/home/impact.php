@@ -1,6 +1,8 @@
 <?php
   $heroHome = $data['hero'];
-  $bgHome = $heroHome->image ?? 'petugas-baju-biru.png';
+  $heroImageData = $heroHome->image ?? 'petugas-baju-biru.png';
+  $storedHeroSlides = json_decode($heroImageData, true);
+  $bgHome = is_array($storedHeroSlides) ? ($storedHeroSlides[0] ?? 'petugas-baju-biru.png') : $heroImageData;
   if ($bgHome && !filter_var($bgHome, FILTER_VALIDATE_URL)) {
       $bgHome = ASSETS_URL . 'img/' . $bgHome;
   }

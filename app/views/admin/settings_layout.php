@@ -85,6 +85,11 @@
                         <label for="contact_email" class="form-label small fw-bold text-dark">Email Kontak</label>
                         <input type="email" id="contact_email" name="contact_email" class="form-control" value="<?= $settings['contact_email'] ?? 'medcom.gosirk@gmail.com' ?>">
                     </div>
+                    <div class="mb-3">
+                        <label for="contact_whatsapp" class="form-label small fw-bold text-dark">WhatsApp Kontak</label>
+                        <input type="text" id="contact_whatsapp" name="contact_whatsapp" class="form-control" value="<?= $settings['contact_whatsapp'] ?? '628xxxxxxxxx' ?>" placeholder="628xxxxxxxxx">
+                        <div class="form-text small text-muted">Nomor WhatsApp untuk konsultasi layanan gratis.</div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="address_hq" class="form-label small fw-bold text-dark">Alamat Pusat (HQ)</label>

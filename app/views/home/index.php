@@ -1,12 +1,31 @@
 <!-- HERO -->
 <?php
   $heroHome = $data['hero'];
-  $bgHome = $heroHome->image ?? 'petugas-baju-biru.png';
-  if ($bgHome && !filter_var($bgHome, FILTER_VALIDATE_URL)) {
-      $bgHome = ASSETS_URL . 'img/' . $bgHome;
+  $heroImageData = $heroHome->image ?? 'petugas-baju-biru.png';
+  $storedHeroSlides = json_decode($heroImageData, true);
+  $heroSlides = is_array($storedHeroSlides) ? $storedHeroSlides : [$heroImageData];
+
+  $heroSlides = array_map(function ($slide) {
+      if ($slide && !filter_var($slide, FILTER_VALIDATE_URL)) {
+          return ASSETS_URL . 'img/' . $slide;
+      }
+      return $slide;
+  }, $heroSlides);
+
+  if (!is_array($storedHeroSlides)) {
+      $heroSlides[] = ASSETS_URL . 'img/banner-1.png';
+      $heroSlides[] = ASSETS_URL . 'img/banner-2.png';
   }
+
+  $heroSlides = array_slice(array_unique(array_filter($heroSlides)), 0, 5);
+  $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
 ?>
-<section class="hero-home text-center" style="background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(121, 121, 121, 0.55)), url('<?= $bgHome ?>') !important;">
+<section class="hero-home text-center">
+  <div class="hero-home-slider hero-home-slider-<?= $heroTransition ?>" aria-hidden="true">
+    <?php foreach ($heroSlides as $index => $slide) : ?>
+      <div class="hero-home-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(121, 121, 121, 0.55)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+    <?php endforeach; ?>
+  </div>
   <div class="container">
     <h1 class="fw-bold display-5" data-lang-id="<?= $heroHome->title_id ?>" data-lang-en="<?= $heroHome->title_en ?>" data-i18n-html="true">
       <?= $heroHome->title_id ?>
@@ -21,6 +40,26 @@
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const heroSlides = document.querySelectorAll('.hero-home-slide');
+    if (heroSlides.length <= 1) return;
+
+    let activeHeroSlide = 0;
+    setInterval(function() {
+      const previousHeroSlide = activeHeroSlide;
+      heroSlides[previousHeroSlide].classList.remove('active', 'previous');
+      activeHeroSlide = (activeHeroSlide + 1) % heroSlides.length;
+      heroSlides[previousHeroSlide].classList.add('previous');
+      heroSlides[activeHeroSlide].classList.add('active');
+
+      setTimeout(function() {
+        heroSlides[previousHeroSlide].classList.remove('previous');
+      }, 900);
+    }, 5000);
+  });
+</script>
 
 <!-- IMPACT -->
 <section class="section bg-light">
@@ -173,8 +212,8 @@
                   </div>
                   <div class="card-body p-4 d-flex flex-column">
                     <h5 class="fw-bold mb-2" data-lang-id="<?= $item->title_id ?>" data-lang-en="<?= $item->title_en ?>"><?= $item->title_id ?></h5>
-                    <p class="text-muted small mb-3 flex-grow-1" data-lang-id="<?= substr(strip_tags($item->description_id), 0, 150) ?>..." data-lang-en="<?= substr(strip_tags($item->description_en), 0, 150) ?>...">
-                      <?= substr(strip_tags($item->description_id), 0, 150) ?>...
+                    <p class="text-muted small mb-3 flex-grow-1" data-lang-id="<?= strip_tags($item->description_id) ?>" data-lang-en="<?= strip_tags($item->description_en) ?>">
+                      <?= strip_tags($item->description_id) ?>
                     </p>
                     <div class="mt-auto">
                         <a href="<?= BASE_URL ?>gi/detail/<?= $item->slug ?>" class="btn btn-gi-orange rounded-pill d-inline-flex align-items-center gap-2">
@@ -219,8 +258,8 @@
                   </div>
                   <div class="card-body p-4 d-flex flex-column">
                     <h5 class="fw-bold mb-2" data-lang-id="<?= $item->title_id ?>" data-lang-en="<?= $item->title_en ?>"><?= $item->title_id ?></h5>
-                    <p class="text-muted small mb-0" data-lang-id="<?= substr(strip_tags($item->description_id), 0, 150) ?>..." data-lang-en="<?= substr(strip_tags($item->description_en), 0, 150) ?>...">
-                      <?= substr(strip_tags($item->description_id), 0, 150) ?>...
+                    <p class="text-muted small mb-0" data-lang-id="<?= strip_tags($item->description_id) ?>" data-lang-en="<?= strip_tags($item->description_en) ?>">
+                      <?= strip_tags($item->description_id) ?>
                     </p>
                   </div>
                 </div>
@@ -233,42 +272,29 @@
 
     <!-- Consultancy -->
     <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="mb-4">
         <h3 class="fw-bold" data-i18n="home.services.cs_title">Layanan Konsultansi & Advisory Strategis</h3>
-        <div class="service-detail-nav d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-detail-3" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-detail-3" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
       </div>
       
-      <div class="swiper service-detail-slider-3">
-        <div class="swiper-wrapper">
-          <?php if (!empty($services_cs)) : ?>
-            <?php foreach ($services_cs as $item) : ?>
-              <div class="swiper-slide">
-                <div class="card border border-light shadow-sm h-100 rounded-3">
-                  <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
-                    <?php if (!empty($item->image)) : ?>
-                      <img src="<?= ASSETS_URL ?>img/services/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover">
-                    <?php else : ?>
-                      <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
-                    <?php endif; ?>
-                  </div>
-                  <div class="card-body p-4 d-flex flex-column">
-                    <h5 class="fw-bold mb-2" data-lang-id="<?= $item->title_id ?>" data-lang-en="<?= $item->title_en ?>"><?= $item->title_id ?></h5>
-                    <p class="text-muted small mb-0" data-lang-id="<?= substr(strip_tags($item->description_id), 0, 150) ?>..." data-lang-en="<?= substr(strip_tags($item->description_en), 0, 150) ?>...">
-                      <?= substr(strip_tags($item->description_id), 0, 150) ?>...
-                    </p>
-                  </div>
-                </div>
+      <div class="row g-4">
+        <?php if (!empty($services_cs)) : ?>
+          <?php
+            $consultancyIcons = ['manage_search', 'insights', 'fact_check', 'query_stats'];
+            foreach ($services_cs as $index => $item) :
+          ?>
+            <div class="col-md-3">
+              <div class="approach-card p-4 h-100">
+                <span class="material-symbols-outlined" style="font-size: 48px;">
+                  <?= $consultancyIcons[$index % count($consultancyIcons)] ?>
+                </span>
+                <h5 data-lang-id="<?= $item->title_id ?>" data-lang-en="<?= $item->title_en ?>"><?= $item->title_id ?></h5>
+                <p data-lang-id="<?= strip_tags($item->description_id) ?>" data-lang-en="<?= strip_tags($item->description_en) ?>">
+                  <?= strip_tags($item->description_id) ?>
+                </p>
               </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </div>
+            </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </div>
 
@@ -304,14 +330,6 @@
         },
       });
 
-      // Initialize Slider 3
-      new Swiper(".service-detail-slider-3", {
-        ...sliderConfig,
-        navigation: {
-          nextEl: ".next-detail-3",
-          prevEl: ".prev-detail-3",
-        },
-      });
     });
   </script>
 </section>
@@ -540,6 +558,12 @@
 </section>
 
 <!-- ECOSYSTEM -->
+<?php
+  $ggcHeroLogo = $data['ggc_hero_logo'] ?? 'logo-ggc.png';
+  $ggcHeroLogoUrl = $ggcHeroLogo && filter_var($ggcHeroLogo, FILTER_VALIDATE_URL) ? $ggcHeroLogo : ASSETS_URL . 'img/' . $ggcHeroLogo;
+  $gnpHeroLogo = $data['go_ngompos_project_hero_logo'] ?? 'logo-go-ngompos.svg';
+  $gnpHeroLogoUrl = $gnpHeroLogo && filter_var($gnpHeroLogo, FILTER_VALIDATE_URL) ? $gnpHeroLogo : ASSETS_URL . 'img/' . $gnpHeroLogo;
+?>
 <section class="section ecosystem">
   <div class="container text-center">
     <h2 class="fw-bold mb-2" data-i18n="home.ecosystem.title">Our Ecosystem</h2>
@@ -562,11 +586,24 @@
 
       <div class="col-md-5">
         <div class="stat-box">
-          <img src="<?= ASSETS_URL ?>img/logo-ggc.png" alt="GoSirk Green Community" class="ecosystem-logo">
+          <img src="<?= htmlspecialchars($ggcHeroLogoUrl, ENT_QUOTES) ?>" alt="GoSirk Green Community" class="ecosystem-logo">
           <div class="ecosystem-content">
             <h5 data-i18n="home.ecosystem.ggc.title">GoSirk Green Community</h5>
             <p data-i18n="home.ecosystem.ggc.desc">Solusi nyata dalam pengelolaan sampah berbasis komunitas</p>
             <a href="<?= BASE_URL ?>ggc" class="btn btn-sm" data-i18n="home.common.read_more">
+              Selengkapnya
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-5">
+        <div class="stat-box">
+          <img src="<?= htmlspecialchars($gnpHeroLogoUrl, ENT_QUOTES) ?>" alt="Go Ngompos Project" class="ecosystem-logo">
+          <div class="ecosystem-content">
+            <h5 data-i18n="home.ecosystem.gnp.title">Go Ngompos Project</h5>
+            <p data-i18n="home.ecosystem.gnp.desc">Gerakan pengolahan sampah organik menjadi kompos dari rumah dan komunitas</p>
+            <a href="<?= BASE_URL ?>go_ngompos_project" class="btn btn-sm" data-i18n="home.common.read_more">
               Selengkapnya
             </a>
           </div>
@@ -679,6 +716,13 @@
       <div class="swiper-wrapper">
         <?php if (!empty($articles)) : ?>
           <?php foreach (array_slice($articles, 0, 6) as $art) : ?>
+            <?php
+              $excerptId = trim(strip_tags($art->content_id));
+              $excerptEn = trim(strip_tags($art->content_en));
+              $excerptLimit = 120;
+              $truncatedExcerptId = strlen($excerptId) > $excerptLimit ? substr($excerptId, 0, $excerptLimit) . '...' : $excerptId;
+              $truncatedExcerptEn = strlen($excerptEn) > $excerptLimit ? substr($excerptEn, 0, $excerptLimit) . '...' : $excerptEn;
+            ?>
             <div class="swiper-slide">
               <div class="blog-card">
                 <div class="blog-image">
@@ -687,8 +731,8 @@
                 <div class="blog-content">
                   <h6 class="blog-title" data-lang-id="<?= $art->title_id ?>" data-lang-en="<?= $art->title_en ?>"><?= $art->title_id ?></h6>
                   <span class="blog-tag text-uppercase"><?= $art->category ?: 'ARTICLE' ?></span>
-                  <div class="blog-excerpt mt-2" data-lang-id="<?= substr(strip_tags($art->content_id), 0, 150) ?>..." data-lang-en="<?= substr(strip_tags($art->content_en), 0, 150) ?>...">
-                    <?= substr(strip_tags($art->content_id), 0, 150) ?>...
+                  <div class="blog-excerpt mt-2" data-lang-id="<?= $truncatedExcerptId ?>" data-lang-en="<?= $truncatedExcerptEn ?>">
+                    <?= $truncatedExcerptId ?>
                   </div>
                   <a href="<?= BASE_URL ?>blog/detail/<?= $art->id ?>" class="blog-link">Selengkapnya</a>
                 </div>

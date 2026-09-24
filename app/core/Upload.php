@@ -32,8 +32,10 @@ class Upload {
 
         $newFileName = uniqid('gs_', true) . '.' . $fileExtension;
         
-        // Use an absolute path based on the location of this file
-        $basePath = ($customBase ? realpath($customBase) : realpath(__DIR__ . '/../../public/assets')) . DIRECTORY_SEPARATOR;
+        // Use an absolute path based on the location of this file.
+        // This project serves assets from /assets; older code expected /public/assets.
+        $defaultBase = realpath(__DIR__ . '/../../public/assets') ?: realpath(__DIR__ . '/../../assets');
+        $basePath = ($customBase ? realpath($customBase) : $defaultBase) . DIRECTORY_SEPARATOR;
         $folderPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $folder);
         $destination = $basePath . $folderPath . (empty($folderPath) ? '' : DIRECTORY_SEPARATOR) . $newFileName;
         
@@ -59,7 +61,8 @@ class Upload {
     public static function delete($fileName, $folder, $customBase = null) {
         if (empty($fileName)) return;
         
-        $basePath = ($customBase ? realpath($customBase) : realpath(__DIR__ . '/../../public/assets')) . DIRECTORY_SEPARATOR;
+        $defaultBase = realpath(__DIR__ . '/../../public/assets') ?: realpath(__DIR__ . '/../../assets');
+        $basePath = ($customBase ? realpath($customBase) : $defaultBase) . DIRECTORY_SEPARATOR;
         $folderPath = str_replace(['/', '\\'], DIRECTORY_SEPARATOR, $folder);
         $path = $basePath . $folderPath . (empty($folderPath) ? '' : DIRECTORY_SEPARATOR) . $fileName;
         

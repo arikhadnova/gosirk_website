@@ -36,12 +36,10 @@
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small">Pertanyaan</label>
                                 <input type="text" name="question_id" class="form-control bg-light border-0" placeholder="Contoh: Apa itu GoSirk?" required>
-                                <input type="hidden" name="question_en" value="">
                             </div>
                             <div>
                                 <label class="form-label fw-bold extra-small">Jawaban</label>
                                 <textarea name="answer_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis jawaban lengkap dalam bahasa Indonesia..." required></textarea>
-                                <input type="hidden" name="answer_en" value="">
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

@@ -24,12 +24,10 @@
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
                         <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Masukkan judul layanan..." required>
-                        <input type="hidden" name="title_en" value="">
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
                         <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." required></textarea>
-                        <input type="hidden" name="description_en" value="">
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

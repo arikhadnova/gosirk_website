@@ -30,22 +30,21 @@
                                 <option value="implentasi_partner" <?= $testimonial->page == 'implentasi_partner' ? 'selected' : '' ?>>Implementasi Partner</option>
                                 <option value="konsultan" <?= $testimonial->page == 'konsultan' ? 'selected' : '' ?>>Konsultansi</option>
                                 <option value="ggc" <?= $testimonial->page == 'ggc' ? 'selected' : '' ?>>GoSirk Green Community</option>
+                                <option value="go_ngompos_project" <?= $testimonial->page == 'go_ngompos_project' ? 'selected' : '' ?>>Go Ngompos Project</option>
                             </select>
                         </div>
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
                             <input type="text" name="role_id" class="form-control bg-light border-0" value="<?= $testimonial->role_id ?>" required>
-                            <input type="hidden" name="role_en" value="<?= $testimonial->role_en ?>">
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
                             <textarea name="content_id" class="form-control bg-light border-0" rows="4" required><?= $testimonial->content_id ?></textarea>
-                            <input type="hidden" name="content_en" value="<?= $testimonial->content_en ?>">
                         </div>
                         <div class="col-12">
-                            <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis jika dikosongkan.</small>
+                            <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
                         </div>
 
                         <div class="col-md-4">

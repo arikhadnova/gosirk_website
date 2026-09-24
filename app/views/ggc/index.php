@@ -1,23 +1,25 @@
 <!-- HERO SECTION -->
 <?php
 $heroGGC = $data['hero'];
-$bgGGC = $heroGGC->image ?? '';
-if ($bgGGC && strpos($bgGGC, 'http') !== 0) {
-    if (strpos($bgGGC, 'img/') === 0) {
-        $bgGGC = ASSETS_URL . $bgGGC;
-    } else {
-        $bgGGC = ASSETS_URL . 'img/' . $bgGGC;
+$ggcHeroImages = json_decode($heroGGC->image ?? '', true);
+$ggcHeroImages = is_array($ggcHeroImages) ? $ggcHeroImages : [$heroGGC->image ?? ''];
+$ggcHeroImages = array_values(array_filter(array_map(function ($image) {
+    if ($image && strpos($image, 'http') !== 0) {
+        return strpos($image, 'img/') === 0 ? ASSETS_URL . $image : ASSETS_URL . 'img/' . $image;
     }
-}
-// Fallback if still empty
-if (!$bgGGC) $bgGGC = ASSETS_URL . 'img/petugas-baju-biru.png';
+    return $image;
+}, $ggcHeroImages)));
+if (empty($ggcHeroImages)) $ggcHeroImages[] = ASSETS_URL . 'img/petugas-baju-biru.png';
+$heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
+$ggcLogo = $data['hero_logo'] ?? 'logo-ggc.png';
+$ggcLogoUrl = $ggcLogo && filter_var($ggcLogo, FILTER_VALIDATE_URL) ? $ggcLogo : ASSETS_URL . 'img/' . $ggcLogo;
 ?>
 <section class="hero-ggc">
   <div class="container">
     <div class="row align-items-center">
       <div class="col-lg-6">
         <div class="hero-logo-wrapper mb-4">
-          <img src="<?= ASSETS_URL ?>img/logo-ggc.png?v=<?= time() ?>" alt="GoSirk Green Community" class="img-fluid" style="max-height: 200px;">
+          <img src="<?= htmlspecialchars($ggcLogoUrl, ENT_QUOTES) ?>?v=<?= time() ?>" alt="GoSirk Green Community" class="img-fluid" style="max-height: 200px;">
         </div>
         <p class="lead text-secondary mb-4 fs-4" style="max-width: 500px;" data-lang-id="<?= $heroGGC->subtitle_id ?>" data-lang-en="<?= $heroGGC->subtitle_en ?>">
           <?= $heroGGC->subtitle_id ?>
@@ -28,14 +30,47 @@ if (!$bgGGC) $bgGGC = ASSETS_URL . 'img/petugas-baju-biru.png';
         </div>
       </div>
       <div class="col-lg-6 d-none d-lg-block">
-        <div class="position-relative">
-            <div class="bg-success position-absolute top-50 start-50 translate-middle rounded-circle opacity-50" style="width: 500px; height: 500px;"></div>
-            <img src="<?= $bgGGC ?>" class="img-fluid rounded-5 shadow-lg position-relative z-1" alt="Community Growth">
+        <div class="hero-visual-frame">
+            <div class="hero-visual-bg bg-success rounded-circle opacity-50"></div>
+            <div class="hero-image-slider hero-image-slider-<?= $heroTransition ?> rounded-5 shadow-lg position-relative z-1 overflow-hidden">
+              <?php foreach (array_slice($ggcHeroImages, 0, 5) as $index => $slide): ?>
+                <img src="<?= htmlspecialchars($slide, ENT_QUOTES) ?>" class="hero-image-slide <?= $index === 0 ? 'active' : '' ?>" alt="Community Growth">
+              <?php endforeach; ?>
+            </div>
         </div>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  .hero-visual-frame { position: relative; display: grid; place-items: center; max-width: 540px; margin-inline: auto; isolation: isolate; }
+  .hero-visual-bg { position: absolute; width: min(96%, 500px); aspect-ratio: 1 / 1; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 0; }
+  .hero-image-slider { width: 100%; aspect-ratio: 4 / 3; background: #f8f9fa; }
+  .hero-image-slide { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .hero-image-slider-fade .hero-image-slide { opacity: 0; transform: scale(1.03); transition: opacity 1s ease, transform 6s ease; }
+  .hero-image-slider-fade .hero-image-slide.active { opacity: 1; transform: scale(1); }
+  .hero-image-slider-slide .hero-image-slide { opacity: 1; transform: translateX(100%); transition: transform 0.85s ease; }
+  .hero-image-slider-slide .hero-image-slide.active { transform: translateX(0); z-index: 2; }
+  .hero-image-slider-slide .hero-image-slide.previous { transform: translateX(-100%); z-index: 1; }
+</style>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.hero-image-slider').forEach(function(slider) {
+    const slides = slider.querySelectorAll('.hero-image-slide');
+    if (slides.length <= 1) return;
+    let active = 0;
+    setInterval(function() {
+      const previous = active;
+      slides[previous].classList.remove('active', 'previous');
+      active = (active + 1) % slides.length;
+      slides[previous].classList.add('previous');
+      slides[active].classList.add('active');
+      setTimeout(function() { slides[previous].classList.remove('previous'); }, 900);
+    }, 5000);
+  });
+});
+</script>
 
 <!-- IMPACT SECTION -->
 <section class="section bg-white border-top">
@@ -105,35 +140,46 @@ if (!$bgGGC) $bgGGC = ASSETS_URL . 'img/petugas-baju-biru.png';
 </section>
 
 <!-- ABOUT SECTION -->
+<?php
+$aboutSection = $data['about_section'] ?? null;
+$aboutBadgeId = $aboutSection->badge_id ?? 'SIAPA KAMI?';
+$aboutBadgeEn = $aboutSection->badge_en ?? 'WHO ARE WE?';
+$aboutTitleId = $aboutSection->title_id ?? 'MENGENAL <span class="text-success">GOSIRK GREEN COMMUNITY</span>';
+$aboutTitleEn = $aboutSection->title_en ?? 'GET TO KNOW <span class="text-success">GOSIRK GREEN COMMUNITY</span>';
+$aboutContentId = $aboutSection->content_id ?? 'GoSirk Green Community adalah inisiatif unggulan yang digagas oleh PT Go Circular Solutions Indonesia (GoSirk) yang menghadirkan solusi nyata dalam pengelolaan sampah berbasis komunitas.';
+$aboutContentEn = $aboutSection->content_en ?? 'GoSirk Green Community is a flagship initiative by PT Go Circular Solutions Indonesia (GoSirk) that delivers real solutions for community-based waste management.';
+$aboutContent2Id = $aboutSection->content_2_id ?? 'Melalui pendekatan partisipatif, edukatif, dan kolaborasi lintas sektor, program ini mendorong transformasi sosial dan pelestarian lingkungan di tingkat desa dan kelurahan.';
+$aboutContent2En = $aboutSection->content_2_en ?? 'Through participatory, educational, and cross-sector collaboration, this program encourages social transformation and environmental preservation at village and urban community levels.';
+$aboutImage = $aboutSection->image ?? 'IMG_8093-crop.jpg';
+$aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $aboutImage : ASSETS_URL . 'img/' . $aboutImage;
+?>
+<?php if (!$aboutSection || ((int) ($aboutSection->is_active ?? 1)) === 1): ?>
 <section class="section" id="about">
   <div class="container">
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <div class="bg-light p-2 rounded-5 shadow-sm overflow-hidden">
-            <img src="<?= ASSETS_URL ?>img/IMG_8093-crop.jpg" class="img-fluid rounded-4 shadow" alt="About GGC">
+            <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="img-fluid rounded-4 shadow" alt="About GGC">
         </div>
       </div>
       <div class="col-lg-6">
         <div class="ps-lg-4">
-            <div class="text-success fw-bold mb-2" data-i18n="ggc.about.badge">SIAPA KAMI?</div>
-            <h2 class="fw-bold mb-4 display-6" data-i18n="ggc.about.title">
-              MENGENAL <span class="text-success">GOSIRK GREEN COMMUNITY</span>
+            <div class="text-success fw-bold mb-2" data-lang-id="<?= htmlspecialchars($aboutBadgeId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutBadgeEn, ENT_QUOTES) ?>"><?= $aboutBadgeId ?></div>
+            <h2 class="fw-bold mb-4 display-6" data-lang-id="<?= htmlspecialchars($aboutTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutTitleEn, ENT_QUOTES) ?>">
+              <?= $aboutTitleId ?>
             </h2>
-            <p class="lead text-secondary mb-4" data-i18n="ggc.about.p1">
-              GoSirk Green Community adalah inisiatif unggulan yang digagas oleh
-              PT Go Circular Solutions Indonesia (GoSirk) yang menghadirkan solusi
-              nyata dalam pengelolaan sampah berbasis komunitas.
+            <p class="lead text-secondary mb-4" data-lang-id="<?= htmlspecialchars($aboutContentId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContentEn, ENT_QUOTES) ?>">
+              <?= $aboutContentId ?>
             </p>
-            <p class="text-muted mb-4" data-i18n="ggc.about.p2">
-              Melalui pendekatan partisipatif, edukatif, dan kolaborasi lintas sektor,
-              program ini mendorong transformasi sosial dan pelestarian lingkungan
-              di tingkat desa dan kelurahan.
+            <p class="text-muted mb-4" data-lang-id="<?= htmlspecialchars($aboutContent2Id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContent2En, ENT_QUOTES) ?>">
+              <?= $aboutContent2Id ?>
             </p>
         </div>
       </div>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <!-- PROGRAM SECTION -->
 <section class="section bg-light-subtle">

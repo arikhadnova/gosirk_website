@@ -435,12 +435,20 @@
     <!-- HERO SECTION -->
     <?php
     $heroKonsultan = $data['hero'];
-    $bgKonsultan = $heroKonsultan->image;
-    if ($bgKonsultan && !filter_var($bgKonsultan, FILTER_VALIDATE_URL)) {
-        $bgKonsultan = ASSETS_URL . 'img/' . $bgKonsultan;
-    }
+    $konsultanHeroImages = json_decode($heroKonsultan->image ?? '', true);
+    $konsultanHeroImages = is_array($konsultanHeroImages) ? $konsultanHeroImages : [$heroKonsultan->image ?? ''];
+    $konsultanHeroImages = array_values(array_filter(array_map(function ($image) {
+        return $image && !filter_var($image, FILTER_VALIDATE_URL) ? ASSETS_URL . 'img/' . $image : $image;
+    }, $konsultanHeroImages)));
+    if (empty($konsultanHeroImages)) $konsultanHeroImages[] = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80';
+    $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
     ?>
-    <section class="hero-konsultan" style="background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= $bgKonsultan ?>') center/cover no-repeat !important;">
+    <section class="hero-konsultan hero-media-shell">
+        <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
+            <?php foreach (array_slice($konsultanHeroImages, 0, 5) as $index => $slide): ?>
+                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+            <?php endforeach; ?>
+        </div>
         <div class="container position-relative">
             <h1 class="display-3 fw-bold text-uppercase mb-3" data-lang-id="<?= $heroKonsultan->title_id ?>" data-lang-en="<?= $heroKonsultan->title_en ?>" data-i18n-html="true">
                 <?= $heroKonsultan->title_id ?>
@@ -456,20 +464,61 @@
         </div>
     </section>
 
+    <style>
+        .hero-media-shell { position: relative; overflow: hidden; background: #0b1120; }
+        .hero-media-slider, .hero-media-slide { position: absolute; inset: 0; }
+        .hero-media-slider { z-index: 0; }
+        .hero-media-shell > .container { z-index: 1; }
+        .hero-media-slide { background-size: cover; background-position: center; }
+        .hero-media-slider-fade .hero-media-slide { opacity: 0; transform: scale(1.03); transition: opacity 1s ease, transform 6s ease; }
+        .hero-media-slider-fade .hero-media-slide.active { opacity: 1; transform: scale(1); }
+        .hero-media-slider-slide .hero-media-slide { opacity: 1; transform: translateX(100%); transition: transform 0.85s ease; }
+        .hero-media-slider-slide .hero-media-slide.active { transform: translateX(0); z-index: 2; }
+        .hero-media-slider-slide .hero-media-slide.previous { transform: translateX(-100%); z-index: 1; }
+    </style>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.hero-media-slider').forEach(function(slider) {
+            const slides = slider.querySelectorAll('.hero-media-slide');
+            if (slides.length <= 1) return;
+            let active = 0;
+            setInterval(function() {
+                const previous = active;
+                slides[previous].classList.remove('active', 'previous');
+                active = (active + 1) % slides.length;
+                slides[previous].classList.add('previous');
+                slides[active].classList.add('active');
+                setTimeout(function() { slides[previous].classList.remove('previous'); }, 900);
+            }, 5000);
+        });
+    });
+    </script>
+
     <!-- ABOUT SECTION - GI Style -->
+    <?php
+    $aboutSection = $data['about_section'] ?? null;
+    $aboutBadgeId = $aboutSection->badge_id ?? 'Tentang Layanan Kami';
+    $aboutBadgeEn = $aboutSection->badge_en ?? 'About Our Service';
+    $aboutTitleId = $aboutSection->title_id ?? 'Solusi Strategis Berbasis Data dan Pengalaman Lapangan';
+    $aboutTitleEn = $aboutSection->title_en ?? 'Strategic Solutions Based on Data and Field Experience';
+    $aboutContentId = $aboutSection->content_id ?? 'GoSirk menyediakan layanan konsultansi profesional dan berorientasi solusi untuk memperkuat sistem pengelolaan sampah di Indonesia, didukung rekam jejak solid sejak 2022 dalam menyusun kebijakan strategis dan inovasi pembiayaan.';
+    $aboutContentEn = $aboutSection->content_en ?? 'GoSirk provides professional, solution-oriented consulting services to strengthen waste management systems in Indonesia, supported by a solid track record since 2022 in strategic policy development and financing innovation.';
+    ?>
+    <?php if (!$aboutSection || ((int) ($aboutSection->is_active ?? 1)) === 1): ?>
     <section id="tentang" class="about-section">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-10 text-center">
-                    <span class="section-subheader" data-i18n="konsultan.about_badge">Tentang Layanan Kami</span>
-                    <h2 class="display-6 fw-bold mb-4" style="color: var(--dark-blue);" data-i18n="konsultan.about_title">Solusi Strategis Berbasis Data dan Pengalaman Lapangan</h2>
-                    <p class="text-muted mb-0 fs-5" style="line-height: 1.8;" data-i18n="konsultan.hero_desc">
-                        GoSirk menyediakan layanan konsultansi profesional dan berorientasi solusi untuk memperkuat sistem pengelolaan sampah di Indonesia, didukung rekam jejak solid sejak 2022 dalam menyusun kebijakan strategis dan inovasi pembiayaan.
+                    <span class="section-subheader" data-lang-id="<?= htmlspecialchars($aboutBadgeId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutBadgeEn, ENT_QUOTES) ?>"><?= $aboutBadgeId ?></span>
+                    <h2 class="display-6 fw-bold mb-4" style="color: var(--dark-blue);" data-lang-id="<?= htmlspecialchars($aboutTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutTitleEn, ENT_QUOTES) ?>"><?= $aboutTitleId ?></h2>
+                    <p class="text-muted mb-0 fs-5" style="line-height: 1.8;" data-lang-id="<?= htmlspecialchars($aboutContentId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($aboutContentEn, ENT_QUOTES) ?>">
+                        <?= $aboutContentId ?>
                     </p>
                 </div>
             </div>
         </div>
     </section>
+    <?php endif; ?>
 
     <!-- ADVANTAGES SECTION - Non-Card Layout -->
     <section class="konsultan-advantages">

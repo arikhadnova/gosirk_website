@@ -22,6 +22,7 @@ class Admin extends Controller {
     private $activityLogModel;
     private $pilotVillageModel;
     private $ggcActionModel;
+    private $pageSectionModel;
 
     public function __construct() {
         if (!isset($_SESSION['admin_logged_in'])) {
@@ -49,6 +50,7 @@ class Admin extends Controller {
         $this->activityLogModel = $this->model('ActivityLog_model');
         $this->pilotVillageModel = $this->model('PilotVillage_model');
         $this->ggcActionModel = $this->model('GgcAction_model');
+        $this->pageSectionModel = $this->model('PageSection_model');
 
         // Auto-initialize settings table
         $db = new Database();
@@ -198,6 +200,7 @@ class Admin extends Controller {
             'address_hq' => $_POST['address_hq'] ?? '',
             'address_branch' => $_POST['address_branch'] ?? '',
             'contact_email' => $_POST['contact_email'] ?? '',
+            'contact_whatsapp' => $_POST['contact_whatsapp'] ?? '',
             'social_facebook' => $_POST['social_facebook'] ?? '',
             'social_instagram' => $_POST['social_instagram'] ?? '',
             'social_linkedin' => $_POST['social_linkedin'] ?? '',
@@ -262,6 +265,176 @@ class Admin extends Controller {
         }
     }
 
+    private function getAboutSectionDefaults() {
+        return [
+            'about' => [
+                'label' => 'About Page',
+                'badge_id' => 'Tentang Kami',
+                'badge_en' => 'About Us',
+                'title_id' => 'Membangun Masa Depan Berkelanjutan',
+                'title_en' => 'Building a Sustainable Future',
+                'content_id' => 'PT Gocircular Solutions Indonesia (GoSirk) adalah perusahaan swasta dengan orientasi bisnis sosial yang kuat, didedikasikan untuk mengembangkan solusi inovatif dan ramah lingkungan dalam pengelolaan sampah.',
+                'content_en' => 'PT Gocircular Solutions Indonesia (GoSirk) is a private company with a strong social business orientation, dedicated to developing innovative and environmentally friendly waste management solutions.',
+                'content_2_id' => 'Kami berkomitmen untuk menciptakan sistem pengelolaan sampah yang berkelanjutan melalui implementasi bisnis sirkular dan program-program yang memberikan manfaat bagi lingkungan serta memberdayakan usaha lokal di sektor pengelolaan sampah.',
+                'content_2_en' => 'We are committed to creating sustainable waste management systems through circular business implementation and programs that benefit the environment while empowering local waste management businesses.',
+                'content_3_id' => 'Kami percaya pada kekuatan kolaborasi dan komunitas, bekerja bersama dengan usaha-usaha lokal untuk mendorong pertumbuhan, menciptakan lapangan kerja, dan meningkatkan standar praktik pengelolaan sampah.',
+                'content_3_en' => 'We believe in the power of collaboration and community, working together with local enterprises to encourage growth, create jobs, and improve waste management practice standards.',
+                'image' => 'about-2.jpg'
+            ],
+            'gi' => [
+                'label' => 'GoSirk Institute',
+                'badge_id' => 'Tentang Kami',
+                'badge_en' => 'About Us',
+                'title_id' => 'Membangun Ekosistem Pengetahuan Sirkular',
+                'title_en' => 'Building a Circular Knowledge Ecosystem',
+                'content_id' => 'GoSirk Institute merupakan bagian dari unit strategis dalam ekosistem bisnis PT GO Circular Solutions Indonesia (GoSirk) dalam membangun sistem manajemen pengetahuan yang terstruktur di bidang pengelolaan sampah. Sebagai unit khusus dalam lini usaha Capacity Building, GoSirk Institute menjadi wadah untuk mengembangkan dan menyebarluaskan pembelajaran, praktik baik, serta inovasi-inovasi yang lahir dari pengalaman nyata di lapangan.',
+                'content_en' => 'GoSirk Institute is part of a strategic unit within PT GO Circular Solutions Indonesia (GoSirk) business ecosystem to build a structured knowledge management system in waste management. As a dedicated Capacity Building unit, GoSirk Institute serves as a platform to develop and share learning, good practices, and innovations born from real field experience.',
+                'content_2_id' => '',
+                'content_2_en' => '',
+                'content_3_id' => '',
+                'content_3_en' => '',
+                'image' => 'gi-1.jpeg'
+            ],
+            'ggc' => [
+                'label' => 'GoSirk Green Community',
+                'badge_id' => 'SIAPA KAMI?',
+                'badge_en' => 'WHO ARE WE?',
+                'title_id' => 'MENGENAL <span class="text-success">GOSIRK GREEN COMMUNITY</span>',
+                'title_en' => 'GET TO KNOW <span class="text-success">GOSIRK GREEN COMMUNITY</span>',
+                'content_id' => 'GoSirk Green Community adalah inisiatif unggulan yang digagas oleh PT Go Circular Solutions Indonesia (GoSirk) yang menghadirkan solusi nyata dalam pengelolaan sampah berbasis komunitas.',
+                'content_en' => 'GoSirk Green Community is a flagship initiative by PT Go Circular Solutions Indonesia (GoSirk) that delivers real solutions for community-based waste management.',
+                'content_2_id' => 'Melalui pendekatan partisipatif, edukatif, dan kolaborasi lintas sektor, program ini mendorong transformasi sosial dan pelestarian lingkungan di tingkat desa dan kelurahan.',
+                'content_2_en' => 'Through participatory, educational, and cross-sector collaboration, this program encourages social transformation and environmental preservation at village and urban community levels.',
+                'content_3_id' => '',
+                'content_3_en' => '',
+                'image' => 'IMG_8093-crop.jpg'
+            ],
+            'go_ngompos_project' => [
+                'label' => 'Go Ngompos Project',
+                'badge_id' => 'TENTANG PROGRAM',
+                'badge_en' => 'ABOUT THE PROGRAM',
+                'title_id' => 'MENGENAL <span class="text-success">GO NGOMPOS PROJECT</span>',
+                'title_en' => 'GET TO KNOW <span class="text-success">GO NGOMPOS PROJECT</span>',
+                'content_id' => 'Go Ngompos Project adalah inisiatif GoSirk untuk mengajak masyarakat mengurangi sampah organik yang terbuang ke TPA melalui praktik pengomposan yang mudah dan dekat dengan keseharian.',
+                'content_en' => 'Go Ngompos Project is a GoSirk initiative inviting people to reduce organic waste sent to landfills through simple composting practices close to daily life.',
+                'content_2_id' => 'Program ini menggabungkan edukasi, pendampingan, dan kampanye perubahan perilaku agar rumah tangga, sekolah, kantor, dan komunitas mampu mengelola sampah organiknya sendiri.',
+                'content_2_en' => 'This program combines education, assistance, and behavior change campaigns so households, schools, offices, and communities can manage their own organic waste.',
+                'content_3_id' => '',
+                'content_3_en' => '',
+                'image' => 'https://images.unsplash.com/photo-1591857177580-dc82b9ac4e1e?auto=format&fit=crop&q=80&w=900'
+            ],
+            'konsultan' => [
+                'label' => 'Konsultan',
+                'badge_id' => 'Tentang Layanan Kami',
+                'badge_en' => 'About Our Service',
+                'title_id' => 'Solusi Strategis Berbasis Data dan Pengalaman Lapangan',
+                'title_en' => 'Strategic Solutions Based on Data and Field Experience',
+                'content_id' => 'GoSirk menyediakan layanan konsultansi profesional dan berorientasi solusi untuk memperkuat sistem pengelolaan sampah di Indonesia, didukung rekam jejak solid sejak 2022 dalam menyusun kebijakan strategis dan inovasi pembiayaan.',
+                'content_en' => 'GoSirk provides professional, solution-oriented consulting services to strengthen waste management systems in Indonesia, supported by a solid track record since 2022 in strategic policy development and financing innovation.',
+                'content_2_id' => '',
+                'content_2_en' => '',
+                'content_3_id' => '',
+                'content_3_en' => '',
+                'image' => ''
+            ],
+            'partner' => [
+                'label' => 'Implementasi Partner',
+                'badge_id' => 'MITRA PENGEMBANGAN',
+                'badge_en' => 'DEVELOPMENT PARTNER',
+                'title_id' => 'Tentang Layanan Kami',
+                'title_en' => 'About Our Service',
+                'content_id' => 'GO Sirk berperan sebagai <b>mitra pengembangan dan implementasi proyek</b> untuk mentransformasi sampah menjadi solusi yang <b>berkelanjutan, inklusif, dan inovatif</b>. Kami mendampingi mitra sejak tahap perencanaan hingga pelaksanaan di lapangan untuk memastikan proyek berjalan <b>efektif secara teknis</b>, terukur, serta menghasilkan <b>dampak sosial dan lingkungan</b> yang nyata.',
+                'content_en' => 'GO Sirk acts as a <b>project development and implementation partner</b> to transform waste into <b>sustainable, inclusive, and innovative</b> solutions. We assist partners from planning to field execution to ensure projects run <b>effectively from a technical standpoint</b>, are measurable, and create real <b>social and environmental impact</b>.',
+                'content_2_id' => '<b>Fokus utama</b> kami adalah memastikan keberhasilan implementasi melalui penguatan kolaborasi, tata kelola, dan model operasional yang relevan dengan konteks lokal.',
+                'content_2_en' => 'Our <b>main focus</b> is ensuring implementation success through stronger collaboration, governance, and operating models relevant to the local context.',
+                'content_3_id' => '',
+                'content_3_en' => '',
+                'image' => ''
+            ]
+        ];
+    }
+
+    public function page_sections() {
+        $defaults = $this->getAboutSectionDefaults();
+        $sections = [];
+
+        foreach ($defaults as $page => $default) {
+            $stored = $this->pageSectionModel->getByPageAndSection($page, 'about');
+            $sections[$page] = (object) array_merge($default, $stored ? (array) $stored : [
+                'page_name' => $page,
+                'section_key' => 'about',
+                'is_active' => 1
+            ]);
+        }
+
+        $data = [
+            'title' => 'Page Sections',
+            'active' => 'page_sections',
+            'sections' => $sections,
+            'pages' => array_map(fn($item) => $item['label'], $defaults)
+        ];
+
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/page_sections', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function update_page_section() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/page_sections');
+            exit;
+        }
+
+        $page = $_POST['page_name'] ?? '';
+        $defaults = $this->getAboutSectionDefaults();
+        if (!$page || !isset($defaults[$page])) {
+            Flasher::setFlash('Page Section', 'tidak valid', 'danger');
+            header('Location: ' . BASE_URL . 'admin/page_sections');
+            exit;
+        }
+
+        $oldSection = $this->pageSectionModel->getByPageAndSection($page, 'about');
+        $image = $_POST['existing_image'] ?? ($defaults[$page]['image'] ?? '');
+
+        if (!empty($_FILES['image']['name'])) {
+            $newImage = Upload::file($_FILES['image'], 'img', ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);
+            if ($newImage) {
+                $oldImage = $oldSection->image ?? '';
+                if ($oldImage && !filter_var($oldImage, FILTER_VALIDATE_URL) && !in_array($oldImage, array_column($defaults, 'image'))) {
+                    Upload::delete($oldImage, 'img');
+                }
+                $image = $newImage;
+            }
+        }
+
+        $sectionData = [
+            'page_name' => $page,
+            'section_key' => 'about',
+            'badge_id' => $_POST['badge_id'] ?? '',
+            'badge_en' => Translator::translate($_POST['badge_id'] ?? ''),
+            'title_id' => $_POST['title_id'] ?? '',
+            'title_en' => Translator::translate(strip_tags($_POST['title_id'] ?? '')),
+            'content_id' => $_POST['content_id'] ?? '',
+            'content_en' => Translator::translate(strip_tags($_POST['content_id'] ?? '')),
+            'content_2_id' => $_POST['content_2_id'] ?? '',
+            'content_2_en' => Translator::translate(strip_tags($_POST['content_2_id'] ?? '')),
+            'content_3_id' => $_POST['content_3_id'] ?? '',
+            'content_3_en' => Translator::translate(strip_tags($_POST['content_3_id'] ?? '')),
+            'image' => $image,
+            'is_active' => 1
+        ];
+
+        if ($this->pageSectionModel->upsert($sectionData)) {
+            $this->activityLogModel->log('UPDATE', 'Page Section', "Memperbarui section About halaman '{$page}'");
+            Flasher::setFlash('Page Section', 'berhasil diperbarui', 'success');
+        } else {
+            Flasher::setFlash('Page Section', 'gagal diperbarui', 'danger');
+        }
+
+        header('Location: ' . BASE_URL . 'admin/page_sections#section-' . $page);
+        exit;
+    }
+
     public function hero() {
         $heroes = $this->heroModel->getAll();
         $hero_data = [];
@@ -269,10 +442,37 @@ class Admin extends Controller {
             $hero_data[$h->page_name] = $h;
         }
 
+        if (!isset($hero_data['go_ngompos_project'])) {
+            $defaultHero = [
+                'page_name' => 'go_ngompos_project',
+                'tag_id' => '',
+                'tag_en' => '',
+                'title_id' => 'Go Ngompos Project',
+                'title_en' => 'Go Ngompos Project',
+                'subtitle_id' => 'Gerakan pengolahan sampah organik menjadi kompos dari rumah, sekolah, kantor, dan komunitas.',
+                'subtitle_en' => 'A movement to turn organic waste into compost from homes, schools, offices, and communities.',
+                'image' => 'https://images.unsplash.com/photo-1589923188900-85dae523342b?auto=format&fit=crop&q=80&w=900'
+            ];
+            $this->heroModel->insert($defaultHero);
+            $hero_data['go_ngompos_project'] = (object) $defaultHero;
+        }
+
+        $hero_transitions = [];
+        $hero_logos = [
+            'ggc' => $this->settingModel->getByKey('ggc_hero_logo') ?: 'logo-ggc.png',
+            'go_ngompos_project' => $this->settingModel->getByKey('go_ngompos_project_hero_logo') ?: 'logo-go-ngompos.svg'
+        ];
+        foreach (array_keys($hero_data) as $pageName) {
+            $transitionKey = $pageName === 'home' ? 'home_hero_transition' : $pageName . '_hero_transition';
+            $hero_transitions[$pageName] = $this->settingModel->getByKey($transitionKey) ?: 'slide';
+        }
+
         $data = [
             'title' => 'Manage Hero',
             'active' => 'hero',
-            'heroes' => $hero_data
+            'heroes' => $hero_data,
+            'hero_transitions' => $hero_transitions,
+            'hero_logos' => $hero_logos
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/hero', $data);
@@ -288,27 +488,108 @@ class Admin extends Controller {
 
         $data = [
             'tag_id' => $_POST['tag_id'] ?? '',
-            'tag_en' => ($_POST['tag_en'] ?? '') ?: Translator::translate($_POST['tag_id'] ?? ''),
+            'tag_en' => Translator::translate($_POST['tag_id'] ?? ''),
             'title_id' => $_POST['title_id'] ?? '',
-            'title_en' => ($_POST['title_en'] ?? '') ?: Translator::translate($_POST['title_id'] ?? ''),
+            'title_en' => Translator::translate($_POST['title_id'] ?? ''),
             'subtitle_id' => $_POST['subtitle_id'] ?? '',
-            'subtitle_en' => ($_POST['subtitle_en'] ?? '') ?: Translator::translate($_POST['subtitle_id'] ?? '')
+            'subtitle_en' => Translator::translate($_POST['subtitle_id'] ?? '')
         ];
 
-        // Handle Image Upload
-        if (!empty($_FILES['hero_image']['name'])) {
+        // Handle Hero Slider Upload
+        if (true) {
+            $transition = $_POST['hero_transition'] ?? 'slide';
+            $transitionKey = $page === 'home' ? 'home_hero_transition' : $page . '_hero_transition';
+            $this->settingModel->update($transitionKey, in_array($transition, ['slide', 'fade']) ? $transition : 'slide');
+
+            $oldHero = $this->heroModel->getByPage($page);
+            $oldImages = [];
+            if ($oldHero && $oldHero->image) {
+                $decodedImages = json_decode($oldHero->image, true);
+                $oldImages = is_array($decodedImages) ? $decodedImages : [$oldHero->image];
+                $oldImages = array_values(array_filter(array_map('trim', $oldImages)));
+            }
+
+            $existingSlides = array_map('trim', $_POST['hero_existing_images'] ?? []);
+            $finalSlides = [];
+            for ($index = 0; $index < 5; $index++) {
+                $existingImage = trim($existingSlides[$index] ?? '');
+                $newImage = false;
+
+                if (!empty($_FILES['hero_slide_images']['name'][$index])) {
+                    $file = [
+                        'name' => $_FILES['hero_slide_images']['name'][$index],
+                        'type' => $_FILES['hero_slide_images']['type'][$index],
+                        'tmp_name' => $_FILES['hero_slide_images']['tmp_name'][$index],
+                        'error' => $_FILES['hero_slide_images']['error'][$index],
+                        'size' => $_FILES['hero_slide_images']['size'][$index],
+                    ];
+                    $newImage = Upload::file($file, 'img');
+                }
+
+                $slideImage = $newImage ?: $existingImage;
+                if ($slideImage && !filter_var($slideImage, FILTER_VALIDATE_URL) && !file_exists(__DIR__ . '/../../assets/img/' . $slideImage)) {
+                    $slideImage = '';
+                }
+                if ($slideImage && count($finalSlides) < 5) {
+                    $finalSlides[] = $slideImage;
+                }
+            }
+
+            $defaults = ['hero-bg.jpg', 'IMG_8084.jpg', 'IMG_8082.jpg', 'petugas-baju-biru.png', 'banner-1.png', 'banner-2.png'];
+            foreach ($oldImages as $oldImage) {
+                if ($oldImage && !filter_var($oldImage, FILTER_VALIDATE_URL) && !in_array($oldImage, $finalSlides) && !in_array($oldImage, $defaults)) {
+                    Upload::delete($oldImage, 'img');
+                }
+            }
+
+            $data['image'] = !empty($finalSlides) ? json_encode($finalSlides) : '';
+        } elseif (!empty($_FILES['hero_image']['name'])) {
             $newImage = Upload::file($_FILES['hero_image'], 'img');
             if ($newImage) {
                 // Delete old image if it's not a URL and not a default asset
                 $oldHero = $this->heroModel->getByPage($page);
-                if ($oldHero && $oldHero->image && !filter_var($oldHero->image, FILTER_VALIDATE_URL)) {
-                    // Check if it's not a seeded default image that might be shared
-                    $defaults = ['hero-bg.jpg', 'IMG_8084.jpg', 'IMG_8082.jpg'];
-                    if (!in_array($oldHero->image, $defaults)) {
-                        Upload::delete($oldHero->image, 'img');
+                $oldImages = [];
+                if ($oldHero && $oldHero->image) {
+                    $decodedImages = json_decode($oldHero->image, true);
+                    $oldImages = is_array($decodedImages) ? $decodedImages : [$oldHero->image];
+                }
+
+                // Check if it's not a seeded default image that might be shared
+                $defaults = ['hero-bg.jpg', 'IMG_8084.jpg', 'IMG_8082.jpg', 'petugas-baju-biru.png', 'banner-1.png', 'banner-2.png'];
+                foreach ($oldImages as $oldImage) {
+                    if ($oldImage && !filter_var($oldImage, FILTER_VALIDATE_URL) && !in_array($oldImage, $defaults)) {
+                        Upload::delete($oldImage, 'img');
                     }
                 }
                 $data['image'] = $newImage;
+            }
+        } elseif (!empty($_POST['remove_hero_image'])) {
+            $oldHero = $this->heroModel->getByPage($page);
+            $oldImages = [];
+            if ($oldHero && $oldHero->image) {
+                $decodedImages = json_decode($oldHero->image, true);
+                $oldImages = is_array($decodedImages) ? $decodedImages : [$oldHero->image];
+            }
+
+            $defaults = ['hero-bg.jpg', 'IMG_8084.jpg', 'IMG_8082.jpg', 'petugas-baju-biru.png', 'banner-1.png', 'banner-2.png'];
+            foreach ($oldImages as $oldImage) {
+                if ($oldImage && !filter_var($oldImage, FILTER_VALIDATE_URL) && !in_array($oldImage, $defaults)) {
+                    Upload::delete($oldImage, 'img');
+                }
+            }
+            $data['image'] = '';
+        }
+
+        if (in_array($page, ['ggc', 'go_ngompos_project']) && !empty($_FILES['hero_logo']['name'])) {
+            $newLogo = Upload::file($_FILES['hero_logo'], 'img', ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg']);
+            if ($newLogo) {
+                $logoKey = $page . '_hero_logo';
+                $oldLogo = $this->settingModel->getByKey($logoKey);
+                $defaultLogos = ['logo-ggc.png', 'logo-go-ngompos.svg'];
+                if ($oldLogo && !filter_var($oldLogo, FILTER_VALIDATE_URL) && !in_array($oldLogo, $defaultLogos)) {
+                    Upload::delete($oldLogo, 'img');
+                }
+                $this->settingModel->update($logoKey, $newLogo);
             }
         }
 
@@ -525,11 +806,11 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'subtitle_id' => $_POST['subtitle_id'],
-                'subtitle_en' => $_POST['subtitle_en'] ?: Translator::translate($_POST['subtitle_id']),
+                'subtitle_en' => Translator::translate($_POST['subtitle_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image ?: '',
                 'main_category' => $_POST['main_category'],
@@ -537,21 +818,22 @@ class Admin extends Controller {
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],
-                'year_start' => $_POST['year_start'],
-                'year_end' => $_POST['year_end'],
+                'year_start' => $_POST['year_start'] ?? '',
+                'year_end' => $_POST['year_end'] ?? '',
                 'show_home' => isset($_POST['show_home']) ? 1 : 0,
                 'show_partnership' => isset($_POST['show_partnership']) ? 1 : 0,
                 'show_gi' => isset($_POST['show_gi']) ? 1 : 0,
                 'client_name' => $_POST['client_name'],
-                'tags' => $_POST['tags'],
+                'tags' => $_POST['tags'] ?? '',
+                'video_url' => $_POST['video_url'] ?? '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
-                'detail_content_en' => ($_POST['detail_content_en'] ?? '') ?: Translator::translate($_POST['detail_content_id'] ?? ''),
+                'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
-                'targets_en' => ($_POST['targets_en'] ?? '') ?: Translator::translate($_POST['targets_id'] ?? ''),
+                'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
-                'metrics_en' => ($_POST['metrics_en'] ?? '') ?: Translator::translate($_POST['metrics_id'] ?? ''),
+                'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
                 'approach_id' => $_POST['approach_id'] ?? '',
-                'approach_en' => ($_POST['approach_en'] ?? '') ?: Translator::translate($_POST['approach_id'] ?? ''),
+                'approach_en' => Translator::translate($_POST['approach_id'] ?? ''),
                 'highlights' => json_encode($highlights),
                 'project_logos' => json_encode($project_logos)
             ];
@@ -665,11 +947,11 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'subtitle_id' => $_POST['subtitle_id'],
-                'subtitle_en' => $_POST['subtitle_en'] ?: Translator::translate($_POST['subtitle_id']),
+                'subtitle_en' => Translator::translate($_POST['subtitle_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image,
                 'main_category' => $_POST['main_category'],
@@ -677,21 +959,22 @@ class Admin extends Controller {
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],
-                'year_start' => $_POST['year_start'],
-                'year_end' => $_POST['year_end'],
+                'year_start' => $_POST['year_start'] ?? '',
+                'year_end' => $_POST['year_end'] ?? '',
                 'show_home' => isset($_POST['show_home']) ? 1 : 0,
                 'show_partnership' => isset($_POST['show_partnership']) ? 1 : 0,
                 'show_gi' => isset($_POST['show_gi']) ? 1 : 0,
                 'client_name' => $_POST['client_name'],
-                'tags' => $_POST['tags'],
+                'tags' => $_POST['tags'] ?? '',
+                'video_url' => $_POST['video_url'] ?? '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
-                'detail_content_en' => ($_POST['detail_content_en'] ?? '') ?: Translator::translate($_POST['detail_content_id'] ?? ''),
+                'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
-                'targets_en' => ($_POST['targets_en'] ?? '') ?: Translator::translate($_POST['targets_id'] ?? ''),
+                'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
-                'metrics_en' => ($_POST['metrics_en'] ?? '') ?: Translator::translate($_POST['metrics_id'] ?? ''),
+                'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
                 'approach_id' => $_POST['approach_id'] ?? '',
-                'approach_en' => ($_POST['approach_en'] ?? '') ?: Translator::translate($_POST['approach_id'] ?? ''),
+                'approach_en' => Translator::translate($_POST['approach_id'] ?? ''),
                 'highlights' => json_encode($highlights),
                 'project_logos' => json_encode($project_logos)
             ];
@@ -811,19 +1094,12 @@ class Admin extends Controller {
                 }
 
                 // Handle Translation safely
-                $title_en = $_POST['title_en'];
-                if (empty($title_en)) {
-                    $title_en = Translator::translate($_POST['title_id']);
-                }
+                $title_en = Translator::translate($_POST['title_id']);
 
-                $content_en = $_POST['content_en'];
-                if (empty($content_en)) {
-                    // Only auto-translate if content is not too long to avoid API failures
-                    if (strlen($_POST['content_id']) < 3000) {
-                        $content_en = Translator::translate($_POST['content_id']);
-                    } else {
-                        $content_en = $_POST['content_id']; // Fallback to ID content
-                    }
+                if (strlen($_POST['content_id']) < 3000) {
+                    $content_en = Translator::translate($_POST['content_id']);
+                } else {
+                    $content_en = $_POST['content_id'];
                 }
 
                 $data = [
@@ -884,18 +1160,12 @@ class Admin extends Controller {
                     }
                 }
 
-                $title_en = $_POST['title_en'];
-                if (empty($title_en)) {
-                    $title_en = Translator::translate($_POST['title_id']);
-                }
+                $title_en = Translator::translate($_POST['title_id']);
 
-                $content_en = $_POST['content_en'];
-                if (empty($content_en)) {
-                    if (strlen($_POST['content_id']) < 3000) {
-                        $content_en = Translator::translate($_POST['content_id']);
-                    } else {
-                        $content_en = $_POST['content_id'];
-                    }
+                if (strlen($_POST['content_id']) < 3000) {
+                    $content_en = Translator::translate($_POST['content_id']);
+                } else {
+                    $content_en = $_POST['content_id'];
                 }
 
                 $data = [
@@ -1031,13 +1301,13 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_path,
                 'preview_path' => $preview_path,
                 'thumbnail' => $thumbnail,
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'external_link' => $_POST['external_link'] ?? '',
                 'is_paid' => isset($_POST['is_paid']) ? 1 : 0,
                 'price' => $_POST['price'] ?? 0
@@ -1076,13 +1346,13 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_path ?: '',
                 'preview_path' => $preview_path ?: '',
                 'thumbnail' => $thumbnail ?: '',
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'external_link' => $_POST['external_link'] ?? '',
                 'is_paid' => isset($_POST['is_paid']) ? 1 : 0,
                 'price' => $_POST['price'] ?? 0
@@ -1153,8 +1423,7 @@ class Admin extends Controller {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Unset icon rule and check for image
             $rules = [
-                'name_id' => ['required'],
-                'name_en' => ['required']
+                'name_id' => ['required']
             ];
             $errors = Validator::validate($_POST, $rules);
 
@@ -1168,9 +1437,9 @@ class Admin extends Controller {
 
             $data = [
                 'name_id' => $_POST['name_id'],
-                'name_en' => $_POST['name_en'] ?: Translator::translate($_POST['name_id']),
+                'name_en' => Translator::translate($_POST['name_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'image' => $image ?: '',
                 'order_priority' => $_POST['order_priority']
             ];
@@ -1192,8 +1461,7 @@ class Admin extends Controller {
             $old_data = $this->serviceModel->getById($id);
             
             $rules = [
-                'name_id' => ['required'],
-                'name_en' => ['required']
+                'name_id' => ['required']
             ];
             $errors = Validator::validate($_POST, $rules);
 
@@ -1217,9 +1485,9 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'name_id' => $_POST['name_id'],
-                'name_en' => $_POST['name_en'] ?: Translator::translate($_POST['name_id']),
+                'name_en' => Translator::translate($_POST['name_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority']
             ];
@@ -1290,8 +1558,8 @@ class Admin extends Controller {
             
             $data = $_POST;
             $data['image'] = $image ?: '';
-            $data['title_en'] = $_POST['title_en'] ?: Translator::translate($_POST['title_id']);
-            $data['description_en'] = $_POST['description_en'] ?: Translator::translate($_POST['description_id']);
+            $data['title_en'] = Translator::translate($_POST['title_id']);
+            $data['description_en'] = Translator::translate($_POST['description_id']);
             
             if ($this->serviceItemModel->add($data)) {
                 $this->activityLogModel->log('CREATE', 'Service Items', "Menambahkan item layanan baru '{$_POST['title_id']}'");
@@ -1331,8 +1599,8 @@ class Admin extends Controller {
 
             $data = $_POST;
             $data['image'] = $image;
-            $data['title_en'] = $_POST['title_en'] ?: Translator::translate($_POST['title_id']);
-            $data['description_en'] = $_POST['description_en'] ?: Translator::translate($_POST['description_id']);
+            $data['title_en'] = Translator::translate($_POST['title_id']);
+            $data['description_en'] = Translator::translate($_POST['description_id']);
 
             if ($this->serviceItemModel->update($data)) {
                 $this->activityLogModel->log('UPDATE', 'Service Items', "Memperbarui item layanan '{$_POST['title_id']}'");
@@ -1412,16 +1680,16 @@ class Admin extends Controller {
             $page = $_POST['page'] ?? 'home';
             $data = [
                 'label_id' => $_POST['label_id'],
-                'label_en' => $_POST['label_en'] ?: Translator::translate($_POST['label_id']),
+                'label_en' => Translator::translate($_POST['label_id']),
                 'value' => $_POST['value'],
                 'unit' => $_POST['unit'],
                 'icon' => '', // Icon removed as per request
                 'page' => $page,
                 'section' => $_POST['section'],
                 'section_title_id' => $_POST['section_title_id'] ?? '',
-                'section_title_en' => ($_POST['section_title_en'] ?? '') ?: (($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : ''),
+                'section_title_en' => ($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : '',
                 'note_id' => $_POST['note_id'] ?? '',
-                'note_en' => ($_POST['note_en'] ?? '') ?: (($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : ''),
+                'note_en' => ($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : '',
                 'order_num' => $_POST['order_num'] ?? 0
             ];
 
@@ -1470,16 +1738,16 @@ class Admin extends Controller {
             $data = [
                 'id' => $_POST['id'],
                 'label_id' => $_POST['label_id'],
-                'label_en' => $_POST['label_en'] ?: Translator::translate($_POST['label_id']),
+                'label_en' => Translator::translate($_POST['label_id']),
                 'value' => $_POST['value'],
                 'unit' => $_POST['unit'],
                 'icon' => '', // Icon removed
                 'page' => $page,
                 'section' => $_POST['section'],
                 'section_title_id' => $_POST['section_title_id'] ?? '',
-                'section_title_en' => ($_POST['section_title_en'] ?? '') ?: (($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : ''),
+                'section_title_en' => ($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : '',
                 'note_id' => $_POST['note_id'] ?? '',
-                'note_en' => ($_POST['note_en'] ?? '') ?: (($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : ''),
+                'note_en' => ($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : '',
                 'order_num' => $_POST['order_num'] ?? 0
             ];
 
@@ -1678,7 +1946,7 @@ class Admin extends Controller {
             if ($file_name) {
                 $data = [
                     'title_id' => $_POST['title_id'],
-                    'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                    'title_en' => Translator::translate($_POST['title_id']),
                     'type' => $_POST['type'],
                     'file_path' => $file_name,
                     'status' => $_POST['status']
@@ -1726,7 +1994,7 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_name,
                 'status' => $_POST['status']
@@ -1979,8 +2247,8 @@ class Admin extends Controller {
             }
 
             // Auto-translate
-            $data['role_en'] = $data['role_en'] ?: Translator::translate($data['role_id']);
-            $data['content_en'] = $data['content_en'] ?: Translator::translate($data['content_id']);
+            $data['role_en'] = Translator::translate($data['role_id']);
+            $data['content_en'] = Translator::translate($data['content_id']);
 
             if ($this->testimonialModel->add($data)) {
                 $this->activityLogModel->log('CREATE', 'Testimonials', "Menambahkan testimoni baru dari '{$data['client_name']}'");
@@ -2023,8 +2291,8 @@ class Admin extends Controller {
             }
 
             // Auto-translate
-            $data['role_en'] = $data['role_en'] ?: Translator::translate($data['role_id']);
-            $data['content_en'] = $data['content_en'] ?: Translator::translate($data['content_id']);
+            $data['role_en'] = Translator::translate($data['role_id']);
+            $data['content_en'] = Translator::translate($data['content_id']);
 
             if ($this->testimonialModel->update($data)) {
                 $this->activityLogModel->log('UPDATE', 'Testimonials', "Memperbarui testimoni dari '{$data['client_name']}'");
@@ -2082,8 +2350,8 @@ class Admin extends Controller {
 
     public function faqs_store() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST['question_en'] = $_POST['question_en'] ?: Translator::translate($_POST['question_id']);
-            $_POST['answer_en'] = $_POST['answer_en'] ?: Translator::translate($_POST['answer_id']);
+            $_POST['question_en'] = Translator::translate($_POST['question_id']);
+            $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
 
             if ($this->faqModel->add($_POST)) {
                 $this->activityLogModel->log('CREATE', 'FAQ', "Menambahkan FAQ baru '{$_POST['question_id']}'");
@@ -2111,8 +2379,8 @@ class Admin extends Controller {
 
     public function faqs_update() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST['question_en'] = $_POST['question_en'] ?: Translator::translate($_POST['question_id']);
-            $_POST['answer_en'] = $_POST['answer_en'] ?: Translator::translate($_POST['answer_id']);
+            $_POST['question_en'] = Translator::translate($_POST['question_id']);
+            $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
 
             if ($this->faqModel->update($_POST)) {
                 $this->activityLogModel->log('UPDATE', 'FAQ', "Memperbarui FAQ '{$_POST['question_id']}'");
@@ -2198,13 +2466,13 @@ class Admin extends Controller {
             $data['highlights'] = json_encode($highlights);
             
             // Auto-translate
-            $data['title_en'] = $data['title_en'] ?: Translator::translate($data['title_id']);
+            $data['title_en'] = Translator::translate($data['title_id']);
 
-            $data['description_en'] = $data['description_en'] ?: Translator::translate($data['description_id']);
-            $data['detail_content_en'] = $data['detail_content_en'] ?: Translator::translate($data['detail_content_id']);
+            $data['description_en'] = Translator::translate($data['description_id']);
+            $data['detail_content_en'] = Translator::translate($data['detail_content_id']);
             
             // Handle JSON Translation for Program Points
-            if (empty($data['program_points_en']) && !empty($data['program_points_id'])) {
+            if (!empty($data['program_points_id'])) {
                 $points_id = json_decode($data['program_points_id'], true);
                 if (is_array($points_id)) {
                     $points_en = [];
@@ -2220,8 +2488,8 @@ class Admin extends Controller {
                 }
             }
             
-            $data['location_en'] = $data['location_en'] ?: Translator::translate($data['location_id'] ?: '');
-            $data['service_type_en'] = $data['service_type_en'] ?: Translator::translate($data['service_type_id'] ?: '');
+            $data['location_en'] = Translator::translate($data['location_id'] ?: '');
+            $data['service_type_en'] = Translator::translate($data['service_type_id'] ?: '');
 
             $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
 
@@ -2312,13 +2580,13 @@ class Admin extends Controller {
             $data['highlights'] = json_encode($highlights);
 
             // Auto-translate
-            $data['title_en'] = $data['title_en'] ?: Translator::translate($data['title_id']);
+            $data['title_en'] = Translator::translate($data['title_id']);
 
-            $data['description_en'] = $data['description_en'] ?: Translator::translate($data['description_id']);
-            $data['detail_content_en'] = $data['detail_content_en'] ?: Translator::translate($data['detail_content_id']);
+            $data['description_en'] = Translator::translate($data['description_id']);
+            $data['detail_content_en'] = Translator::translate($data['detail_content_id']);
 
             // Handle JSON Translation for Program Points
-            if (empty($data['program_points_en']) && !empty($data['program_points_id'])) {
+            if (!empty($data['program_points_id'])) {
                 $points_id = json_decode($data['program_points_id'], true);
                 if (is_array($points_id)) {
                     $points_en = [];
@@ -2334,8 +2602,8 @@ class Admin extends Controller {
                 }
             }
 
-            $data['location_en'] = $data['location_en'] ?: Translator::translate($data['location_id']);
-            $data['service_type_en'] = $data['service_type_en'] ?: Translator::translate($data['service_type_id']);
+            $data['location_en'] = Translator::translate($data['location_id']);
+            $data['service_type_en'] = Translator::translate($data['service_type_id']);
 
             $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
 
@@ -2543,7 +2811,7 @@ class Admin extends Controller {
 
             $data = [
                 'name_id' => $_POST['name_id'],
-                'name_en' => $_POST['name_en'] ?: Translator::translate($_POST['name_id']),
+                'name_en' => Translator::translate($_POST['name_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -2575,7 +2843,7 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'name_id' => $_POST['name_id'],
-                'name_en' => $_POST['name_en'] ?: Translator::translate($_POST['name_id']),
+                'name_en' => Translator::translate($_POST['name_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -2627,9 +2895,9 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -2661,9 +2929,9 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => $_POST['title_en'] ?: Translator::translate($_POST['title_id']),
+                'title_en' => Translator::translate($_POST['title_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => $_POST['description_en'] ?: Translator::translate($_POST['description_id']),
+                'description_en' => Translator::translate($_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
