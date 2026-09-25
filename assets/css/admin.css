@@ -61,8 +61,8 @@ body {
 #sidebar-wrapper::-webkit-scrollbar-track { background: transparent; }
 
 #sidebar-wrapper .sidebar-heading {
-    padding: 2.5rem 1.5rem;
-    margin-bottom: 0.5rem;
+    padding: 1.75rem 1.5rem 0.75rem;
+    margin-bottom: 0;
     text-align: left;
     display: flex;
     align-items: center;

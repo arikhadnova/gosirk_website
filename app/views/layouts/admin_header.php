@@ -56,7 +56,7 @@
 
         <div class="list-group list-group-flush">
             <!-- Overview -->
-            <div class="mt-3 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Ringkasan</small></div>
+            <div class="mt-2 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Ringkasan</small></div>
             <a href="<?= BASE_URL; ?>admin" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'dashboard') ? 'active' : '' ?>">
                 <i class="fas fa-th-large"></i> Dashboard
             </a>
