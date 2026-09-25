@@ -15,48 +15,77 @@ class collaboration extends Controller {
     }
 
     public function request() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $collaborationModel = $this->model('Collaboration_model');
-            
-            $doc_id = $_POST['doc_id'];
-            $doc = $collaborationModel->getDocumentById($doc_id);
-
-            $data = [
-                'doc_id' => $doc_id,
-                'name' => $_POST['name'],
-                'email' => $_POST['email'],
-                'organization' => $_POST['organization'],
-                'jabatan' => $_POST['jabatan']
-            ];
-
-            if ($collaborationModel->logRequest($data)) {
-                if ($doc && !empty(MAIL_FROM)) {
-                    $attachmentPath = realpath(__DIR__ . '/../storage/documents/' . $doc->file_path);
-                    
-                    // Email to User
-                    $userSubject = "Dokumen yang Anda Minta: " . $doc->title_id;
-                    $userMessage = "Halo " . $data['name'] . ",<br><br>Terima kasih telah tertarik dengan inisiatif kami. Terlampir adalah dokumen <b>" . $doc->title_id . "</b> yang Anda minta.<br><br>Salam,<br>" . SITE_NAME;
-                    
-                    Mail::send($data['email'], $userSubject, $userMessage, $attachmentPath);
-
-                    // Email to Admin
-                    $adminSubject = "Permintaan Dokumen Baru: " . $doc->title_id;
-                    $adminMessage = "Halo Admin,<br><br>Seseorang telah meminta dokumen:<br>" .
-                                    "<b>Nama:</b> " . $data['name'] . "<br>" .
-                                    "<b>Email:</b> " . $data['email'] . "<br>" .
-                                    "<b>Instansi:</b> " . $data['organization'] . "<br>" .
-                                    "<b>Jabatan:</b> " . $data['jabatan'] . "<br>" .
-                                    "<b>Dokumen:</b> " . $doc->title_id . "<br><br>" .
-                                    "Silakan tindak lanjuti jika diperlukan.";
-                    
-                    Mail::sendToAdmin($adminSubject, $adminMessage);
-                }
-
-                echo json_encode(['status' => 'success', 'message' => 'Permintaan berhasil dikirim! Silakan cek email Anda (pastikan cek folder spam jika tidak ditemukan).']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Gagal memproses permintaan.']);
-            }
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Metode tidak diizinkan.']);
             exit;
         }
+
+        $errors = FormRules::validate('doc_request', $_POST);
+        if ($errors) {
+            echo json_encode(['status' => 'error', 'message' => implode(' ', array_merge(...array_values($errors)))]);
+            exit;
+        }
+
+        $collaborationModel = $this->model('Collaboration_model');
+        $doc = $collaborationModel->getDocumentById((int) $_POST['doc_id']);
+        $attachmentPath = $doc ? realpath(__DIR__ . '/../storage/documents/' . $doc->file_path) : false;
+        if (!$doc || ($doc->status ?? 'active') !== 'active' || !$attachmentPath) {
+            echo json_encode(['status' => 'error', 'message' => 'Dokumen tidak ditemukan atau sedang tidak tersedia.']);
+            exit;
+        }
+
+        $data = [
+            'doc_id' => (int) $doc->id,
+            'name' => trim($_POST['name']),
+            'email' => trim($_POST['email']),
+            'organization' => trim($_POST['organization']),
+            'jabatan' => trim($_POST['jabatan'])
+        ];
+
+        $requestId = $collaborationModel->logRequest($data);
+        if (!$requestId) {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal memproses permintaan. Silakan coba lagi nanti.']);
+            exit;
+        }
+
+        // Email content comes from the templates in Admin > Email Settings (values escaped by Mail::render)
+        $vars = [
+            'nama' => $data['name'],
+            'email' => $data['email'],
+            'instansi' => $data['organization'],
+            'jabatan' => $data['jabatan'],
+            'dokumen' => $doc->title_id,
+        ];
+
+        $autoSend = ((int) ($doc->auto_send ?? 1)) === 1;
+        $sentToUser = false;
+        if ($autoSend) {
+            $userMail = Mail::render('doc_user', $vars);
+            $sentToUser = Mail::send($data['email'], $userMail['subject'], $userMail['html'], $attachmentPath);
+        }
+
+        $collaborationModel->setDelivery($requestId, !$autoSend ? 'pending' : ($sentToUser ? 'sent' : 'failed'));
+
+        $vars['status_pengiriman'] = !$autoSend
+            ? 'PERLU DIKIRIM MANUAL (pengiriman otomatis dinonaktifkan untuk dokumen ini)'
+            : ($sentToUser ? 'terkirim otomatis' : 'GAGAL, mohon kirim manual');
+        $adminMail = Mail::render('doc_admin', $vars);
+        Mail::sendToAdmin(($autoSend && $sentToUser ? '' : '[Perlu Tindak Lanjut] ') . $adminMail['subject'], $adminMail['html']);
+
+        if (!$autoSend) {
+            echo json_encode(['status' => 'success', 'message' => 'Permintaan Anda sudah kami terima. Tim kami akan meninjau dan mengirimkan dokumen ke email Anda.']);
+            exit;
+        }
+
+        if (!$sentToUser) {
+            error_log('[GoSirk] Email dokumen gagal dikirim ke ' . $data['email']);
+            echo json_encode(['status' => 'error', 'message' => 'Permintaan Anda sudah kami terima, tetapi email dokumen gagal dikirim. Tim kami akan mengirimkannya secara manual, atau silakan coba lagi beberapa saat lagi.']);
+            exit;
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'Permintaan berhasil dikirim! Silakan cek email Anda (pastikan cek folder spam jika tidak ditemukan).']);
+        exit;
     }
 }

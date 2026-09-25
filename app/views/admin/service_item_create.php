@@ -23,11 +23,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Masukkan judul layanan..." required>
+                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Masukkan judul layanan..." <?= FormRules::attrs('service_item', 'title_id', 'store') ?>>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
-                        <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." required></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." <?= FormRules::attrs('service_item', 'description_id', 'store') ?>></textarea>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>
@@ -45,7 +45,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Gambar Utama Layanan</label>
-                        <input type="file" name="image" class="form-control" accept="image/*" required>
+                        <input type="file" name="image" class="form-control" accept="image/*" <?= FormRules::attrs('service_item', 'image', 'store') ?>>
                         <small class="text-muted extra-small d-block mt-2">Rekomendasi: 800x600px (JPG/PNG/WEBP)</small>
                     </div>
 
@@ -53,19 +53,19 @@
                         <label class="form-label fw-bold small text-dark">Link URL / Slug (Optional)</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-link"></i></span>
-                            <input type="text" name="link_url" class="form-control" placeholder="Contoh: gi/detail/slug-item">
+                            <input type="text" name="link_url" class="form-control" placeholder="Contoh: gi/detail/slug-item" <?= FormRules::attrs('service_item', 'link_url', 'store') ?>>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Prioritas Urutan</label>
-                        <input type="number" name="order_priority" class="form-control" value="0">
+                        <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('service_item', 'order_priority', 'store') ?>>
                         <small class="text-muted extra-small">Item dengan angka lebih kecil akan muncul pertama.</small>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Partner (Optional)</label>
-                        <input type="text" name="partner_name" class="form-control" placeholder="Contoh: Sirk Norge & Norad">
+                        <input type="text" name="partner_name" class="form-control" placeholder="Contoh: Sirk Norge & Norad" <?= FormRules::attrs('service_item', 'partner_name', 'store') ?>>
                         <small class="text-muted extra-small">Nama partner khusus kategori Program Development.</small>
                     </div>
 

@@ -141,13 +141,14 @@
         <?php foreach ($data['services'] as $s) : ?>
           <?php 
              $link = '#';
-             $lowerTitle = strtolower($s->name_id);
-             if (strpos($lowerTitle, 'capacity building') !== false || strpos($lowerTitle, 'gi') !== false || strpos($lowerTitle, 'institue') !== false) {
-                 $link = BASE_URL . 'gi';
-             } elseif (strpos($lowerTitle, 'implementasi') !== false || strpos($lowerTitle, 'program development') !== false) {
-                 $link = BASE_URL . 'implementasi_partner';
-             } elseif (strpos($lowerTitle, 'konsultansi') !== false || strpos($lowerTitle, 'advisory') !== false) {
+             $lowerTitle = strtolower($s->name_id . ' ' . $s->name_en);
+             // Check consultancy first: "strategis" contains "gi", so avoid loose substring matches
+             if (preg_match('/konsultansi|consultancy|advisory/', $lowerTitle)) {
                  $link = BASE_URL . 'konsultan';
+             } elseif (preg_match('/implementasi|implementation|project development|program development/', $lowerTitle)) {
+                 $link = BASE_URL . 'implementasi_partner';
+             } elseif (preg_match('/kapasitas|capacity building|institute/', $lowerTitle)) {
+                 $link = BASE_URL . 'gi';
              }
           ?>
           <div class="col-md-4">
@@ -342,28 +343,28 @@
       <p class="text-muted" data-i18n="home.portfolio.subtitle">Portofolio kerja sama kami mencerminkan komitmen GoSirk dalam memperluas dampak melalui kolaborasi strategis.</p>
     </div>
 
-    <!-- 1. Capacity Building (GoSirk Institute) -->
+    <!-- All portfolios shown on home (single row) -->
     <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold" data-i18n="home.portfolio.cb_title">Capacity Building (GoSirk Institute)</h4>
+      <div class="d-flex justify-content-end mb-4">
         <div class="d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-port-1" style="width: 40px; height: 40px;">
+           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-port" style="width: 40px; height: 40px;">
              <i class="fas fa-arrow-left"></i>
            </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-port-1" style="width: 40px; height: 40px;">
+           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-port" style="width: 40px; height: 40px;">
              <i class="fas fa-arrow-right"></i>
            </button>
         </div>
       </div>
-      
-      <div class="swiper portfolio-slider-1">
+
+      <div class="swiper portfolio-slider">
         <div class="swiper-wrapper">
-          <?php 
-          $foundInstitute = false;
-          if (!empty($portfolios)) : 
-            foreach ($portfolios as $p) : 
-              if ($p->show_home && $p->home_category == 'institute') :
-                $foundInstitute = true;
+          <?php
+          $defaultIcons = ['institute' => 'fas fa-folder', 'partner' => 'fas fa-handshake', 'advisory' => 'fas fa-lightbulb'];
+          $foundPortfolio = false;
+          if (!empty($portfolios)) :
+            foreach ($portfolios as $p) :
+              if ($p->show_home) :
+                $foundPortfolio = true;
           ?>
                 <div class="swiper-slide">
                   <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden">
@@ -371,7 +372,7 @@
                       <div class="portfolio-cover" style="height: 180px; background-image: url('<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>'); background-size: cover; background-position: center;"></div>
                     <?php else : ?>
                       <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 180px;">
-                        <i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 80px;"></i>
+                        <i class="<?= $p->icon_name ?: ($defaultIcons[$p->home_category] ?? 'fas fa-folder') ?> text-muted opacity-25" style="font-size: 80px;"></i>
                       </div>
                     <?php endif; ?>
                     <div class="card-body p-4 d-flex flex-column">
@@ -388,121 +389,7 @@
             <?php endforeach; ?>
           <?php endif; ?>
 
-          <?php if (!$foundInstitute) : ?>
-            <div class="swiper-slide">
-                <div class="text-center p-5 w-100">
-                    <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
-                </div>
-            </div>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-
-    <!-- 2. Pengembangan Program dan Implementasi Partner -->
-    <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold" data-i18n="home.portfolio.pd_title">Pengembangan Program dan Implementasi Partner</h4>
-        <div class="d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-port-2" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-port-2" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
-      </div>
-      
-      <div class="swiper portfolio-slider-2">
-        <div class="swiper-wrapper">
-          <?php 
-          $foundPartner = false;
-          if (!empty($portfolios)) : 
-            foreach ($portfolios as $p) : 
-              if ($p->show_home && $p->home_category == 'partner') :
-                $foundPartner = true;
-          ?>
-                <div class="swiper-slide">
-                  <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden">
-                    <?php if ($p->cover_image) : ?>
-                      <div class="portfolio-cover" style="height: 180px; background-image: url('<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>'); background-size: cover; background-position: center;"></div>
-                    <?php else : ?>
-                      <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 180px;">
-                        <i class="<?= $p->icon_name ?: 'fas fa-handshake' ?> text-muted opacity-25" style="font-size: 80px;"></i>
-                      </div>
-                    <?php endif; ?>
-                    <div class="card-body p-4 d-flex flex-column">
-                      <h6 class="fw-bold mb-1" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
-                      <p class="text-muted small mb-3"><?= $p->client_name ?: '&nbsp;' ?></p>
-                      <p class="card-text small text-secondary flex-grow-1" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
-                        <?= $p->subtitle_id ?>
-                      </p>
-                      <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill align-self-end mt-3 px-3" data-i18n="home.common.read_more">Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <?php if (!$foundPartner) : ?>
-            <div class="swiper-slide">
-                <div class="text-center p-5 w-100">
-                    <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
-                </div>
-            </div>
-          <?php endif; ?>
-        </div>
-      </div>
-    </div>
-
-    <!-- 3. Konsultansi & Advisory Strategis -->
-    <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="fw-bold" data-i18n="home.portfolio.cs_title">Konsultansi & Advisory Strategis</h4>
-        <div class="d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-port-3" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-port-3" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
-      </div>
-      
-      <div class="swiper portfolio-slider-3">
-        <div class="swiper-wrapper">
-          <?php 
-          $foundAdvisory = false;
-          if (!empty($portfolios)) : 
-            foreach ($portfolios as $p) : 
-              if ($p->show_home && $p->home_category == 'advisory') :
-                $foundAdvisory = true;
-          ?>
-                <div class="swiper-slide">
-                  <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden">
-                    <?php if ($p->cover_image) : ?>
-                      <div class="portfolio-cover" style="height: 180px; background-image: url('<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>'); background-size: cover; background-position: center;"></div>
-                    <?php else : ?>
-                      <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 180px;">
-                        <i class="<?= $p->icon_name ?: 'fas fa-lightbulb' ?> text-muted opacity-25" style="font-size: 80px;"></i>
-                      </div>
-                    <?php endif; ?>
-                    <div class="card-body p-4 d-flex flex-column">
-                      <h6 class="fw-bold mb-1" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
-                      <p class="text-muted small mb-3"><?= $p->client_name ?: '&nbsp;' ?></p>
-                      <p class="card-text small text-secondary flex-grow-1" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
-                        <?= $p->subtitle_id ?>
-                      </p>
-                      <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill align-self-end mt-3 px-3" data-i18n="home.common.read_more">Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <?php if (!$foundAdvisory) : ?>
+          <?php if (!$foundPortfolio) : ?>
             <div class="swiper-slide">
                 <div class="text-center p-5 w-100">
                     <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
@@ -517,40 +404,16 @@
   
   <script>
     document.addEventListener("DOMContentLoaded", function() {
-      // Configuration for all portfolio sliders
-      const portfolioConfig = {
+      new Swiper(".portfolio-slider", {
         slidesPerView: 1,
         spaceBetween: 24,
         breakpoints: {
           640: { slidesPerView: 2 },
           1024: { slidesPerView: 3 }
-        }
-      };
-
-      // Initialize Slider 1
-      new Swiper(".portfolio-slider-1", {
-        ...portfolioConfig,
-        navigation: {
-          nextEl: ".next-port-1",
-          prevEl: ".prev-port-1",
         },
-      });
-
-      // Initialize Slider 2
-      new Swiper(".portfolio-slider-2", {
-        ...portfolioConfig,
         navigation: {
-          nextEl: ".next-port-2",
-          prevEl: ".prev-port-2",
-        },
-      });
-
-      // Initialize Slider 3
-      new Swiper(".portfolio-slider-3", {
-        ...portfolioConfig,
-        navigation: {
-          nextEl: ".next-port-3",
-          prevEl: ".prev-port-3",
+          nextEl: ".next-port",
+          prevEl: ".prev-port",
         },
       });
     });
@@ -726,7 +589,11 @@
             <div class="swiper-slide">
               <div class="blog-card">
                 <div class="blog-image">
-                  <img src="<?= ASSETS_URL ?>img/blog/<?= $art->image ?>" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978'">
+                  <?php if ($art->image) : ?>
+                    <img src="<?= ASSETS_URL ?>img/blog/<?= $art->image ?>" alt="<?= $art->title_id ?>">
+                  <?php else : ?>
+                    <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="fas fa-newspaper text-muted opacity-25" style="font-size: 64px;"></i></div>
+                  <?php endif; ?>
                 </div>
                 <div class="blog-content">
                   <h6 class="blog-title" data-lang-id="<?= $art->title_id ?>" data-lang-en="<?= $art->title_en ?>"><?= $art->title_id ?></h6>
@@ -803,19 +670,19 @@
           <input type="hidden" name="doc_id" value="<?= $data['company_profile']->id ?? '' ?>">
           <div class="mb-3">
             <label for="cpName" class="form-label" data-i18n="home.modal.name">Nama Lengkap</label>
-            <input type="text" class="form-control" id="cpName" placeholder="Masukkan nama Anda" data-i18n="home.modal.name_placeholder" required>
+            <input type="text" class="form-control" id="cpName" placeholder="Masukkan nama Anda" data-i18n="home.modal.name_placeholder" <?= FormRules::attrs('doc_request', 'name') ?>>
           </div>
           <div class="mb-3">
             <label for="cpEmail" class="form-label" data-i18n="home.modal.email">Alamat Email</label>
-            <input type="email" class="form-control" id="cpEmail" placeholder="name@example.com" required>
+            <input type="email" class="form-control" id="cpEmail" placeholder="name@example.com" <?= FormRules::attrs('doc_request', 'email') ?>>
           </div>
           <div class="mb-3">
             <label for="cpOrganization" class="form-label" data-i18n="home.modal.org">Instansi / Perusahaan</label>
-            <input type="text" class="form-control" id="cpOrganization" placeholder="Nama instansi Anda" data-i18n="home.modal.org_placeholder" required>
+            <input type="text" class="form-control" id="cpOrganization" placeholder="Nama instansi Anda" data-i18n="home.modal.org_placeholder" <?= FormRules::attrs('doc_request', 'organization') ?>>
           </div>
           <div class="mb-3">
             <label for="cpJabatan" class="form-label" data-i18n="home.modal.position">Jabatan</label>
-            <input type="text" class="form-control" id="cpJabatan" placeholder="Jabatan Anda" data-i18n="home.modal.position_placeholder" required>
+            <input type="text" class="form-control" id="cpJabatan" placeholder="Jabatan Anda" data-i18n="home.modal.position_placeholder" <?= FormRules::attrs('doc_request', 'jabatan') ?>>
           </div>
           <div class="d-grid gap-2 mt-4"> 
             <button type="submit" class="btn btn-warning rounded-pill text-white fw-bold" data-i18n="home.modal.submit">Kirim</button>

@@ -21,27 +21,27 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" value="<?= $founder->name; ?>" required>
+                        <input type="text" name="name" class="form-control" value="<?= $founder->name; ?>" <?= FormRules::attrs('founder', 'name', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Jabatan</label>
-                        <input type="text" name="role_id" class="form-control" value="<?= $founder->role_id; ?>" required>
+                        <input type="text" name="role_id" class="form-control" value="<?= $founder->role_id; ?>" <?= FormRules::attrs('founder', 'role_id', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kutipan</label>
-                        <textarea name="quote_id" class="form-control" rows="3"><?= $founder->quote_id; ?></textarea>
+                        <textarea name="quote_id" class="form-control" rows="3" <?= FormRules::attrs('founder', 'quote_id', 'update') ?>><?= $founder->quote_id; ?></textarea>
                     </div>
 
                     <div class="row mb-0">
                         <div class="col-md-6">
                             <label class="form-label">LinkedIn URL</label>
-                            <input type="text" name="linkedin_url" class="form-control" value="<?= $founder->linkedin_url; ?>">
+                            <input type="url" name="linkedin_url" class="form-control" value="<?= $founder->linkedin_url; ?>" <?= FormRules::attrs('founder', 'linkedin_url', 'update') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Urutan Tampil</label>
-                            <input type="number" name="display_order" class="form-control" value="<?= $founder->display_order; ?>">
+                            <input type="number" name="display_order" class="form-control" value="<?= $founder->display_order; ?>" <?= FormRules::attrs('founder', 'display_order', 'update') ?>>
                         </div>
                     </div>
                 </div>
@@ -62,7 +62,7 @@
                                 <span class="text-muted">Preview</span>
                             <?php endif; ?>
                         </div>
-                        <input type="file" name="image" class="form-control" accept="image/*" id="imageInput">
+                        <input type="file" name="image" class="form-control" accept="image/*" id="imageInput" <?= FormRules::attrs('founder', 'image', 'update') ?>>
                         <div class="form-text small mt-2">Biarkan kosong jika tidak ingin mengubah foto.</div>
                     </div>
                     <hr>

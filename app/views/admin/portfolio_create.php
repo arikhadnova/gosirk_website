@@ -5,7 +5,7 @@
         </a>
         <div>
             <span class="admin-header-badge d-inline-block">PORTFOLIO / TAMBAH BARU</span>
-            <h1 class="fw-bold mb-0">Tambah Proyek Baru [VERSI BARU]</h1>
+            <h1 class="fw-bold mb-0">Tambah Proyek Baru</h1>
         </div>
     </div>
 </div>
@@ -15,6 +15,7 @@
         <!-- Main Form Column -->
         <div class="col-lg-8">
             <!-- Main Content: Indonesian -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
                     <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-file-alt me-2"></i>Konten Proyek</h5>
                 </div>
@@ -22,17 +23,17 @@
                     <!-- Basic Info -->
                     <div class="mb-4">
                         <label class="form-label small fw-bold">Judul Proyek</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg border-primary-soft" placeholder="Contoh: Pendampingan Desa Bengkel" required>
+                        <input type="text" name="title_id" class="form-control form-control-lg border-primary-soft" placeholder="Contoh: Pendampingan Desa Bengkel" <?= FormRules::attrs('portfolio', 'title_id', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold">Sub-judul / Nama Klien</label>
-                        <input type="text" name="subtitle_id" class="form-control" placeholder="Contoh: Pemerintah Desa Bengkel, Tabanan">
+                        <label class="form-label small fw-bold">Sub-judul</label>
+                        <input type="text" name="subtitle_id" class="form-control" placeholder="Contoh: Pemerintah Desa Bengkel, Tabanan" <?= FormRules::attrs('portfolio', 'subtitle_id', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold">Deskripsi Ringkas (Card Link)</label>
-                        <textarea name="description_id" class="form-control" rows="3" placeholder="Deskripsi pendek yang muncul di card portfolio..."></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" placeholder="Deskripsi pendek yang muncul di card portfolio..." <?= FormRules::attrs('portfolio', 'description_id', 'store') ?>></textarea>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -43,7 +44,7 @@
                             <label class="form-label small fw-bold">Icon FontAwesome</label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-light border-end-0"><i class="fas fa-icons text-muted"></i></span>
-                                <input type="text" name="icon_name" class="form-control border-start-0" placeholder="fas fa-recycle" id="iconInput">
+                                <input type="text" name="icon_name" class="form-control border-start-0" placeholder="fas fa-recycle" id="iconInput" <?= FormRules::attrs('portfolio', 'icon_name', 'store') ?>>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <div id="iconPreview" class="bg-light rounded p-2 text-center" style="width: 40px;"><i class="fas fa-question text-muted"></i></div>
@@ -54,11 +55,6 @@
                             <label class="form-label small fw-bold">Gambar Cover (Utama)</label>
                             <input type="file" name="cover_image" class="form-control form-control-sm">
                             <small class="text-muted extra-small d-block mt-1">Muncul di listing card dan hero detail page.</small>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold">URL Video YouTube</label>
-                            <input type="url" name="video_url" class="form-control form-control-sm" placeholder="https://www.youtube.com/watch?v=...">
-                            <small class="text-muted extra-small d-block mt-1">Video akan ditampilkan di atas sorotan foto.</small>
                         </div>
                     </div>
 
@@ -79,55 +75,20 @@
             </div>
 
             <!-- Card 2: Detailed Content -->
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
                     <h5 class="fw-bold mb-0 text-primary"><i class="fas fa-align-left me-2"></i>Detail & Dokumentasi Proyek</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark"><i class="fas fa-info-circle me-1 text-primary"></i> 1. TENTANG PROYEK (Isi Detail)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" placeholder="Tuliskan detail panjang mengenai proyek di sini..."></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" placeholder="Tuliskan detail panjang mengenai proyek di sini..." <?= FormRules::attrs('portfolio', 'detail_content_id', 'store') ?>></textarea>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-walking me-1 text-primary"></i> 2. PENDEKATAN KERJA (Approach)</label>
-                        <div id="approach-container">
-                            <div class="p-3 bg-light rounded-3 mb-2 approach-row">
-                                <div class="mb-2">
-                                    <input type="text" name="approach_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent" placeholder="Judul Tahapan/Pendekatan">
-                                </div>
-                                <div class="mb-0">
-                                    <textarea name="approach_descs[]" class="form-control form-control-sm border-0 bg-transparent" rows="2" placeholder="Jelaskan apa yang dilakukan..."></textarea>
-                                </div>
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-sm btn-link text-danger remove-approach p-0 text-decoration-none extra-small">Hapus</button>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-approach"><i class="fas fa-plus me-1"></i> Tambah Tahapan</button>
-                        <input type="hidden" name="approach_id" id="approach_json">
-                    </div>
-
-                    <div class="mb-0">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> 3. SOROTAN DOKUMENTASI (Highlights)</label>
-                        <div id="highlights-container">
-                                <div class="p-3 bg-light rounded-3 mb-2 highlight-row">
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-md-5">
-                                        <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Keterangan foto...">
-                                    </div>
-                                    <div class="col-md-1 text-end">
-                                        <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-highlight"><i class="fas fa-plus me-1"></i> Tambah Foto</button>
-                        <input type="hidden" name="highlights" id="highlights_json" value="[]">
-                    </div>
+                    <?php
+                    $highlightItems = [['type' => 'image']];
+                    require __DIR__ . '/portfolio_highlights_field.php';
+                    ?>
                 </div>
             </div>
 
@@ -136,19 +97,11 @@
         <!-- Sidebar Options Column -->
         <div class="col-lg-4">
             <!-- Metadata & Settings -->
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
                     <h5 class="fw-bold mb-0">Metadata & Kategori</h5>
                 </div>
                 <div class="card-body p-4">
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Kategori Utama</label>
-                        <select name="main_category" class="form-select">
-                            <option value="capacity_building">Capacity Building (GI)</option>
-                            <option value="program_development">Program Development</option>
-                            <option value="consultancy">Consultancy & Advisory</option>
-                        </select>
-                    </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Tipe Partner (Badge)</label>
                         <select name="partner_type" class="form-select">
@@ -161,13 +114,13 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Client Name</label>
-                        <input type="text" name="client_name" class="form-control" placeholder="Nama instansi/perusahaan mitra...">
+                        <input type="text" name="client_name" class="form-control" placeholder="Nama instansi/perusahaan mitra..." <?= FormRules::attrs('portfolio', 'client_name', 'store') ?>>
                     </div>
                 </div>
             </div>
 
             <!-- Display Settings -->
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
                     <h5 class="fw-bold mb-0">Pengaturan Tampilan & Kategori Halaman</h5>
                 </div>
@@ -184,15 +137,6 @@
                                     <div class="text-muted extra-small">Tampil di section Portfolio & Partnership.</div>
                                 </div>
                             </label>
-                            <div id="cat_home" class="ms-4 ps-3 border-start mb-3">
-                                <label class="form-label extra-small fw-bold text-muted">Kategori di Home</label>
-                                <select name="home_category" class="form-select form-select-sm">
-                                    <option value="">-- Pilih Section Home --</option>
-                                    <option value="institute">Capacity Building (GoSirk Institute)</option>
-                                    <option value="partner">Program dan Implementasi Partner</option>
-                                    <option value="advisory">Konsultansi & Advisory Strategis</option>
-                                </select>
-                            </div>
                         </div>
                         
                         <!-- Partnership Display -->
@@ -242,7 +186,7 @@
             </div>
 
             <!-- Action Buttons -->
-            <div class="card border-0 shadow-sm mb-4">
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4 text-center">
                     <p class="text-muted small mb-4">Apakah data sudah benar? Proyek akan langsung ditampilkan sesuai pengaturan.</p>
                     <button type="submit" class="btn btn-primary w-100 fw-bold py-3">
@@ -289,38 +233,6 @@
         });
     };
 
-    // Approach Template
-    const approachTemplate = `
-        <div class="p-3 bg-light rounded-3 mb-2 approach-row">
-            <div class="mb-2">
-                <input type="text" name="approach_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent" placeholder="Judul Tahapan/Pendekatan">
-            </div>
-            <div class="mb-0">
-                <textarea name="approach_descs[]" class="form-control form-control-sm border-0 bg-transparent" rows="2" placeholder="Jelaskan apa yang dilakukan..."></textarea>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-sm btn-link text-danger remove-approach p-0 text-decoration-none extra-small">Hapus</button>
-            </div>
-        </div>`;
-    setupDynamicList('approach-container', 'add-approach', 'approach-row', 'remove-approach', approachTemplate);
-
-    // Highlight Template
-    const highlightTemplate = `
-        <div class="p-3 bg-light rounded-3 mb-2 highlight-row">
-            <div class="row g-2 align-items-center">
-                <div class="col-md-5">
-                    <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
-                </div>
-                <div class="col-md-6">
-                    <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Keterangan foto...">
-                </div>
-                <div class="col-md-1 text-end">
-                    <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-trash"></i></button>
-                </div>
-            </div>
-        </div>`;
-    setupDynamicList('highlights-container', 'add-highlight', 'highlight-row', 'remove-highlight', highlightTemplate);
-
     // Project Logo Template
     const logoTemplate = `
         <div class="project-logo-row mb-2">
@@ -331,22 +243,8 @@
         </div>`;
     setupDynamicList('project-logos-container', 'add-logo', 'project-logo-row', 'remove-logo', logoTemplate);
 
-    // Form Submission: Package JSON
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        // Build Approach JSON
-        const approaches = [];
-        document.querySelectorAll('.approach-row').forEach(row => {
-            const title = row.querySelector('input[name="approach_titles[]"]').value;
-            const desc = row.querySelector('textarea[name="approach_descs[]"]').value;
-            if (title || desc) approaches.push({ title, desc });
-        });
-        document.getElementById('approach_json').value = JSON.stringify(approaches);
-    });
-
     // Conditional Category Display
     const toggles = [
-        { check: 'check_home', target: 'cat_home' },
         { check: 'check_partnership', target: 'cat_partnership' },
         { check: 'check_gi', target: 'cat_gi' }
     ];

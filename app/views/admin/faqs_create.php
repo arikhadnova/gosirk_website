@@ -12,7 +12,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Kategori Halaman</label>
-                            <select name="page" class="form-select bg-light border-0" required>
+                            <select name="page" class="form-select bg-light border-0" <?= FormRules::attrs('faq', 'page', 'store') ?>>
                                 <option value="" disabled selected>Pilih Kategori</option>
                                 <option value="gi">Capacity Building (GI)</option>
                                 <option value="implentasi_partner">Implementasi Partner</option>
@@ -28,18 +28,18 @@
                         </div>
                         <div class="col-md-3">
                             <label class="form-label fw-bold small">Urutan (Sort Order)</label>
-                            <input type="number" name="sort_order" class="form-control bg-light border-0" value="0">
+                            <input type="number" name="sort_order" class="form-control bg-light border-0" value="0" <?= FormRules::attrs('faq', 'sort_order', 'store') ?>>
                         </div>
                         
                         <div class="col-12 border-top pt-3 mt-4">
                             <h6 class="fw-bold text-primary mb-3">Konten FAQ</h6>
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small">Pertanyaan</label>
-                                <input type="text" name="question_id" class="form-control bg-light border-0" placeholder="Contoh: Apa itu GoSirk?" required>
+                                <input type="text" name="question_id" class="form-control bg-light border-0" placeholder="Contoh: Apa itu GoSirk?" <?= FormRules::attrs('faq', 'question_id', 'store') ?>>
                             </div>
                             <div>
                                 <label class="form-label fw-bold extra-small">Jawaban</label>
-                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis jawaban lengkap dalam bahasa Indonesia..." required></textarea>
+                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis jawaban lengkap dalam bahasa Indonesia..." <?= FormRules::attrs('faq', 'answer_id', 'store') ?>></textarea>
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

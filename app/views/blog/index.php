@@ -44,7 +44,11 @@
         <div class="card border-0 shadow rounded-4 overflow-hidden mb-5 doc-card article-item" data-category="<?= $hero->category ?>">
             <div class="row g-0">
                 <div class="col-lg-7">
-                    <img src="<?= ASSETS_URL ?>img/blog/<?= $hero->image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $hero->title_id ?>" style="min-height: 400px;" onerror="this.src='https://images.unsplash.com/photo-1578357078586-491adf1aa5ba'">
+                    <?php if ($hero->image) : ?>
+                        <img src="<?= ASSETS_URL ?>img/blog/<?= $hero->image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $hero->title_id ?>" style="min-height: 400px;">
+                    <?php else : ?>
+                        <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="min-height: 400px;"><i class="fas fa-newspaper text-muted opacity-25" style="font-size: 96px;"></i></div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-lg-5">
                     <div class="card-body p-5 d-flex flex-column justify-content-center h-100 bg-dark text-white">
@@ -72,7 +76,11 @@
             <div class="col-lg-4 col-md-6 article-item" data-category="<?= $item->category ?>">
                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden doc-card">
                     <div class="position-relative">
-                        <img src="<?= ASSETS_URL ?>img/blog/<?= $item->image ?>" class="card-img-top object-fit-cover" alt="<?= $item->title_id ?>" style="height: 240px;" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978'">
+                        <?php if ($item->image) : ?>
+                            <img src="<?= ASSETS_URL ?>img/blog/<?= $item->image ?>" class="card-img-top object-fit-cover" alt="<?= $item->title_id ?>" style="height: 240px;">
+                        <?php else : ?>
+                            <div class="w-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 240px;"><i class="fas fa-newspaper text-muted opacity-25" style="font-size: 72px;"></i></div>
+                        <?php endif; ?>
                         <span class="badge bg-warning text-dark position-absolute top-0 start-0 m-3 px-3 py-2 rounded-pill fw-bold"><?= $item->category ?></span>
                     </div>
                     <div class="card-body p-4 d-flex flex-column">

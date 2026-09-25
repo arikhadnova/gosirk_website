@@ -22,11 +22,18 @@ class Admin extends Controller {
     private $activityLogModel;
     private $pilotVillageModel;
     private $ggcActionModel;
+    private $gnpProgramModel;
     private $pageSectionModel;
 
     public function __construct() {
         if (!isset($_SESSION['admin_logged_in'])) {
             header('Location: ' . BASE_URL . 'auth');
+            exit;
+        }
+        // PHP drops the whole request body when it exceeds post_max_size
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($_POST) && empty($_FILES) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
+            Flasher::setFlash('Upload gagal.', 'Total ukuran file melebihi batas server (' . ini_get('post_max_size') . '). Perkecil ukuran file lalu coba lagi.', 'danger');
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? BASE_URL . 'admin'));
             exit;
         }
         $this->portfolioModel = $this->model('Portfolio_model');
@@ -50,6 +57,7 @@ class Admin extends Controller {
         $this->activityLogModel = $this->model('ActivityLog_model');
         $this->pilotVillageModel = $this->model('PilotVillage_model');
         $this->ggcActionModel = $this->model('GgcAction_model');
+        $this->gnpProgramModel = $this->model('GnpProgram_model');
         $this->pageSectionModel = $this->model('PageSection_model');
 
         // Auto-initialize settings table
@@ -63,6 +71,31 @@ class Admin extends Controller {
           UNIQUE KEY `setting_key` (`setting_key`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $db->execute();
+    }
+
+    // Items that need an admin's attention (sidebar badges, topbar bell, dashboard). Cached per request.
+    public function adminAlerts() {
+        static $alerts = null;
+        if ($alerts !== null) return $alerts;
+        $followup = $this->collaborationModel->getAllRequests('followup');
+        return $alerts = [
+            'requests' => count($followup),
+            'messages' => (int) $this->contactModel->getUnreadCount(),
+            'latest_requests' => array_slice($followup, 0, 5),
+        ];
+    }
+
+    // Validate the submitted admin form against FormRules; on failure go back with the errors
+    private function validateForm($form, $mode = 'store') {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') return;
+        FormRules::normalize($form, $_POST);
+        $errors = FormRules::validate($form, $_POST, $_FILES, $mode);
+        if (!empty($errors)) {
+            Flasher::keepOldInput($_POST);
+            Flasher::setFlash('Data belum valid.', 'Periksa kembali isian berikut:', 'danger', $errors);
+            header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? BASE_URL . 'admin'));
+            exit;
+        }
     }
 
     public function index() {
@@ -80,6 +113,7 @@ class Admin extends Controller {
             'activities' => $activities,
             'counts' => [
                 'doc_requests' => count($this->collaborationModel->getAllRequests()),
+                'doc_followup' => $this->adminAlerts()['requests'],
                 'articles' => count($this->articleModel->getAll()),
                 'publications' => count($this->publicationModel->getAll()),
                 'partners' => count($this->partnerModel->getAll()),
@@ -95,6 +129,7 @@ class Admin extends Controller {
     }
 
     public function profile() {
+        $this->validateForm(isset($_POST['new_password']) ? 'password_change' : 'profile', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $user_id = $_SESSION['user_id'];
             $user = $this->userModel->getUserById($user_id);
@@ -170,6 +205,7 @@ class Admin extends Controller {
     }
 
     public function update_header() {
+        $this->validateForm('settings_header', 'update');
         $site_title = $_POST['site_title'] ?? '';
         $site_description = $_POST['site_description'] ?? '';
         $this->settingModel->update('site_title', $site_title);
@@ -195,6 +231,7 @@ class Admin extends Controller {
     }
 
     public function update_footer() {
+        $this->validateForm('settings_footer', 'update');
         $footer_data = [
             'footer_copyright' => $_POST['footer_text'] ?? '',
             'address_hq' => $_POST['address_hq'] ?? '',
@@ -230,6 +267,7 @@ class Admin extends Controller {
     }
 
     public function update_partnership_settings() {
+        $this->validateForm('partnership_settings', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             foreach ($_POST as $key => $value) {
                 // Update the Indonesian version
@@ -380,6 +418,7 @@ class Admin extends Controller {
     }
 
     public function update_page_section() {
+        $this->validateForm('page_section', 'update');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header('Location: ' . BASE_URL . 'admin/page_sections');
             exit;
@@ -480,6 +519,7 @@ class Admin extends Controller {
     }
 
     public function update_hero() {
+        $this->validateForm('hero', 'update');
         $page = $_POST['page_name'] ?? '';
         if (!$page) {
             header('Location: ' . BASE_URL . 'admin/hero');
@@ -631,6 +671,7 @@ class Admin extends Controller {
     }
 
     public function founders_store() {
+        $this->validateForm('founder', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $image = '';
             if (!empty($_FILES['image']['name'])) {
@@ -671,6 +712,7 @@ class Admin extends Controller {
     }
 
     public function founders_update() {
+        $this->validateForm('founder', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old_founder = $this->founderModel->getById($id);
@@ -744,19 +786,8 @@ class Admin extends Controller {
     }
 
     public function portfolio_store() {
+        $this->validateForm('portfolio', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            $rules = [
-                'title_id' => ['required', 'min:5'],
-                'main_category' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input portofolio', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $cover_image = Upload::file($_FILES['cover_image'], 'img/portfolio');
 
@@ -781,28 +812,9 @@ class Admin extends Controller {
             }
         }
 
-            $highlights = [];
-            if (!empty($_FILES['highlight_imgs']['name'][0])) {
-                foreach ($_FILES['highlight_imgs']['name'] as $key => $val) {
-                    if (!empty($val)) {
-                        $file_data = [
-                            'name' => $_FILES['highlight_imgs']['name'][$key],
-                            'type' => $_FILES['highlight_imgs']['type'][$key],
-                            'tmp_name' => $_FILES['highlight_imgs']['tmp_name'][$key],
-                            'error' => $_FILES['highlight_imgs']['error'][$key],
-                            'size' => $_FILES['highlight_imgs']['size'][$key]
-                        ];
-                        
-                        $uploaded_file = Upload::file($file_data, 'img/portfolio');
-                        if ($uploaded_file) {
-                            $highlights[] = [
-                                'image' => $uploaded_file,
-                                'caption' => $_POST['highlight_captions'][$key] ?? ''
-                            ];
-                        }
-                    }
-                }
-            }
+            $highlights = $this->collectPortfolioHighlights();
+            // Approach section was removed from the site
+            $approach_id = $approach_en = '';
 
             $data = [
                 'title_id' => $_POST['title_id'],
@@ -813,7 +825,7 @@ class Admin extends Controller {
                 'description_en' => Translator::translate($_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image ?: '',
-                'main_category' => $_POST['main_category'],
+                'main_category' => '',
                 'home_category' => $_POST['home_category'] ?? NULL,
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
@@ -825,15 +837,15 @@ class Admin extends Controller {
                 'show_gi' => isset($_POST['show_gi']) ? 1 : 0,
                 'client_name' => $_POST['client_name'],
                 'tags' => $_POST['tags'] ?? '',
-                'video_url' => $_POST['video_url'] ?? '',
+                'video_url' => '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
                 'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
                 'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
                 'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
-                'approach_id' => $_POST['approach_id'] ?? '',
-                'approach_en' => Translator::translate($_POST['approach_id'] ?? ''),
+                'approach_id' => $approach_id,
+                'approach_en' => $approach_en,
                 'highlights' => json_encode($highlights),
                 'project_logos' => json_encode($project_logos)
             ];
@@ -860,7 +872,45 @@ class Admin extends Controller {
         $this->views('layouts/admin_footer');
     }
 
+    // Build portfolio highlights (photo or YouTube video) from the admin form rows
+    private function collectPortfolioHighlights() {
+        $highlights = [];
+        $types = $_POST['highlight_types'] ?? [];
+
+        foreach ($types as $i => $type) {
+            $caption = trim($_POST['highlight_captions'][$i] ?? '');
+
+            if ($type === 'video') {
+                $url = trim($_POST['highlight_videos'][$i] ?? '');
+                if ($url !== '' && $this->youtubeId($url)) {
+                    $highlights[] = ['type' => 'video', 'video_url' => $url, 'caption' => $caption];
+                }
+                continue;
+            }
+
+            $image = $_POST['highlight_existing_imgs'][$i] ?? '';
+            if (!empty($_FILES['highlight_imgs']['name'][$i])) {
+                $uploaded = Upload::file([
+                    'name' => $_FILES['highlight_imgs']['name'][$i],
+                    'type' => $_FILES['highlight_imgs']['type'][$i],
+                    'tmp_name' => $_FILES['highlight_imgs']['tmp_name'][$i],
+                    'error' => $_FILES['highlight_imgs']['error'][$i],
+                    'size' => $_FILES['highlight_imgs']['size'][$i]
+                ], 'img/portfolio');
+                if ($uploaded) {
+                    $image = $uploaded;
+                }
+            }
+            if ($image !== '') {
+                $highlights[] = ['type' => 'image', 'image' => $image, 'caption' => $caption];
+            }
+        }
+
+        return $highlights;
+    }
+
     public function portfolio_update() {
+        $this->validateForm('portfolio', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old_portfolio = $this->portfolioModel->getById($id);
@@ -907,42 +957,10 @@ class Admin extends Controller {
         }
 
         // Process Highlights
-            $highlights = [];
-            
-            // Existing highlights
-            if (isset($_POST['existing_highlight_imgs'])) {
-                foreach ($_POST['existing_highlight_imgs'] as $key => $img) {
-                    if (!empty($img)) {
-                        $highlights[] = [
-                            'image' => $img,
-                            'caption' => $_POST['existing_highlight_captions'][$key] ?? ''
-                        ];
-                    }
-                }
-            }
-
-            // New highlights
-            if (!empty($_FILES['highlight_imgs']['name'][0])) {
-                foreach ($_FILES['highlight_imgs']['name'] as $key => $val) {
-                    if (!empty($val)) {
-                        $file_data = [
-                            'name' => $_FILES['highlight_imgs']['name'][$key],
-                            'type' => $_FILES['highlight_imgs']['type'][$key],
-                            'tmp_name' => $_FILES['highlight_imgs']['tmp_name'][$key],
-                            'error' => $_FILES['highlight_imgs']['error'][$key],
-                            'size' => $_FILES['highlight_imgs']['size'][$key]
-                        ];
-                        
-                        $uploaded_file = Upload::file($file_data, 'img/portfolio');
-                        if ($uploaded_file) {
-                            $highlights[] = [
-                                'image' => $uploaded_file,
-                                'caption' => $_POST['highlight_captions'][$key] ?? ''
-                            ];
-                        }
-                    }
-                }
-            }
+            $highlights = $this->collectPortfolioHighlights();
+            // Approach section was removed from the site; keep stored data untouched
+            $approach_id = $old_portfolio->approach_id;
+            $approach_en = $old_portfolio->approach_en;
 
             $data = [
                 'id' => $id,
@@ -954,8 +972,8 @@ class Admin extends Controller {
                 'description_en' => Translator::translate($_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image,
-                'main_category' => $_POST['main_category'],
-                'home_category' => $_POST['home_category'] ?? NULL,
+                'main_category' => $old_portfolio->main_category,
+                'home_category' => $_POST['home_category'] ?? $old_portfolio->home_category,
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],
@@ -966,15 +984,15 @@ class Admin extends Controller {
                 'show_gi' => isset($_POST['show_gi']) ? 1 : 0,
                 'client_name' => $_POST['client_name'],
                 'tags' => $_POST['tags'] ?? '',
-                'video_url' => $_POST['video_url'] ?? '',
+                'video_url' => '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
                 'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
                 'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
                 'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
-                'approach_id' => $_POST['approach_id'] ?? '',
-                'approach_en' => Translator::translate($_POST['approach_id'] ?? ''),
+                'approach_id' => $approach_id,
+                'approach_en' => $approach_en,
                 'highlights' => json_encode($highlights),
                 'project_logos' => json_encode($project_logos)
             ];
@@ -1057,22 +1075,11 @@ class Admin extends Controller {
     }
 
     public function articles_update() {
+        $this->validateForm('article', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             try {
                 $id = $_POST['id'];
 
-                // Validation
-                $rules = [
-                    'title_id' => ['required', 'min:5'],
-                    'content_id' => ['required']
-                ];
-                $errors = Validator::validate($_POST, $rules);
-
-                if (!empty($errors)) {
-                    Flasher::setFlash('input artikel', 'tidak valid', 'danger', $errors);
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
-                    exit;
-                }
 
                 $old_article = $this->articleModel->getById($id);
                 if (!$old_article) {
@@ -1137,20 +1144,9 @@ class Admin extends Controller {
     }
 
     public function articles_store() {
+        $this->validateForm('article', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             try {
-                // Validation
-                $rules = [
-                    'title_id' => ['required', 'min:5'],
-                    'content_id' => ['required']
-                ];
-                $errors = Validator::validate($_POST, $rules);
-
-                if (!empty($errors)) {
-                    Flasher::setFlash('input artikel', 'tidak valid', 'danger', $errors);
-                    header('Location: ' . $_SERVER['HTTP_REFERER']);
-                    exit;
-                }
 
                 $image = '';
                 if (!empty($_FILES['image']['name'])) {
@@ -1253,21 +1249,10 @@ class Admin extends Controller {
     }
 
     public function publications_update() {
+        $this->validateForm('publication', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
 
-            // Validation
-            $rules = [
-                'title_id' => ['required', 'min:5'],
-                'type' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input publikasi', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $old = $this->publicationModel->getById($id);
             $thumbnail = $old->thumbnail;
@@ -1326,19 +1311,8 @@ class Admin extends Controller {
     }
 
     public function publications_store() {
+        $this->validateForm('publication', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            $rules = [
-                'title_id' => ['required', 'min:5'],
-                'type' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input publikasi', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $thumbnail = Upload::file($_FILES['thumbnail'], 'img/publications');
             $file_path = Upload::file($_FILES['file_path'], 'docs', ['pdf']);
@@ -1420,18 +1394,8 @@ class Admin extends Controller {
     }
 
     public function services_store() {
+        $this->validateForm('service', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Unset icon rule and check for image
-            $rules = [
-                'name_id' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input layanan', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $image = Upload::file($_FILES['image'], 'img/services');
 
@@ -1456,20 +1420,11 @@ class Admin extends Controller {
     }
 
     public function services_update() {
+        $this->validateForm('service', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old_data = $this->serviceModel->getById($id);
             
-            $rules = [
-                'name_id' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input layanan', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $image = $old_data->image;
             if (!empty($_FILES['image']['name'])) {
@@ -1553,6 +1508,7 @@ class Admin extends Controller {
     }
 
     public function service_item_store() {
+        $this->validateForm('service_item', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $image = Upload::file($_FILES['image'], 'img/services');
             
@@ -1582,6 +1538,7 @@ class Admin extends Controller {
     }
 
     public function service_item_update() {
+        $this->validateForm('service_item', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old = $this->serviceItemModel->getById($id);
@@ -1663,20 +1620,8 @@ class Admin extends Controller {
     }
 
     public function impact_store() {
+        $this->validateForm('impact', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $rules = [
-                'label_id' => ['required'],
-                'value' => ['required'],
-                'page' => ['required'],
-                'section' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input data dampak', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
             $page = $_POST['page'] ?? 'home';
             $data = [
                 'label_id' => $_POST['label_id'],
@@ -1718,21 +1663,8 @@ class Admin extends Controller {
     }
 
     public function impact_update() {
+        $this->validateForm('impact', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            $rules = [
-                'label_id' => ['required'],
-                'value' => ['required'],
-                'page' => ['required'],
-                'section' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input data dampak', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $page = $_POST['page'] ?? 'home';
             $data = [
@@ -1810,20 +1742,8 @@ class Admin extends Controller {
     }
 
     public function partners_store() {
+        $this->validateForm('partner', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Validation
-            $rules = [
-                'name' => ['required', 'min:3'],
-                'type' => ['required'],
-                'category' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input partner', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $logo = '';
             if (!empty($_FILES['logo']['name'])) {
@@ -1852,22 +1772,10 @@ class Admin extends Controller {
     }
 
     public function partners_update() {
+        $this->validateForm('partner', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
 
-            // Validation
-            $rules = [
-                'name' => ['required', 'min:3'],
-                'type' => ['required'],
-                'category' => ['required']
-            ];
-            $errors = Validator::validate($_POST, $rules);
-
-            if (!empty($errors)) {
-                Flasher::setFlash('input partner', 'tidak valid', 'danger', $errors);
-                header('Location: ' . $_SERVER['HTTP_REFERER']);
-                exit;
-            }
 
             $old = $this->partnerModel->getById($id);
             $logo = $old->logo;
@@ -1939,6 +1847,7 @@ class Admin extends Controller {
     }
 
     public function collaboration_store() {
+        $this->validateForm('collaboration', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $file = $_FILES['document'];
             $file_name = Upload::file($file, 'documents', ['pdf'], realpath(__DIR__ . '/../storage'));
@@ -1949,7 +1858,8 @@ class Admin extends Controller {
                     'title_en' => Translator::translate($_POST['title_id']),
                     'type' => $_POST['type'],
                     'file_path' => $file_name,
-                    'status' => $_POST['status']
+                    'status' => $_POST['status'],
+                    'auto_send' => isset($_POST['auto_send']) ? 1 : 0
                 ];
 
                 if ($this->collaborationModel->addDocument($data)) {
@@ -1977,6 +1887,7 @@ class Admin extends Controller {
     }
 
     public function collaboration_update() {
+        $this->validateForm('collaboration', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old_file = $_POST['old_file'];
@@ -1997,7 +1908,8 @@ class Admin extends Controller {
                 'title_en' => Translator::translate($_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_name,
-                'status' => $_POST['status']
+                'status' => $_POST['status'],
+                    'auto_send' => isset($_POST['auto_send']) ? 1 : 0
             ];
 
             if ($this->collaborationModel->updateDocument($data)) {
@@ -2030,14 +1942,66 @@ class Admin extends Controller {
 
 
     public function collaboration_requests() {
+        $filter = in_array($_GET['status'] ?? '', ['followup', 'sent'], true) ? $_GET['status'] : 'all';
         $data = [
             'title' => 'Collaboration Request Logs',
             'active' => 'collaboration_requests',
-            'requests' => $this->collaborationModel->getAllRequests()
+            'filter' => $filter,
+            'counts' => $this->collaborationModel->countRequests(),
+            'requests' => $this->collaborationModel->getAllRequests($filter)
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/collaboration/requests', $data);
         $this->views('layouts/admin_footer');
+    }
+
+    // Email the requested PDF now (manual follow-up or retry after a failed automatic send)
+    public function collaboration_request_send($id) {
+        $back = BASE_URL . 'admin/collaboration_requests' . (isset($_GET['status']) ? '?status=' . urlencode($_GET['status']) : '');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . $back); exit; }
+
+        $req = $this->collaborationModel->getRequestById((int) $id);
+        $file = $req && $req->doc_file ? realpath(dirname(__DIR__) . '/storage/documents/' . $req->doc_file) : false;
+        if (!$req || !$file) {
+            Flasher::setFlash('Gagal mengirim.', 'Permintaan atau file dokumennya tidak ditemukan.', 'danger');
+            header('Location: ' . $back); exit;
+        }
+
+        $mail = Mail::render('doc_user', [
+            'nama' => $req->name, 'email' => $req->email, 'instansi' => $req->organization,
+            'jabatan' => $req->jabatan, 'dokumen' => $req->doc_title,
+        ]);
+        if (Mail::send($req->email, $mail['subject'], $mail['html'], $file)) {
+            $this->collaborationModel->setDelivery($req->id, 'manual_sent', $_SESSION['user_name'] ?? 'Admin');
+            $this->activityLogModel->log('UPDATE', 'Collaboration', "Mengirim dokumen '{$req->doc_title}' ke {$req->email}");
+            Flasher::setFlash('Dokumen terkirim', 'ke ' . htmlspecialchars($req->email) . '.', 'success');
+        } else {
+            Flasher::setFlash('Email gagal dikirim.', 'Periksa pengaturan di Email Settings (klik "Cek Koneksi").', 'danger');
+        }
+        header('Location: ' . $back);
+        exit;
+    }
+
+    // Sent through another channel (e.g. personal email): only record it
+    public function collaboration_request_mark($id) {
+        $back = BASE_URL . 'admin/collaboration_requests' . (isset($_GET['status']) ? '?status=' . urlencode($_GET['status']) : '');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($req = $this->collaborationModel->getRequestById((int) $id))) {
+            $this->collaborationModel->setDelivery($req->id, 'manual_sent', $_SESSION['user_name'] ?? 'Admin');
+            $this->activityLogModel->log('UPDATE', 'Collaboration', "Menandai dokumen '{$req->doc_title}' untuk {$req->email} sudah dikirim");
+            Flasher::setFlash('Permintaan', 'ditandai sudah dikirim.', 'success');
+        }
+        header('Location: ' . $back);
+        exit;
+    }
+
+    public function collaboration_request_delete($id) {
+        $req = $this->collaborationModel->getRequestById((int) $id);
+        if ($req && $this->collaborationModel->deleteRequest($req->id)) {
+            $this->activityLogModel->log('DELETE', 'Collaboration', "Menghapus permintaan dokumen dari {$req->email}");
+            Flasher::setFlash('Permintaan', 'berhasil dihapus.', 'success');
+        }
+        header('Location: ' . BASE_URL . 'admin/collaboration_requests');
+        exit;
     }
 
     public function users($action = null, $id = null) {
@@ -2079,6 +2043,7 @@ class Admin extends Controller {
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        $this->validateForm('user', 'store');
 
         if ($this->userModel->createUser($_POST)) {
             $this->activityLogModel->log('CREATE', 'Users', "Menambahkan pengguna baru '{$_POST['username']}'");
@@ -2112,6 +2077,7 @@ class Admin extends Controller {
             header('Location: ' . BASE_URL . 'admin');
             exit;
         }
+        $this->validateForm('user', 'update');
 
         if ($this->userModel->updateUser($_POST['id'], $_POST)) {
             $this->activityLogModel->log('UPDATE', 'Users', "Memperbarui data pengguna '{$_POST['username']}'");
@@ -2235,6 +2201,7 @@ class Admin extends Controller {
     }
 
     public function testimonials_store() {
+        $this->validateForm('testimonial', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = $_POST;
             $data['image'] = null;
@@ -2275,6 +2242,7 @@ class Admin extends Controller {
     }
 
     public function testimonials_update() {
+        $this->validateForm('testimonial', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $data = $_POST;
             $old_data = $this->testimonialModel->getById($data['id']);
@@ -2349,6 +2317,7 @@ class Admin extends Controller {
     }
 
     public function faqs_store() {
+        $this->validateForm('faq', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['question_en'] = Translator::translate($_POST['question_id']);
             $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
@@ -2378,6 +2347,7 @@ class Admin extends Controller {
     }
 
     public function faqs_update() {
+        $this->validateForm('faq', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_POST['question_en'] = Translator::translate($_POST['question_id']);
             $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
@@ -2435,6 +2405,7 @@ class Admin extends Controller {
     }
 
     public function gi_services_store() {
+        $this->validateForm('gi_service', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $image = Upload::file($_FILES['image'], 'img/gi');
             
@@ -2524,6 +2495,7 @@ class Admin extends Controller {
     }
 
     public function gi_services_update() {
+        $this->validateForm('gi_service', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old = $this->giServiceModel->getById($id);
@@ -2651,11 +2623,51 @@ class Admin extends Controller {
         $data = [
             'title' => 'Manajemen Video GI',
             'active' => 'gi_videos',
-            'videos' => $this->giVideoModel->getAll()
+            'videos' => $this->giVideoModel->getAll(),
+            'section' => $this->pageSectionModel->getByPageAndSection('gi', 'videos')
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/gi_videos/index', $data);
         $this->views('layouts/admin_footer');
+    }
+
+    public function update_gi_video_section() {
+        $this->validateForm('gi_video_section', 'update');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/gi_videos');
+            exit;
+        }
+
+        $titleId = trim($_POST['title_id'] ?? '');
+        $subtitleId = trim($_POST['content_id'] ?? '');
+        $youtubeUrl = trim($_POST['youtube_url'] ?? '');
+        if ($youtubeUrl !== '' && !filter_var($youtubeUrl, FILTER_VALIDATE_URL)) {
+            Flasher::setFlash('Link YouTube', 'tidak valid', 'danger');
+            header('Location: ' . BASE_URL . 'admin/gi_videos');
+            exit;
+        }
+
+        $sectionData = [
+            'page_name' => 'gi',
+            'section_key' => 'videos',
+            'title_id' => $titleId,
+            'title_en' => $titleId !== '' ? Translator::translate($titleId) : '',
+            'content_id' => $subtitleId,
+            'content_en' => $subtitleId !== '' ? Translator::translate($subtitleId) : '',
+            'content_2_id' => $youtubeUrl,
+            'content_2_en' => $youtubeUrl,
+            'is_active' => isset($_POST['is_active']) ? 1 : 0
+        ];
+
+        if ($this->pageSectionModel->upsert($sectionData)) {
+            $this->activityLogModel->log('UPDATE', 'GI Videos', "Memperbarui pengaturan section Belajar Bersama GoSirk");
+            Flasher::setFlash('Section Video', 'berhasil diperbarui', 'success');
+        } else {
+            Flasher::setFlash('Section Video', 'gagal diperbarui', 'danger');
+        }
+
+        header('Location: ' . BASE_URL . 'admin/gi_videos');
+        exit;
     }
 
     public function gi_videos_create() {
@@ -2669,29 +2681,24 @@ class Admin extends Controller {
     }
 
     public function gi_videos_store() {
+        $this->validateForm('gi_video', 'store');
         if ($_POST) {
             $data = $_POST;
             $data['thumbnail'] = null;
 
-            if ($this->giVideoModel->add($data)) {
-                // Get the ID of the newly added video
-                $newVideo = $this->db->lastInsertId();
-                if ($newVideo) {
-                    $videoData = $this->giVideoModel->getById($newVideo);
-                    $updateData = [
-                        'id' => $newVideo,
-                        'title_id' => $videoData->title_id,
-                        'title_en' => Translator::translate($videoData->title_id),
-                        'description_id' => $videoData->description_id,
-                        'description_en' => Translator::translate($videoData->description_id),
-                        'url' => $videoData->url,
-                        'type' => $videoData->type,
-                        'thumbnail' => $videoData->thumbnail,
-                        'order_priority' => $videoData->order_priority
-                    ];
-                    $this->giVideoModel->update($updateData);
+            if (isset($_FILES['thumbnail']) && $_FILES['thumbnail']['name']) {
+                $upload = Upload::file($_FILES['thumbnail'], 'img/gi/videos');
+                if ($upload) {
+                    $data['thumbnail'] = $upload;
                 }
-                $this->activityLogModel->log('CREATE', 'GI Videos', "Menambahkan video GI baru '{$data['title_id']}'");
+            }
+
+            // Title/description are no longer shown on the site
+            $data['title_id'] = $data['title_en'] = '';
+            $data['description_id'] = $data['description_en'] = '';
+
+            if ($this->giVideoModel->add($data)) {
+                $this->activityLogModel->log('CREATE', 'GI Videos', "Menambahkan video GI baru '{$data['url']}'");
                 Flasher::setFlash('Video GI', 'berhasil ditambahkan', 'success');
                 header('Location: ' . BASE_URL . 'admin/gi_videos');
             } else {
@@ -2713,6 +2720,7 @@ class Admin extends Controller {
     }
 
     public function gi_videos_update() {
+        $this->validateForm('gi_video', 'update');
         if ($_POST) {
             $data = $_POST;
             $video = $this->giVideoModel->getById($data['id']);
@@ -2728,12 +2736,14 @@ class Admin extends Controller {
                 }
             }
 
-            // Automatically translate to English
-            $data['title_en'] = Translator::translate($data['title_id']);
-            $data['description_en'] = Translator::translate($data['description_id']);
+            // Keep existing title/description (no longer editable)
+            $data['title_id'] = $video->title_id;
+            $data['title_en'] = $video->title_en;
+            $data['description_id'] = $video->description_id;
+            $data['description_en'] = $video->description_en;
 
             if ($this->giVideoModel->update($data)) {
-                $this->activityLogModel->log('UPDATE', 'GI Videos', "Memperbarui video GI '{$data['title_id']}'");
+                $this->activityLogModel->log('UPDATE', 'GI Videos', "Memperbarui video GI '{$data['url']}'");
                 Flasher::setFlash('Video GI', 'berhasil diperbarui', 'success');
                 header('Location: ' . BASE_URL . 'admin/gi_videos');
             } else {
@@ -2750,7 +2760,7 @@ class Admin extends Controller {
         }
 
         if ($this->giVideoModel->delete($id)) {
-            $name = $video ? $video->title_id : 'Unknown GI Video';
+            $name = $video ? ($video->title_id ?: $video->url) : 'Unknown GI Video';
             $this->activityLogModel->log('DELETE', 'GI Videos', "Menghapus video GI '{$name}'");
             Flasher::setFlash('Video GI', 'berhasil dihapus', 'success');
         } else {
@@ -2791,6 +2801,46 @@ class Admin extends Controller {
     }
 
     // --- PILOT VILLAGES (Implementasi Partner) ---
+    // "Sorotan" section on the Implementasi Partner page (stored in page_sections: partner/highlights)
+    public function partner_highlights() {
+        $section = $this->pageSectionModel->getByPageAndSection('partner', 'highlights');
+        $data = [
+            'title' => 'Sorotan Implementasi Partner',
+            'active' => 'partner_highlights',
+            'section' => $section,
+            'items' => json_decode($section->content_id ?? '[]', true) ?: []
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/partner_highlights', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function partner_highlights_update() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/partner_highlights');
+            exit;
+        }
+
+        $highlights = $this->collectPortfolioHighlights();
+        $json = json_encode($highlights);
+        $saved = $this->pageSectionModel->upsert([
+            'page_name' => 'partner',
+            'section_key' => 'highlights',
+            'content_id' => $json,
+            'content_en' => $json,
+            'is_active' => isset($_POST['is_active']) ? 1 : 0
+        ]);
+
+        if ($saved) {
+            $this->activityLogModel->log('UPDATE', 'Page Section', 'Memperbarui sorotan halaman Implementasi Partner (' . count($highlights) . ' item)');
+            Flasher::setFlash('Sorotan', 'berhasil disimpan', 'success');
+        } else {
+            Flasher::setFlash('Sorotan', 'gagal disimpan', 'danger');
+        }
+        header('Location: ' . BASE_URL . 'admin/partner_highlights');
+        exit;
+    }
+
     public function pilot_villages() {
         $data = [
             'title' => 'Kelola Desa Pilot',
@@ -2803,6 +2853,7 @@ class Admin extends Controller {
     }
 
     public function pilot_villages_store() {
+        $this->validateForm('pilot_village', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $image = '';
             if (!empty($_FILES['image']['name'])) {
@@ -2828,6 +2879,7 @@ class Admin extends Controller {
     }
 
     public function pilot_villages_update() {
+        $this->validateForm('pilot_village', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old = $this->pilotVillageModel->getById($id);
@@ -2887,6 +2939,7 @@ class Admin extends Controller {
     }
 
     public function ggc_actions_store() {
+        $this->validateForm('ggc_action', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $image = '';
             if (!empty($_FILES['image']['name'])) {
@@ -2914,6 +2967,7 @@ class Admin extends Controller {
     }
 
     public function ggc_actions_update() {
+        $this->validateForm('ggc_action', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
             $old = $this->ggcActionModel->getById($id);
@@ -2961,6 +3015,196 @@ class Admin extends Controller {
         header('Location: ' . BASE_URL . 'admin/ggc_actions');
         exit;
     }
+    // "Program Utama" on the Go Ngompos Project page
+    public function gnp_programs() {
+        $data = [
+            'title' => 'Program Go Ngompos',
+            'active' => 'gnp_programs',
+            'programs' => $this->gnpProgramModel->getAll(),
+            'section' => $this->pageSectionModel->getByPageAndSection('go_ngompos_project', 'programs')
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/gnp_programs', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    private function gnpProgramData($old = null) {
+        $image = $old->image ?? null;
+        if (!empty($_FILES['image']['name'])) {
+            $uploaded = Upload::file($_FILES['image'], 'img/gnp', ['jpg', 'jpeg', 'png', 'webp']);
+            if ($uploaded) {
+                if ($old && $old->image && !preg_match('#^https?://#i', $old->image)) {
+                    Upload::delete($old->image, 'img/gnp');
+                }
+                $image = $uploaded;
+            }
+        }
+        $badge = trim($_POST['badge_id'] ?? '');
+        return [
+            'badge_id' => $badge,
+            'badge_en' => $badge !== '' ? Translator::translate($badge) : '',
+            'badge_color' => $_POST['badge_color'] ?? 'success',
+            'title_id' => trim($_POST['title_id']),
+            'title_en' => Translator::translate(trim($_POST['title_id'])),
+            'description_id' => trim($_POST['description_id']),
+            'description_en' => Translator::translate(trim($_POST['description_id'])),
+            'image' => $image,
+            'order_priority' => $_POST['order_priority'] ?? 0,
+        ];
+    }
+
+    public function gnp_programs_store() {
+        $this->validateForm('gnp_program', 'store');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = $this->gnpProgramData();
+            if ($data['image'] && $this->gnpProgramModel->add($data)) {
+                $this->activityLogModel->log('CREATE', 'Go Ngompos', "Menambahkan program '{$data['title_id']}'");
+                Flasher::setFlash('Program', 'berhasil ditambahkan', 'success');
+            } else {
+                Flasher::setFlash('Program', 'gagal ditambahkan', 'danger');
+            }
+        }
+        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        exit;
+    }
+
+    public function gnp_programs_update() {
+        $this->validateForm('gnp_program', 'update');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($old = $this->gnpProgramModel->getById((int) $_POST['id']))) {
+            $data = $this->gnpProgramData($old);
+            $data['id'] = $old->id;
+            if ($this->gnpProgramModel->update($data)) {
+                $this->activityLogModel->log('UPDATE', 'Go Ngompos', "Memperbarui program '{$data['title_id']}'");
+                Flasher::setFlash('Program', 'berhasil diperbarui', 'success');
+            } else {
+                Flasher::setFlash('Program', 'gagal diperbarui', 'danger');
+            }
+        }
+        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        exit;
+    }
+
+    public function gnp_programs_delete($id) {
+        $old = $this->gnpProgramModel->getById((int) $id);
+        if ($old && $this->gnpProgramModel->delete($old->id)) {
+            if ($old->image && !preg_match('#^https?://#i', $old->image)) {
+                Upload::delete($old->image, 'img/gnp');
+            }
+            $this->activityLogModel->log('DELETE', 'Go Ngompos', "Menghapus program '{$old->title_id}'");
+            Flasher::setFlash('Program', 'berhasil dihapus', 'success');
+        }
+        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        exit;
+    }
+
+    public function gnp_programs_section() {
+        $this->validateForm('gnp_program_section', 'update');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $title = trim($_POST['title_id'] ?? '');
+            $subtitle = trim($_POST['content_id'] ?? '');
+            $this->pageSectionModel->upsert([
+                'page_name' => 'go_ngompos_project',
+                'section_key' => 'programs',
+                'title_id' => $title,
+                'title_en' => $title !== '' ? Translator::translate($title) : '',
+                'content_id' => $subtitle,
+                'content_en' => $subtitle !== '' ? Translator::translate($subtitle) : '',
+                'is_active' => isset($_POST['is_active']) ? 1 : 0
+            ]);
+            $this->activityLogModel->log('UPDATE', 'Go Ngompos', 'Memperbarui pengaturan section Program Utama');
+            Flasher::setFlash('Pengaturan section', 'berhasil disimpan', 'success');
+        }
+        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        exit;
+    }
+
+    // Email (Brevo) settings: stored in `settings`, override .env / config.php
+    public function email_settings() {
+        $config = Mail::config();
+        $key = $config['api_key'];
+        $data = [
+            'title' => 'Email Settings',
+            'active' => 'email_settings',
+            'config' => $config,
+            'key_hint' => $key !== '' ? substr($key, 0, 8) . str_repeat('•', 8) . substr($key, -4) : '',
+            'key_source' => trim((string) $this->settingModel->getByKey('mail_brevo_api_key')) !== '' ? 'admin' : ($key !== '' ? 'env' : 'none'),
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/email_settings', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function update_email_settings() {
+        $this->validateForm('email_settings', 'update');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/email_settings');
+            exit;
+        }
+
+        $values = [
+            'mail_from' => trim($_POST['mail_from']),
+            'mail_from_name' => trim($_POST['mail_from_name']),
+            'mail_admin_address' => trim($_POST['mail_admin_address']),
+        ];
+        // Empty key field = keep the current key
+        if (trim($_POST['mail_brevo_api_key'] ?? '') !== '') {
+            $values['mail_brevo_api_key'] = trim($_POST['mail_brevo_api_key']);
+        }
+        $this->settingModel->updateMultiple($values);
+        Mail::resetConfig();
+
+        $this->activityLogModel->log('UPDATE', 'System', 'Memperbarui pengaturan email' . (isset($values['mail_brevo_api_key']) ? ' (termasuk API key)' : ''));
+        Flasher::setFlash('Pengaturan email', 'berhasil disimpan. Gunakan "Cek Koneksi" untuk memastikan Brevo menerima pengaturan ini.', 'success');
+        header('Location: ' . BASE_URL . 'admin/email_settings');
+        exit;
+    }
+
+    public function update_email_templates() {
+        $this->validateForm('email_templates', 'update');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/email_settings');
+            exit;
+        }
+        $values = [];
+        foreach (array_keys(Mail::TEMPLATES) as $key) {
+            foreach (['subject', 'body'] as $part) {
+                $name = "mail_tpl_{$key}_{$part}";
+                $value = trim(str_replace("\r\n", "\n", $_POST[$name] ?? ''));
+                // Saving the default text unchanged keeps following future defaults
+                $values[$name] = $value === Mail::TEMPLATES[$key][$part] ? '' : $value;
+            }
+        }
+        $this->settingModel->updateMultiple($values);
+        $this->activityLogModel->log('UPDATE', 'System', 'Memperbarui template email');
+        Flasher::setFlash('Template email', 'berhasil disimpan.', 'success');
+        header('Location: ' . BASE_URL . 'admin/email_settings#templates');
+        exit;
+    }
+
+    public function email_settings_check() {
+        $result = Mail::checkConnection();
+        $errors = ['brevo' => $result['messages']];
+        Flasher::setFlash('Cek koneksi Brevo:', $result['ok'] ? 'semua siap.' : 'ada yang perlu diperbaiki.', $result['ok'] ? 'success' : 'danger', $errors);
+        header('Location: ' . BASE_URL . 'admin/email_settings');
+        exit;
+    }
+
+    public function email_settings_test() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Location: ' . BASE_URL . 'admin/email_settings');
+            exit;
+        }
+        $to = Mail::config()['admin'];
+        $ok = Mail::send($to, 'Email Tes - ' . SITE_NAME, '<p>Ini email tes dari halaman <b>Email Settings</b> admin GoSirk.</p><p>Jika Anda menerima email ini, pengiriman email sudah berfungsi.</p>');
+        if ($ok) {
+            Flasher::setFlash('Email tes', 'terkirim ke ' . htmlspecialchars($to) . '. Cek inbox (dan folder spam).', 'success');
+        } else {
+            Flasher::setFlash('Email tes gagal dikirim.', 'Klik "Cek Koneksi" untuk melihat penyebabnya.', 'danger');
+        }
+        header('Location: ' . BASE_URL . 'admin/email_settings');
+        exit;
+    }
+
     public function maintenance() {
         $data = [
             'title' => 'Maintenance Mode',

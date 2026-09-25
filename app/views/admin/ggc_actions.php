@@ -79,19 +79,19 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold">Judul Aksi</label>
-                            <input type="text" name="title_id" class="form-control" required placeholder="Aksi Tanam Mangrove">
+                            <input type="text" name="title_id" class="form-control" placeholder="Aksi Tanam Mangrove" <?= FormRules::attrs('ggc_action', 'title_id', 'store') ?>>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold">Deskripsi</label>
-                            <textarea name="description_id" class="form-control" rows="3" required></textarea>
+                            <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'store') ?>></textarea>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label small fw-bold">Foto Aksi</label>
-                            <input type="file" name="image" class="form-control" required>
+                            <input type="file" name="image" class="form-control" <?= FormRules::attrs('ggc_action', 'image', 'store') ?>>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small fw-bold">Urutan</label>
-                            <input type="number" name="order_priority" class="form-control" value="0">
+                            <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('ggc_action', 'order_priority', 'store') ?>>
                         </div>
                     </div>
                 </div>
@@ -118,19 +118,19 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold">Judul Aksi</label>
-                            <input type="text" name="title_id" id="edit-title-id" class="form-control" required>
+                            <input type="text" name="title_id" id="edit-title-id" class="form-control" <?= FormRules::attrs('ggc_action', 'title_id', 'update') ?>>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold">Deskripsi</label>
-                            <textarea name="description_id" id="edit-desc-id" class="form-control" rows="3" required></textarea>
+                            <textarea name="description_id" id="edit-desc-id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'update') ?>></textarea>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label small fw-bold">Ganti Foto (Opsional)</label>
-                            <input type="file" name="image" class="form-control">
+                            <input type="file" name="image" class="form-control" <?= FormRules::attrs('ggc_action', 'image', 'update') ?>>
                         </div>
                         <div class="col-md-4">
                             <label class="form-label small fw-bold">Urutan</label>
-                            <input type="number" name="order_priority" id="edit-order" class="form-control">
+                            <input type="number" name="order_priority" id="edit-order" class="form-control" <?= FormRules::attrs('ggc_action', 'order_priority', 'update') ?>>
                         </div>
                     </div>
                 </div>

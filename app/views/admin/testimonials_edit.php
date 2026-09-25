@@ -13,18 +13,18 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Nama Pemberi Testimoni</label>
-                            <input type="text" name="name" class="form-control bg-light border-0" value="<?= $testimonial->name ?>" required>
+                            <input type="text" name="name" class="form-control bg-light border-0" value="<?= $testimonial->name ?>" <?= FormRules::attrs('testimonial', 'name', 'update') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Status / Aktif</label>
-                            <select name="status" class="form-select bg-light border-0">
+                            <select name="status" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'status', 'update') ?>>
                                 <option value="active" <?= $testimonial->status == 'active' ? 'selected' : '' ?>>Active</option>
                                 <option value="inactive" <?= $testimonial->status == 'inactive' ? 'selected' : '' ?>>Inactive</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Kategori Halaman</label>
-                            <select name="page" class="form-select bg-light border-0">
+                            <select name="page" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'page', 'update') ?>>
 
                                 <option value="gi" <?= $testimonial->page == 'gi' ? 'selected' : '' ?>>Capacity Building (GI)</option>
                                 <option value="implentasi_partner" <?= $testimonial->page == 'implentasi_partner' ? 'selected' : '' ?>>Implementasi Partner</option>
@@ -36,12 +36,12 @@
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
-                            <input type="text" name="role_id" class="form-control bg-light border-0" value="<?= $testimonial->role_id ?>" required>
+                            <input type="text" name="role_id" class="form-control bg-light border-0" value="<?= $testimonial->role_id ?>" <?= FormRules::attrs('testimonial', 'role_id', 'update') ?>>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
-                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" required><?= $testimonial->content_id ?></textarea>
+                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" <?= FormRules::attrs('testimonial', 'content_id', 'update') ?>><?= $testimonial->content_id ?></textarea>
                         </div>
                         <div class="col-12">
                             <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>

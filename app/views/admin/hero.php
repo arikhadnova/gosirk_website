@@ -138,17 +138,17 @@ $pages = [
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Tag / Hashtag</label>
-                                        <input type="text" name="tag_id" class="form-control" value="<?= htmlspecialchars($hero->tag_id); ?>">
+                                        <input type="text" name="tag_id" class="form-control" value="<?= htmlspecialchars($hero->tag_id); ?>" <?= FormRules::attrs('hero', 'tag_id', 'update') ?>>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Hero Title (HTML allowed)</label>
-                                        <textarea name="title_id" class="form-control" rows="2"><?= htmlspecialchars($hero->title_id); ?></textarea>
+                                        <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('hero', 'title_id', 'update') ?>><?= htmlspecialchars($hero->title_id); ?></textarea>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Hero Subtitle</label>
-                                        <textarea name="subtitle_id" class="form-control" rows="3"><?= htmlspecialchars($hero->subtitle_id); ?></textarea>
+                                        <textarea name="subtitle_id" class="form-control" rows="3" <?= FormRules::attrs('hero', 'subtitle_id', 'update') ?>><?= htmlspecialchars($hero->subtitle_id); ?></textarea>
                                     </div>
 
                                     <div class="mt-2">

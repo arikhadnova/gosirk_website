@@ -857,6 +857,12 @@
 
     <section id="program-clocc" class="about-section">
         <div class="container">
+            <div class="text-center mb-5">
+                <span class="section-subheader" data-i18n="partner.portfolio_project_subheader">Rekam Jejak</span>
+                <h2 class="section-title display-6" data-i18n="partner.portfolio_project_title">Portofolio Project Kami</h2>
+                <div class="mx-auto mt-3 rounded-pill bg-orange opacity-25" style="width: 60px; height: 3px;"></div>
+            </div>
+
             <!-- PARTNER LOGOS -->
             <div class="row align-items-center justify-content-center g-4 g-md-5 mb-5">
                 <div class="col-6 col-md-2 text-center">
@@ -878,7 +884,7 @@
                 <div class="col-lg-7">
                     <div class="ps-4 border-start border-3 border-orange-soft">
                         <span class="section-subheader" data-lang-id="Ringkasan Program" data-lang-en="Program Overview" data-i18n="partner.badge">Program Overview</span>
-                        <h2 class="display-6 fw-bold mb-4" style="color: var(--dark-blue);" data-i18n="partner.hero_title">Bersama Menghadapi Tantangan Persampahan di Indonesia</h2>
+                        <h3 class="fs-3 fw-bold mb-4" style="color: var(--dark-blue); line-height: 1.3;" data-i18n="partner.hero_title">Bersama Menghadapi Tantangan Persampahan di Indonesia</h3>
                         <div class="text-muted mb-3" style="text-align: justify; line-height: 1.8;">
                             <p data-i18n="partner.desc_p1">
                                 Program Clean Oceans through Clean Communities (CLOCC), yang dimiliki oleh Sirk Norge dan didanai oleh NORAD...
@@ -1133,10 +1139,13 @@
                             <div class="swiper-slide h-auto">
                                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden border-top-orange-3">
                                     <div style="height: 200px; overflow: hidden;">
-                                        <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" 
-                                             class="w-100 h-100 object-fit-cover" 
-                                             alt="<?= $portfolio->title_id ?>"
-                                             onerror="this.src='https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?auto=format&fit=crop&w=800&q=80'">
+                                        <?php if ($portfolio->cover_image) : ?>
+                                            <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $portfolio->title_id ?>">
+                                        <?php else : ?>
+                                            <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center">
+                                                <i class="<?= $portfolio->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 80px;"></i>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="card-body p-4 bg-white d-flex flex-column">
                                         <div class="flex-grow-1">
@@ -1204,6 +1213,19 @@
         </div>
       </div>
     </section>
+
+    <!-- HIGHLIGHTS (Sorotan): managed in Admin > Sorotan Implementasi -->
+    <?php
+    $highlightsSection = $data['highlights_section'] ?? null;
+    if ($highlightsSection && (int) $highlightsSection->is_active === 1) {
+        $highlightItems = json_decode($highlightsSection->content_id ?: '[]', true) ?: [];
+        $highlightHeading = '<div class="text-center mb-5">'
+            . '<span class="section-subheader" data-i18n="partner.highlights_subheader">Dokumentasi</span>'
+            . '<h2 class="section-title display-6" data-i18n="partner.highlights_title">Sorotan</h2>'
+            . '</div>';
+        require dirname(__DIR__) . '/partials/highlights.php';
+    }
+    ?>
 
     <!-- TESTIMONIALS SECTION -->
     <!-- <section class="testimonial-section py-5">

@@ -62,9 +62,13 @@
             <div>
                 <div class="stat-label">Permintaan Dokumen</div>
                 <div class="stat-value text-dark"><?= $counts['doc_requests']; ?></div>
-                <div class="stat-trend text-purple">
-                    <i class="fas fa-info-circle me-1"></i> CP & ExSum <span class="text-muted fw-normal">requested</span>
-                </div>
+                <?php if (!empty($counts['doc_followup'])) : ?>
+                    <a href="<?= BASE_URL; ?>admin/collaboration_requests?status=followup" class="stat-trend text-decoration-none d-inline-block fw-bold" style="color: #fd7e14;">
+                        <i class="fas fa-exclamation-circle me-1"></i> <?= $counts['doc_followup'] ?> <span class="fw-normal">perlu tindak lanjut &rarr;</span>
+                    </a>
+                <?php else : ?>
+                    <div class="stat-trend text-success"><i class="fas fa-check-circle me-1"></i> Semua <span class="text-muted fw-normal">sudah ditangani</span></div>
+                <?php endif; ?>
             </div>
         </div>
     </div>

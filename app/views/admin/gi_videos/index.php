@@ -3,7 +3,7 @@
         <div>
             <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEOS</span>
             <h1 class="fw-bold mb-0">Belajar Bersama GoSirk (GI Videos)</h1>
-            <p class="text-muted small mb-0">Kelola video dan playlist yang ditampilkan di bagian "Belajar Bersama GoSirk".</p>
+            <p class="text-muted small mb-0">Kelola video yang ditampilkan di bagian "Belajar Bersama GoSirk".</p>
         </div>
         <a href="<?= BASE_URL; ?>admin/gi_videos_create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">
             <i class="fas fa-plus-circle me-2"></i> Tambah Video GI
@@ -17,14 +17,47 @@
     </div>
 </div>
 
+<?php $section = $data['section'] ?? null; ?>
+<div class="card border-0 shadow-sm rounded-4 mb-4">
+    <div class="card-header bg-white border-bottom p-4">
+        <h5 class="fw-bold mb-0 text-dark">Pengaturan Section</h5>
+        <small class="text-muted">Judul, subjudul, dan link YouTube di bagian "Belajar Bersama GoSirk". Terjemahan bahasa Inggris dibuat otomatis. Kosongkan untuk memakai teks default.</small>
+    </div>
+    <div class="card-body p-4">
+        <form action="<?= BASE_URL; ?>admin/update_gi_video_section" method="POST">
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small text-dark">Judul</label>
+                    <input type="text" name="title_id" class="form-control" placeholder="BELAJAR BERSAMA GOSIRK" value="<?= htmlspecialchars($section->title_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('gi_video_section', 'title_id', 'update') ?>>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label fw-bold small text-dark">Link Tombol YouTube</label>
+                    <input type="url" name="youtube_url" class="form-control" placeholder="https://youtube.com/@gosirk_institute" value="<?= htmlspecialchars($section->content_2_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('gi_video_section', 'youtube_url', 'update') ?>>
+                </div>
+                <div class="col-12">
+                    <label class="form-label fw-bold small text-dark">Subjudul</label>
+                    <textarea name="content_id" class="form-control" rows="2" placeholder="Ruang pembelajaran terbuka untuk berbagi pengalaman, praktik baik, dan pengetahuan pengelolaan sampah dari lapangan." <?= FormRules::attrs('gi_video_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? '', ENT_QUOTES); ?></textarea>
+                </div>
+                <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="is_active" id="videoSectionActive" <?= (!$section || (int) $section->is_active === 1) ? 'checked' : ''; ?>>
+                        <label class="form-check-label small" for="videoSectionActive">Tampilkan section di halaman GoSirk Institute</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                        <i class="fas fa-save me-2"></i> Simpan Pengaturan
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4" style="width: 150px;">Thumbnail</th>
-                    <th>Judul Video/Playlist</th>
-                    <th>Tipe</th>
                     <th>URL YouTube</th>
                     <th class="text-center">Prioritas</th>
                     <th class="text-end pe-4">Aksi</th>
@@ -33,7 +66,7 @@
             <tbody>
                 <?php if (empty($videos)) : ?>
                     <tr>
-                        <td colspan="6" class="text-center py-5">
+                        <td colspan="4" class="text-center py-5">
                             <div class="text-muted">Belum ada video GI.</div>
                         </td>
                     </tr>
@@ -68,16 +101,7 @@
                                 </div>
                             </td>
                             <td>
-                                <div class="fw-bold text-dark"><?= $v->title_id; ?></div>
-                                <div class="extra-small text-muted"><?= $v->title_en; ?></div>
-                            </td>
-                            <td>
-                                <span class="badge <?= $v->type == 'highlight' ? 'bg-warning text-dark' : 'bg-info text-white' ?> border-0 px-2">
-                                    <?= ucfirst($v->type); ?>
-                                </span>
-                            </td>
-                            <td>
-                                <a href="<?= $v->url; ?>" target="_blank" class="small text-truncate d-inline-block" style="max-width: 200px;"><?= $v->url; ?></a>
+                                <a href="<?= $v->url; ?>" target="_blank" class="small text-truncate d-inline-block" style="max-width: 420px;"><?= $v->url; ?></a>
                             </td>
                             <td class="text-center">
                                 <?= $v->order_priority; ?>

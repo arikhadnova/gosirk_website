@@ -30,15 +30,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_comm_title_id" class="form-control" value="<?= $settings['ps_comm_title_id'] ?? 'Community Partnership' ?>">
+                                <input type="text" name="ps_comm_title_id" class="form-control" value="<?= $settings['ps_comm_title_id'] ?? 'Community Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_title_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_comm_sub_id" class="form-control" value="<?= $settings['ps_comm_sub_id'] ?? 'Focal on community empowerment and social impact.' ?>">
+                                <input type="text" name="ps_comm_sub_id" class="form-control" value="<?= $settings['ps_comm_sub_id'] ?? 'Focal on community empowerment and social impact.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_sub_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_comm_desc_id" class="form-control" rows="3"><?= $settings['ps_comm_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_comm_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_comm_desc_id', 'update') ?>><?= $settings['ps_comm_desc_id'] ?? '' ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -68,15 +68,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_acad_title_id" class="form-control" value="<?= $settings['ps_acad_title_id'] ?? 'Academic Partnership' ?>">
+                                <input type="text" name="ps_acad_title_id" class="form-control" value="<?= $settings['ps_acad_title_id'] ?? 'Academic Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_title_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_acad_sub_id" class="form-control" value="<?= $settings['ps_acad_sub_id'] ?? 'Collaboration with research and higher education institutions.' ?>">
+                                <input type="text" name="ps_acad_sub_id" class="form-control" value="<?= $settings['ps_acad_sub_id'] ?? 'Collaboration with research and higher education institutions.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_sub_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_acad_desc_id" class="form-control" rows="3"><?= $settings['ps_acad_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_acad_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_acad_desc_id', 'update') ?>><?= $settings['ps_acad_desc_id'] ?? '' ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -106,15 +106,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_prog_title_id" class="form-control" value="<?= $settings['ps_prog_title_id'] ?? 'Program Partnership' ?>">
+                                <input type="text" name="ps_prog_title_id" class="form-control" value="<?= $settings['ps_prog_title_id'] ?? 'Program Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_title_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_prog_sub_id" class="form-control" value="<?= $settings['ps_prog_sub_id'] ?? 'Strategic partnerships with government and CSR.' ?>">
+                                <input type="text" name="ps_prog_sub_id" class="form-control" value="<?= $settings['ps_prog_sub_id'] ?? 'Strategic partnerships with government and CSR.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_sub_id', 'update') ?>>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_prog_desc_id" class="form-control" rows="3"><?= $settings['ps_prog_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_prog_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_prog_desc_id', 'update') ?>><?= $settings['ps_prog_desc_id'] ?? '' ?></textarea>
                             </div>
                         </div>
                         <div class="col-md-4">

@@ -592,94 +592,59 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 
 <!-- VIDEO SECTION -->
+<?php
+$videoSection = $data['video_section'] ?? null;
+$videoTitleId = ($videoSection->title_id ?? '') ?: 'BELAJAR BERSAMA GOSIRK';
+$videoTitleEn = ($videoSection->title_en ?? '') ?: 'LEARN WITH GOSIRK';
+$videoSubtitleId = ($videoSection->content_id ?? '') ?: 'Ruang pembelajaran terbuka untuk berbagi pengalaman, praktik baik, dan pengetahuan pengelolaan sampah dari lapangan.';
+$videoSubtitleEn = ($videoSection->content_en ?? '') ?: 'Open learning space to share experience, best practices, and waste management knowledge from the field.';
+$videoYoutubeUrl = ($videoSection->content_2_id ?? '') ?: 'https://youtube.com/@gosirk_institute';
+?>
+<?php if (!$videoSection || ((int) ($videoSection->is_active ?? 1)) === 1): ?>
 <section class="py-5 bg-white text-dark video-section">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold" data-i18n="gi.video_title_section">BELAJAR BERSAMA GOSIRK</h2>
-            <p class="text-muted mx-auto" style="max-width: 800px;" data-i18n="gi.video_subtitle_section">
-                Ruang pembelajaran terbuka untuk berbagi pengalaman, praktik baik, dan pengetahuan pengelolaan sampah dari lapangan.
+            <h2 class="fw-bold" data-lang-id="<?= htmlspecialchars($videoTitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($videoTitleEn, ENT_QUOTES) ?>"><?= htmlspecialchars($videoTitleId) ?></h2>
+            <p class="text-muted mx-auto" style="max-width: 800px;" data-lang-id="<?= htmlspecialchars($videoSubtitleId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($videoSubtitleEn, ENT_QUOTES) ?>">
+                <?= htmlspecialchars($videoSubtitleId) ?>
             </p>
         </div>
 
-        <?php 
-        $hVid = $data['highlight_video'];
-        if ($hVid) : 
-            $yt_id = null;
-            preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $hVid->url, $match);
-            $yt_id = isset($match[1]) ? $match[1] : null;
-            
-            $thumb = '';
-            if ($hVid->thumbnail) {
-                $thumb = ASSETS_URL . 'img/gi/videos/' . $hVid->thumbnail;
-            } elseif ($yt_id) {
-                $thumb = "https://img.youtube.com/vi/$yt_id/maxresdefault.jpg";
-            }
-        ?>
-        <!-- Highlight Video -->
-        <div class="row align-items-center g-5 mb-5">
-            <div class="col-lg-6">
-                <div class="position-relative rounded-4 overflow-hidden shadow-lg border border-light video-play-trigger" 
-                     role="button" 
-                     data-bs-toggle="modal" 
-                     data-bs-target="#videoModal" 
-                     data-video-url="<?= $hVid->url ?>"
-                     data-video-title-id="<?= htmlspecialchars($hVid->title_id) ?>"
-                     data-video-title-en="<?= htmlspecialchars($hVid->title_en) ?>">
-                    <div class="bg-dark ratio ratio-16x9 d-flex align-items-center justify-content-center overflow-hidden">
-                        <?php if ($thumb) : ?>
-                            <img src="<?= $thumb ?>" class="w-100 h-100 object-fit-cover" alt="<?= $hVid->title_id ?>">
-                        <?php else : ?>
-                            <div class="bg-dark w-100 h-100"></div>
-                        <?php endif; ?>
-                        
-                        <!-- Play Icon Overlay -->
-                        <div class="play-overlay">
-                            <div class="play-btn-circle">
-                                <i class="bi bi-play-fill text-white fs-1"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-6">
-                <span class="highlight-badge mb-3 d-inline-block" data-i18n="gi.highlight_badge">Highlight</span>
-                <h3 class="fw-bold mb-3" data-lang-id="<?= htmlspecialchars($hVid->title_id) ?>" data-lang-en="<?= htmlspecialchars($hVid->title_en) ?>"><?= $hVid->title_id ?></h3>
-                <p class="text-muted mb-4 text-truncate-4" data-lang-id="<?= htmlspecialchars($hVid->description_id) ?>" data-lang-en="<?= htmlspecialchars($hVid->description_en) ?>">
-                    <?= $hVid->description_id ?>
-                </p>
-                <!-- Button removed - play via thumbnail click -->
-            </div>
-        </div>
-        <?php endif; ?>
-
-        <!-- Playlist Grid -->
+        <!-- Video Grid -->
         <div class="row g-4 mb-5">
-            <?php if (!empty($data['playlist_videos'])) : ?>
-                <?php foreach ($data['playlist_videos'] as $pVid) : 
-                    $p_yt_id = null;
-                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $pVid->url, $match);
-                    $p_yt_id = isset($match[1]) ? $match[1] : null;
+            <?php if (!empty($data['videos'])) : ?>
+                <?php foreach ($data['videos'] as $vid) :
+                    preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid->url, $match);
+                    $yt_id = $match[1] ?? null;
 
-                    $p_thumb = '';
-                    if ($pVid->thumbnail) {
-                        $p_thumb = ASSETS_URL . 'img/gi/videos/' . $pVid->thumbnail;
-                    } elseif ($p_yt_id) {
-                        $p_thumb = "https://img.youtube.com/vi/$p_yt_id/mqdefault.jpg";
+                    if ($vid->thumbnail) {
+                        $thumb = ASSETS_URL . 'img/gi/videos/' . $vid->thumbnail;
+                    } elseif ($yt_id) {
+                        $thumb = "https://img.youtube.com/vi/$yt_id/hqdefault.jpg";
                     } else {
-                        $p_thumb = "https://placehold.co/400x250/555/eee?text=Video";
+                        $thumb = '';
                     }
                 ?>
-                <div class="col-lg-3 col-md-6">
-                    <div class="card playlist-card shadow-sm bg-light-subtle h-100">
-                        <div class="playlist-thumb">
-                            <img src="<?= $p_thumb ?>" alt="<?= $pVid->title_id ?>">
-                        </div>
-                        <div class="card-body p-4 text-center d-flex flex-column">
-                            <h5 class="fw-bold mb-3 text-truncate-2" data-lang-id="<?= htmlspecialchars($pVid->title_id) ?>" data-lang-en="<?= htmlspecialchars($pVid->title_en) ?>"><?= $pVid->title_id ?></h5>
-                            <p class="text-muted small mb-4 flex-grow-1 text-truncate-3" data-lang-id="<?= htmlspecialchars($pVid->description_id) ?>" data-lang-en="<?= htmlspecialchars($pVid->description_en) ?>">
-                                <?= $pVid->description_id ?>
-                            </p>
-                            <a href="<?= $pVid->url ?>" target="_blank" class="btn btn-playlist-outline" data-i18n="gi.btn_playlist">Lihat Playlist</a>
+                <div class="col-lg-4 col-md-6">
+                    <div class="card video-card border-0 shadow-sm rounded-4 overflow-hidden">
+                        <div class="video-play-trigger"
+                             role="button"
+                             aria-label="<?= htmlspecialchars($vid->title_id ?: 'Putar video') ?>"
+                             data-bs-toggle="modal"
+                             data-bs-target="#videoModal"
+                             data-video-url="<?= htmlspecialchars($vid->url) ?>"
+                             data-video-title-id="<?= htmlspecialchars($vid->title_id) ?>"
+                             data-video-title-en="<?= htmlspecialchars($vid->title_en) ?>">
+                            <div class="ratio ratio-16x9 bg-dark">
+                                <?php if ($thumb) : ?>
+                                    <img src="<?= $thumb ?>" class="w-100 h-100 object-fit-cover" alt="<?= htmlspecialchars($vid->title_id ?: 'Video GoSirk Institute') ?>" loading="lazy">
+                                <?php endif; ?>
+                                <div class="play-overlay">
+                                    <div class="play-btn-circle small">
+                                        <i class="bi bi-play-fill text-white fs-3"></i>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -694,12 +659,13 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- YouTube Button -->
         <div class="text-center">
             <div class="small text-muted mb-2" data-i18n="gi.video_more_insight">More Insight On</div>
-            <a href="https://youtube.com/@gosirk_institute" target="_blank" class="btn btn-youtube-red d-inline-flex align-items-center gap-2">
+            <a href="<?= htmlspecialchars($videoYoutubeUrl, ENT_QUOTES) ?>" target="_blank" rel="noopener" class="btn btn-youtube-red d-inline-flex align-items-center gap-2">
                 <i class="bi bi-youtube fs-5"></i> <span data-i18n="gi.video_youtube_btn">Youtube GoSirk Institute</span>
             </a>
         </div>
     </div>
 </section>
+<?php endif; ?>
 <!-- Video Modal -->
 <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="videoModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">

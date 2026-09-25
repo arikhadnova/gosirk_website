@@ -25,11 +25,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold">Judul Artikel</label>
-                        <input type="text" name="title_id" class="form-control" value="<?= $article->title_id; ?>" required>
+                        <input type="text" name="title_id" class="form-control" value="<?= $article->title_id; ?>" <?= FormRules::attrs('article', 'title_id', 'update') ?>>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Konten Artikel</label>
-                        <textarea name="content_id" class="form-control" rows="15"><?= $article->content_id; ?></textarea>
+                        <textarea name="content_id" class="form-control" rows="15" <?= FormRules::attrs('article', 'content_id', 'update') ?>><?= $article->content_id; ?></textarea>
                         <div class="form-text text-muted mt-2">
                             <i class="fas fa-info-circle me-1"></i> Kapasitas maksimal konten adalah 16MB (MediumText).
                         </div>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label">Tags</label>
-                        <input type="text" name="tags" class="form-control" value="<?= $article->tags ?? ''; ?>" placeholder="Contoh: Environment, Sustainability, GoSirk">
+                        <input type="text" name="tags" class="form-control" value="<?= $article->tags ?? ''; ?>" placeholder="Contoh: Environment, Sustainability, GoSirk" <?= FormRules::attrs('article', 'tags', 'update') ?>>
                         <div class="text-muted small mt-1">Pisahkan dengan koma (,)</div>
                     </div>
                     <div class="mb-4">

@@ -12,18 +12,18 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Nama Pemberi Testimoni</label>
-                            <input type="text" name="name" class="form-control bg-light border-0" placeholder="Contoh: Drs. Budi Santoso" required>
+                            <input type="text" name="name" class="form-control bg-light border-0" placeholder="Contoh: Drs. Budi Santoso" <?= FormRules::attrs('testimonial', 'name', 'store') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Status / Aktif</label>
-                            <select name="status" class="form-select bg-light border-0">
+                            <select name="status" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'status', 'store') ?>>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
                             </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Kategori Halaman</label>
-                            <select name="page" class="form-select bg-light border-0">
+                            <select name="page" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'page', 'store') ?>>
 
                                 <option value="gi">Capacity Building (GI)</option>
                                 <option value="implentasi_partner">Implementasi Partner</option>
@@ -35,12 +35,12 @@
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
-                            <input type="text" name="role_id" class="form-control bg-light border-0" placeholder="Contoh: Kepala Desa" required>
+                            <input type="text" name="role_id" class="form-control bg-light border-0" placeholder="Contoh: Kepala Desa" <?= FormRules::attrs('testimonial', 'role_id', 'store') ?>>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
-                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis testimoni dalam bahasa Indonesia..." required></textarea>
+                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis testimoni dalam bahasa Indonesia..." <?= FormRules::attrs('testimonial', 'content_id', 'store') ?>></textarea>
                         </div>
                         <div class="col-12">
                             <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

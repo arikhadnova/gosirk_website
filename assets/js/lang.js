@@ -94,7 +94,8 @@
             if (translation) {
                 if (element.hasAttribute('data-i18n-html') || translation.includes('<')) {
                     element.innerHTML = translation;
-                } else if (element.tagName === 'INPUT' && element.getAttribute('placeholder')) {
+                } else if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                     // Form fields: translate the placeholder, never the value the visitor types
                      element.placeholder = translation;
                 } else {
                     element.textContent = translation;

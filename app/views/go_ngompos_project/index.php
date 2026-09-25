@@ -165,56 +165,49 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <?php endif; ?>
 
+<?php
+$programsSection = $data['programs_section'] ?? null;
+$programs = $data['programs'] ?? [];
+if ((!$programsSection || (int) $programsSection->is_active === 1) && $programs) :
+    // Admin-defined title/subtitle, otherwise the built-in bilingual defaults
+    $headingAttrs = function ($id, $en, $i18nKey) {
+        return trim((string) $id) !== ''
+            ? 'data-lang-id="' . htmlspecialchars($id, ENT_QUOTES) . '" data-lang-en="' . htmlspecialchars($en ?: $id, ENT_QUOTES) . '"'
+            : 'data-i18n="' . $i18nKey . '"';
+    };
+?>
 <section class="section bg-light-subtle" id="programs">
   <div class="container">
     <div class="section-title-wrapper text-center">
       <div class="title-bg" data-i18n="gnp.programs.title_bg">Programs</div>
-      <h4 class="fw-bold fs-2 mb-2 text-success" data-i18n="gnp.programs.title">PROGRAM UTAMA</h4>
-      <p class="text-muted mx-auto" style="max-width: 600px;" data-i18n="gnp.programs.subtitle">Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.</p>
+      <h4 class="fw-bold fs-2 mb-2 text-success" <?= $headingAttrs($programsSection->title_id ?? '', $programsSection->title_en ?? '', 'gnp.programs.title') ?>><?= htmlspecialchars(($programsSection->title_id ?? '') ?: 'PROGRAM UTAMA') ?></h4>
+      <p class="text-muted mx-auto" style="max-width: 600px;" <?= $headingAttrs($programsSection->content_id ?? '', $programsSection->content_en ?? '', 'gnp.programs.subtitle') ?>><?= htmlspecialchars(($programsSection->content_id ?? '') ?: 'Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.') ?></p>
     </div>
 
     <div class="row g-4 justify-content-center">
+      <?php foreach ($programs as $p) : [, $badgeStyle] = GnpProgram_model::BADGE_COLORS[$p->badge_color] ?? GnpProgram_model::BADGE_COLORS['success']; ?>
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=800" alt="Edukasi Ngompos">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-success text-white rounded-pill small fw-bold" data-i18n="gnp.programs.p1_badge">Edukasi</div>
+            <?php if ($p->image) : ?>
+              <img src="<?= htmlspecialchars(GnpProgram_model::imageUrl($p->image)) ?>" alt="<?= htmlspecialchars($p->title_id) ?>" loading="lazy">
+            <?php endif; ?>
+            <?php if ($p->badge_id) : ?>
+              <div class="position-absolute top-0 start-0 m-3 px-3 py-1 text-white rounded-pill small fw-bold" style="<?= $badgeStyle ?>"
+                   data-lang-id="<?= htmlspecialchars($p->badge_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->badge_en ?: $p->badge_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->badge_id) ?></div>
+            <?php endif; ?>
           </div>
           <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="gnp.programs.p1_title">Kelas Ngompos</h6>
-            <p class="text-muted small" data-i18n="gnp.programs.p1_desc">Sesi belajar praktik pemilahan organik dan metode kompos sederhana.</p>
+            <h6 class="fw-bold" data-lang-id="<?= htmlspecialchars($p->title_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->title_en ?: $p->title_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->title_id) ?></h6>
+            <p class="text-muted small" data-lang-id="<?= htmlspecialchars($p->description_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->description_en ?: $p->description_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->description_id) ?></p>
           </div>
         </div>
       </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=800" alt="Pendampingan Kompos">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-bold" data-i18n="gnp.programs.p2_badge">Pendampingan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="gnp.programs.p2_title">Kompos Komunitas</h6>
-            <p class="text-muted small" data-i18n="gnp.programs.p2_desc">Pendampingan titik kompos bersama di lingkungan warga atau institusi.</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&q=80&w=800" alt="Pemanfaatan Kompos">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 text-white rounded-pill small fw-bold" style="background-color: var(--ggc-orange);" data-i18n="gnp.programs.p3_badge">Pemanfaatan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="gnp.programs.p3_title">Kebun Sirkular</h6>
-            <p class="text-muted small" data-i18n="gnp.programs.p3_desc">Pemanfaatan kompos untuk tanaman pangan, toga, dan ruang hijau komunitas.</p>
-          </div>
-        </div>
-      </div>
+      <?php endforeach; ?>
     </div>
   </div>
 </section>
+<?php endif; ?>
 
 <section class="cta-ggc text-center">
   <div class="container">
@@ -224,10 +217,108 @@ document.addEventListener('DOMContentLoaded', function() {
         <p class="mb-5 lead opacity-75" data-i18n="gnp.cta.desc">
           Ubah sisa organik menjadi dampak baik bagi lingkungan, tanaman, dan komunitas.
         </p>
-        <a href="<?= BASE_URL ?>contact" class="btn btn-ggc-light btn-lg shadow-lg" data-i18n="gnp.cta.btn">
-          <i class="bi bi-chat-dots-fill me-2"></i> Hubungi Kami
-        </a>
+        <div class="d-flex flex-column align-items-center gap-3">
+          <?php if (!empty($data['concept_notes'])) : ?>
+          <button type="button" class="btn btn-warning btn-cta-yellow rounded-pill px-4 py-2 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#conceptNoteModal">
+            <span class="material-symbols-outlined">description</span>
+            <span data-i18n="gnp.cta.button_partnership" data-i18n-html="true">We are calling for partnership. <i class="text-decoration-underline">Get the concept note. Contact us.</i></span>
+          </button>
+          <?php endif; ?>
+          <a href="<?= BASE_URL ?>contact" class="btn btn-ggc-light btn-lg shadow-lg" data-i18n="gnp.cta.btn">
+            <i class="bi bi-chat-dots-fill me-2"></i> Hubungi Kami
+          </a>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
+<?php if (!empty($data['concept_notes'])) : $conceptNotes = $data['concept_notes']; ?>
+<!-- Concept Note request modal (documents of type "Concept Note" from Admin > Documents) -->
+<div class="modal fade" id="conceptNoteModal" tabindex="-1" aria-labelledby="conceptNoteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="conceptNoteModalLabel" data-i18n="gnp.concept_modal.title">Dapatkan Concept Note</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body text-start">
+        <p class="mb-4 text-muted small" data-i18n="gnp.concept_modal.desc">Silakan isi formulir di bawah ini. Concept note akan dikirim ke email Anda.</p>
+        <form id="conceptNoteForm">
+          <?php if (count($conceptNotes) === 1) : ?>
+            <input type="hidden" name="doc_id" value="<?= (int) $conceptNotes[0]->id ?>">
+            <div class="alert alert-warning border-0 small mb-4">
+              <i class="bi bi-file-earmark-text me-1"></i>
+              <span data-i18n="gnp.concept_modal.doc">Dokumen</span>: <strong><?= htmlspecialchars($conceptNotes[0]->title_id) ?></strong>
+            </div>
+          <?php else : ?>
+            <div class="mb-3">
+              <label for="cnDoc" class="form-label" data-i18n="gnp.concept_modal.doc">Dokumen</label>
+              <select class="form-select" id="cnDoc" name="doc_id" data-label="Dokumen" required>
+                <?php foreach ($conceptNotes as $doc) : ?>
+                  <option value="<?= (int) $doc->id ?>"><?= htmlspecialchars($doc->title_id) ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          <?php endif; ?>
+          <div class="mb-3">
+            <label for="cnName" class="form-label" data-i18n="home.modal.name">Nama Lengkap</label>
+            <input type="text" class="form-control" id="cnName" placeholder="Masukkan nama Anda" data-i18n="home.modal.name_placeholder" <?= FormRules::attrs('doc_request', 'name') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="cnEmail" class="form-label" data-i18n="home.modal.email">Alamat Email</label>
+            <input type="email" class="form-control" id="cnEmail" placeholder="name@example.com" <?= FormRules::attrs('doc_request', 'email') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="cnOrganization" class="form-label" data-i18n="home.modal.org">Instansi / Perusahaan</label>
+            <input type="text" class="form-control" id="cnOrganization" placeholder="Nama instansi Anda" data-i18n="home.modal.org_placeholder" <?= FormRules::attrs('doc_request', 'organization') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="cnJabatan" class="form-label" data-i18n="home.modal.position">Jabatan</label>
+            <input type="text" class="form-control" id="cnJabatan" placeholder="Jabatan Anda" data-i18n="home.modal.position_placeholder" <?= FormRules::attrs('doc_request', 'jabatan') ?>>
+          </div>
+          <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-warning rounded-pill text-white fw-bold" data-i18n="home.modal.submit">Kirim</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('conceptNoteForm');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        const original = btn.innerHTML;
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span> ' + ((localStorage.getItem('gosirk_language') || 'en') === 'id' ? 'Mengirim...' : 'Sending...');
+
+        const fd = new FormData();
+        fd.append('doc_id', form.querySelector('[name="doc_id"]').value);
+        fd.append('name', document.getElementById('cnName').value);
+        fd.append('email', document.getElementById('cnEmail').value);
+        fd.append('organization', document.getElementById('cnOrganization').value);
+        fd.append('jabatan', document.getElementById('cnJabatan').value);
+
+        fetch('<?= BASE_URL ?>collaboration/request', { method: 'POST', body: fd })
+            .then((r) => r.json())
+            .then((data) => {
+                if (data.status === 'success') {
+                    Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, confirmButtonColor: '#29b471' }).then(() => {
+                        bootstrap.Modal.getInstance(document.getElementById('conceptNoteModal')).hide();
+                        form.reset();
+                    });
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Oops!', text: data.message });
+                }
+            })
+            .catch(() => Swal.fire({ icon: 'error', title: 'Error!', text: 'Terjadi kesalahan sistem.' }))
+            .finally(() => { btn.disabled = false; btn.innerHTML = original; });
+    });
+});
+</script>
+<?php endif; ?>

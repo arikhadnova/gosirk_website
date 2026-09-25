@@ -28,6 +28,7 @@
                 <th>Judul Dokumen</th>
                 <th>Tipe</th>
                 <th class="text-center">Status</th>
+                <th class="text-center">Pengiriman</th>
                 <th>Terdaftar</th>
                 <th class="text-end">Aksi</th>
             </tr>
@@ -35,7 +36,7 @@
         <tbody>
             <?php if (empty($docs)) : ?>
                 <tr>
-                    <td colspan="6" class="text-center py-5">
+                    <td colspan="7" class="text-center py-5">
                         <div class="text-muted">Belum ada dokumen kolaborasi. Klik khusus "Tambah Dokumen" untuk memulai.</div>
                     </td>
                 </tr>
@@ -53,13 +54,20 @@
                         </td>
                         <td>
                             <span class="badge bg-light text-muted border-0 extra-small px-3">
-                                <?= $doc->type == 'executive_summary' ? 'Executive Summary' : 'Company Profile'; ?>
+                                <?= Collaboration_model::DOC_TYPES[$doc->type] ?? $doc->type; ?>
                             </span>
                         </td>
                         <td class="text-center">
                             <span class="badge <?= $doc->status == 'active' ? 'bg-success' : 'bg-danger'; ?> bg-opacity-10 <?= $doc->status == 'active' ? 'text-success' : 'text-danger'; ?> px-3 rounded-pill extra-small">
                                 <?= ucfirst($doc->status); ?>
                             </span>
+                        </td>
+                        <td class="text-center">
+                            <?php if (((int) ($doc->auto_send ?? 1)) === 1) : ?>
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 rounded-pill extra-small"><i class="fas fa-paper-plane me-1"></i> Otomatis</span>
+                            <?php else : ?>
+                                <span class="badge bg-warning bg-opacity-10 text-warning px-3 rounded-pill extra-small"><i class="fas fa-user-check me-1"></i> Manual</span>
+                            <?php endif; ?>
                         </td>
                         <td><span class="text-muted extra-small"><?= date('d M Y', strtotime($doc->created_at)); ?></span></td>
                         <td class="text-end">

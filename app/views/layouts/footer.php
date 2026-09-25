@@ -16,7 +16,7 @@ if (!isset($settings)) {
                     <h6 data-i18n="footer.menu">Menu</h6>
                     <a href="<?= BASE_URL ?>gi" data-i18n="nav.capacity_building">Peningkatan Kapasitas</a>
                     <a href="<?= BASE_URL ?>partnership" data-i18n="nav.program_dev">Pengembangan Program & Implementasi Partner</a>
-                    <a href="<?= BASE_URL ?>consulting" data-i18n="nav.consultancy">Konsultansi</a>
+                    <a href="<?= BASE_URL ?>konsultan" data-i18n="nav.consultancy">Konsultansi</a>
                     <a href="<?= BASE_URL ?>partnership" data-i18n="nav.partnership">Kerjasama</a>
                     <a href="<?= BASE_URL ?>about" data-i18n="nav.about">Tentang</a>
                     <a href="<?= BASE_URL ?>gi" data-i18n="nav.gi">GoSirk Institute</a>
@@ -37,15 +37,14 @@ if (!isset($settings)) {
                 <div class="col-md-3 mb-4">
                     <h6 data-i18n="footer.contact">Hubungi kami</h6>
                     <?php
-                        $whatsappNumber = $settings['contact_whatsapp'] ?? '6282286002109';
-                        $whatsappNumberClean = preg_replace('/[^0-9]/', '', $whatsappNumber);
-                        $whatsappLink = "https://wa.me/{$whatsappNumberClean}";
+                        $whatsappNumberClean = $this->waNumber();
+                        $whatsappLink = $this->waLink();
                     ?>
                     <p class="small fst-italic mb-1">Gratis konsultasi layanan</p>
                     <div class="d-flex align-items-start mb-2 gap-2">
                         <i class="fab fa-whatsapp"></i>
                         <div>
-                            <a href="<?= $whatsappLink ?>" target="_blank" class="text-decoration-none">+<?= ltrim($whatsappNumberClean, '0') ?></a>
+                            <a href="<?= $whatsappLink ?>" target="_blank" class="text-decoration-none">+<?= $whatsappNumberClean ?></a>
                         </div>
                     </div>
                     <p><i class="fas fa-envelope me-2"></i> <?= $settings['contact_email'] ?? 'medcom.gosirk@gmail.com' ?></p>
@@ -195,6 +194,68 @@ if (!isset($settings)) {
                   target.toFixed(decimals);
           });
       });
+    </script>
+
+    <style>
+      /* Required-field marker on public forms (CSS so the language switcher can't remove it) */
+      label.is-required::after { content: " *"; color: #dc3545; font-weight: 700; }
+    </style>
+    <script>
+      // Public forms: required markers + inline validation messages in the current site language
+      (function () {
+        const lang = () => (localStorage.getItem('gosirk_language') || 'en') === 'id' ? 'id' : 'en';
+        const T = {
+          id: { required: (l) => `${l} wajib diisi.`, min: (l, n, c) => `${l} minimal ${n} karakter (sekarang ${c}).`, max: (l, n) => `${l} maksimal ${n} karakter.`, email: (l) => `${l} harus berupa alamat email yang valid.`, title: 'Data belum lengkap' },
+          en: { required: (l) => `${l} is required.`, min: (l, n, c) => `${l} must be at least ${n} characters (currently ${c}).`, max: (l, n) => `${l} must be at most ${n} characters.`, email: (l) => `${l} must be a valid email address.`, title: 'Please complete the form' }
+        };
+
+        const labelFor = (el) => (el.id && document.querySelector(`label[for="${el.id}"]`)) || (el.closest('.mb-3, .mb-4, [class*="col-"]') || document).querySelector('label');
+        const labelText = (el) => { const l = labelFor(el); return (l ? l.textContent : (el.dataset.label || '')).replace(/\*\s*$/, '').trim(); };
+
+        const message = (el) => {
+          const t = T[lang()], l = labelText(el), v = el.validity;
+          if (v.valueMissing) return t.required(l);
+          if (v.typeMismatch && el.type === 'email') return t.email(l);
+          if (v.tooShort) return t.min(l, el.minLength, el.value.length);
+          if (v.tooLong) return t.max(l, el.maxLength);
+          return el.validationMessage;
+        };
+
+        const clear = (el) => {
+          el.classList.remove('is-invalid');
+          const fb = el.parentElement.querySelector(':scope > .invalid-feedback.js-feedback');
+          if (fb) fb.remove();
+        };
+        const show = (el, msg) => {
+          el.classList.add('is-invalid');
+          let fb = el.parentElement.querySelector(':scope > .invalid-feedback.js-feedback');
+          if (!fb) { fb = document.createElement('div'); fb.className = 'invalid-feedback js-feedback d-block'; el.insertAdjacentElement('afterend', fb); }
+          fb.textContent = msg;
+        };
+
+        document.querySelectorAll('form').forEach((form) => {
+          const fields = [...form.querySelectorAll('input, textarea, select')].filter((el) => el.hasAttribute('data-label'));
+          if (!fields.length) return;
+
+          fields.forEach((el) => { if (el.required) { const l = labelFor(el); if (l) l.classList.add('is-required'); } });
+
+          form.setAttribute('novalidate', 'novalidate');
+          form.addEventListener('submit', (e) => {
+            fields.forEach(clear);
+            const invalid = fields.filter((el) => !el.checkValidity());
+            if (!invalid.length) return;
+            // Stop the page's own submit handler (it sends the form with fetch)
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            invalid.forEach((el) => show(el, message(el)));
+            invalid[0].focus();
+          }, true);
+          form.addEventListener('input', (e) => { if (e.target.classList.contains('is-invalid') && e.target.checkValidity()) clear(e.target); });
+          // Start clean each time a modal form is reopened
+          const modal = form.closest('.modal');
+          if (modal) modal.addEventListener('hidden.bs.modal', () => fields.forEach(clear));
+        });
+      })();
     </script>
 </body>
 </html>

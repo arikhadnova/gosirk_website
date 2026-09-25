@@ -244,6 +244,26 @@
     color: var(--ggc-primary-dark);
 }
 
+/* Yellow "calling for ..." CTA button (same as home) */
+.btn-cta-yellow {
+    background-color: #f6c23e;
+    border: none;
+    color: #fff !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    min-width: 300px;
+    justify-content: center;
+}
+.btn-cta-yellow:hover {
+    background-color: #dfa115;
+    transform: translateY(-2px);
+    color: #fff !important;
+}
+.btn-cta-yellow .material-symbols-outlined {
+    margin-right: 5px;
+    font-size: 20px;
+}
+
 /* Section Headings */
 .section-title-wrapper {
     position: relative;

@@ -146,11 +146,11 @@
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-dark">Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control" value="<?= $user->name ?>" required>
+                            <input type="text" name="name" class="form-control" value="<?= $user->name ?>" <?= FormRules::attrs('profile', 'name', 'update') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-dark">Username</label>
-                            <input type="text" name="username" class="form-control" value="<?= $user->username ?>" required>
+                            <input type="text" name="username" class="form-control" value="<?= $user->username ?>" <?= FormRules::attrs('profile', 'username', 'update') ?>>
                         </div>
                         <div class="col-12 mt-4 text-end">
                             <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">
@@ -175,15 +175,15 @@
                     <div class="row g-4">
                         <div class="col-12">
                             <label class="form-label small fw-bold text-dark">Password Saat Ini</label>
-                            <input type="password" name="current_password" class="form-control" placeholder="Masukkan password lama untuk verifikasi">
+                            <input type="password" name="current_password" class="form-control" placeholder="Masukkan password lama untuk verifikasi" <?= FormRules::attrs('password_change', 'current_password', 'update') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-dark">Password Baru</label>
-                            <input type="password" name="new_password" class="form-control" placeholder="Minimal 8 karakter">
+                            <input type="password" name="new_password" class="form-control" placeholder="Minimal 8 karakter" <?= FormRules::attrs('password_change', 'new_password', 'update') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label small fw-bold text-dark">Konfirmasi Password</label>
-                            <input type="password" name="confirm_password" class="form-control" placeholder="Ulangi password baru">
+                            <input type="password" name="confirm_password" class="form-control" placeholder="Ulangi password baru" <?= FormRules::attrs('password_change', 'confirm_password', 'update') ?>>
                         </div>
                         <div class="col-12 mt-4 text-end">
                             <button type="submit" class="btn btn-primary px-4 py-2 fw-bold">

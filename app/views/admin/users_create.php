@@ -21,14 +21,14 @@
                 <form action="<?= BASE_URL; ?>admin/users_store" method="POST">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" placeholder="Contoh: John Doe" required>
+                        <input type="text" name="name" class="form-control" placeholder="Contoh: John Doe" <?= FormRules::attrs('user', 'name', 'store') ?>>
                     </div>
                     
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Username</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-at"></i></span>
-                            <input type="text" name="username" class="form-control border-start-0 ps-0" placeholder="johndoe" required>
+                            <input type="text" name="username" class="form-control border-start-0 ps-0" placeholder="johndoe" <?= FormRules::attrs('user', 'username', 'store') ?>>
                         </div>
                         <div class="text-muted extra-small mt-1">Gunakan huruf kecil, angka, atau underscore.</div>
                     </div>
@@ -37,7 +37,7 @@
                         <label class="form-label small fw-bold text-dark">Password</label>
                         <div class="input-group">
                             <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-key"></i></span>
-                            <input type="password" name="password" id="password" class="form-control border-start-0 ps-0" placeholder="Min. 6 karakter" required>
+                            <input type="password" name="password" id="password" class="form-control border-start-0 ps-0" placeholder="Min. 6 karakter" <?= FormRules::attrs('user', 'password', 'store') ?>>
                             <button class="btn btn-light border border-start-0 text-muted" type="button" id="togglePassword">
                                 <i class="fas fa-eye-slash"></i>
                             </button>

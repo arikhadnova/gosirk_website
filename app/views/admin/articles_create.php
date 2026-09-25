@@ -24,11 +24,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Artikel</label>
-                        <input type="text" name="title_id" class="form-control" placeholder="Contoh: Menuju Indonesia Bebas Sampah" required>
+                        <input type="text" name="title_id" class="form-control" placeholder="Contoh: Menuju Indonesia Bebas Sampah" <?= FormRules::attrs('article', 'title_id', 'store') ?>>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Konten Artikel</label>
-                        <textarea name="content_id" class="form-control" rows="15" placeholder="Tulis isi artikel di sini..."></textarea>
+                        <textarea name="content_id" class="form-control" rows="15" placeholder="Tulis isi artikel di sini..." <?= FormRules::attrs('article', 'content_id', 'store') ?>></textarea>
                         <div class="form-text text-muted mt-2">
                             <i class="fas fa-info-circle me-1"></i> Kapasitas teks maksimal 16MB.
                         </div>
@@ -69,7 +69,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Tags</label>
-                        <input type="text" name="tags" class="form-control" placeholder="Contoh: Environment, Sustainability, GoSirk">
+                        <input type="text" name="tags" class="form-control" placeholder="Contoh: Environment, Sustainability, GoSirk" <?= FormRules::attrs('article', 'tags', 'store') ?>>
                         <div class="text-muted extra-small mt-1">Pisahkan dengan koma (,)</div>
                     </div>
                     <div class="mb-4">

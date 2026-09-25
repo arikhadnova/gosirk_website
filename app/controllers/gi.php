@@ -11,10 +11,10 @@ class gi extends Controller {
             'services' => $this->model('GiService_model')->getAll(),
             'testimonials' => $this->model('Testimonial_model')->getByPage('gi'),
             'faqs' => $this->model('Faq_model')->getByPage('gi'),
-            'highlight_video' => $this->model('GiVideo_model')->getHighlight(),
-            'playlist_videos' => $this->model('GiVideo_model')->getByType('playlist'),
+            'videos' => $this->model('GiVideo_model')->getAll(),
             'hero_transition' => $this->model('Setting_model')->getByKey('gi_hero_transition') ?: 'slide',
-            'about_section' => $this->model('PageSection_model')->getByPageAndSection('gi', 'about')
+            'about_section' => $this->model('PageSection_model')->getByPageAndSection('gi', 'about'),
+            'video_section' => $this->model('PageSection_model')->getByPageAndSection('gi', 'videos')
         ];
         $this->views('layouts/header', $data);
         $this->views('gi/index', $data);

@@ -84,9 +84,7 @@
                                     <div class="d-flex gap-2 mb-2">
                                         <?php if ($pub->is_paid) : ?>
                                             <?php 
-                                                $wa_number = "6282286002109";
-                                                $message = urlencode("Halo GoSirk, saya tertarik untuk membeli publikasi: " . $pub->title_id);
-                                                $wa_link = "https://wa.me/{$wa_number}?text={$message}";
+                                                $wa_link = $this->waLink("Halo GoSirk, saya tertarik untuk membeli publikasi: " . $pub->title_id);
                                             ?>
                                             <a href="<?= $wa_link ?>" target="_blank" class="btn btn-sm btn-primary rounded-pill flex-grow-1 py-2 d-flex align-items-center justify-content-center gap-2" data-i18n="publication.btn.buy_wa">
                                                 <i class="fab fa-whatsapp"></i> Buy via WhatsApp

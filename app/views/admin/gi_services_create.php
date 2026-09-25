@@ -20,12 +20,12 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul Layanan</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Training dan Workshop" required>
+                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Training dan Workshop" <?= FormRules::attrs('gi_service', 'title_id', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Deskripsi Singkat</label>
-                        <textarea name="description_id" class="form-control" rows="3" placeholder="Ringkasan layanan untuk kartu di halaman utama..."></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" placeholder="Ringkasan layanan untuk kartu di halaman utama..." <?= FormRules::attrs('gi_service', 'description_id', 'store') ?>></textarea>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -55,7 +55,7 @@
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark"><i class="fas fa-align-left me-1 text-primary"></i> KONTEN DETAIL (Rich Text)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="15"></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="15" <?= FormRules::attrs('gi_service', 'detail_content_id', 'store') ?>></textarea>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -89,7 +89,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Kategori</label>
-                        <select name="category" class="form-select" required>
+                        <select name="category" class="form-select" <?= FormRules::attrs('gi_service', 'category', 'store') ?>>
                             <option value="training">Training</option>
                             <option value="publikasi-riset">Publikasi dan Riset</option>
                             <option value="fasilitasi-knowledge">Fasilitasi & Knowledge Exchange</option>
@@ -102,16 +102,16 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Urutan Prioritas</label>
-                        <input type="number" name="order_priority" class="form-control" value="0" min="0">
+                        <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('gi_service', 'order_priority', 'store') ?>>
                     </div>
                     <hr class="my-3 border-dashed">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Lokasi Layanan</label>
-                        <input type="text" name="location_id" class="form-control" placeholder="Contoh: Online / Offline (Disesuaikan)" value="Online / Offline (Disesuaikan)">
+                        <input type="text" name="location_id" class="form-control" placeholder="Contoh: Online / Offline (Disesuaikan)" value="Online / Offline (Disesuaikan)" <?= FormRules::attrs('gi_service', 'location_id', 'store') ?>>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Sifat Layanan</label>
-                        <input type="text" name="service_type_id" class="form-control" placeholder="Contoh: Profesional & Adaptif" value="Profesional & Adaptif">
+                        <input type="text" name="service_type_id" class="form-control" placeholder="Contoh: Profesional & Adaptif" value="Profesional & Adaptif" <?= FormRules::attrs('gi_service', 'service_type_id', 'store') ?>>
                     </div>
                     <hr class="my-4">
                     <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm">

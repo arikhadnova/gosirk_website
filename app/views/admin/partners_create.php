@@ -20,12 +20,12 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Nama Instansi / Perusahaan</label>
-                        <input type="text" name="name" class="form-control" placeholder="Contoh: PT. Sumber Alfaria Trijaya" required>
+                        <input type="text" name="name" class="form-control" placeholder="Contoh: PT. Sumber Alfaria Trijaya" <?= FormRules::attrs('partner', 'name', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kategori / Tipe</label>
-                        <select name="type" class="form-select">
+                        <select name="type" class="form-select" <?= FormRules::attrs('partner', 'type', 'store') ?>>
                             <option value="GOVERNMENT">Government</option>
                             <option value="COMMUNITY">Community</option>
                             <option value="EDUCATION">Education</option>
@@ -35,7 +35,7 @@
                     </div>
                     <div class="mb-0">
                         <label class="form-label">Group / Penempatan</label>
-                        <select name="category" class="form-select">
+                        <select name="category" class="form-select" <?= FormRules::attrs('partner', 'category', 'store') ?>>
                             <option value="contribution">Our Contribution & Partner</option>
                             <option value="network">Our Network</option>
                         </select>
@@ -54,7 +54,7 @@
                         <div id="logoPreview" class="border rounded-4 mb-3 d-flex align-items-center justify-content-center bg-light" style="height: 150px;">
                             <span class="text-muted">Preview Logo</span>
                         </div>
-                        <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" required>
+                        <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" <?= FormRules::attrs('partner', 'logo', 'store') ?>>
                         <div class="form-text small mt-2">Gunakan format PNG transparan jika memungkinkan. Max 1MB.</div>
                     </div>
                     <hr>

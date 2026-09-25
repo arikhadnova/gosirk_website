@@ -11,7 +11,8 @@ class implementasi_partner extends Controller {
             'portfolios' => $this->model('Portfolio_model')->getByShowPartner(),
             'villages' => $this->model('PilotVillage_model')->getAll(),
             'hero_transition' => $this->model('Setting_model')->getByKey('partner_hero_transition') ?: 'slide',
-            'about_section' => $this->model('PageSection_model')->getByPageAndSection('partner', 'about')
+            'about_section' => $this->model('PageSection_model')->getByPageAndSection('partner', 'about'),
+            'highlights_section' => $this->model('PageSection_model')->getByPageAndSection('partner', 'highlights')
         ];
         $this->views('layouts/header', $data);
         $this->views('implentasi_partner/index', $data);

@@ -74,15 +74,15 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nama Desa</label>
-                        <input type="text" name="name_id" class="form-control" required placeholder="Contoh: Desa Bengkel">
+                        <input type="text" name="name_id" class="form-control" placeholder="Contoh: Desa Bengkel" <?= FormRules::attrs('pilot_village', 'name_id', 'store') ?>>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Foto Desa</label>
-                        <input type="file" name="image" class="form-control" required>
+                        <input type="file" name="image" class="form-control" <?= FormRules::attrs('pilot_village', 'image', 'store') ?>>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Urutan Tampilan</label>
-                        <input type="number" name="order_priority" class="form-control" value="0">
+                        <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('pilot_village', 'order_priority', 'store') ?>>
                     </div>
                 </div>
                 <div class="modal-footer border-top p-3">
@@ -107,16 +107,16 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nama Desa</label>
-                        <input type="text" name="name_id" id="edit-name-id" class="form-control" required>
+                        <input type="text" name="name_id" id="edit-name-id" class="form-control" <?= FormRules::attrs('pilot_village', 'name_id', 'update') ?>>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Ganti Foto (Opsional)</label>
-                        <input type="file" name="image" class="form-control">
+                        <input type="file" name="image" class="form-control" <?= FormRules::attrs('pilot_village', 'image', 'update') ?>>
                         <div class="form-text">Biarkan kosong jika tidak ingin mengubah foto.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Urutan Tampilan</label>
-                        <input type="number" name="order_priority" id="edit-order" class="form-control">
+                        <input type="number" name="order_priority" id="edit-order" class="form-control" <?= FormRules::attrs('pilot_village', 'order_priority', 'update') ?>>
                     </div>
                 </div>
                 <div class="modal-footer border-top p-3">

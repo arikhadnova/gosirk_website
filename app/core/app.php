@@ -70,6 +70,9 @@ class App {
             }
             $path = trim(preg_replace('#^index\.php#', '', ltrim($path, '/')), '/');
             $url = $path !== '' ? $path : null;
+            if ($url !== null) {
+                $_GET['url'] = $url; // keep views that read $_GET['url'] working
+            }
         }
 
         if($url !== null) {

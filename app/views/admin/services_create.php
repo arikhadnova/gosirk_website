@@ -20,11 +20,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Layanan</label>
-                        <input type="text" name="name_id" class="form-control form-control-lg" placeholder="Contoh: Pengelolaan Sampah Kawasan" required>
+                        <input type="text" name="name_id" class="form-control form-control-lg" placeholder="Contoh: Pengelolaan Sampah Kawasan" <?= FormRules::attrs('service', 'name_id', 'store') ?>>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi Layanan</label>
-                        <textarea name="description_id" class="form-control" rows="8" placeholder="Jelaskan detail layanan..."></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" placeholder="Jelaskan detail layanan..." <?= FormRules::attrs('service', 'description_id', 'store') ?>></textarea>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>
@@ -57,7 +57,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Order Priority</label>
-                        <input type="number" name="order_priority" class="form-control" value="1" min="1">
+                        <input type="number" name="order_priority" class="form-control" value="1" <?= FormRules::attrs('service', 'order_priority', 'store') ?>>
                     </div>
                     <hr class="my-4">
                     <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm">

@@ -526,6 +526,31 @@ body {
 }
 
 
+/* Table action buttons: same size, icon centred (overrides the global .btn padding) */
+.btn-icon {
+    width: 34px;
+    height: 34px;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.85rem;
+}
+.btn-action {
+    height: 34px;
+    padding: 0 14px !important;
+    border-radius: 999px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.btn-action.btn-primary:hover { transform: none; }
+
 /* Profile Page Specifics */
 .profile-avatar-wrapper {
     position: relative;

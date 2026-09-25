@@ -175,56 +175,20 @@
             linear-gradient(135deg, #f7fbff 0%, #f3fbf6 100%);
     }
 
-    .portfolio-highlights-section {
-        background:
-            radial-gradient(circle at 12% 18%, rgba(13, 110, 253, 0.10), transparent 30%),
-            linear-gradient(180deg, #f8fafc 0%, #eef6ff 100%);
-    }
-    
-    .highlight-card {
-        border-radius: 15px;
-        overflow: hidden;
-        position: relative;
-        height: 300px;
-        transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
-        cursor: pointer;
-    }
-    .highlight-card:hover {
-        transform: translateY(-8px);
-        box-shadow: 0 15px 45px rgba(0,0,0,0.15) !important;
-    }
-    .highlight-card img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
-    }
-    .highlight-card:hover img {
-        transform: scale(1.1);
-    }
-    .highlight-overlay {
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 40%, transparent 100%);
-        display: flex;
-        align-items: flex-end;
-        padding: 25px;
-        color: white;
-        opacity: 0.9;
-        transition: all 0.4s ease;
-    }
-    .highlight-card:hover .highlight-overlay {
-        opacity: 1;
-        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
-    }
-    .highlight-overlay p {
-        transform: translateY(5px);
-        transition: transform 0.4s ease;
-    }
-    .highlight-card:hover .highlight-overlay p {
-        transform: translateY(0);
-    }
 
+    /* Rich text from the admin editor (CKEditor) */
+    .portfolio-about-section blockquote {
+        border-left: 4px solid var(--bs-primary, #0d6efd);
+        background: rgba(13, 110, 253, 0.05);
+        padding: 1rem 1.25rem;
+        margin: 1.5rem 0;
+        border-radius: 0 .75rem .75rem 0;
+        font-style: italic;
+        color: #495057;
+    }
+    .portfolio-about-section blockquote > :last-child {
+        margin-bottom: 0;
+    }
     .portfolio-video-block {
         position: relative;
         width: 100%;
@@ -313,9 +277,9 @@
 <!-- SECTION 2: Description -->
 <section class="py-5 portfolio-about-section">
     <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-7">
-                <h4 class="section-header-sm" data-i18n="portfolio.about">Tentang</h4>
+        <div class="row g-5 justify-content-center">
+            <div class="col-lg-8">
+                <h4 class="section-header-sm text-center" data-i18n="portfolio.about">Tentang</h4>
                 <div class="text-muted" data-lang-id="<?= htmlspecialchars($portfolio->detail_content_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->detail_content_en) ?>">
                     <?= $portfolio->detail_content_id ?>
                 </div>
@@ -325,102 +289,17 @@
     </div>
 </section>
 
-<?php 
-$approaches = json_decode($portfolio->approach_id ?: '[]', true);
-if (!empty($approaches)): 
+<?php
+// Highlights: 3-column grid of photos and/or YouTube videos (shared partial)
+$highlightItems = json_decode($portfolio->highlights ?: '[]', true) ?: [];
+// Legacy single video field (older portfolios) is shown as the first highlight
+$legacyVideo = $portfolio->video_url ?? '';
+if ($legacyVideo && $this->youtubeId($legacyVideo) && !in_array($legacyVideo, array_column($highlightItems, 'video_url'), true)) {
+    array_unshift($highlightItems, ['type' => 'video', 'video_url' => $legacyVideo, 'caption' => '']);
+}
+$highlightHeading = '<h4 class="text-center section-header-sm mb-5" data-i18n="portfolio.highlights">Sorotan</h4>';
+require dirname(__DIR__) . '/partials/highlights.php';
 ?>
-<section class="py-5 portfolio-approach-section">
-    <div class="container">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-5">
-                <h4 class="section-header-sm" data-i18n="portfolio.approach">Pendekatan</h4>
-                <p class="text-muted" data-i18n="portfolio.approach_desc">
-                    Pendekatan strategis yang kami terapkan untuk memastikan keberhasilan dan keberlanjutan program di setiap tahapan.
-                </p>
-            </div>
-            <div class="col-lg-7">
-                <div class="row g-4">
-                    <div class="approach-id-container w-100" data-lang-id>
-                        <div class="row g-4">
-                            <?php 
-                            $approaches_id = json_decode($portfolio->approach_id ?: '[]', true);
-                            foreach($approaches_id as $a): 
-                            ?>
-                            <div class="col-md-12">
-                                <div class="approach-box">
-                                    <h6 class="fw-bold mb-2"><?= $a['title'] ?></h6>
-                                    <p class="small text-muted mb-0"><?= $a['desc'] ?></p>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                    
-                    <div class="approach-en-container w-100" data-lang-en style="display: none;">
-                        <div class="row g-4">
-                            <?php 
-                            $approaches_en = json_decode($portfolio->approach_en ?: '[]', true);
-                            $display_approaches = !empty($approaches_en) ? $approaches_en : $approaches_id;
-                            foreach($display_approaches as $a): 
-                            ?>
-                            <div class="col-md-12">
-                                <div class="approach-box">
-                                    <h6 class="fw-bold mb-2"><?= $a['title'] ?></h6>
-                                    <p class="small text-muted mb-0"><?= $a['desc'] ?></p>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
-
-<?php 
-$highlights = json_decode($portfolio->highlights ?: '[]', true);
-if (!empty($highlights)): 
-?>
-<section class="py-5 portfolio-highlights-section">
-    <div class="container">
-        <h4 class="text-center section-header-sm mb-5" data-i18n="portfolio.highlights">Sorotan</h4>
-        <?php
-            $youtube_source = $portfolio->video_url ?? $portfolio->video_link ?? $portfolio->video_source ?? $portfolio->source_video ?? '';
-            $youtube_embed = '';
-            if (!empty($youtube_source)) {
-                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_source, $match)) {
-                    $youtube_embed = 'https://www.youtube.com/embed/' . $match[1];
-                }
-            }
-        ?>
-        <?php if (!empty($youtube_embed)): ?>
-        <div class="row mb-4">
-            <div class="col-12">
-                <div class="portfolio-video-block">
-                    <iframe src="<?= $youtube_embed ?>?rel=0&showinfo=0" title="Video Proyek" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-            </div>
-        </div>
-        <?php endif; ?>
-        <div class="row g-4">
-            <?php foreach($highlights as $h): ?>
-            <div class="col-lg-4 col-md-6">
-                <div class="highlight-card shadow-sm">
-                    <img src="<?= ASSETS_URL ?>img/portfolio/<?= $h['image'] ?>" alt="Highlight">
-                    <div class="highlight-overlay">
-                        <p class="small mb-0" data-lang-id="<?= htmlspecialchars($h['caption'] ?? '') ?>" data-lang-en="<?= htmlspecialchars($h['caption'] ?? '') ?>">
-                            <?= $h['caption'] ?>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <?php endforeach; ?>
-        </div>
-    </div>
-</section>
-<?php endif; ?>
 
 <!-- SECTION 6: CTA (Call to Action) -->
 <section class="cta-partnership">

@@ -24,17 +24,17 @@
                     <!-- Basic Info -->
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Proyek</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $portfolio->title_id; ?>" required>
+                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $portfolio->title_id; ?>" <?= FormRules::attrs('portfolio', 'title_id', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Sub-judul / Nama Klien</label>
-                        <input type="text" name="subtitle_id" class="form-control" value="<?= $portfolio->subtitle_id; ?>">
+                        <label class="form-label small fw-bold text-dark">Sub-judul</label>
+                        <input type="text" name="subtitle_id" class="form-control" value="<?= $portfolio->subtitle_id; ?>" <?= FormRules::attrs('portfolio', 'subtitle_id', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Deskripsi Ringkas (Card Link)</label>
-                        <textarea name="description_id" class="form-control" rows="3"><?= $portfolio->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('portfolio', 'description_id', 'update') ?>><?= $portfolio->description_id; ?></textarea>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -45,7 +45,7 @@
                             <label class="form-label small fw-bold text-dark">Icon FontAwesome</label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-light border-end-0"><i class="fas fa-icons text-muted"></i></span>
-                                <input type="text" name="icon_name" class="form-control border-start-0" value="<?= $portfolio->icon_name; ?>" id="iconInput">
+                                <input type="text" name="icon_name" class="form-control border-start-0" value="<?= $portfolio->icon_name; ?>" id="iconInput" <?= FormRules::attrs('portfolio', 'icon_name', 'update') ?>>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <div id="iconPreview" class="bg-light rounded p-2 text-center" style="width: 40px;"><i class="<?= $portfolio->icon_name ?: 'fas fa-question text-muted'; ?>"></i></div>
@@ -61,11 +61,6 @@
                                     <span class="extra-small text-muted">Cover saat ini</span>
                                 </div>
                             <?php endif; ?>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label small fw-bold text-dark">URL Video YouTube</label>
-                            <input type="url" name="video_url" class="form-control form-control-sm" value="<?= htmlspecialchars($portfolio->video_url ?? '') ?>" placeholder="https://www.youtube.com/watch?v=...">
-                            <small class="text-muted extra-small d-block mt-1">Video akan ditampilkan di atas sorotan foto.</small>
                         </div>
                     </div>
 
@@ -109,73 +104,19 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark"><i class="fas fa-info-circle me-1 text-primary"></i> 1. TENTANG PROYEK (Isi Detail)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10"><?= $portfolio->detail_content_id; ?></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" <?= FormRules::attrs('portfolio', 'detail_content_id', 'update') ?>><?= $portfolio->detail_content_id; ?></textarea>
                     </div>
 
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-walking me-1 text-primary"></i> 2. PENDEKATAN KERJA (Approach)</label>
-                        <div id="approach-container">
-                            <?php 
-                            $approaches = json_decode($portfolio->approach_id ?: '[]', true);
-                            if (empty($approaches)) $approaches = [['title' => '', 'desc' => '']];
-                            foreach($approaches as $a): 
-                            ?>
-                            <div class="p-3 bg-light rounded-3 mb-2 approach-row">
-                                <div class="mb-2">
-                                    <input type="text" name="approach_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent" value="<?= $a['title'] ?? ''; ?>" placeholder="Judul Tahapan">
-                                </div>
-                                <div class="mb-0">
-                                    <textarea name="approach_descs[]" class="form-control form-control-sm border-0 bg-transparent" rows="2" placeholder="Deskripsi tahapan..."><?= $a['desc'] ?? ''; ?></textarea>
-                                </div>
-                                <div class="text-end">
-                                    <button type="button" class="btn btn-sm btn-link text-danger remove-approach p-0 text-decoration-none extra-small">Hapus</button>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-approach"><i class="fas fa-plus me-1"></i> Tambah Tahapan</button>
-                        <input type="hidden" name="approach_id" id="approach_json">
-                    </div>
-
-                    <div class="mb-0">
-                        <label class="form-label small fw-bold text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> 3. SOROTAN DOKUMENTASI (Highlights)</label>
-                        <div id="highlights-container">
-                             <?php 
-                             $highlights = json_decode($portfolio->highlights ?: '[]', true);
-                             foreach($highlights as $h): 
-                             ?>
-                             <div class="p-3 bg-light rounded-3 mb-2 highlight-row">
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-md-2 text-center">
-                                        <img src="<?= ASSETS_URL; ?>img/portfolio/<?= $h['image']; ?>" class="img-fluid rounded border" style="max-height: 50px;">
-                                        <input type="hidden" name="existing_highlight_imgs[]" value="<?= $h['image']; ?>">
-                                    </div>
-                                    <div class="col-md-9">
-                                        <input type="text" name="existing_highlight_captions[]" class="form-control form-control-sm" value="<?= $h['caption'] ?? ''; ?>" placeholder="Keterangan foto...">
-                                    </div>
-                                    <div class="col-md-1 text-end">
-                                        <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-trash"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                            <?php endforeach; ?>
-                            
-                             <div class="p-3 bg-white border border-dashed rounded-3 mb-2 highlight-row new-highlight">
-                                <div class="row g-2 align-items-center">
-                                    <div class="col-md-5">
-                                        <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Upload foto baru...">
-                                    </div>
-                                    <div class="col-md-1 text-end">
-                                        <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-times"></i></button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <button type="button" class="btn btn-sm btn-outline-primary mt-2" id="add-highlight"><i class="fas fa-plus me-1"></i> Tambah Foto</button>
-                    </div>
+                    <?php
+                    $highlightItems = json_decode($portfolio->highlights ?: '[]', true) ?: [];
+                    // Legacy single video field -> show as a video highlight so it can be edited/removed
+                    $legacyVideo = $portfolio->video_url ?? '';
+                    if ($legacyVideo && $this->youtubeId($legacyVideo) && !in_array($legacyVideo, array_column($highlightItems, 'video_url'), true)) {
+                        array_unshift($highlightItems, ['type' => 'video', 'video_url' => $legacyVideo, 'caption' => '']);
+                    }
+                    if (empty($highlightItems)) $highlightItems = [['type' => 'image']];
+                    require __DIR__ . '/portfolio_highlights_field.php';
+                    ?>
                 </div>
             </div>
 
@@ -190,14 +131,6 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Kategori Utama</label>
-                        <select name="main_category" class="form-select rounded-3">
-                            <option value="capacity_building" <?= $portfolio->main_category == 'capacity_building' ? 'selected' : ''; ?>>Capacity Building (GI)</option>
-                            <option value="program_development" <?= $portfolio->main_category == 'program_development' ? 'selected' : ''; ?>>Program Development</option>
-                            <option value="consultancy" <?= $portfolio->main_category == 'consultancy' ? 'selected' : ''; ?>>Consultancy & Advisory</option>
-                        </select>
-                    </div>
-                    <div class="mb-4">
                         <label class="form-label fw-bold">Tipe Partner (Badge)</label>
                         <select name="partner_type" class="form-select rounded-3">
                             <option value="GOVERNMENT" <?= $portfolio->partner_type == 'GOVERNMENT' ? 'selected' : ''; ?>>Government</option>
@@ -209,7 +142,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Client Name</label>
-                        <input type="text" name="client_name" class="form-control" value="<?= $portfolio->client_name; ?>">
+                        <input type="text" name="client_name" class="form-control" value="<?= $portfolio->client_name; ?>" <?= FormRules::attrs('portfolio', 'client_name', 'update') ?>>
                     </div>
                 </div>
             </div>
@@ -230,15 +163,6 @@
                                     <small class="text-muted">Tampil di section Portfolio & Partnership.</small>
                                 </div>
                             </label>
-                            <div id="cat_home" class="ms-4 ps-3 border-start mb-3">
-                                <label class="form-label extra-small fw-bold text-muted">Kategori di Home</label>
-                                <select name="home_category" class="form-select form-select-sm">
-                                    <option value="">-- Pilih Section Home --</option>
-                                    <option value="institute" <?= $portfolio->home_category == 'institute' ? 'selected' : ''; ?>>Capacity Building (GoSirk Institute)</option>
-                                    <option value="partner" <?= $portfolio->home_category == 'partner' ? 'selected' : ''; ?>>Program dan Implementasi Partner</option>
-                                    <option value="advisory" <?= $portfolio->home_category == 'advisory' ? 'selected' : ''; ?>>Konsultansi & Advisory Strategis</option>
-                                </select>
-                            </div>
                         </div>
                         
                         <!-- Partnership -->
@@ -334,38 +258,6 @@
         });
     };
 
-    // Approach Template
-    const approachTemplate = `
-        <div class="p-3 bg-light rounded-3 mb-2 approach-row">
-            <div class="mb-2">
-                <input type="text" name="approach_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent" placeholder="Judul Tahapan">
-            </div>
-            <div class="mb-0">
-                <textarea name="approach_descs[]" class="form-control form-control-sm border-0 bg-transparent" rows="2" placeholder="Deskripsi tahapan..."></textarea>
-            </div>
-            <div class="text-end">
-                <button type="button" class="btn btn-sm btn-link text-danger remove-approach p-0 text-decoration-none extra-small">Hapus</button>
-            </div>
-        </div>`;
-    setupDynamicList('approach-container', 'add-approach', 'approach-row', 'remove-approach', approachTemplate);
-
-    // Highlight Template
-    const highlightTemplate = `
-        <div class="p-3 bg-white border border-dashed rounded-3 mb-2 highlight-row new-highlight">
-            <div class="row g-2 align-items-center">
-                <div class="col-md-5">
-                    <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
-                </div>
-                <div class="col-md-6">
-                    <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Upload foto baru...">
-                </div>
-                <div class="col-md-1 text-end">
-                    <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-times"></i></button>
-                </div>
-            </div>
-        </div>`;
-    setupDynamicList('highlights-container', 'add-highlight', 'highlight-row', 'remove-highlight', highlightTemplate);
-
     // Project Logo Template
     const logoTemplate = `
         <div class="project-logo-row mb-2">
@@ -376,22 +268,8 @@
         </div>`;
     setupDynamicList('project-logos-container', 'add-logo', 'project-logo-row', 'remove-logo', logoTemplate);
 
-    // Form Submission: Package JSON
-    const form = document.querySelector('form');
-    form.addEventListener('submit', function(e) {
-        // Build Approach JSON
-        const approaches = [];
-        document.querySelectorAll('.approach-row').forEach(row => {
-            const title = row.querySelector('input[name="approach_titles[]"]').value;
-            const desc = row.querySelector('textarea[name="approach_descs[]"]').value;
-            if (title || desc) approaches.push({ title, desc });
-        });
-        document.getElementById('approach_json').value = JSON.stringify(approaches);
-    });
-
     // Conditional Category Display
     const toggles = [
-        { check: 'check_home', target: 'cat_home' },
         { check: 'check_partnership', target: 'cat_partnership' },
         { check: 'check_gi', target: 'cat_gi' }
     ];

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $data['title'] ?? 'Admin Panel' ?> - GoSirk</title>
+    <?php $alerts = method_exists($this, 'adminAlerts') ? $this->adminAlerts() : ['requests' => 0, 'messages' => 0, 'latest_requests' => []]; $alertTotal = $alerts['requests'] + $alerts['messages']; ?>
+    <title><?= $alertTotal ? '(' . $alertTotal . ') ' : '' ?><?= $data['title'] ?? 'Admin Panel' ?> - GoSirk</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- FontAwesome -->
@@ -131,8 +132,14 @@
             <a href="<?= BASE_URL; ?>admin/ggc_actions" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'ggc_actions') ? 'active' : '' ?>">
                 <i class="fas fa-running"></i> GGC Actions
             </a>
+            <a href="<?= BASE_URL; ?>admin/gnp_programs" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'gnp_programs') ? 'active' : '' ?>">
+                <i class="fas fa-seedling"></i> Program Go Ngompos
+            </a>
             <a href="<?= BASE_URL; ?>admin/pilot_villages" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'pilot_villages') ? 'active' : '' ?>">
                 <i class="fas fa-map-marker-alt"></i> Pilot Villages
+            </a>
+            <a href="<?= BASE_URL; ?>admin/partner_highlights" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'partner_highlights') ? 'active' : '' ?>">
+                <i class="fas fa-images"></i> Sorotan Implementasi
             </a>
 
             <!-- Collaboration -->
@@ -142,18 +149,21 @@
             </a>
             <?php if ($_SESSION['user_role'] == 'admin') : ?>
             <a href="<?= BASE_URL; ?>admin/contacts" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'contacts') ? 'active' : '' ?>">
-                <i class="fas fa-envelope"></i> Contact Messages
+                <i class="fas fa-envelope"></i> Contact Messages<?php if ($alerts['messages']) : ?><span class="badge rounded-pill bg-primary  ms-auto" title="Pesan belum dibaca"><?= $alerts['messages'] ?></span><?php endif; ?>
             </a>
             <?php endif; ?>
             <a href="<?= BASE_URL; ?>admin/collaboration" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'collaboration') ? 'active' : '' ?>">
                 <i class="fas fa-file-shield"></i> Documents
             </a>
             <a href="<?= BASE_URL; ?>admin/collaboration_requests" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'collaboration_requests') ? 'active' : '' ?>">
-                <i class="fas fa-history"></i> Request Logs
+                <i class="fas fa-history"></i> Request Logs<?php if ($alerts['requests']) : ?><span class="badge rounded-pill bg-warning text-dark ms-auto" title="Perlu tindak lanjut"><?= $alerts['requests'] ?></span><?php endif; ?>
             </a>
 
             <!-- System -->
             <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">System</small></div>
+            <a href="<?= BASE_URL; ?>admin/email_settings" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'email_settings') ? 'active' : '' ?>">
+                <i class="fas fa-envelope"></i> Email Settings
+            </a>
             <a href="<?= BASE_URL; ?>admin/maintenance" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'maintenance') ? 'active' : '' ?>">
                 <i class="fas fa-tools"></i> Maintenance Mode
             </a>
@@ -189,6 +199,30 @@
 
                 <div class="ms-auto" id="navbarSupportedContent">
                     <ul class="navbar-nav flex-row align-items-center">
+                        <li class="nav-item dropdown me-3">
+                            <a class="nav-link p-0 position-relative d-flex align-items-center justify-content-center rounded-circle bg-white shadow-sm" href="#" id="alertsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="width: 40px; height: 40px;" title="Notifikasi">
+                                <i class="fas fa-bell text-secondary"></i>
+                                <?php if ($alertTotal) : ?><span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 10px;"><?= $alertTotal ?></span><?php endif; ?>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end border-0 shadow-lg p-2" aria-labelledby="alertsDropdown" style="border-radius: 12px; width: 320px;">
+                                <div class="px-3 py-2 border-bottom mb-1 fw-bold small">Perlu Perhatian</div>
+                                <?php if (!$alertTotal) : ?>
+                                    <div class="px-3 py-3 text-muted small text-center"><i class="fas fa-check-circle text-success me-1"></i> Tidak ada yang perlu ditindaklanjuti.</div>
+                                <?php endif; ?>
+                                <?php foreach ($alerts['latest_requests'] as $r) : ?>
+                                    <a class="dropdown-item rounded-3 py-2 small text-wrap" href="<?= BASE_URL; ?>admin/collaboration_requests?status=followup">
+                                        <i class="fas fa-file-signature text-warning me-2"></i><b><?= htmlspecialchars($r->name) ?></b> meminta <?= htmlspecialchars($r->doc_title ?: 'dokumen') ?>
+                                        <div class="text-muted" style="font-size: 11px; margin-left: 22px;"><?= $r->delivery_status === 'failed' ? 'Email otomatis gagal' : 'Menunggu dikirim manual' ?> &middot; <?= date('d M H:i', strtotime($r->requested_at)) ?></div>
+                                    </a>
+                                <?php endforeach; ?>
+                                <?php if ($alerts['requests'] > count($alerts['latest_requests'])) : ?>
+                                    <a class="dropdown-item rounded-3 small text-primary" href="<?= BASE_URL; ?>admin/collaboration_requests?status=followup">Lihat semua <?= $alerts['requests'] ?> permintaan &rarr;</a>
+                                <?php endif; ?>
+                                <?php if ($alerts['messages']) : ?>
+                                    <a class="dropdown-item rounded-3 py-2 small" href="<?= BASE_URL; ?>admin/contacts"><i class="fas fa-envelope text-primary me-2"></i><b><?= $alerts['messages'] ?></b> pesan kontak belum dibaca</a>
+                                <?php endif; ?>
+                            </div>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link p-0" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <div class="d-flex align-items-center">

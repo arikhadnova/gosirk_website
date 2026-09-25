@@ -35,10 +35,12 @@
               </div>
             </div>
 
+            <?php if ($article->image) : ?>
             <!-- Featured Image -->
             <div class="mb-5 rounded-4 overflow-hidden shadow-sm">
-                 <img src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" onerror="this.src='https://images.unsplash.com/photo-1552664730-d307ca884978'" class="img-fluid w-100 object-fit-cover" style="max-height: 500px;" alt="<?= $article->title_id ?>">
+                 <img src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" class="img-fluid w-100 object-fit-cover" style="max-height: 500px;" alt="<?= $article->title_id ?>">
             </div>
+            <?php endif; ?>
 
             <!-- Article Content -->
             <article class="blog-content fs-5 lh-lg text-dark mb-5" data-lang-id="<?= htmlspecialchars($article->content_id) ?>" data-lang-en="<?= htmlspecialchars($article->content_en) ?>">

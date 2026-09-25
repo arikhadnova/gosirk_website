@@ -163,7 +163,7 @@
                         Pendampingan komprehensif dalam penyusunan regulasi, Masterplan, dan Roadmap Pengelolaan Sampah yang adaptif terhadap target nasional (JAKSTRADA) dan potensi regional.
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a href="https://wa.me/yournumber" class="btn btn-orange-gi">Konsultasi Gratis</a>
+                        <a href="<?= $this->waLink('Halo GoSirk, saya ingin konsultasi gratis terkait layanan Optimasi Kebijakan & Roadmap Strategis.') ?>" target="_blank" rel="noopener" class="btn btn-orange-gi">Konsultasi Gratis</a>
                         <a href="#" class="btn btn-outline-dark rounded-pill px-4 py-3 fw-bold">Unduh Company Profile</a>
                     </div>
                 </div>

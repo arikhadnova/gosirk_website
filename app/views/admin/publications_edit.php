@@ -22,11 +22,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Judul Publikasi</label>
-                        <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" required>
+                        <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" <?= FormRules::attrs('publication', 'title_id', 'update') ?>>
                     </div>
                     <div class="mb-0">
                         <label class="form-label">Deskripsi Singkat</label>
-                        <textarea name="description_id" class="form-control" rows="5"><?= $publication->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="5" <?= FormRules::attrs('publication', 'description_id', 'update') ?>><?= $publication->description_id; ?></textarea>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Tipe Publikasi</label>
-                        <select name="type" class="form-select">
+                        <select name="type" class="form-select" <?= FormRules::attrs('publication', 'type', 'update') ?>>
                             <option value="gosirk" <?= $publication->type == 'gosirk' ? 'selected' : ''; ?>>GoSirk Publication</option>
                             <option value="reference" <?= $publication->type == 'reference' ? 'selected' : ''; ?>>Reference / Legal</option>
                         </select>
@@ -67,7 +67,7 @@
                         <label class="form-label small fw-bold text-dark">Link Eksternal</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-white border-end-0"><i class="fas fa-link text-muted"></i></span>
-                            <input type="url" name="external_link" class="form-control border-start-0 ps-0" value="<?= $publication->external_link ?>" placeholder="https://example.com/external-source">
+                            <input type="url" name="external_link" class="form-control border-start-0 ps-0" value="<?= $publication->external_link ?>" placeholder="https://example.com/external-source" <?= FormRules::attrs('publication', 'external_link', 'update') ?>>
                         </div>
                         <small class="text-muted extra-small">Masukkan link ke sumber luar jika ada</small>
                     </div>
@@ -89,7 +89,7 @@
                         </div>
                         <div id="priceInputWrapper" style="display: <?= $publication->is_paid ? 'block' : 'none'; ?>;">
                             <label class="form-label small fw-bold text-dark">Harga (RP)</label>
-                            <input type="number" name="price" class="form-control" placeholder="Contoh: 50000" value="<?= $publication->price; ?>">
+                            <input type="number" name="price" class="form-control" placeholder="Contoh: 50000" value="<?= $publication->price; ?>" <?= FormRules::attrs('publication', 'price', 'update') ?>>
                             <div class="form-text small text-muted">Akan muncul tombol 'Beli via WhatsApp' bagi pengunjung.</div>
                         </div>
                     </div>

@@ -8,34 +8,39 @@ class Contact extends Controller {
     }
 
     public function store() {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $data = [
-                'name' => $_POST['name'] ?? '',
-                'email' => $_POST['email'] ?? '',
-                'message' => $_POST['message'] ?? ''
-            ];
-
-            $contactModel = $this->model('Contact_model');
-            if ($contactModel->add($data)) {
-                // Send email notification to Admin
-                $subject = "Pesan Baru dari " . $data['name'];
-                $content = "
-                    <h3>Pesan Baru dari Website</h3>
-                    <p><strong>Nama:</strong> {$data['name']}</p>
-                    <p><strong>Email:</strong> {$data['email']}</p>
-                    <p><strong>Pesan:</strong><br>{$data['message']}</p>
-                    <hr>
-                    <p><small>Pesan ini juga tersimpan di Dashboard Admin GoSirk.</small></p>
-                ";
-                
-                Mail::sendToAdmin($subject, $content);
-
-                echo json_encode(['status' => 'success', 'message' => 'Pesan Anda telah terkirim!']);
-            } else {
-                echo json_encode(['status' => 'error', 'message' => 'Gagal mengirim pesan. Silakan coba lagi nanti.']);
-            }
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            http_response_code(405);
+            echo json_encode(['status' => 'error', 'message' => 'Metode tidak diizinkan.']);
             exit;
         }
+
+        $errors = FormRules::validate('contact', $_POST);
+        if ($errors) {
+            echo json_encode(['status' => 'error', 'message' => implode(' ', array_merge(...array_values($errors)))]);
+            exit;
+        }
+
+        $data = [
+            'name' => trim($_POST['name']),
+            'email' => trim($_POST['email']),
+            'message' => trim($_POST['message'])
+        ];
+
+        if (!$this->model('Contact_model')->add($data)) {
+            echo json_encode(['status' => 'error', 'message' => 'Gagal mengirim pesan. Silakan coba lagi nanti.']);
+            exit;
+        }
+
+        // Template from Admin > Email Settings; visitor input is escaped by Mail::render()
+        $mail = Mail::render('contact_admin', ['nama' => $data['name'], 'email' => $data['email'], 'pesan' => $data['message']]);
+        if (!Mail::sendToAdmin($mail['subject'], $mail['html'])) {
+            // The message is stored and visible in the dashboard, so the visitor still succeeded
+            error_log('[GoSirk] Notifikasi email pesan kontak gagal dikirim ke admin.');
+        }
+
+        echo json_encode(['status' => 'success', 'message' => 'Pesan Anda telah terkirim!']);
+        exit;
     }
 }
 

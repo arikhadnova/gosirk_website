@@ -134,7 +134,7 @@
                                             <?php if ($p->cover_image) : ?>
                                                 <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
-                                                <img src="https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Default">
+                                                <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
                                         </div>
                                         <div class="card-body p-4">
@@ -211,7 +211,7 @@
                                             <?php if ($p->cover_image) : ?>
                                                 <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
-                                                <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Default">
+                                                <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
                                         </div>
                                         <div class="card-body p-4">
@@ -288,7 +288,7 @@
                                             <?php if ($p->cover_image) : ?>
                                                 <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
-                                                <img src="https://images.unsplash.com/photo-1591189863430-ab87e120f312?q=80&w=500&auto=format&fit=crop" class="card-img-top" alt="Default">
+                                                <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
                                         </div>
                                         <div class="card-body p-4">

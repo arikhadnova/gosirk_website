@@ -21,11 +21,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Layanan</label>
-                        <input type="text" name="name_id" class="form-control form-control-lg" value="<?= $service->name_id; ?>" required>
+                        <input type="text" name="name_id" class="form-control form-control-lg" value="<?= $service->name_id; ?>" <?= FormRules::attrs('service', 'name_id', 'update') ?>>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi Layanan</label>
-                        <textarea name="description_id" class="form-control" rows="8"><?= $service->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" <?= FormRules::attrs('service', 'description_id', 'update') ?>><?= $service->description_id; ?></textarea>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
@@ -62,7 +62,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Order Priority</label>
-                        <input type="number" name="order_priority" class="form-control" value="<?= $service->order_priority; ?>" min="1">
+                        <input type="number" name="order_priority" class="form-control" value="<?= $service->order_priority; ?>" <?= FormRules::attrs('service', 'order_priority', 'update') ?>>
                     </div>
                     <hr class="my-4">
                     <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm">

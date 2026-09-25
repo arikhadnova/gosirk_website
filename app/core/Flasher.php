@@ -2,12 +2,37 @@
 
 class Flasher {
     public static function setFlash($pesan, $aksi = '', $tipe = '', $errors = []) {
+        // Surface uploads that failed during this request
+        $uploadErrors = class_exists('Upload') ? Upload::takeErrors() : [];
+        if ($uploadErrors) {
+            $errors['upload'] = array_merge($errors['upload'] ?? [], $uploadErrors);
+            if ($tipe === 'success') {
+                $tipe = 'warning';
+                $aksi .= ', tetapi ada file yang gagal diupload';
+            }
+        }
         $_SESSION['flash'] = [
             'pesan' => $pesan,
             'aksi' => $aksi,
             'tipe' => $tipe,
             'errors' => $errors
         ];
+    }
+
+    // Remember submitted values (except passwords) so a form can be refilled after a failed save
+    public static function keepOldInput($data) {
+        $keep = [];
+        foreach ((array) $data as $k => $v) {
+            if (stripos($k, 'password') !== false || !is_scalar($v)) continue;
+            $keep[$k] = (string) $v;
+        }
+        $_SESSION['old_input'] = $keep;
+    }
+
+    public static function takeOldInput() {
+        $old = $_SESSION['old_input'] ?? [];
+        unset($_SESSION['old_input']);
+        return $old;
     }
 
     public static function flash() {
@@ -35,7 +60,9 @@ class Flasher {
             }
 
             $safeHtml = addslashes($htmlContent);
-            $safeTitle = addslashes($tipe == 'success' ? 'Berhasil!' : 'Oops...');
+            // Keep error/warning popups open until dismissed so the list can be read
+            $timer = empty($f['errors']) ? 5000 : 'undefined';
+            $safeTitle = addslashes($tipe == 'success' ? 'Berhasil!' : ($tipe == 'warning' ? 'Perhatian' : 'Oops...'));
 
             echo "
             <script>
@@ -44,7 +71,7 @@ class Flasher {
                     title: '{$safeTitle}',
                     html: '{$safeHtml}',
                     confirmButtonColor: '#0D4A7C',
-                    timer: 5000,
+                    timer: {$timer},
                     timerProgressBar: true
                 });
             </script>";

@@ -55,15 +55,15 @@
                     <form id="contactForm">
                             <div class="mb-4">
                                 <label class="form-label" data-i18n="contact.form.name">Nama</label>
-                                <input type="text" name="name" class="form-control" placeholder="Nama Anda" required data-i18n="contact.form.name_placeholder">
+                                <input type="text" name="name" class="form-control" placeholder="Nama Anda" data-i18n="contact.form.name_placeholder" <?= FormRules::attrs('contact', 'name') ?>>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label" data-i18n="contact.form.email">Email</label>
-                                <input type="email" name="email" class="form-control" placeholder="Email Anda" required data-i18n="contact.form.email_placeholder">
+                                <input type="email" name="email" class="form-control" placeholder="Email Anda" data-i18n="contact.form.email_placeholder" <?= FormRules::attrs('contact', 'email') ?>>
                             </div>
                             <div class="mb-4">
                                 <label class="form-label" data-i18n="contact.form.message">Pesan</label>
-                                <textarea name="message" class="form-control" rows="5" placeholder="Pesan Anda" required data-i18n="contact.form.message_placeholder"></textarea>
+                                <textarea name="message" class="form-control" rows="5" placeholder="Pesan Anda" data-i18n="contact.form.message_placeholder" <?= FormRules::attrs('contact', 'message') ?>></textarea>
                             </div>
                         <button type="submit" id="btnSubmit" class="btn btn-submit" data-i18n="contact.form.submit">Submit</button>
                     </form>

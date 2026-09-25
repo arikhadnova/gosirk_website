@@ -66,18 +66,18 @@ $pages = $data['pages'] ?? [];
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Badge</label>
-                                                <input type="text" name="badge_id" class="form-control" value="<?= htmlspecialchars($section->badge_id ?? '', ENT_QUOTES); ?>">
+                                                <input type="text" name="badge_id" class="form-control" value="<?= htmlspecialchars($section->badge_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('page_section', 'badge_id', 'update') ?>>
                                             </div>
 
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Title</label>
-                                                <textarea name="title_id" class="form-control" rows="2"><?= htmlspecialchars($section->title_id ?? ''); ?></textarea>
+                                                <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('page_section', 'title_id', 'update') ?>><?= htmlspecialchars($section->title_id ?? ''); ?></textarea>
                                                 <div class="text-muted extra-small mt-1">HTML sederhana seperti span/bold boleh dipakai.</div>
                                             </div>
 
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Paragraf 1</label>
-                                                <textarea name="content_id" class="form-control" rows="5"><?= htmlspecialchars($section->content_id ?? ''); ?></textarea>
+                                                <textarea name="content_id" class="form-control" rows="5" <?= FormRules::attrs('page_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? ''); ?></textarea>
                                             </div>
 
                                             <?php if ($paragraphCount >= 2): ?>

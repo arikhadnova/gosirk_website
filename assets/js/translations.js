@@ -272,6 +272,10 @@ const resources = {
                 },
                 "focus_subheader": "Strategis Kami",
                 "focus_title": "Pendekatan Kami",
+                "portfolio_project_subheader": "Rekam Jejak",
+                "portfolio_project_title": "Portofolio Project Kami",
+                "highlights_subheader": "Dokumentasi",
+                "highlights_title": "Sorotan",
                 "focus_desc": "Kami memastikan setiap intervensi berkelanjutan secara finansial dan lingkungan.",
                 "focus1_title": "Holistik & Inklusif",
                 "focus1_desc": "Pemberdayaan komunitas lokal, keterlibatan aktif pemangku kepentingan, dan kolaborasi strategis sektor swasta, mengintegrasikan 5 aspek persampahan; aspek teknis, sosial, kelembagaan, regulasi, dan keuangan.",
@@ -770,7 +774,13 @@ const resources = {
                 "cta": {
                     "title": "Ayo Mulai Ngompos Bersama",
                     "desc": "Ubah sisa organik menjadi dampak baik bagi lingkungan, tanaman, dan komunitas.",
-                    "btn": "Hubungi Kami"
+                    "btn": "Hubungi Kami",
+                    "button_partnership": "Kami membuka peluang kemitraan. <i class=\"text-decoration-underline\">Dapatkan concept note. Hubungi kami.</i>"
+                },
+                "concept_modal": {
+                    "title": "Dapatkan Concept Note",
+                    "desc": "Silakan isi formulir di bawah ini. Concept note akan dikirim ke email Anda.",
+                    "doc": "Dokumen"
                 }
             },
             "blog": {
@@ -1140,6 +1150,10 @@ const resources = {
                 },
                 "focus_subheader": "Our Strategy",
                 "focus_title": "Our Approach",
+                "portfolio_project_subheader": "Track Record",
+                "portfolio_project_title": "Our Project Portfolio",
+                "highlights_subheader": "Documentation",
+                "highlights_title": "Highlights",
                 "focus_desc": "We ensure every intervention is financially and environmentally sustainable.",
                 "focus1_title": "Holistic & Inclusive",
                 "focus1_desc": "Empowering local communities, active stakeholder engagement, and strategic private sector collaboration, integrating 5 aspects of waste management; technical, social, institutional, regulatory, and financial.",
@@ -1634,7 +1648,13 @@ const resources = {
                 "cta": {
                     "title": "Let's Start Composting Together",
                     "desc": "Turn organic leftovers into positive impact for the environment, plants, and communities.",
-                    "btn": "Contact Us"
+                    "btn": "Contact Us",
+                    "button_partnership": "We are calling for partnership. <i class=\"text-decoration-underline\">Get the concept note. Contact us.</i>"
+                },
+                "concept_modal": {
+                    "title": "Get the Concept Note",
+                    "desc": "Please fill out the form below. The concept note will be sent to your email.",
+                    "doc": "Document"
                 }
             },
             "blog": {

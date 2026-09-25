@@ -108,19 +108,19 @@
           <input type="hidden" name="doc_id" id="modalDocId">
           <div class="mb-3">
             <label for="dlName" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.name">Nama Lengkap</label>
-            <input type="text" class="form-control bg-light border-0 py-2" id="dlName" placeholder="Masukkan nama Anda" required data-i18n-placeholder="collaboration.modal.name_placeholder">
+            <input type="text" class="form-control bg-light border-0 py-2" id="dlName" placeholder="Masukkan nama Anda" data-i18n-placeholder="collaboration.modal.name_placeholder" <?= FormRules::attrs('doc_request', 'name') ?>>
           </div>
           <div class="mb-3">
             <label for="dlEmail" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.email">Alamat Email</label>
-            <input type="email" class="form-control bg-light border-0 py-2" id="dlEmail" placeholder="name@company.com" required>
+            <input type="email" class="form-control bg-light border-0 py-2" id="dlEmail" placeholder="name@company.com" <?= FormRules::attrs('doc_request', 'email') ?>>
           </div>
           <div class="mb-3">
             <label for="dlOrganization" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.org">Organisasi / Perusahaan</label>
-            <input type="text" class="form-control bg-light border-0 py-2" id="dlOrganization" placeholder="Nama organisasi Anda" required data-i18n-placeholder="collaboration.modal.org_placeholder">
+            <input type="text" class="form-control bg-light border-0 py-2" id="dlOrganization" placeholder="Nama organisasi Anda" data-i18n-placeholder="collaboration.modal.org_placeholder" <?= FormRules::attrs('doc_request', 'organization') ?>>
           </div>
           <div class="mb-3">
             <label for="dlJabatan" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.position">Jabatan</label>
-            <input type="text" class="form-control bg-light border-0 py-2" id="dlJabatan" placeholder="Posisi atau jabatan Anda" required data-i18n-placeholder="collaboration.modal.position_placeholder">
+            <input type="text" class="form-control bg-light border-0 py-2" id="dlJabatan" placeholder="Posisi atau jabatan Anda" data-i18n-placeholder="collaboration.modal.position_placeholder" <?= FormRules::attrs('doc_request', 'jabatan') ?>>
           </div>
           <div class="d-grid">
             <button type="submit" class="btn btn-warning text-white fw-bold py-2 rounded-pill shadow-sm" data-i18n="collaboration.modal.submit">

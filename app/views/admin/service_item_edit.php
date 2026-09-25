@@ -25,11 +25,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $item->title_id ?>" placeholder="Masukkan judul dalam Bahasa Indonesia" required>
+                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $item->title_id ?>" placeholder="Masukkan judul dalam Bahasa Indonesia" <?= FormRules::attrs('service_item', 'title_id', 'update') ?>>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
-                        <textarea name="description_id" class="form-control" rows="8" placeholder="Masukkan deskripsi detail dalam Bahasa Indonesia..." required><?= $item->description_id ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" placeholder="Masukkan deskripsi detail dalam Bahasa Indonesia..." <?= FormRules::attrs('service_item', 'description_id', 'update') ?>><?= $item->description_id ?></textarea>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>
@@ -53,7 +53,7 @@
                                 <p class="text-muted extra-small mt-1 mb-0">Gambar saat ini</p>
                             </div>
                         <?php endif; ?>
-                        <input type="file" name="image" class="form-control" accept="image/*">
+                        <input type="file" name="image" class="form-control" accept="image/*" <?= FormRules::attrs('service_item', 'image', 'update') ?>>
                         <small class="text-muted extra-small d-block mt-2">Biarkan kosong jika tidak ingin mengubah gambar.</small>
                     </div>
 
@@ -61,19 +61,19 @@
                         <label class="form-label fw-bold small text-dark">Link URL / Slug (Optional)</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-link"></i></span>
-                            <input type="text" name="link_url" class="form-control" value="<?= $item->link_url ?>" placeholder="gi/detail/slug-layanan">
+                            <input type="text" name="link_url" class="form-control" value="<?= $item->link_url ?>" placeholder="gi/detail/slug-layanan" <?= FormRules::attrs('service_item', 'link_url', 'update') ?>>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Prioritas Urutan</label>
-                        <input type="number" name="order_priority" class="form-control" value="<?= $item->order_priority ?>">
+                        <input type="number" name="order_priority" class="form-control" value="<?= $item->order_priority ?>" <?= FormRules::attrs('service_item', 'order_priority', 'update') ?>>
                         <small class="text-muted extra-small">Angka lebih kecil tampil lebih dulu.</small>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Partner (Optional)</label>
-                        <input type="text" name="partner_name" class="form-control" value="<?= $item->partner_name ?>" placeholder="Misal: Sirk Norge & Norad">
+                        <input type="text" name="partner_name" class="form-control" value="<?= $item->partner_name ?>" placeholder="Misal: Sirk Norge & Norad" <?= FormRules::attrs('service_item', 'partner_name', 'update') ?>>
                         <small class="text-muted extra-small">Gunakan untuk Program Development.</small>
                     </div>
 

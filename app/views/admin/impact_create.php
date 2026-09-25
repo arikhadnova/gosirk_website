@@ -26,7 +26,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold">Label Dampak</label>
-                        <input type="text" name="label_id" class="form-control" placeholder="Contoh: Mitra Kerja Sama" required>
+                        <input type="text" name="label_id" class="form-control" placeholder="Contoh: Mitra Kerja Sama" <?= FormRules::attrs('impact', 'label_id', 'store') ?>>
                     </div>
                 </div>
             </div>
@@ -40,7 +40,7 @@
                     <div class="row g-3">
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Halaman Target</label>
-                            <select name="page" class="form-select" required>
+                            <select name="page" class="form-select" <?= FormRules::attrs('impact', 'page', 'store') ?>>
                                 <option value="home" <?= $selected_page == 'home' ? 'selected' : '' ?>>Home Page</option>
                                 <option value="gi" <?= $selected_page == 'gi' ? 'selected' : '' ?>>GoSirk Institute</option>
                                 <option value="ggc" <?= $selected_page == 'ggc' ? 'selected' : '' ?>>GoSirk Green Community</option>
@@ -50,7 +50,7 @@
                         </div>
                         <div class="col-md-6 mb-3">
                             <label class="form-label fw-bold">Section</label>
-                            <select name="section" id="sectionSelect" class="form-select" required>
+                            <select name="section" id="sectionSelect" class="form-select" <?= FormRules::attrs('impact', 'section', 'store') ?>>
                                 <!-- Populated via JS -->
                             </select>
                         </div>
@@ -59,26 +59,26 @@
                     <div class="row g-3">
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold">Nilai (Value)</label>
-                            <input type="text" name="value" class="form-control" placeholder="Contoh: 15" required>
+                            <input type="text" name="value" class="form-control" placeholder="Contoh: 15" <?= FormRules::attrs('impact', 'value', 'store') ?>>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold">Satuan (Unit)</label>
-                            <input type="text" name="unit" class="form-control" placeholder="Contoh: kg, %, unit">
+                            <input type="text" name="unit" class="form-control" placeholder="Contoh: kg, %, unit" <?= FormRules::attrs('impact', 'unit', 'store') ?>>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label class="form-label fw-bold">Nomor Urut</label>
-                            <input type="number" name="order_num" class="form-control" value="0">
+                            <input type="number" name="order_num" class="form-control" value="0" <?= FormRules::attrs('impact', 'order_num', 'store') ?>>
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Section Title (Optional)</label>
-                        <input type="text" name="section_title_id" class="form-control" placeholder="Judul kelompok data (misal: Keberlanjutan)">
+                        <input type="text" name="section_title_id" class="form-control" placeholder="Judul kelompok data (misal: Keberlanjutan)" <?= FormRules::attrs('impact', 'section_title_id', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Note / Keterangan</label>
-                        <textarea name="note_id" class="form-control" rows="3" placeholder="Keterangan tambahan jika diperlukan..."></textarea>
+                        <textarea name="note_id" class="form-control" rows="3" placeholder="Keterangan tambahan jika diperlukan..." <?= FormRules::attrs('impact', 'note_id', 'store') ?>></textarea>
                     </div>
 
                 </div>

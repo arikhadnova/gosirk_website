@@ -20,27 +20,27 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Nama Lengkap</label>
-                        <input type="text" name="name" class="form-control" placeholder="Nama founder..." required>
+                        <input type="text" name="name" class="form-control" placeholder="Nama founder..." <?= FormRules::attrs('founder', 'name', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Jabatan</label>
-                        <input type="text" name="role_id" class="form-control" placeholder="Contoh: Direktur" required>
+                        <input type="text" name="role_id" class="form-control" placeholder="Contoh: Direktur" <?= FormRules::attrs('founder', 'role_id', 'store') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kutipan</label>
-                        <textarea name="quote_id" class="form-control" rows="3" placeholder="Kutipan inspiratif..."></textarea>
+                        <textarea name="quote_id" class="form-control" rows="3" placeholder="Kutipan inspiratif..." <?= FormRules::attrs('founder', 'quote_id', 'store') ?>></textarea>
                     </div>
 
                     <div class="row mb-0">
                         <div class="col-md-6">
                             <label class="form-label">LinkedIn URL</label>
-                            <input type="text" name="linkedin_url" class="form-control" placeholder="https://linkedin.com/in/...">
+                            <input type="url" name="linkedin_url" class="form-control" placeholder="https://linkedin.com/in/..." <?= FormRules::attrs('founder', 'linkedin_url', 'store') ?>>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Urutan Tampil</label>
-                            <input type="number" name="display_order" class="form-control" value="0">
+                            <input type="number" name="display_order" class="form-control" value="0" <?= FormRules::attrs('founder', 'display_order', 'store') ?>>
                         </div>
                     </div>
                 </div>
@@ -57,7 +57,7 @@
                         <div id="imagePreview" class="border rounded-circle mb-3 d-flex align-items-center justify-content-center bg-light mx-auto" style="width: 150px; height: 150px; overflow: hidden;">
                             <span class="text-muted">Preview</span>
                         </div>
-                        <input type="file" name="image" class="form-control" accept="image/*" id="imageInput" required>
+                        <input type="file" name="image" class="form-control" accept="image/*" id="imageInput" <?= FormRules::attrs('founder', 'image', 'store') ?>>
                         <div class="form-text small mt-2">Format JPG/PNG. Rasio 1:1 disarankan.</div>
                     </div>
                     <hr>

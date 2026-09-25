@@ -21,12 +21,12 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Nama Instansi / Perusahaan</label>
-                        <input type="text" name="name" class="form-control" value="<?= $partner->name; ?>" required>
+                        <input type="text" name="name" class="form-control" value="<?= $partner->name; ?>" <?= FormRules::attrs('partner', 'name', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kategori / Tipe</label>
-                        <select name="type" class="form-select">
+                        <select name="type" class="form-select" <?= FormRules::attrs('partner', 'type', 'update') ?>>
                             <option value="GOVERNMENT" <?= $partner->type == 'GOVERNMENT' ? 'selected' : ''; ?>>Government</option>
                             <option value="COMMUNITY" <?= $partner->type == 'COMMUNITY' ? 'selected' : ''; ?>>Community</option>
                             <option value="EDUCATION" <?= $partner->type == 'EDUCATION' ? 'selected' : ''; ?>>Education</option>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-0">
                         <label class="form-label">Group / Penempatan</label>
-                        <select name="category" class="form-select">
+                        <select name="category" class="form-select" <?= FormRules::attrs('partner', 'category', 'update') ?>>
                             <option value="contribution" <?= ($partner->category ?? '') == 'contribution' ? 'selected' : ''; ?>>Our Contribution & Partner</option>
                             <option value="network" <?= ($partner->category ?? 'network') == 'network' ? 'selected' : ''; ?>>Our Network</option>
                         </select>
@@ -59,7 +59,7 @@
                                 <span class="text-muted">No Logo</span>
                             <?php endif; ?>
                         </div>
-                        <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput">
+                        <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" <?= FormRules::attrs('partner', 'logo', 'update') ?>>
                         <div class="form-text small mt-2">Ganti logo (Opsional). PNG transparan direkomendasikan.</div>
                     </div>
                     <hr>

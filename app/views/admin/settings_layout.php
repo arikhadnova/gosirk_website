@@ -29,11 +29,11 @@
                 <form action="<?= BASE_URL; ?>admin/update_header" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="site_title" class="form-label small fw-bold text-dark">Site Title</label>
-                        <input type="text" id="site_title" name="site_title" class="form-control" value="<?= $settings['site_title'] ?? 'GoSirk' ?>" required>
+                        <input type="text" id="site_title" name="site_title" class="form-control" value="<?= $settings['site_title'] ?? 'GoSirk' ?>" <?= FormRules::attrs('settings_header', 'site_title', 'update') ?>>
                     </div>
                     <div class="mb-3">
                         <label for="site_description" class="form-label small fw-bold text-dark">Site Description (SEO)</label>
-                        <textarea id="site_description" name="site_description" class="form-control" rows="3" placeholder="Deskripsi yang muncul di hasil pencarian Google"><?= $settings['site_description'] ?? '' ?></textarea>
+                        <textarea id="site_description" name="site_description" class="form-control" rows="3" placeholder="Deskripsi yang muncul di hasil pencarian Google" <?= FormRules::attrs('settings_header', 'site_description', 'update') ?>><?= $settings['site_description'] ?? '' ?></textarea>
                     </div>
                     <div class="mb-3">
                         <label for="logo_url" class="form-label small fw-bold text-dark">Current Logo</label>
@@ -79,44 +79,44 @@
                 <form action="<?= BASE_URL; ?>admin/update_footer" method="POST">
                     <div class="mb-3">
                         <label for="footer_text" class="form-label small fw-bold text-dark">Copyright Text</label>
-                        <input type="text" id="footer_text" name="footer_text" class="form-control" value="<?= $settings['footer_copyright'] ?? '© 2025 PT Gocircular Solution Indonesia' ?>">
+                        <input type="text" id="footer_text" name="footer_text" class="form-control" value="<?= $settings['footer_copyright'] ?? '© 2025 PT Gocircular Solution Indonesia' ?>" <?= FormRules::attrs('settings_footer', 'footer_text', 'update') ?>>
                     </div>
                     <div class="mb-3">
                         <label for="contact_email" class="form-label small fw-bold text-dark">Email Kontak</label>
-                        <input type="email" id="contact_email" name="contact_email" class="form-control" value="<?= $settings['contact_email'] ?? 'medcom.gosirk@gmail.com' ?>">
+                        <input type="email" id="contact_email" name="contact_email" class="form-control" value="<?= $settings['contact_email'] ?? 'medcom.gosirk@gmail.com' ?>" <?= FormRules::attrs('settings_footer', 'contact_email', 'update') ?>>
                     </div>
                     <div class="mb-3">
                         <label for="contact_whatsapp" class="form-label small fw-bold text-dark">WhatsApp Kontak</label>
-                        <input type="text" id="contact_whatsapp" name="contact_whatsapp" class="form-control" value="<?= $settings['contact_whatsapp'] ?? '628xxxxxxxxx' ?>" placeholder="628xxxxxxxxx">
+                        <input type="text" id="contact_whatsapp" name="contact_whatsapp" class="form-control" value="<?= $settings['contact_whatsapp'] ?? '628xxxxxxxxx' ?>" placeholder="628xxxxxxxxx" <?= FormRules::attrs('settings_footer', 'contact_whatsapp', 'update') ?>>
                         <div class="form-text small text-muted">Nomor WhatsApp untuk konsultasi layanan gratis.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="address_hq" class="form-label small fw-bold text-dark">Alamat Pusat (HQ)</label>
-                            <textarea id="address_hq" name="address_hq" class="form-control small" rows="4"><?= $settings['address_hq'] ?? 'Jln Kepodang, Dusun Kepuh Wetan, RT002 RW005, Desa Kalirejo, Kecamatan Kabat, Kabupaten Banyuwangi, Jawa Timur 68461' ?></textarea>
+                            <textarea id="address_hq" name="address_hq" class="form-control small" rows="4" <?= FormRules::attrs('settings_footer', 'address_hq', 'update') ?>><?= $settings['address_hq'] ?? 'Jln Kepodang, Dusun Kepuh Wetan, RT002 RW005, Desa Kalirejo, Kecamatan Kabat, Kabupaten Banyuwangi, Jawa Timur 68461' ?></textarea>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="address_branch" class="form-label small fw-bold text-dark">Alamat Cabang (Branch)</label>
-                            <textarea id="address_branch" name="address_branch" class="form-control small" rows="4"><?= $settings['address_branch'] ?? 'Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan' ?></textarea>
+                            <textarea id="address_branch" name="address_branch" class="form-control small" rows="4" <?= FormRules::attrs('settings_footer', 'address_branch', 'update') ?>><?= $settings['address_branch'] ?? 'Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan' ?></textarea>
                         </div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Social Media Links</label>
                         <div class="input-group mb-2">
                             <span class="input-group-text bg-white border-end-0"><i class="fab fa-facebook text-primary"></i></span>
-                            <input type="text" name="social_facebook" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_facebook'] ?? '' ?>" placeholder="Facebook URL">
+                            <input type="url" name="social_facebook" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_facebook'] ?? '' ?>" placeholder="Facebook URL" <?= FormRules::attrs('settings_footer', 'social_facebook', 'update') ?>>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text bg-white border-end-0"><i class="fab fa-instagram text-danger"></i></span>
-                            <input type="text" name="social_instagram" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_instagram'] ?? 'https://www.instagram.com/gosirk_indonesia/' ?>" placeholder="Instagram URL">
+                            <input type="url" name="social_instagram" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_instagram'] ?? 'https://www.instagram.com/gosirk_indonesia/' ?>" placeholder="Instagram URL" <?= FormRules::attrs('settings_footer', 'social_instagram', 'update') ?>>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text bg-white border-end-0"><i class="fab fa-linkedin" style="color: #0077b5;"></i></span>
-                            <input type="text" name="social_linkedin" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_linkedin'] ?? 'https://www.linkedin.com/company/gocircular-indonesia-gosirk/' ?>" placeholder="LinkedIn URL">
+                            <input type="url" name="social_linkedin" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_linkedin'] ?? 'https://www.linkedin.com/company/gocircular-indonesia-gosirk/' ?>" placeholder="LinkedIn URL" <?= FormRules::attrs('settings_footer', 'social_linkedin', 'update') ?>>
                         </div>
                         <div class="input-group mb-2">
                             <span class="input-group-text bg-white border-end-0"><i class="fab fa-youtube text-danger"></i></span>
-                            <input type="text" name="social_youtube" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_youtube'] ?? 'https://www.youtube.com/@gosirk_institute' ?>" placeholder="YouTube URL">
+                            <input type="url" name="social_youtube" class="form-control border-start-0 ps-0 small" value="<?= $settings['social_youtube'] ?? 'https://www.youtube.com/@gosirk_institute' ?>" placeholder="YouTube URL" <?= FormRules::attrs('settings_footer', 'social_youtube', 'update') ?>>
                         </div>
                     </div>
                     <div class="d-grid">
