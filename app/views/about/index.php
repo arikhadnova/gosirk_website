@@ -1,5 +1,5 @@
 <!-- Hero Section -->
-<section class="about-hero">
+<section class="about-hero" style="background-image: url('<?= PageImages::attr('about.hero_bg') ?>');">
     <div class="container hero-content">
         <h1 class="hero-title" data-i18n="about.hero.title">GoSirk | Solusi Untuk Indonesia</h1>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
@@ -60,7 +60,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
 <section class="py-5 bg-light">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="fw-bold text-primary" data-lang-id="VISI" data-lang-en="VISION">VISI</h2>
+            <h2 class="fw-bold text-primary" data-i18n="about.vision_title">VISI</h2>
         </div>
         <div class="card border-0 shadow-lg rounded-4 p-5 mx-auto bg-white text-center position-relative" style="max-width: 900px;">
              <!-- Decorative quotes -->
@@ -122,7 +122,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
              <div class="col-md-4">
                  <div class="p-4 rounded-4 bg-white h-100 shadow-sm border-bottom border-4 border-primary">
                      <i class="fas fa-handshake fa-3x mb-4 text-primary"></i>
-                     <h4 class="fw-bold mb-3 text-dark">COMMITTED</h4>
+                     <h4 class="fw-bold mb-3 text-dark" data-i18n="about.value_committed">COMMITTED</h4>
                      <p class="text-muted small" data-i18n="about.values.committed_desc">Komitmen penuh dalam memberikan solusi yang berdampak dan berkelanjutan bagi pengelolaan sampah dan pemberdayaan masyarakat.</p>
                  </div>
              </div>
@@ -130,7 +130,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
              <div class="col-md-4">
                  <div class="p-4 rounded-4 bg-white h-100 shadow-sm border-bottom border-4 border-primary">
                      <i class="fas fa-heart fa-3x mb-4 text-primary"></i>
-                     <h4 class="fw-bold mb-3 text-dark">DEDICATED</h4>
+                     <h4 class="fw-bold mb-3 text-dark" data-i18n="about.value_dedicated">DEDICATED</h4>
                      <p class="text-muted small" data-i18n="about.values.dedicated_desc">Dedikasi kuat untuk terus belajar, berkembang, dan memberikan kontribusi nyata melalui kerja kolaborasi yang progresif.</p>
                  </div>
              </div>
@@ -138,7 +138,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
              <div class="col-md-4">
                  <div class="p-4 rounded-4 bg-white h-100 shadow-sm border-bottom border-4 border-primary">
                      <i class="fas fa-balance-scale fa-3x mb-4 text-primary"></i>
-                     <h4 class="fw-bold mb-3 text-dark">INTEGRITY</h4>
+                     <h4 class="fw-bold mb-3 text-dark" data-i18n="about.value_integrity">INTEGRITY</h4>
                      <p class="text-muted small" data-i18n="about.values.integrity_desc">Menjunjung tinggi kejujuran, transparansi, dan tanggung jawab dalam setiap proses kerja serta hubungan dengan mitra dan komunitas.</p>
                  </div>
              </div>
@@ -182,5 +182,5 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
 
 <!-- BANNER -->
 <div class="banner-section">
-    <img src="<?= ASSETS_URL ?>img/banner-1.png" alt="Banner GoSirk" class="img-fluid w-100">
+    <img src="<?= PageImages::attr('about.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
 </div>

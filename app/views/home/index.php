@@ -567,7 +567,7 @@
 <section class="section blog-section">
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-5">
-      <h3 class="fw-bold mb-0" data-i18n="home.blog.title">BLOG</h3>
+      <h3 class="fw-bold mb-0" data-i18n="home.blog_title">BLOG</h3>
       <div class="blog-nav">
         <a href="<?= BASE_URL ?>blog" class="btn btn-outline-primary btn-m rounded-pill" data-i18n="home.common.read_more">Selengkapnya</a>
         <button class="btn-nav prev-blog"><i class="fas fa-chevron-left"></i></button>
@@ -601,7 +601,7 @@
                   <div class="blog-excerpt mt-2" data-lang-id="<?= $truncatedExcerptId ?>" data-lang-en="<?= $truncatedExcerptEn ?>">
                     <?= $truncatedExcerptId ?>
                   </div>
-                  <a href="<?= BASE_URL ?>blog/detail/<?= $art->id ?>" class="blog-link">Selengkapnya</a>
+                  <a href="<?= BASE_URL ?>blog/detail/<?= $art->id ?>" class="blog-link" data-i18n="home.common.read_more">Selengkapnya</a>
                 </div>
               </div>
             </div>
@@ -609,7 +609,7 @@
         <?php else : ?>
           <div class="swiper-slide">
             <div class="text-center p-5">
-              <p class="text-muted">No articles yet</p>
+              <p class="text-muted" data-i18n="common.no_articles">Belum ada artikel.</p>
             </div>
           </div>
         <?php endif; ?>
@@ -622,7 +622,7 @@
 
 
 <!-- CTA -->
-<section class="section cta-section">
+<section class="section cta-section" style="background-image: linear-gradient(rgba(165, 165, 165, 0.562), rgba(255, 255, 255, 0.8)), url('<?= PageImages::attr('home.cta_bg') ?>');">
   <div class="container text-center">
     <div class="row justify-content-center">
       <div class="col-lg-8">
@@ -653,7 +653,7 @@
 
 <!-- BANNER -->
 <div class="banner-section">
-    <img src="<?= ASSETS_URL ?>img/banner-1.png" alt="Banner GoSirk" class="img-fluid w-100">
+    <img src="<?= PageImages::attr('home.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
 </div>
 
 <!-- Company Profile Modal -->

@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         <?php $idx++; endforeach; ?>
       <?php else: ?>
-        <div class="col-12 text-center text-muted">No primary impact data available.</div>
+        <div class="col-12 text-center text-muted" data-i18n="common.no_main_impact">Data dampak utama belum tersedia.</div>
       <?php endif; ?>
     </div>
 
@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
           <?php $idx++; endforeach; ?>
         <?php else: ?>
-          <div class="col-12 text-center text-muted">No additional impact data available.</div>
+          <div class="col-12 text-center text-muted" data-i18n="common.no_more_impact">Data dampak tambahan belum tersedia.</div>
         <?php endif; ?>
       </div>
     </div>
@@ -194,7 +194,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1526951521990-620dc14c214b?auto=format&fit=crop&q=80&w=800" alt="Pelatihan Pengolahan Sampah">
+            <img src="<?= PageImages::attr('ggc.program_1') ?>" alt="Pelatihan Pengolahan Sampah">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-success text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p1_badge">Pemberdayaan</div>
           </div>
           <div class="program-card-content text-center">
@@ -209,7 +209,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800" alt="Pelatihan Kader (PRA)">
+            <img src="<?= PageImages::attr('ggc.program_2') ?>" alt="Pelatihan Kader (PRA)">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p2_badge">Edukasi</div>
           </div>
           <div class="program-card-content text-center">
@@ -224,7 +224,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=800" alt="Pendampingan & Edukasi">
+            <img src="<?= PageImages::attr('ggc.program_3') ?>" alt="Pendampingan & Edukasi">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-orange text-white rounded-pill small fw-bold" style="background-color: var(--ggc-orange);" data-i18n="ggc.programs.p3_badge">Pendampingan</div>
           </div>
           <div class="program-card-content text-center">
@@ -239,7 +239,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=800" alt="Pengurangan Emisi">
+            <img src="<?= PageImages::attr('ggc.program_4') ?>" alt="Pengurangan Emisi">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-info text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p4_badge">Lingkungan</div>
           </div>
           <div class="program-card-content text-center">
@@ -254,7 +254,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&q=80&w=800" alt="Penanaman Bibit">
+            <img src="<?= PageImages::attr('ggc.program_5') ?>" alt="Penanaman Bibit">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-warning text-dark rounded-pill small fw-bold" data-i18n="ggc.programs.p5_badge">Ketahanan Pangan</div>
           </div>
           <div class="program-card-content text-center">
@@ -302,7 +302,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
         <?php endforeach; ?>
       <?php else : ?>
         <div class="col-12 text-center py-5">
-            <p class="text-muted italic">Data aksi belum tersedia.</p>
+            <p class="text-muted italic" data-i18n="ggc.empty_actions">Data aksi belum tersedia.</p>
         </div>
       <?php endif; ?>
     </div>
@@ -310,7 +310,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
 </section>
 
 <!-- CTA SECTION -->
-<section class="cta-ggc text-center">
+<section class="cta-ggc text-center" style="background-image: linear-gradient(rgba(10, 50, 20, 0.85), rgba(10, 50, 20, 0.85)), url('<?= PageImages::attr('ggc.cta_bg') ?>');">
   <div class="container">
     <div class="row justify-content-center">
         <div class="col-lg-8">

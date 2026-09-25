@@ -582,7 +582,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_policy">Policy</span>
-                            <img src="<?= ASSETS_URL ?>img/IMG_8084.jpg" alt="Policy Advisory">
+                            <img src="<?= PageImages::attr('konsultan.service_1') ?>" alt="Policy Advisory">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service1_title">Advisori Kebijakan</h4>
@@ -594,7 +594,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_finance">Finance</span>
-                            <img src="<?= ASSETS_URL ?>img/IMG_0506-1536x1024.jpg" alt="Financial Innovation">
+                            <img src="<?= PageImages::attr('konsultan.service_2') ?>" alt="Financial Innovation">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service2_title">Inovasi Pembiayaan</h4>
@@ -606,7 +606,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_ops">Operations</span>
-                            <img src="<?= ASSETS_URL ?>img/petugas-baju-biru.png" alt="Operational Systems">
+                            <img src="<?= PageImages::attr('konsultan.service_3') ?>" alt="Operational Systems">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service3_title">Sistem Operasional</h4>
@@ -618,7 +618,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_partner">Partnership</span>
-                            <img src="<?= ASSETS_URL ?>img/pexels-fauxels-3184416.jpg" alt="PPP Facilitation">
+                            <img src="<?= PageImages::attr('konsultan.service_4') ?>" alt="PPP Facilitation">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service4_title">Fasilitasi KPS (PPP)</h4>

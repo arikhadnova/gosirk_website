@@ -27,7 +27,7 @@
         <!-- Header -->
         <div class="text-center mb-5">
             <span class="badge bg-primary text-white rounded-pill px-3 py-2 mb-3 fw-bold" data-i18n="publication.header.badge">KNOWLEDGE HUB</span>
-            <h2 class="fw-bold display-5 mb-3">GoSirk Publications</h2>
+            <h2 class="fw-bold display-5 mb-3" data-i18n="publication.gosirk_title">GoSirk Publications</h2>
             <p class="lead text-muted mx-auto" style="max-width: 700px;" data-i18n="publication.gosirk.desc">
                 Temukan berbagai publikasi resmi, laporan, dan panduan dari GoSirk.
             </p>
@@ -74,11 +74,11 @@
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex gap-2 flex-column">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="badge bg-light text-dark border">PDF</span>
+                                    <span class="badge bg-light text-dark border" data-i18n="publication.badge_pdf">PDF</span>
                                     <?php if ($pub->is_paid) : ?>
                                         <span class="fw-bold text-primary">Rp <?= number_format($pub->price, 0, ',', '.'); ?></span>
                                     <?php else : ?>
-                                        <span class="badge bg-success text-white px-2">FREE</span>
+                                        <span class="badge bg-success text-white px-2" data-i18n="publication.badge_free">FREE</span>
                                     <?php endif; ?>
                                 </div>
                                     <div class="d-flex gap-2 mb-2">
@@ -96,7 +96,7 @@
                                             <?php endif; ?>
                                         <?php else : ?>
                                             <a href="<?= ASSETS_URL ?>docs/<?= $pub->file_path ?>" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 flex-grow-1" data-i18n="publication.btn.open_pdf">Buka PDF</a>
-                                            <a href="<?= ASSETS_URL ?>docs/<?= $pub->file_path ?>" download class="btn btn-sm btn-primary rounded-pill px-3 flex-grow-1">Download</a>
+                                            <a href="<?= ASSETS_URL ?>docs/<?= $pub->file_path ?>" download class="btn btn-sm btn-primary rounded-pill px-3 flex-grow-1" data-i18n="publication.btn_download">Download</a>
                                         <?php endif; ?>
                                     </div>
                             </div>

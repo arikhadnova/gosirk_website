@@ -52,6 +52,15 @@
             <a href="<?= BASE_URL; ?>admin/page_sections" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_sections') ? 'active' : '' ?>">
                 <i class="fas fa-align-left"></i> Page Sections
             </a>
+            <a href="<?= BASE_URL; ?>admin/page_texts" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_texts') ? 'active' : '' ?>">
+                <i class="fas fa-font"></i> Teks Halaman
+            </a>
+            <a href="<?= BASE_URL; ?>admin/page_images" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_images') ? 'active' : '' ?>">
+                <i class="fas fa-images"></i> Gambar Halaman
+            </a>
+            <a href="<?= BASE_URL; ?>admin/seo" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'seo') ? 'active' : '' ?>">
+                <i class="fas fa-search"></i> SEO Halaman
+            </a>
             <a href="<?= BASE_URL; ?>admin/founders" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'founders') ? 'active' : '' ?>">
                 <i class="fas fa-user-tie"></i> Founders
             </a>

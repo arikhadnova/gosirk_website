@@ -2,6 +2,24 @@
 // app/models/Article_model.php
 
 class Article_model {
+    // Article categories (value stored in DB => translation key for its label on the site)
+    const CATEGORIES = [
+        'Environment' => 'blog.cat_enviro',
+        'Education' => 'blog.cat_edu',
+        'Innovation' => 'blog.cat_innov',
+        'Community' => 'blog.cat_comm',
+        'Consulting' => 'blog.cat_consult',
+        'Implementing Partner' => 'blog.cat_partner',
+        'Training' => 'blog.cat_training',
+    ];
+
+    /** Categories used by the given articles, in CATEGORIES order (unknown ones at the end). */
+    public static function usedCategories($articles) {
+        $used = array_unique(array_filter(array_map(fn($a) => trim((string) $a->category), $articles ?: [])));
+        $known = array_values(array_intersect(array_keys(self::CATEGORIES), $used));
+        return array_merge($known, array_values(array_diff($used, $known)));
+    }
+
     private $table = 'articles';
     private $db;
 

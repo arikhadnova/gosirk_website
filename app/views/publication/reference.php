@@ -36,7 +36,7 @@
         <!-- Header -->
         <div class="text-center mb-5">
             <span class="badge bg-warning text-dark rounded-pill px-3 py-2 mb-3 fw-bold" data-i18n="publication.header.badge">KNOWLEDGE HUB</span>
-            <h2 class="fw-bold display-5 mb-3">Reference Publications</h2>
+            <h2 class="fw-bold display-5 mb-3" data-i18n="publication.reference_title">Reference Publications</h2>
             <p class="lead text-muted mx-auto" style="max-width: 700px;" data-i18n="publication.reference.desc">
                 Kumpulan referensi, regulasi, dan laporan eksternal terpercaya seputar ekonomi sirkular.
             </p>
@@ -83,7 +83,7 @@
                             </div>
                             <div class="mt-auto pt-3 border-top d-flex gap-2 flex-column">
                                 <div class="d-flex align-items-center justify-content-between mb-2">
-                                    <span class="badge bg-light text-dark border">PDF</span>
+                                    <span class="badge bg-light text-dark border" data-i18n="publication.badge_pdf">PDF</span>
                                     <?php if ($pub->is_paid) : ?>
                                         <span class="fw-bold text-primary">Rp <?= number_format($pub->price, 0, ',', '.'); ?></span>
                                     <?php endif; ?>

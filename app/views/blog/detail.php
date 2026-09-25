@@ -6,13 +6,13 @@
             <!-- Breadcrumb -->
             <nav aria-label="breadcrumb" class="mb-4">
               <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted" data-i18n="common.breadcrumb_home">Home</a></li>
                 <?php if ($article->type == 'library') : ?>
-                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>library" class="text-decoration-none text-muted">GoSirk Library</a></li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>library" class="text-decoration-none text-muted" data-i18n="blog.breadcrumb_library">GoSirk Library</a></li>
                 <?php else : ?>
-                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>blog" class="text-decoration-none text-muted">Blog</a></li>
+                    <li class="breadcrumb-item"><a href="<?= BASE_URL ?>blog" class="text-decoration-none text-muted" data-i18n="blog.breadcrumb_blog">Blog</a></li>
                 <?php endif; ?>
-                <li class="breadcrumb-item active text-dark fw-bold" aria-current="page">Detail</li>
+                <li class="breadcrumb-item active text-dark fw-bold" aria-current="page" data-i18n="blog.breadcrumb_detail">Detail</li>
               </ol>
             </nav>
 
@@ -30,7 +30,7 @@
                   <img src="https://ui-avatars.com/api/?name=<?= urlencode($article->author ?: 'Admin'); ?>&background=random" class="rounded-circle" width="48" height="48" alt="Author">
                   <div>
                       <h6 class="fw-bold mb-0"><?= $article->author ?: 'Admin GoSirk'; ?></h6>
-                      <small class="text-muted">Editorial Team</small>
+                      <small class="text-muted" data-i18n="blog.editorial_team">Tim Redaksi</small>
                   </div>
               </div>
             </div>
@@ -50,7 +50,7 @@
             <!-- Share & Tags -->
             <div class="d-flex flex-wrap justify-content-between align-items-center border-top border-bottom py-4 mb-5">
                 <div class="mb-3 mb-md-0">
-                    <span class="fw-bold me-2">Tags:</span>
+                    <span class="fw-bold me-2" data-i18n="blog.tags_label">Tags:</span>
                     <?php 
                     if (!empty($article->tags)) : 
                         $tags = explode(',', $article->tags);
@@ -65,12 +65,10 @@
                     else : 
                     ?>
                         <span class="badge bg-light text-secondary text-decoration-none border me-1">#<?= str_replace(' ', '', $article->category) ?></span>
-                        <span class="badge bg-light text-secondary text-decoration-none border me-1">#Sustainability</span>
-                        <span class="badge bg-light text-secondary text-decoration-none border">#GoSirk</span>
                     <?php endif; ?>
                 </div>
                 <div class="d-flex align-items-center gap-2">
-                    <span class="fw-bold me-2">Share:</span>
+                    <span class="fw-bold me-2" data-i18n="blog.share_label">Share:</span>
                     <?php 
                         $current_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
                         $encoded_url = urlencode($current_url);
@@ -85,7 +83,7 @@
         <?php else : ?>
             <div class="text-center py-5">
                 <h2 class="text-muted">Article not found.</h2>
-                <a href="<?= BASE_URL ?>blog" class="btn btn-primary mt-3">Back to Blog / Library</a>
+                <a href="<?= BASE_URL ?>blog" class="btn btn-primary mt-3" data-i18n="blog.back">Back to Blog / Library</a>
             </div>
 <?php endif; ?>
 

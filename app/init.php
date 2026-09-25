@@ -19,5 +19,6 @@ require_once __DIR__ . '/core/Controller.php';
 require_once __DIR__ . '/core/Flasher.php';
 require_once __DIR__ . '/core/Validator.php';
 require_once __DIR__ . '/core/FormRules.php';
+require_once __DIR__ . '/core/PageImages.php';
 require_once __DIR__ . '/core/Upload.php';
 require_once __DIR__ . '/core/Mail.php';

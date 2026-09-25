@@ -23,6 +23,7 @@ class Admin extends Controller {
     private $pilotVillageModel;
     private $ggcActionModel;
     private $gnpProgramModel;
+    private $pageTextModel;
     private $pageSectionModel;
 
     public function __construct() {
@@ -58,6 +59,7 @@ class Admin extends Controller {
         $this->pilotVillageModel = $this->model('PilotVillage_model');
         $this->ggcActionModel = $this->model('GgcAction_model');
         $this->gnpProgramModel = $this->model('GnpProgram_model');
+        $this->pageTextModel = $this->model('PageText_model');
         $this->pageSectionModel = $this->model('PageSection_model');
 
         // Auto-initialize settings table
@@ -3118,6 +3120,184 @@ class Admin extends Controller {
             Flasher::setFlash('Pengaturan section', 'berhasil disimpan', 'success');
         }
         header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        exit;
+    }
+
+    // Public pages whose texts can be edited (view folder => label)
+    const TEXT_PAGES = [
+        'layouts' => 'Navigasi & Footer (semua halaman)',
+        'home' => 'Home',
+        'about' => 'About Us',
+        'gi' => 'GoSirk Institute',
+        'ggc' => 'GoSirk Green Community',
+        'go_ngompos_project' => 'Go Ngompos Project',
+        'implentasi_partner' => 'Implementasi Partner',
+        'konsultan' => 'Konsultansi',
+        'partnership' => 'Partnership',
+        'collaboration' => 'Collaboration',
+        'contact' => 'Contact',
+        'blog' => 'Blog',
+        'library' => 'Library',
+        'publication' => 'Publikasi',
+        'portfolio' => 'Detail Portfolio',
+    ];
+
+    // Text keys used by each public page, found by scanning the views for data-i18n attributes
+    private function pageTextKeys() {
+        $viewsDir = dirname(__DIR__) . '/views/';
+        $result = [];
+        $seen = [];
+        foreach (self::TEXT_PAGES as $folder => $label) {
+            $keys = [];
+            $files = glob($viewsDir . $folder . '/*.php');
+            usort($files, fn($a, $b) => (basename($b) === 'index.php') <=> (basename($a) === 'index.php')); // main page first
+            foreach ($files as $file) {
+                if ($folder === 'layouts' && !in_array(basename($file), ['header.php', 'footer.php'], true)) continue;
+                preg_match_all('/data-i18n(?:-placeholder)?="([a-z0-9_]+(?:\.[a-z0-9_]+)+)"/i', file_get_contents($file), $m);
+                foreach ($m[1] as $key) {
+                    if (isset($seen[$key])) continue; // shared keys are listed once, on the first page that uses them
+                    $seen[$key] = true;
+                    $keys[] = $key;
+                }
+            }
+            if ($folder === 'blog') {
+                // Category labels are printed from PHP, so the scan above cannot see them
+                if (!class_exists('Article_model')) require_once dirname(__DIR__) . '/models/Article_model.php';
+                foreach (Article_model::CATEGORIES as $catKey) {
+                    if (!isset($seen[$catKey])) { $seen[$catKey] = true; $keys[] = $catKey; }
+                }
+            }
+            if ($keys) $result[$folder] = ['label' => $label, 'keys' => $keys];
+        }
+        return $result;
+    }
+
+    public function page_texts() {
+        $pages = $this->pageTextKeys();
+        $page = isset($pages[$_GET['page'] ?? '']) ? $_GET['page'] : array_key_first($pages);
+        $data = [
+            'title' => 'Teks Halaman',
+            'active' => 'page_texts',
+            'pages' => $pages,
+            'page' => $page,
+            'overrides' => $this->pageTextModel->getAll(),
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/page_texts', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function page_texts_update() {
+        $page = preg_replace('/[^a-z_]/', '', $_POST['page'] ?? '');
+        $back = BASE_URL . 'admin/page_texts?page=' . urlencode($page);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { header('Location: ' . $back); exit; }
+
+        $allowed = array_flip($this->pageTextKeys()[$page]['keys'] ?? []);
+        $changed = 0;
+        foreach ((array) ($_POST['texts'] ?? []) as $key => $v) {
+            if (!isset($allowed[$key])) continue; // only keys that exist on this page
+            $id = trim((string) ($v['id'] ?? ''));
+            $en = trim((string) ($v['en'] ?? ''));
+            if (!empty($v['reset']) || ($id === '' && $en === '')) {
+                $this->pageTextModel->delete($key);
+            } else {
+                $this->pageTextModel->save($key, $id !== '' ? $id : null, $en !== '' ? $en : null);
+            }
+            $changed++;
+        }
+        $label = self::TEXT_PAGES[$page] ?? $page;
+        $this->activityLogModel->log('UPDATE', 'Teks Halaman', "Memperbarui {$changed} teks di halaman {$label}");
+        Flasher::setFlash('Teks halaman', "berhasil disimpan ({$changed} teks diperbarui).", 'success');
+        header('Location: ' . $back);
+        exit;
+    }
+
+    // Fixed images/backgrounds on public pages (slots defined in PageImages::SLOTS)
+    public function page_images() {
+        $data = [
+            'title' => 'Gambar Halaman',
+            'active' => 'page_images',
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/page_images', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function page_images_update() {
+        $key = $_POST['slot'] ?? '';
+        $back = BASE_URL . 'admin/page_images#slot-' . rawurlencode($key);
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset(PageImages::SLOTS[$key])) { header('Location: ' . BASE_URL . 'admin/page_images'); exit; }
+        [$page, $label] = PageImages::SLOTS[$key];
+
+        if (!empty($_POST['reset'])) {
+            $old = PageImages::custom($key);
+            $this->settingModel->update('img_slot.' . $key, '');
+            if ($old) Upload::delete($old, PageImages::FOLDER);
+            $this->activityLogModel->log('UPDATE', 'Gambar Halaman', "Mengembalikan gambar bawaan: {$page} - {$label}");
+            Flasher::setFlash('Gambar', 'dikembalikan ke bawaan.', 'success');
+            header('Location: ' . $back); exit;
+        }
+
+        if (($_FILES['image']['error'] ?? UPLOAD_ERR_NO_FILE) === UPLOAD_ERR_NO_FILE) {
+            Flasher::setFlash('Pilih gambar', 'terlebih dahulu.', 'danger');
+            header('Location: ' . $back); exit;
+        }
+        $file = Upload::file($_FILES['image'], PageImages::FOLDER, ['jpg', 'jpeg', 'png', 'webp']);
+        if ($file) {
+            $old = PageImages::custom($key);
+            $this->settingModel->update('img_slot.' . $key, $file);
+            if ($old) Upload::delete($old, PageImages::FOLDER);
+            $this->activityLogModel->log('UPDATE', 'Gambar Halaman', "Mengganti gambar: {$page} - {$label}");
+            Flasher::setFlash('Gambar', 'berhasil diganti.', 'success');
+        } else {
+            Flasher::setFlash('Gambar', 'gagal diupload.', 'danger');
+        }
+        header('Location: ' . $back);
+        exit;
+    }
+
+    // Per-page <title> and meta description (settings "seo.<page>.title|description")
+    const SEO_PAGES = [
+        'home' => 'Home', 'about' => 'About Us', 'gi' => 'GoSirk Institute', 'ggc' => 'GoSirk Green Community',
+        'go_ngompos_project' => 'Go Ngompos Project', 'implementasi_partner' => 'Implementasi Partner',
+        'konsultan' => 'Konsultansi', 'partnership' => 'Partnership', 'collaboration' => 'Collaboration',
+        'contact' => 'Contact', 'blog' => 'Blog', 'library' => 'Library', 'publication' => 'Publikasi',
+    ];
+
+    public function seo() {
+        $data = [
+            'title' => 'SEO Halaman',
+            'active' => 'seo',
+            'pages' => self::SEO_PAGES,
+            'settings' => $this->settingModel->getAll(),
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/seo', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function update_seo() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errors = [];
+            $values = [];
+            foreach (self::SEO_PAGES as $page => $label) {
+                $title = trim($_POST['seo'][$page]['title'] ?? '');
+                $desc = trim($_POST['seo'][$page]['description'] ?? '');
+                if (mb_strlen($title) > 100) $errors[$page][] = "$label: judul maksimal 100 karakter.";
+                if (mb_strlen($desc) > 300) $errors[$page][] = "$label: deskripsi maksimal 300 karakter.";
+                $values["seo.$page.title"] = $title;
+                $values["seo.$page.description"] = $desc;
+            }
+            if ($errors) {
+                Flasher::keepOldInput([]);
+                Flasher::setFlash('SEO belum disimpan.', 'Periksa isian berikut:', 'danger', $errors);
+            } else {
+                $this->settingModel->updateMultiple($values);
+                $this->activityLogModel->log('UPDATE', 'SEO', 'Memperbarui SEO halaman');
+                Flasher::setFlash('SEO halaman', 'berhasil disimpan.', 'success');
+            }
+        }
+        header('Location: ' . BASE_URL . 'admin/seo');
         exit;
     }
 

@@ -70,6 +70,13 @@ Flasher::flash(); ?>
         });
     }
 
+    // Long sidebar menu: bring the active item into view
+    (function () {
+        const list = document.querySelector('#sidebar-wrapper .list-group');
+        const active = list && list.querySelector('.list-group-item.active');
+        if (active) list.scrollTop = active.offsetTop - list.clientHeight / 2 + active.offsetHeight / 2;
+    })();
+
     // Header title follows the page's own heading (controller titles differ in wording/language)
     (function () {
         const h1 = document.querySelector('.admin-header-section h1, #page-content-wrapper h1');

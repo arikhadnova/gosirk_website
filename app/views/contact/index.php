@@ -162,5 +162,5 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
 
 <!-- BANNER -->
 <div class="banner-section text-center">
-    <img src="<?= ASSETS_URL ?>img/banner-2.png" alt="Banner GoSirk" class="img-fluid w-75 mx-auto d-block mb-5">
+    <img src="<?= PageImages::attr('contact.banner') ?>" alt="Banner GoSirk" class="img-fluid w-75 mx-auto d-block mb-5">
 </div>

@@ -27,11 +27,9 @@
                 <!-- Category Filters -->
                 <div class="article-categories d-flex flex-wrap justify-content-center gap-2">
                     <a href="#" class="btn btn-warning rounded-pill px-4 fw-bold btn-category active" data-category="all" data-i18n="blog.category_all">Semua</a>
-                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="Implementing Partner" data-i18n="blog.cat_partner">Implementing Partner</a>
-                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="Training" data-i18n="blog.cat_training">Training</a>
-                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="Environment" data-i18n="blog.cat_enviro">Environment</a>
-                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="Innovation" data-i18n="blog.cat_innov">Innovation</a>
-                    <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="Community" data-i18n="blog.cat_comm">Community</a>
+                    <?php foreach (Article_model::usedCategories($articles ?? []) as $cat) : $catKey = Article_model::CATEGORIES[$cat] ?? null; ?>
+                        <a href="#" class="btn btn-outline-secondary rounded-pill px-4 btn-category" data-category="<?= htmlspecialchars($cat) ?>"<?= $catKey ? ' data-i18n="' . $catKey . '"' : '' ?>><?= htmlspecialchars($cat) ?></a>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>

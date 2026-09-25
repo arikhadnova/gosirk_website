@@ -5,6 +5,18 @@
 const resources = {
     id: {
         translation: {
+            "portfolio": {
+                "detail_title": "Detail Proyek",
+                "about": "Tentang",
+                "highlights": "Sorotan",
+                "cta_title": "MARI BEKERJA SAMA UNTUK<br>SOLUSI PERSAMPAHAN BERKELANJUTAN",
+                "cta_desc": "Untuk info lebih lanjut, hubungi kami sekarang!",
+                "cta_button": "Hubungi Kami",
+            },
+            "breadcrumb": {
+                "home": "Beranda",
+                "portfolio": "Portofolio",
+            },
             "nav": {
                 "services": "Layanan Kami",
                 "capacity_building": "Peningkatan Kapasitas",
@@ -23,6 +35,8 @@ const resources = {
                 "contact": "Hubungi Kami"
             },
             "home": {
+                "testimonials_empty": "Testimoni belum tersedia.",
+                "blog_title": "BLOG",
 
                 "hero": {
                     "title": "MENGUBAH TANTANGAN SAMPAH<br>MENJADI DAMPAK BERKELANJUTAN",
@@ -200,6 +214,10 @@ const resources = {
                 }
             },
             "about": {
+                "vision_title": "VISI",
+                "value_committed": "COMMITTED",
+                "value_dedicated": "DEDICATED",
+                "value_integrity": "INTEGRITY",
                     "hero": {
                         "title": "GoSirk | Solusi Untuk Indonesia",
                         "cta_about": "TENTANG KAMI",
@@ -238,6 +256,17 @@ const resources = {
                     }
                 },
             "partner": {
+                "scope_design": "Design",
+                "scope_support": "Support",
+                "scope_engagement": "Engagement",
+                "scope_system": "System",
+                "scope_local": "Local",
+                "empty_villages": "Data desa percontohan belum tersedia.",
+                "portfolio_badge": "Portofolio",
+                "overview_badge": "Ringkasan Program",
+                "target_title": "TARGET PROGRAM",
+                "portfolio_title": "Kegiatan Pendampingan Desa Program Clocc",
+                "read_more": "Selengkapnya",
                 "main_title": "MITRA PENGEMBANGAN PROYEK DAN IMPLEMENTASI",
                 "cta_explore": "Eksplorasi",
                 "badge": "Ringkasan Program",
@@ -565,6 +594,17 @@ const resources = {
                     }
                 },
                 "publication": {
+                    "badge_pdf": "PDF",
+                    "badge_free": "GRATIS",
+                    "btn_download": "Unduh",
+                    "hub_badge": "KNOWLEDGE HUB",
+                    "hub_title": "Pusat Publikasi",
+                    "gosirk_title": "Publikasi GoSirk",
+                    "gosirk_desc": "Jelajahi laporan tahunan, policy brief, dan modul pembelajaran resmi dari GoSirk.",
+                    "gosirk_btn": "Lihat Publikasi",
+                    "reference_title": "Publikasi Referensi",
+                    "reference_desc": "Kumpulan regulasi, studi eksternal, dan referensi terpercaya lainnya.",
+                    "reference_btn": "Lihat Referensi",
                     "header": {
                         "badge": "KNOWLEDGE HUB"
                     },
@@ -587,6 +627,8 @@ const resources = {
                     }
                 },
             "footer": {
+                "brand": "GoSirk",
+                "free_consultation": "Gratis konsultasi layanan",
                 "desc": "Kami adalah perusahaan swasta dengan orientasi bisnis sosial yang kuat, berdedikasi untuk mengembangkan solusi inovatif dan ramah lingkungan untuk pengelolaan sampah.",
                 "menu": "Menu",
                 "office": "Kantor",
@@ -595,6 +637,10 @@ const resources = {
                 "contact": "Hubungi kami"
             },
             "gi": {
+                "no_portfolio": "Portofolio belum tersedia.",
+                "no_videos": "Video belum tersedia.",
+                "article_title": "ARTIKEL",
+                "breadcrumb_gi": "GoSirk Institute",
                 "btn_services": "Layanan Kami",
                 "btn_portfolio": "Portofolio Kami",
                 "btn_contact": "Hubungi Kami",
@@ -658,6 +704,11 @@ const resources = {
                 }
             },
             "partnership": {
+                "hero_title": "KOLABORASI UNTUK SOLUSI <br><span class='text-primary'>PERSAMPAHAN BERKELANJUTAN</span>",
+                "project_title": "Program Pendampingan Desa: CLOCC x GOSIRK",
+                "project_location": "Kabupaten Tabanan, Bali",
+                "project_desc": "Inisiatif kolaboratif untuk mempercepat kemandirian pengelolaan sampah di tingkat desa melalui penerapan skema bisnis sirkular yang terintegrasi, pemberdayaan UMKM lokal, dan edukasi masif kepada masyarakat.",
+                "empty_portfolio": "Belum ada portofolio untuk kategori ini.",
                 "showcase": "Etalase Proyek",
                 "ongoing": "Proyek Sedang Berjalan",
                 "hero_desc": "Kami telah dipercaya untuk menjalankan berbagai proyek di bidang sanitasi, mulai dari pelatihan teknis, pendampingan mitra implementasi, hingga layanan konsultansi strategis",
@@ -678,6 +729,7 @@ const resources = {
                 "btn_contact": "Hubungi Kami"
             },
             "ggc": {
+                "empty_actions": "Data aksi belum tersedia.",
                 "hero": {
                     "cta_learn": "Pelajari Lebih Lanjut",
                     "cta_action": "Aksi Kami"
@@ -785,6 +837,15 @@ const resources = {
                 }
             },
             "blog": {
+                "cat_edu": "Edukasi",
+                "cat_consult": "Konsultansi",
+                "breadcrumb_blog": "Blog",
+                "breadcrumb_detail": "Detail",
+                "tags_label": "Tag:",
+                "share_label": "Bagikan:",
+                "back": "Kembali ke Blog / Library",
+                "breadcrumb_library": "GoSirk Library",
+                "editorial_team": "Tim Redaksi",
                 "badge": "CERITA KAMI",
                 "title": "Berita & Artikel",
                 "subtitle": "Insight, update program, dan cerita perubahan dari lapangan.",
@@ -876,6 +937,13 @@ const resources = {
                 "jobs": "PEKERJAAN"
             },
             "common": {
+                "breadcrumb_home": "Beranda",
+                "no_data": "Data belum tersedia.",
+                "no_partners": "Belum ada partner untuk kategori ini.",
+                "no_articles": "Belum ada artikel.",
+                "no_main_impact": "Data dampak utama belum tersedia.",
+                "no_more_impact": "Data dampak tambahan belum tersedia.",
+                "read_more": "Selengkapnya",
                 "read_more": "Selengkapnya",
                 "learn_more": "Pelajari lebih lanjut",
                 "back": "Kembali",
@@ -891,6 +959,18 @@ const resources = {
     },
     en: {
         translation: {
+            "portfolio": {
+                "detail_title": "Project Details",
+                "about": "About",
+                "highlights": "Highlights",
+                "cta_title": "LET'S WORK TOGETHER FOR<br>SUSTAINABLE WASTE SOLUTIONS",
+                "cta_desc": "For more information, contact us now!",
+                "cta_button": "Contact Us",
+            },
+            "breadcrumb": {
+                "home": "Home",
+                "portfolio": "Portfolio",
+            },
             "nav": {
                 "services": "Our Services",
                 "capacity_building": "Capacity Building",
@@ -909,6 +989,8 @@ const resources = {
                 "contact": "Contact Us"
             },
             "home": {
+                "testimonials_empty": "No testimonials yet.",
+                "blog_title": "BLOG",
                 "hero": {
                     "title": "TRANSFORMING WASTE CHALLENGES<br>INTO SUSTAINABLE IMPACT",
                     "subtitle": "We are a social impact company transforming waste challenges into sustainable, inclusive, and innovative solutions.",
@@ -1085,6 +1167,10 @@ const resources = {
                 }
             },
             "about": {
+                "vision_title": "VISION",
+                "value_committed": "COMMITTED",
+                "value_dedicated": "DEDICATED",
+                "value_integrity": "INTEGRITY",
                     "hero": {
                         "title": "GoSirk | Solutions for Indonesia",
                         "cta_about": "ABOUT US",
@@ -1123,6 +1209,17 @@ const resources = {
                     }
                 },
             "partner": {
+                "scope_design": "Design",
+                "scope_support": "Support",
+                "scope_engagement": "Engagement",
+                "scope_system": "System",
+                "scope_local": "Local",
+                "empty_villages": "No pilot village data available yet.",
+                "portfolio_badge": "Portfolio",
+                "overview_badge": "Program Overview",
+                "target_title": "PROGRAM TARGETS",
+                "portfolio_title": "CLOCC Program Village Mentoring Activities",
+                "read_more": "Read More",
                 "main_title": "PROJECT DEVELOPMENT & IMPLEMENTING PARTNER",
                 "cta_explore": "Explore",
                 "badge": "Program Overview",
@@ -1447,6 +1544,17 @@ const resources = {
                     }
                 },
                 "publication": {
+                    "badge_pdf": "PDF",
+                    "badge_free": "FREE",
+                    "btn_download": "Download",
+                    "hub_badge": "KNOWLEDGE HUB",
+                    "hub_title": "Publication Hub",
+                    "gosirk_title": "GoSirk Publications",
+                    "gosirk_desc": "Explore annual reports, policy briefs, and official learning modules from GoSirk.",
+                    "gosirk_btn": "View Publications",
+                    "reference_title": "Reference Publications",
+                    "reference_desc": "A collection of regulations, external studies, and other trusted references.",
+                    "reference_btn": "View References",
                     "header": {
                         "badge": "KNOWLEDGE HUB"
                     },
@@ -1469,6 +1577,8 @@ const resources = {
                     }
                 },
             "footer": {
+                "brand": "GoSirk",
+                "free_consultation": "Free service consultation",
                 "desc": "We are a private company with a strong social business orientation, dedicated to developing innovative and eco-friendly solutions for waste management.",
                 "menu": "Menu",
                 "office": "Office",
@@ -1477,6 +1587,10 @@ const resources = {
                 "contact": "Contact Us"
             },
             "gi": {
+                "no_portfolio": "No portfolio available yet.",
+                "no_videos": "No videos available yet.",
+                "article_title": "ARTICLES",
+                "breadcrumb_gi": "GoSirk Institute",
                 "btn_services": "Our Services",
                 "btn_portfolio": "Our Portfolio",
                 "btn_contact": "Contact Us",
@@ -1539,6 +1653,11 @@ const resources = {
                 }
             },
             "partnership": {
+                "hero_title": "COLLABORATION FOR <br><span class='text-primary'>SUSTAINABLE WASTE SOLUTIONS</span>",
+                "project_title": "Village Mentoring Program: CLOCC x GOSIRK",
+                "project_location": "Tabanan Regency, Bali",
+                "project_desc": "A collaborative initiative to accelerate waste management independence at the village level through the implementation of an integrated circular business scheme, empowerment of local MSMEs, and massive community education.",
+                "empty_portfolio": "No portfolio in this category yet.",
                 "showcase": "Project Showcase",
                 "ongoing": "Ongoing Projects",
                 "hero_desc": "We have been trusted to execute various sanitation projects, ranging from technical training, implementing partner assistance, to strategic consultancy services",
@@ -1559,6 +1678,7 @@ const resources = {
                 "btn_contact": "Contact Us"
             },
             "ggc": {
+                "empty_actions": "No actions available yet.",
                 "hero": {
                     "cta_learn": "Learn More",
                     "cta_action": "Our Action"
@@ -1666,6 +1786,15 @@ const resources = {
                 }
             },
             "blog": {
+                "cat_edu": "Education",
+                "cat_consult": "Consulting",
+                "breadcrumb_blog": "Blog",
+                "breadcrumb_detail": "Detail",
+                "tags_label": "Tags:",
+                "share_label": "Share:",
+                "back": "Back to Blog / Library",
+                "breadcrumb_library": "GoSirk Library",
+                "editorial_team": "Editorial Team",
                 "badge": "OUR STORIES",
                 "title": "News & Articles",
                 "subtitle": "Insights, program updates, and stories of change from the field.",
@@ -1719,6 +1848,13 @@ const resources = {
                 }
             },
             "common": {
+                "breadcrumb_home": "Home",
+                "no_data": "No data available yet.",
+                "no_partners": "No partners in this category yet.",
+                "no_articles": "No articles yet.",
+                "no_main_impact": "No primary impact data available.",
+                "no_more_impact": "No additional impact data available.",
+                "read_more": "Read More",
                 "read_more": "Read More",
                 "learn_more": "Learn More",
                 "back": "Back",

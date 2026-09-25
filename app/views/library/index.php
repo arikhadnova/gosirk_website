@@ -11,18 +11,17 @@
 
         <!-- Library Filter Tags (Optional for better UX) -->
         <div class="d-flex justify-content-center gap-2 mb-5 flex-wrap">
-            <button class="btn btn-outline-dark rounded-pill px-4 active" data-i18n="library.category_all">Semua</button>
-            <button class="btn btn-outline-dark rounded-pill px-4" data-i18n="library.category_series">Series Belajar</button>
-            <button class="btn btn-outline-dark rounded-pill px-4" data-i18n="library.category_article">Artikel</button>
-            <button class="btn btn-outline-dark rounded-pill px-4" data-i18n="library.category_cases">Studi Kasus</button>
-            <button class="btn btn-outline-dark rounded-pill px-4" data-i18n="library.category_tutorial">Tutorial</button>
+            <button type="button" class="btn btn-outline-dark rounded-pill px-4 active lib-filter" data-category="all" data-i18n="library.category_all">Semua</button>
+            <?php foreach (Article_model::usedCategories($articles ?? []) as $cat) : $catKey = Article_model::CATEGORIES[$cat] ?? null; ?>
+                <button type="button" class="btn btn-outline-dark rounded-pill px-4 lib-filter" data-category="<?= htmlspecialchars($cat) ?>"<?= $catKey ? ' data-i18n="' . $catKey . '"' : '' ?>><?= htmlspecialchars($cat) ?></button>
+            <?php endforeach; ?>
         </div>
 
         <div class="row g-4 mb-5">
             <?php if (!empty($articles)) : ?>
                 <?php foreach ($articles as $item) : ?>
                 <!-- Article Item -->
-                <div class="col-lg-4 col-md-6">
+                <div class="col-lg-4 col-md-6 lib-item" data-category="<?= htmlspecialchars($item->category) ?>">
                     <div class="card h-100 article-card border-0 shadow-sm rounded-4 overflow-hidden">
                         <div class="article-image" style="height: 220px; overflow: hidden;">
                             <?php if ($item->image) : ?>
@@ -88,3 +87,17 @@
         color: #0d6efd;
     }
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const buttons = document.querySelectorAll('.lib-filter');
+    buttons.forEach((btn) => btn.addEventListener('click', () => {
+        buttons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        const cat = btn.dataset.category;
+        document.querySelectorAll('.lib-item').forEach((item) => {
+            item.style.display = cat === 'all' || item.dataset.category === cat ? '' : 'none';
+        });
+    }));
+});
+</script>

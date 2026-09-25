@@ -220,7 +220,7 @@
         background:
             linear-gradient(135deg, rgba(8, 48, 84, 0.94) 0%, rgba(13, 74, 124, 0.90) 42%, rgba(22, 128, 83, 0.88) 100%),
             linear-gradient(180deg, rgba(0,0,0,0.16), rgba(0,0,0,0.32)),
-            url('<?= ASSETS_URL ?>img/partnership-bg.jpg') center/cover;
+            url('<?= PageImages::attr('portfolio.cta_bg') ?>') center/cover;
         padding: 100px 0;
         color: white;
         text-align: center;

@@ -233,8 +233,8 @@
     <div class="container">
         <nav aria-label="breadcrumb" class="mb-4">
             <ol class="breadcrumb mb-0" style="font-size: 0.85rem;">
-                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted">Home</a></li>
-                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>gi" class="text-decoration-none text-muted">GoSirk Institute</a></li>
+                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>" class="text-decoration-none text-muted" data-i18n="common.breadcrumb_home">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?= BASE_URL ?>gi" class="text-decoration-none text-muted" data-i18n="gi.breadcrumb_gi">GoSirk Institute</a></li>
                 <li class="breadcrumb-item active text-primary fw-bold" aria-current="page" data-lang-id="<?= $s->title_id ?>" data-lang-en="<?= $s->title_en ?>"><?= $s->title_id ?></li>
             </ol>
         </nav>

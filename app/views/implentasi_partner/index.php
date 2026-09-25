@@ -742,8 +742,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
-                                <span class="badge-scope">Design</span>
-                                <img src="<?= ASSETS_URL ?>img/pexels-fauxels-3184416.jpg" alt="Project Design">
+                                <span class="badge-scope" data-i18n="partner.scope_design">Design</span>
+                                <img src="<?= PageImages::attr('partner.service_1') ?>" alt="Project Design">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service1_title">1. Perancangan Program & Proyek</h4>
@@ -755,8 +755,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
-                                <span class="badge-scope">Support</span>
-                                <img src="<?= ASSETS_URL ?>img/IMG_8093.jpg" alt="Field Implementation Support">
+                                <span class="badge-scope" data-i18n="partner.scope_support">Support</span>
+                                <img src="<?= PageImages::attr('partner.service_2') ?>" alt="Field Implementation Support">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service2_title">2. Pendampingan Implementasi Lapangan</h4>
@@ -768,8 +768,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
-                                <span class="badge-scope">Engagement</span>
-                                <img src="<?= ASSETS_URL ?>img/pexels-diva-plavalaguna-6147016.jpg" alt="Community Engagement">
+                                <span class="badge-scope" data-i18n="partner.scope_engagement">Engagement</span>
+                                <img src="<?= PageImages::attr('partner.service_3') ?>" alt="Community Engagement">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service3_title">3. Penguatan Keterlibatan Komunitas</h4>
@@ -781,8 +781,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
-                                <span class="badge-scope">System</span>
-                                <img src="<?= ASSETS_URL ?>img/IMG_8082.jpg" alt="Waste Management Systems">
+                                <span class="badge-scope" data-i18n="partner.scope_system">System</span>
+                                <img src="<?= PageImages::attr('partner.service_4') ?>" alt="Waste Management Systems">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service4_title">4. Pengembangan Sistem Pengelolaan Sampah</h4>
@@ -794,8 +794,8 @@
                     <div class="col-md-6 col-lg-4">
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
-                                <span class="badge-scope">Local</span>
-                                <img src="<?= ASSETS_URL ?>img/DSC00079-1024x683.jpg" alt="Local Solutions">
+                                <span class="badge-scope" data-i18n="partner.scope_local">Local</span>
+                                <img src="<?= PageImages::attr('partner.service_5') ?>" alt="Local Solutions">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service5_title">5. Pengembangan Solusi Tepat Guna & Bisnis Lokal</h4>
@@ -870,16 +870,16 @@
             <!-- PARTNER LOGOS -->
             <div class="row align-items-center justify-content-center g-4 g-md-5 mb-5">
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= ASSETS_URL ?>img/Logo CLOCC.png" alt="CLOCC" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= ASSETS_URL ?>img/logo-sirk-norge.png" alt="Sirk Norge" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= ASSETS_URL ?>img/logo-kab-tabanan.png" alt="Pemkab Tabanan" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
             </div>
 
@@ -887,7 +887,7 @@
                 <!-- Left Column: Narrative -->
                 <div class="col-lg-7">
                     <div class="ps-4 border-start border-3 border-orange-soft">
-                        <span class="section-subheader" data-lang-id="Ringkasan Program" data-lang-en="Program Overview" data-i18n="partner.badge">Program Overview</span>
+                        <span class="section-subheader" data-i18n="partner.overview_badge">Program Overview</span>
                         <h3 class="fs-3 fw-bold mb-4" style="color: var(--dark-blue); line-height: 1.3;" data-i18n="partner.hero_title">Bersama Menghadapi Tantangan Persampahan di Indonesia</h3>
                         <div class="text-muted mb-3" style="text-align: justify; line-height: 1.8;">
                             <p data-i18n="partner.desc_p1">
@@ -994,7 +994,7 @@
                     <?php endforeach; ?>
                 <?php else : ?>
                     <div class="col-12 text-center py-5">
-                        <p class="text-muted italic">Data desa percontohan belum tersedia.</p>
+                        <p class="text-muted italic" data-i18n="partner.empty_villages">Data desa percontohan belum tersedia.</p>
                     </div>
                 <?php endif; ?>
             </div>
@@ -1013,7 +1013,7 @@
         <div class="container">
             <div class="target-container shadow-sm bg-white border-top-orange-3 rounded-4 overflow-hidden">
                 <div class="bg-orange-soft p-3 mb-4">
-                    <h5 class="fw-bold mb-0 text-center text-orange" data-lang-id="TARGET PROGRAM" data-lang-en="PROGRAM TARGETS">TARGET PROGRAM</h5>
+                    <h5 class="fw-bold mb-0 text-center text-orange" data-i18n="partner.target_title">TARGET PROGRAM</h5>
                 </div>
                 <ul class="list-unstyled d-flex flex-column gap-3">
                     <li class="d-flex gap-3">
@@ -1110,7 +1110,7 @@
                 <?php $first = false; endforeach; ?>
 
                 <?php if (empty($wp_groups)) : ?>
-                    <div class="text-center py-5 text-muted">No impact data available for this page.</div>
+                    <div class="text-center py-5 text-muted" data-i18n="common.no_data">No impact data available for this page.</div>
                 <?php endif; ?>
             </div>
         </div>
@@ -1122,8 +1122,8 @@
         <div class="container py-5">
             <div class="d-flex align-items-center justify-content-between mb-5">
                 <div>
-                    <span class="section-subheader">Portfolio</span>
-                    <h2 class="section-title display-6 mb-2">Kegiatan Pendampingan Desa Program Clocc</h2>
+                    <span class="section-subheader" data-i18n="partner.portfolio_badge">Portfolio</span>
+                    <h2 class="section-title display-6 mb-2" data-i18n="partner.portfolio_title">Kegiatan Pendampingan Desa Program Clocc</h2>
                     <div class="rounded-pill bg-orange opacity-25" style="width: 60px; height: 3px;"></div>
                 </div>
                 <div class="d-flex gap-2">
@@ -1164,7 +1164,7 @@
                                             </div>
                                         </div>
                                         <div class="mt-3 text-end">
-                                            <a href="<?= BASE_URL ?>portfolio/detail/<?= $portfolio->id ?>" class="btn btn-outline-orange rounded-pill btn-sm px-4" style="border-color: var(--gosirk-orange); color: var(--gosirk-orange);">Selengkapnya</a>
+                                            <a href="<?= BASE_URL ?>portfolio/detail/<?= $portfolio->id ?>" class="btn btn-outline-orange rounded-pill btn-sm px-4" style="border-color: var(--gosirk-orange); color: var(--gosirk-orange);" data-i18n="partner.read_more">Selengkapnya</a>
                                         </div>
                                     </div>
                                 </div>
@@ -1211,7 +1211,7 @@
             endif; 
             
             if (!$foundContribution) : ?>
-              <div class="swiper-slide text-center text-muted small">No contribution partners yet</div>
+              <div class="swiper-slide text-center text-muted small" data-i18n="common.no_partners">No contribution partners yet</div>
             <?php endif; ?>
           </div>
         </div>
@@ -1262,7 +1262,7 @@
                     <?php else : ?>
                         <div class="swiper-slide h-auto w-100">
                             <div class="text-center p-5">
-                                <p class="text-muted" data-i18n="home.testimonials.empty">Testimoni belum tersedia.</p>
+                                <p class="text-muted" data-i18n="home.testimonials_empty">Testimoni belum tersedia.</p>
                             </div>
                         </div>
                     <?php endif; ?>

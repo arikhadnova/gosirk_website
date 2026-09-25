@@ -4,6 +4,18 @@ $settingModel = new Setting_model();
 $settings = $settingModel->getAll();
 
 $site_title = $settings['site_title'] ?? 'Go Circular Solutions Indonesia';
+// SEO: Admin > SEO Halaman per page, else the detail item's own title, else the global site title/description
+$seoPage = explode('/', trim($_GET['url'] ?? '', '/'))[0] ?: 'home';
+$seoTitle = trim($settings["seo.$seoPage.title"] ?? '');
+$seoDesc = trim($settings["seo.$seoPage.description"] ?? '');
+$isDetail = substr_count(trim($_GET['url'] ?? '', '/'), '/') >= 1 && !empty($data['title']);
+if ($isDetail) {
+    $seoTitle = strip_tags($data['title']) . ' | ' . $site_title;
+    $seoDesc = trim($data['meta_description'] ?? '') ?: $seoDesc;
+}
+$pageTitle = $seoTitle ?: $site_title;
+$pageDesc = $seoDesc ?: ($settings['site_description'] ?? 'Go Circular Solutions Indonesia - Solusi pengelolaan sampah berkelanjutan');
+$canonical = rtrim(BASE_URL, '/') . '/' . ltrim(parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH), '/');
 $site_logo = $settings['site_logo'] ?? 'Logo-GoSirk-01.png';
 $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/' . $site_logo;
 ?>
@@ -12,8 +24,16 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $site_title ?></title>
-    <meta name="description" content="<?= $settings['site_description'] ?? 'Go Circular Solutions Indonesia - Solusi pengelolaan sampah berkelanjutan' ?>">
+    <title><?= htmlspecialchars($pageTitle) ?></title>
+    <meta name="description" content="<?= htmlspecialchars($pageDesc, ENT_QUOTES) ?>">
+    <link rel="canonical" href="<?= htmlspecialchars($canonical, ENT_QUOTES) ?>">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="<?= htmlspecialchars($site_title, ENT_QUOTES) ?>">
+    <meta property="og:title" content="<?= htmlspecialchars($pageTitle, ENT_QUOTES) ?>">
+    <meta property="og:description" content="<?= htmlspecialchars($pageDesc, ENT_QUOTES) ?>">
+    <meta property="og:url" content="<?= htmlspecialchars($canonical, ENT_QUOTES) ?>">
+    <meta property="og:image" content="<?= htmlspecialchars($logo_url, ENT_QUOTES) ?>">
+    <meta name="twitter:card" content="summary">
     <link rel="icon" type="image/png" href="<?= $logo_url ?>">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -240,6 +260,24 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="<?= ASSETS_URL ?>js/about.js"></script>
     <script src="<?= ASSETS_URL ?>js/translations.js?v=<?= time() ?>"></script>
+    <?php $pageTexts = class_exists('Controller') && isset($this) ? $this->model('PageText_model')->getAll() : []; ?>
+    <?php if ($pageTexts) : ?>
+    <script>
+    // Texts edited in Admin > Teks Halaman replace the defaults before the page is translated
+    (function (overrides) {
+        if (typeof resources === 'undefined') return;
+        Object.entries(overrides).forEach(([key, v]) => {
+            ['id', 'en'].forEach((lang) => {
+                if (v[lang] === null || v[lang] === '' || !resources[lang]) return;
+                const parts = key.split('.');
+                let node = resources[lang].translation;
+                parts.slice(0, -1).forEach((p) => { node = node[p] = (node[p] && typeof node[p] === 'object') ? node[p] : {}; });
+                node[parts[parts.length - 1]] = v[lang];
+            });
+        });
+    })(<?= json_encode($pageTexts, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?>);
+    </script>
+    <?php endif; ?>
     <script src="<?= ASSETS_URL ?>js/lang.js?v=<?= time() ?>"></script>
 
 </head>

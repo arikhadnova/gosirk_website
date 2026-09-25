@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <?php $idx++; endforeach; ?>
                 <?php else : ?>
                     <!-- Fallback if no impact data -->
-                    <div class="col-12"><p class="text-muted mb-0">No primary impact data available.</p></div>
+                    <div class="col-12"><p class="text-muted mb-0" data-i18n="common.no_main_impact">Data dampak utama belum tersedia.</p></div>
                 <?php endif; ?>
             </div>
         </div>
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <div class="col-12 text-center text-muted">No additional impact data available.</div>
+                    <div class="col-12 text-center text-muted" data-i18n="common.no_more_impact">Data dampak tambahan belum tersedia.</div>
                 <?php endif; ?>
             </div>
         </div>
@@ -396,7 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <div class="card-body p-4 d-flex flex-column">
                                             <h6 class="fw-bold mb-2 text-truncate-2" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
                                             <p class="text-muted small mb-4 flex-grow-1 text-truncate-3" data-lang-id="<?= strip_tags($p->subtitle_id) ?>" data-lang-en="<?= strip_tags($p->subtitle_en) ?>"><?= $p->subtitle_id ?></p>
-                                            <div class="mt-auto text-end"><a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-portfolio-outline rounded-pill px-4">Selengkapnya</a></div>
+                                            <div class="mt-auto text-end"><a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-portfolio-outline rounded-pill px-4" data-i18n="gi.btn_more">Selengkapnya</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -843,7 +843,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <?php else : ?>
                     <div class="swiper-slide h-auto w-100">
                         <div class="text-center p-5">
-                            <p class="text-muted" data-i18n="home.testimonials.empty">Testimoni belum tersedia.</p>
+                            <p class="text-muted" data-i18n="home.testimonials_empty">Testimoni belum tersedia.</p>
                         </div>
                     </div>
                 <?php endif; ?>

@@ -60,11 +60,9 @@
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Category</label>
                         <select name="category" class="form-select">
-                            <option value="Environment">Environment</option>
-                            <option value="Education">Education</option>
-                            <option value="Innovation">Innovation</option>
-                            <option value="Community">Community</option>
-                            <option value="Consulting">Consulting</option>
+                            <?php foreach (array_keys(Article_model::CATEGORIES) as $cat) : ?>
+                                <option value="<?= $cat ?>"><?= $cat ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-4">

@@ -1,9 +1,9 @@
 
 <!-- Hero Section -->
-<section class="partnership-hero">
+<section class="partnership-hero" style="background-image: url('<?= PageImages::attr('partnership.hero_bg') ?>');">
     <div class="hero-overlay"></div>
     <div class="container position-relative z-3 text-center">
-        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown text-uppercase" style="color: var(--text-dark-blue);" data-lang-id="KOLABORASI UNTUK SOLUSI <br><span class='text-primary'>PERSAMPAHAN BERKELANJUTAN</span>" data-lang-en="COLLABORATION FOR <br><span class='text-primary'>SUSTAINABLE WASTE SOLUTIONS</span>" data-i18n-html="true" data-i18n="partnership.cta_title">
+        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown text-uppercase" style="color: var(--text-dark-blue);" data-i18n-html="true" data-i18n="partnership.hero_title">
             KOLABORASI UNTUK SOLUSI <br>
             <span class="text-primary">PERSAMPAHAN BERKELANJUTAN</span>
         </h1>
@@ -33,7 +33,7 @@
             <div class="row g-0">
                 <div class="col-lg-6">
                     <div class="project-img-container h-100">
-                        <img src="<?= ASSETS_URL ?>img/petugas-baju-biru.png" class="img-fluid h-100 w-100 object-fit-cover" alt="Ongoing Project">
+                        <img src="<?= PageImages::attr('partnership.project') ?>" class="img-fluid h-100 w-100 object-fit-cover" alt="Ongoing Project">
                     </div>
                 </div>
                 <div class="col-lg-6 p-4 p-md-5 d-flex flex-column justify-content-center">
@@ -41,28 +41,23 @@
                         <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill fw-semibold" data-i18n="partnership.clocc_badge_1">Community Impact</span>
                         <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill fw-semibold ms-2" style="background-color: #FF8F56 !important; color: white !important;" data-i18n="partnership.clocc_badge_2">Village Circular</span>
                     </div>
-                    <h3 class="fw-bold mb-3" 
-                        data-lang-id="Program Pendampingan Desa: CLOCC x GOSIRK" 
-                        data-lang-en="Village Mentoring Program: CLOCC x GOSIRK">
+                    <h3 class="fw-bold mb-3" data-i18n="partnership.project_title">
                         Program Pendampingan Desa: CLOCC x GOSIRK
                     </h3>
                     <div class="d-flex align-items-center text-muted mb-4">
                         <i class="fas fa-map-marker-alt me-2 text-primary" style="color: #FF8F56 !important;"></i>
-                        <span data-lang-id="Kabupaten Tabanan, Bali" 
-                              data-lang-en="Tabanan Regency, Bali">
+                        <span data-i18n="partnership.project_location">
                             Kabupaten Tabanan, Bali
                         </span>
                     </div>
-                    <p class="text-secondary mb-4 fs-6" 
-                       data-lang-id="Inisiatif kolaboratif untuk mempercepat kemandirian pengelolaan sampah di tingkat desa melalui penerapan skema bisnis sirkular yang terintegrasi, pemberdayaan UMKM lokal, dan edukasi masif kepada masyarakat." 
-                       data-lang-en="A collaborative initiative to accelerate waste management independence at the village level through the implementation of an integrated circular business scheme, empowerment of local MSMEs, and massive community education.">
+                    <p class="text-secondary mb-4 fs-6" data-i18n="partnership.project_desc">
                         Inisiatif kolaboratif untuk mempercepat kemandirian pengelolaan sampah di tingkat desa melalui penerapan skema bisnis sirkular yang terintegrasi, pemberdayaan UMKM lokal, dan edukasi masif kepada masyarakat.
                     </p>
                     <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
-                        <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 40px; width: auto;">
-                        <img src="<?= ASSETS_URL ?>img/Logo CLOCC.png" alt="CLOCC" style="max-height: 40px; width: auto;">
-                        <img src="<?= ASSETS_URL ?>img/logo-sirk-norge.png" alt="Sirk Norge" style="max-height: 40px; width: auto;">
-                        <img src="<?= ASSETS_URL ?>img/logo-kab-tabanan.png" alt="Pemkab Tabanan" style="max-height: 40px; width: auto;">
+                        <img src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" style="max-height: 40px; width: auto;">
+                        <img src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" style="max-height: 40px; width: auto;">
+                        <img src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" style="max-height: 40px; width: auto;">
+                        <img src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" style="max-height: 40px; width: auto;">
                     </div>
                     <div>
                         <a href="<?= BASE_URL ?>implementasi_partner#program-clocc" class="btn btn-primary rounded-pill px-4" style="background-color: #FF8F56; border: none;" data-i18n="partnership.see_detail">See Details</a>
@@ -149,10 +144,10 @@
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <?php if (!$found) : ?>
-                            <div class="swiper-slide"><p class="text-muted">Belum ada portofolio untuk kategori ini.</p></div>
+                            <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Belum ada portofolio untuk kategori ini.</p></div>
                         <?php endif; ?>
                     <?php else : ?>
-                        <div class="swiper-slide"><p class="text-muted">Portofolio tidak tersedia.</p></div>
+                        <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Portofolio tidak tersedia.</p></div>
                     <?php endif; ?>
                 </div>
                 <div class="swiper-pagination position-relative mt-4"></div>
@@ -226,10 +221,10 @@
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <?php if (!$found) : ?>
-                            <div class="swiper-slide"><p class="text-muted">Belum ada portofolio untuk kategori ini.</p></div>
+                            <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Belum ada portofolio untuk kategori ini.</p></div>
                         <?php endif; ?>
                     <?php else : ?>
-                        <div class="swiper-slide"><p class="text-muted">Portofolio tidak tersedia.</p></div>
+                        <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Portofolio tidak tersedia.</p></div>
                     <?php endif; ?>
                 </div>
                 <div class="swiper-pagination position-relative mt-4"></div>
@@ -303,10 +298,10 @@
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <?php if (!$found) : ?>
-                            <div class="swiper-slide"><p class="text-muted">Belum ada portofolio untuk kategori ini.</p></div>
+                            <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Belum ada portofolio untuk kategori ini.</p></div>
                         <?php endif; ?>
                     <?php else : ?>
-                        <div class="swiper-slide"><p class="text-muted">Portofolio tidak tersedia.</p></div>
+                        <div class="swiper-slide"><p class="text-muted" data-i18n="partnership.empty_portfolio">Portofolio tidak tersedia.</p></div>
                     <?php endif; ?>
                 </div>
                 <div class="swiper-pagination position-relative mt-4"></div>
@@ -333,10 +328,10 @@
                         <?php endif; ?>
                     <?php endforeach; ?>
                     <?php if (!$found) : ?>
-                        <div class="swiper-slide text-center"><p class="text-muted">Currently no partners in this category.</p></div>
+                        <div class="swiper-slide text-center"><p class="text-muted" data-i18n="common.no_partners">Currently no partners in this category.</p></div>
                     <?php endif; ?>
                 <?php else : ?>
-                    <div class="swiper-slide text-center"><p class="text-muted">Partner logos not available.</p></div>
+                    <div class="swiper-slide text-center"><p class="text-muted" data-i18n="common.no_partners">Partner logos not available.</p></div>
                 <?php endif; ?>
             </div>
         </div>
@@ -347,7 +342,7 @@
 
 <section class="partnership-cta py-5">
     <div class="container">
-        <div class="cta-banner rounded-5 overflow-hidden position-relative">
+        <div class="cta-banner rounded-5 overflow-hidden position-relative" style="background-image: url('<?= PageImages::attr('partnership.cta_bg') ?>');">
             <div class="cta-overlay" style="background: linear-gradient(90deg, rgba(255, 143, 86, 0.9) 0%, rgba(13, 74, 124, 0.8) 100%);"></div>
             <div class="row align-items-center position-relative z-3 p-5">
                 <div class="col-lg-8 text-center text-lg-start">

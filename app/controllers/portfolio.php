@@ -21,7 +21,8 @@ class Portfolio extends Controller {
         }
 
         $data = [
-            'title' => $portfolio->title_id . ' - Portfolio',
+            'title' => $portfolio->title_id,
+            'meta_description' => mb_substr(trim(strip_tags($portfolio->description_id ?: ($portfolio->subtitle_id ?? ''))), 0, 160),
             'portfolio' => $portfolio
         ];
 

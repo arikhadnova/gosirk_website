@@ -63,11 +63,9 @@
                     <div class="mb-4">
                         <label class="form-label">Category</label>
                         <select name="category" class="form-select">
-                            <option value="Environment" <?= $article->category == 'Environment' ? 'selected' : ''; ?>>Environment</option>
-                            <option value="Education" <?= $article->category == 'Education' ? 'selected' : ''; ?>>Education</option>
-                            <option value="Innovation" <?= $article->category == 'Innovation' ? 'selected' : ''; ?>>Innovation</option>
-                            <option value="Community" <?= $article->category == 'Community' ? 'selected' : ''; ?>>Community</option>
-                            <option value="Consulting" <?= $article->category == 'Consulting' ? 'selected' : ''; ?>>Consulting</option>
+                            <?php foreach (array_keys(Article_model::CATEGORIES) as $cat) : ?>
+                                <option value="<?= $cat ?>" <?= $article->category == $cat ? 'selected' : ''; ?>><?= $cat ?></option>
+                            <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="mb-4">

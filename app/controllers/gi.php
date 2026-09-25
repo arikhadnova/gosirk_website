@@ -28,7 +28,9 @@ class gi extends Controller {
             exit;
         }
         $data = [
-            'service' => $service
+            'service' => $service,
+            'title' => $service->title_id,
+            'meta_description' => mb_substr(trim(strip_tags($service->description_id ?? '')), 0, 160)
         ];
         $this->views('layouts/header', $data);
         $this->views('gi/detail', $data);

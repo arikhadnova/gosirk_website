@@ -9,7 +9,7 @@ if (!isset($settings)) {
         <div class="container">
             <div class="row">
                 <div class="col-md-3 mb-4">
-                    <h6>GoSirk</h6>
+                    <h6 data-i18n="footer.brand">GoSirk</h6>
                     <p data-i18n="footer.desc">We are a private company with a strong social business orientation, dedicated to developing innovative and eco-friendly solutions for waste management.</p>
                 </div>
                 <div class="col-md-3 mb-4">
@@ -40,7 +40,7 @@ if (!isset($settings)) {
                         $whatsappNumberClean = $this->waNumber();
                         $whatsappLink = $this->waLink();
                     ?>
-                    <p class="small fst-italic mb-1">Gratis konsultasi layanan</p>
+                    <p class="small fst-italic mb-1" data-i18n="footer.free_consultation">Gratis konsultasi layanan</p>
                     <div class="d-flex align-items-start mb-2 gap-2">
                         <i class="fab fa-whatsapp"></i>
                         <div>

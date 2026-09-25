@@ -209,7 +209,7 @@ if ((!$programsSection || (int) $programsSection->is_active === 1) && $programs)
 </section>
 <?php endif; ?>
 
-<section class="cta-ggc text-center">
+<section class="cta-ggc text-center" style="background-image: linear-gradient(rgba(10, 50, 20, 0.85), rgba(10, 50, 20, 0.85)), url('<?= PageImages::attr('gnp.cta_bg') ?>');">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-lg-8">
