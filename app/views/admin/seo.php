@@ -3,6 +3,7 @@ $settings = $data['settings'];
 $siteTitle = $settings['site_title'] ?? 'Go Circular Solutions Indonesia';
 $siteDesc = $settings['site_description'] ?? '';
 $host = preg_replace('#^https?://#', '', rtrim(BASE_URL, '/'));
+$seoPages = !empty($data['only']) ? array_intersect_key($data['pages'], [$data['only'] => true]) : $data['pages'];
 ?>
 <style>
     .seo-item { padding: 1rem 1.25rem; }
@@ -22,7 +23,7 @@ $host = preg_replace('#^https?://#', '', rtrim(BASE_URL, '/'));
 <form action="<?= BASE_URL; ?>admin/update_seo" method="POST" style="max-width: 860px;">
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-0">
-            <?php foreach ($data['pages'] as $page => $label) :
+            <?php foreach ($seoPages as $page => $label) :
                 $t = $settings["seo.$page.title"] ?? '';
                 $d = $settings["seo.$page.description"] ?? '';
                 $path = $page === 'home' ? '' : $page;
@@ -34,16 +35,16 @@ $host = preg_replace('#^https?://#', '', rtrim(BASE_URL, '/'));
                             <div class="seo-title text-truncate seo-preview-title <?= $t === '' ? 'seo-default' : '' ?>"><?= htmlspecialchars($t !== '' ? $t : $siteTitle) ?></div>
                             <div class="seo-desc seo-preview-desc <?= $d === '' ? 'seo-default' : '' ?>"><?= htmlspecialchars($d !== '' ? $d : $siteDesc) ?></div>
                         </div>
-                        <button type="button" class="btn btn-light btn-action btn-sm flex-shrink-0 seo-edit"><i class="fas fa-pen"></i> Edit</button>
+                        <?php if (count($seoPages) > 1) : ?><button type="button" class="btn btn-light btn-action btn-sm flex-shrink-0 seo-edit"><i class="fas fa-pen"></i> Edit</button><?php endif; ?>
                     </div>
-                    <div class="seo-fields mt-3 d-none">
+                    <div class="seo-fields mt-3 <?= count($seoPages) > 1 ? 'd-none' : '' ?>">
                         <label class="form-label small text-muted mb-1">Judul <span class="seo-count"></span></label>
                         <input type="text" name="seo[<?= $page ?>][title]" class="form-control form-control-sm mb-2 seo-field" data-limit="60" maxlength="100" data-default="<?= htmlspecialchars($siteTitle) ?>"
                                value="<?= htmlspecialchars($t) ?>" placeholder="<?= htmlspecialchars($siteTitle) ?>">
                         <label class="form-label small text-muted mb-1">Deskripsi <span class="seo-count"></span></label>
                         <textarea name="seo[<?= $page ?>][description]" rows="2" class="form-control form-control-sm seo-field" data-limit="160" maxlength="300" data-default="<?= htmlspecialchars($siteDesc) ?>"
                                   placeholder="<?= htmlspecialchars($siteDesc) ?>"><?= htmlspecialchars($d) ?></textarea>
-                        <small class="text-muted d-block mt-1">Kosongkan untuk memakai judul &amp; deskripsi global (menu Layouts).</small>
+                        <small class="text-muted d-block mt-1">Kosongkan untuk memakai judul &amp; deskripsi global (Pengaturan › Situs).</small>
                     </div>
                 </div>
             <?php endforeach; ?>

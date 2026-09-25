@@ -5,6 +5,66 @@
 
 <!-- Bootstrap 5 JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Ctrl+K: jump to any page, tab or setting -->
+<div class="modal fade admin-search-modal" id="adminSearchModal" tabindex="-1" aria-label="Cari menu" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" style="margin-top: 12vh;">
+        <div class="modal-content">
+            <input type="search" class="form-control search-input" id="adminSearchInput" placeholder="Cari halaman, bagian, atau pengaturan… (mis. whatsapp, logo, SEO home)" autocomplete="off">
+            <div class="admin-search-results" id="adminSearchResults"></div>
+        </div>
+    </div>
+</div>
+<script>
+(function () {
+    const index = <?= json_encode(AdminNav::searchIndex(($_SESSION['user_role'] ?? '') === 'admin'), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES | JSON_HEX_TAG) ?>;
+    const modalEl = document.getElementById('adminSearchModal');
+    const input = document.getElementById('adminSearchInput');
+    const list = document.getElementById('adminSearchResults');
+    const norm = (t) => t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    let shown = [], selected = 0;
+
+    function render() {
+        const words = norm(input.value).split(/\s+/).filter(Boolean);
+        shown = index.filter(([label, hint, url, kw]) => {
+            const hay = norm(label + ' ' + hint + ' ' + kw);
+            return words.every((w) => hay.includes(w));
+        }).slice(0, 40);
+        selected = 0;
+        list.innerHTML = shown.length
+            ? shown.map(([label, hint, url], i) => `<a href="${url}" class="${i === 0 ? 'selected' : ''}"><span></span><small></small></a>`).join('')
+            : '<div class="admin-search-empty">Tidak ditemukan.</div>';
+        list.querySelectorAll('a').forEach((a, i) => { a.firstChild.textContent = shown[i][0]; a.lastChild.textContent = shown[i][1]; });
+    }
+    function move(d) {
+        const links = list.querySelectorAll('a');
+        if (!links.length) return;
+        links[selected].classList.remove('selected');
+        selected = (selected + d + links.length) % links.length;
+        links[selected].classList.add('selected');
+        links[selected].scrollIntoView({ block: 'nearest' });
+    }
+    function open() { bootstrap.Modal.getOrCreateInstance(modalEl).show(); }
+
+    modalEl.addEventListener('shown.bs.modal', () => { input.value = ''; render(); input.focus(); });
+    input.addEventListener('input', render);
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+        if (e.key === 'ArrowUp') { e.preventDefault(); move(-1); }
+        if (e.key === 'Enter' && shown[selected]) { e.preventDefault(); location.href = shown[selected][2]; }
+    });
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); open(); }
+    });
+    document.getElementById('adminSearchOpen')?.addEventListener('click', open);
+
+    // Phones: the tab row scrolls, so bring the active tab into view
+    const tabs = document.querySelector('.hub-tabs'), activeTab = tabs?.querySelector('.hub-tab.active');
+    if (tabs && activeTab && tabs.scrollWidth > tabs.clientWidth) {
+        tabs.scrollLeft = activeTab.offsetLeft - tabs.offsetLeft - (tabs.clientWidth - activeTab.offsetWidth) / 2;
+    }
+})();
+</script>
+
 <?php // Show any pending notification (e.g. validation errors on create/edit pages that don't render it themselves)
 Flasher::flash(); ?>
 
@@ -74,7 +134,10 @@ Flasher::flash(); ?>
     (function () {
         const list = document.querySelector('#sidebar-wrapper .list-group');
         const active = list && list.querySelector('.list-group-item.active');
-        if (active) list.scrollTop = active.offsetTop - list.clientHeight / 2 + active.offsetHeight / 2;
+        // only when it is hidden below the fold (keeps the top of the menu visible otherwise)
+        if (active && active.offsetTop + active.offsetHeight > list.clientHeight) {
+            list.scrollTop = active.offsetTop - list.clientHeight / 2 + active.offsetHeight / 2;
+        }
     })();
 
     // Header title follows the page's own heading (controller titles differ in wording/language)

@@ -40,6 +40,19 @@ class PageImages {
 
     const FOLDER = 'img/pages';
 
+    // Admin page hub key => slot groups (the first value of each SLOTS entry) shown on that page's "Gambar" tab
+    const PAGES = [
+        'home'        => ['Home'],
+        'about'       => ['About Us'],
+        'ggc'         => ['GoSirk Green Community'],
+        'gnp'         => ['Go Ngompos Project'],
+        'partner'     => ['Implementasi Partner', 'Logo Mitra CLOCC'],
+        'konsultan'   => ['Konsultansi'],
+        'partnership' => ['Partnership', 'Logo Mitra CLOCC'],
+        'contact'     => ['Contact'],
+        'portfolio'   => ['Detail Portfolio'],
+    ];
+
     private static function saved() {
         static $saved = null;
         if ($saved === null) {

@@ -82,6 +82,15 @@ class Admin extends Controller {
         $db->execute();
     }
 
+    // Shared editors (hero, sections, texts, images, SEO) show one page at a time: ?page=<key>.
+    // Without a valid key they redirect to the first page, so every screen belongs to a page hub.
+    private function onlyPage(array $allowed, $screen) {
+        $page = $_GET['page'] ?? '';
+        if (in_array($page, $allowed, true)) return $page;
+        header('Location: ' . BASE_URL . 'admin/' . $screen . '?page=' . rawurlencode($allowed[0]));
+        exit;
+    }
+
     // Referer inside this site, otherwise the dashboard
     private function safeBackUrl() {
         $ref = $_SERVER['HTTP_REFERER'] ?? '';
@@ -426,6 +435,7 @@ class Admin extends Controller {
         $data = [
             'title' => 'Section Halaman',
             'active' => 'page_sections',
+            'only' => $this->onlyPage(array_keys($defaults), 'page_sections'),
             'sections' => $sections,
             'pages' => array_map(fn($item) => $item['label'], $defaults)
         ];
@@ -488,7 +498,7 @@ class Admin extends Controller {
             Flasher::setFlash('Page Section', 'gagal diperbarui', 'danger');
         }
 
-        header('Location: ' . BASE_URL . 'admin/page_sections#section-' . $page);
+        header('Location: ' . BASE_URL . 'admin/page_sections?page=' . rawurlencode($page));
         exit;
     }
 
@@ -527,6 +537,7 @@ class Admin extends Controller {
         $data = [
             'title' => 'Banner Utama (Hero)',
             'active' => 'hero',
+            'only' => $this->onlyPage(['home', 'partner', 'konsultan', 'gi', 'ggc', 'go_ngompos_project'], 'hero'),
             'heroes' => $hero_data,
             'hero_transitions' => $hero_transitions,
             'hero_logos' => $hero_logos
@@ -658,7 +669,7 @@ class Admin extends Controller {
             Flasher::setFlash('Hero ' . ucfirst($page), 'gagal diperbarui', 'danger');
         }
 
-        header('Location: ' . BASE_URL . 'admin/hero');
+        header('Location: ' . BASE_URL . 'admin/hero?page=' . rawurlencode($page));
         exit;
     }
 
@@ -1629,7 +1640,7 @@ class Admin extends Controller {
     public function impact_create() {
         $data = [
             'title' => 'Tambah Data Dampak',
-            'active' => 'impact',
+            'active' => 'impact_' . preg_replace('/[^a-z_]/', '', $_GET['page'] ?? 'home'),
             'selected_page' => $_GET['page'] ?? 'home'
         ];
         $this->views('layouts/admin_header', $data);
@@ -3188,7 +3199,7 @@ class Admin extends Controller {
 
     public function page_texts() {
         $pages = $this->pageTextKeys();
-        $page = isset($pages[$_GET['page'] ?? '']) ? $_GET['page'] : array_key_first($pages);
+        $page = $this->onlyPage(array_keys($pages), 'page_texts');
         $data = [
             'title' => 'Teks Halaman',
             'active' => 'page_texts',
@@ -3231,6 +3242,7 @@ class Admin extends Controller {
         $data = [
             'title' => 'Gambar Halaman',
             'active' => 'page_images',
+            'only' => $this->onlyPage(array_keys(PageImages::PAGES), 'page_images'),
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/page_images', $data);
@@ -3239,7 +3251,8 @@ class Admin extends Controller {
 
     public function page_images_update() {
         $key = $_POST['slot'] ?? '';
-        $back = BASE_URL . 'admin/page_images#slot-' . rawurlencode($key);
+        $returnPage = isset(PageImages::PAGES[$_POST['return_page'] ?? '']) ? $_POST['return_page'] : 'home';
+        $back = BASE_URL . 'admin/page_images?page=' . rawurlencode($returnPage) . '#slot-' . rawurlencode($key);
         if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset(PageImages::SLOTS[$key])) { header('Location: ' . BASE_URL . 'admin/page_images'); exit; }
         [$page, $label] = PageImages::SLOTS[$key];
 
@@ -3282,6 +3295,7 @@ class Admin extends Controller {
         $data = [
             'title' => 'SEO Halaman',
             'active' => 'seo',
+            'only' => $this->onlyPage(array_keys(self::SEO_PAGES), 'seo'),
             'pages' => self::SEO_PAGES,
             'settings' => $this->settingModel->getAll(),
         ];
@@ -3295,6 +3309,7 @@ class Admin extends Controller {
             $errors = [];
             $values = [];
             foreach (self::SEO_PAGES as $page => $label) {
+                if (!isset($_POST['seo'][$page])) continue; // only the page(s) on the submitted form
                 $title = trim($_POST['seo'][$page]['title'] ?? '');
                 $desc = trim($_POST['seo'][$page]['description'] ?? '');
                 if (mb_strlen($title) > 100) $errors[$page][] = "$label: judul maksimal 100 karakter.";
@@ -3311,7 +3326,8 @@ class Admin extends Controller {
                 Flasher::setFlash('SEO halaman', 'berhasil disimpan.', 'success');
             }
         }
-        header('Location: ' . BASE_URL . 'admin/seo');
+        $posted = array_keys($_POST['seo'] ?? []);
+        header('Location: ' . BASE_URL . 'admin/seo' . (count($posted) === 1 && isset(self::SEO_PAGES[$posted[0]]) ? '?page=' . rawurlencode($posted[0]) : ''));
         exit;
     }
 

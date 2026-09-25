@@ -1,6 +1,7 @@
 <?php
 $sections = $data['sections'] ?? [];
 $pages = $data['pages'] ?? [];
+if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['only'] => true]); // opened from a page hub
 ?>
 
 <div class="admin-header-section mb-4">
@@ -12,7 +13,7 @@ $pages = $data['pages'] ?? [];
 <div class="row">
     <div class="col-lg-11 mx-auto">
         <div class="card border-0 shadow-sm">
-            <div class="card-header bg-white border-bottom p-0">
+            <div class="card-header bg-white border-bottom p-0 <?= count($sections) > 1 ? '' : 'd-none' ?>">
                 <ul class="nav nav-tabs border-0 px-4 pt-3" role="tablist">
                     <?php $first = true; foreach ($sections as $page => $section): ?>
                     <li class="nav-item" role="presentation">

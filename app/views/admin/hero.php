@@ -8,18 +8,19 @@ $pages = [
     'ggc' => 'GoSirk Green Community',
     'go_ngompos_project' => 'Go Ngompos Project'
 ];
+if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] => true]); // opened from a page hub
 ?>
 
 <div class="admin-header-section mb-4">
     <span class="admin-header-badge d-inline-block">DASHBOARD / BANNER UTAMA</span>
     <h1 class="fw-bold mb-0">Banner Utama (Hero)</h1>
-    <p class="text-muted small mb-0">Manage the hero banners and messaging across various pages of your website.</p>
+    <p class="text-muted small mb-0">Judul, subjudul, dan gambar besar di bagian paling atas halaman.</p>
 </div>
 
 <div class="row">
     <div class="col-lg-11 mx-auto">
         <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-white border-bottom p-0">
+            <div class="card-header bg-white border-bottom p-0 <?= count($pages) > 1 ? '' : 'd-none' ?>">
                 <ul class="nav nav-tabs border-0 px-4 pt-3" id="heroTabs" role="tablist">
                     <?php $first = true; foreach ($pages as $key => $name): ?>
                     <li class="nav-item" role="presentation">

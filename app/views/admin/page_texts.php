@@ -39,16 +39,11 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
 
     <div class="pt-toolbar card border-0 shadow-sm rounded-4 mb-3">
         <div class="card-body p-2 d-flex flex-wrap gap-2 align-items-center">
-            <select id="pagePicker" class="form-select form-select-sm border-0 bg-light fw-semibold" style="max-width: 280px;">
-                <?php foreach ($pages as $key => $p) : ?>
-                    <option value="<?= $key ?>" <?= $key === $page ? 'selected' : '' ?>><?= htmlspecialchars($p['label']) ?></option>
-                <?php endforeach; ?>
-            </select>
             <div class="btn-group btn-group-sm pt-lang" role="group" aria-label="Bahasa">
                 <button type="button" class="btn btn-dark" data-lang="id">ID</button>
                 <button type="button" class="btn btn-light" data-lang="en">EN</button>
             </div>
-            <input type="search" id="textSearch" class="form-control form-control-sm border-0 bg-light ms-sm-auto" placeholder="Cari teks..." style="max-width: 220px;">
+            <input type="search" id="textSearch" class="form-control form-control-sm border-0 bg-light ms-auto" placeholder="Cari teks..." style="max-width: 220px;">
         </div>
     </div>
 
@@ -167,9 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    document.getElementById('pagePicker').addEventListener('change', (e) => {
-        location.href = '<?= BASE_URL ?>admin/page_texts?page=' + encodeURIComponent(e.target.value);
-    });
 
     // Search opens the sections that contain matches
     document.getElementById('textSearch').addEventListener('input', (e) => {

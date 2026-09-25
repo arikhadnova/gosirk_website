@@ -54,139 +54,38 @@
              </button>
         </div>
 
+        <?php
+        // Sidebar, page tabs and Ctrl+K search all come from AdminNav
+        $navCtx = AdminNav::context($data ?? []);
+        $navActive = $data['active'] ?? '';
+        $isAdminRole = ($_SESSION['user_role'] ?? '') === 'admin';
+        $navBadges = ['messages' => $alerts['messages'], 'requests' => $alerts['requests']];
+        ?>
+        <button type="button" class="admin-search-trigger" id="adminSearchOpen" title="Cari menu (Ctrl+K)">
+            <i class="fas fa-search"></i><span>Cari menu…</span><kbd>Ctrl K</kbd>
+        </button>
+
         <div class="list-group list-group-flush">
-            <!-- Overview -->
-            <div class="mt-2 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Ringkasan</small></div>
-            <a href="<?= BASE_URL; ?>admin" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'dashboard') ? 'active' : '' ?>">
+            <a href="<?= BASE_URL; ?>admin" class="list-group-item list-group-item-action d-flex align-items-center <?= $navActive === 'dashboard' ? 'active' : '' ?>">
                 <i class="fas fa-th-large"></i> Dashboard
             </a>
 
-            <!-- General Settings -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Pengaturan Umum</small></div>
-            <a href="<?= BASE_URL; ?>admin/settings" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'settings') ? 'active' : '' ?>">
-                <i class="fas fa-layer-group"></i> Pengaturan Layout
-            </a>
-            <a href="<?= BASE_URL; ?>admin/hero" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'hero') ? 'active' : '' ?>">
-                <i class="fas fa-image"></i> Banner Utama
-            </a>
-            <a href="<?= BASE_URL; ?>admin/page_sections" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_sections') ? 'active' : '' ?>">
-                <i class="fas fa-align-left"></i> Section Halaman
-            </a>
-            <a href="<?= BASE_URL; ?>admin/page_texts" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_texts') ? 'active' : '' ?>">
-                <i class="fas fa-font"></i> Teks Halaman
-            </a>
-            <a href="<?= BASE_URL; ?>admin/page_images" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'page_images') ? 'active' : '' ?>">
-                <i class="fas fa-images"></i> Gambar Halaman
-            </a>
-            <a href="<?= BASE_URL; ?>admin/seo" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'seo') ? 'active' : '' ?>">
-                <i class="fas fa-search"></i> SEO Halaman
-            </a>
-            <a href="<?= BASE_URL; ?>admin/founders" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'founders') ? 'active' : '' ?>">
-                <i class="fas fa-user-tie"></i> Founder
-            </a>
-            <a href="<?= BASE_URL; ?>admin/partnership_settings" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'partnership_settings') ? 'active' : '' ?>">
-                <i class="fas fa-users-cog"></i> Pengaturan Partnership
-            </a>
-            <!-- Impact Data -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Data Dampak</small></div>
-            <a href="<?= BASE_URL; ?>admin/impact/home" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_home') ? 'active' : '' ?>">
-                <i class="fas fa-home"></i> Dampak Home
-            </a>
-            <a href="<?= BASE_URL; ?>admin/impact/gi" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_gi') ? 'active' : '' ?>">
-                <i class="fas fa-university"></i> Dampak GI
-            </a>
-            <a href="<?= BASE_URL; ?>admin/impact/ggc" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_ggc') ? 'active' : '' ?>">
-                <i class="fas fa-leaf"></i> Dampak GGC
-            </a>
-            <a href="<?= BASE_URL; ?>admin/impact/go_ngompos_project" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_go_ngompos_project') ? 'active' : '' ?>">
-                <i class="fas fa-seedling"></i> Dampak Go Ngompos
-            </a>
-            <a href="<?= BASE_URL; ?>admin/impact/clocc" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'impact_clocc') ? 'active' : '' ?>">
-                <i class="fas fa-users"></i> Dampak CLOCC
-            </a>
+            <?php foreach (AdminNav::GROUPS as $groupKey => $groupLabel) : ?>
+                <div class="sidebar-group-label"><?= $groupLabel ?></div>
+                <?php foreach (AdminNav::hubs() as $hubKey => $hub) : if ($hub['group'] !== $groupKey) continue; ?>
+                    <a href="<?= BASE_URL . $hub['tabs'][0]['url'] ?>" class="list-group-item list-group-item-action d-flex align-items-center <?= ($navCtx['key'] ?? '') === $hubKey ? 'active' : '' ?>">
+                        <i class="fas <?= $hub['icon'] ?>"></i> <?= htmlspecialchars($hub['label']) ?>
+                    </a>
+                <?php endforeach; ?>
+                <?php foreach (AdminNav::items()[$groupKey] ?? [] as [$key, $label, $icon, $url, $actives, $badge, $adminOnly]) : if ($adminOnly && !$isAdminRole) continue; ?>
+                    <a href="<?= BASE_URL . $url ?>" class="list-group-item list-group-item-action d-flex align-items-center <?= in_array($navActive, $actives, true) ? 'active' : '' ?>">
+                        <i class="fas <?= $icon ?>"></i> <?= $label ?>
+                        <?php if ($badge && $navBadges[$badge]) : ?><span class="badge rounded-pill <?= $badge === 'requests' ? 'bg-warning text-dark' : 'bg-primary' ?> ms-auto"><?= $navBadges[$badge] ?></span><?php endif; ?>
+                    </a>
+                <?php endforeach; ?>
+            <?php endforeach; ?>
 
-            <!-- Service Pillars -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Layanan</small></div>
-            <a href="<?= BASE_URL; ?>admin/services_cb" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'services_cb') ? 'active' : '' ?>">
-                <i class="fas fa-school"></i> Capacity Building
-            </a>
-            <a href="<?= BASE_URL; ?>admin/gi_videos" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'gi_videos') ? 'active' : '' ?>">
-                <i class="fas fa-video"></i> Video Belajar Bersama
-            </a>
-            <a href="<?= BASE_URL; ?>admin/services_pd" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['category']) && $data['category'] == 'pd') ? 'active' : '' ?>">
-                <i class="fas fa-handshake"></i> Program Development
-            </a>
-            <a href="<?= BASE_URL; ?>admin/services_cs" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['category']) && $data['category'] == 'cs') ? 'active' : '' ?>">
-                <i class="fas fa-lightbulb"></i> Konsultansi
-            </a>
-            <a href="<?= BASE_URL; ?>admin/services" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'services') ? 'active' : '' ?>">
-                <i class="fas fa-concierge-bell"></i> Kategori Layanan
-            </a>
-
-            <!-- Portfolio & Content -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Portofolio & Media</small></div>
-            <a href="<?= BASE_URL; ?>admin/portfolio" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'portfolio') ? 'active' : '' ?>">
-                <i class="fas fa-briefcase"></i> Portofolio
-            </a>
-            <a href="<?= BASE_URL; ?>admin/articles" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'articles') ? 'active' : '' ?>">
-                <i class="fas fa-newspaper"></i> Artikel Blog
-            </a>
-            <a href="<?= BASE_URL; ?>admin/library" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'library') ? 'active' : '' ?>">
-                <i class="fas fa-book"></i> Library
-            </a>
-            <a href="<?= BASE_URL; ?>admin/publications" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'publications') ? 'active' : '' ?>">
-                <i class="fas fa-book-open"></i> Publikasi
-            </a>
-            <a href="<?= BASE_URL; ?>admin/testimonials" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'testimonials') ? 'active' : '' ?>">
-                <i class="fas fa-quote-left"></i> Testimoni
-            </a>
-            <a href="<?= BASE_URL; ?>admin/faqs" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'faqs') ? 'active' : '' ?>">
-                <i class="fas fa-question-circle"></i> FAQ
-            </a>
-            <a href="<?= BASE_URL; ?>admin/ggc_actions" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'ggc_actions') ? 'active' : '' ?>">
-                <i class="fas fa-running"></i> Aksi GGC
-            </a>
-            <a href="<?= BASE_URL; ?>admin/gnp_programs" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'gnp_programs') ? 'active' : '' ?>">
-                <i class="fas fa-seedling"></i> Program Go Ngompos
-            </a>
-            <a href="<?= BASE_URL; ?>admin/pilot_villages" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'pilot_villages') ? 'active' : '' ?>">
-                <i class="fas fa-map-marker-alt"></i> Desa Pilot
-            </a>
-            <a href="<?= BASE_URL; ?>admin/partner_highlights" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'partner_highlights') ? 'active' : '' ?>">
-                <i class="fas fa-images"></i> Sorotan Implementasi
-            </a>
-
-            <!-- Collaboration -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Kolaborasi</small></div>
-            <a href="<?= BASE_URL; ?>admin/partners" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'partners') ? 'active' : '' ?>">
-                <i class="fas fa-handshake"></i> Daftar Partner
-            </a>
-            <?php if ($_SESSION['user_role'] == 'admin') : ?>
-            <a href="<?= BASE_URL; ?>admin/contacts" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'contacts') ? 'active' : '' ?>">
-                <i class="fas fa-envelope"></i> Pesan Kontak<?php if ($alerts['messages']) : ?><span class="badge rounded-pill bg-primary  ms-auto" title="Pesan belum dibaca"><?= $alerts['messages'] ?></span><?php endif; ?>
-            </a>
-            <?php endif; ?>
-            <a href="<?= BASE_URL; ?>admin/collaboration" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'collaboration') ? 'active' : '' ?>">
-                <i class="fas fa-file-shield"></i> Dokumen
-            </a>
-            <a href="<?= BASE_URL; ?>admin/collaboration_requests" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'collaboration_requests') ? 'active' : '' ?>">
-                <i class="fas fa-history"></i> Permintaan Dokumen<?php if ($alerts['requests']) : ?><span class="badge rounded-pill bg-warning text-dark ms-auto" title="Perlu tindak lanjut"><?= $alerts['requests'] ?></span><?php endif; ?>
-            </a>
-
-            <!-- System -->
-            <div class="mt-4 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Sistem</small></div>
-            <a href="<?= BASE_URL; ?>admin/email_settings" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'email_settings') ? 'active' : '' ?>">
-                <i class="fas fa-envelope"></i> Pengaturan Email
-            </a>
-            <a href="<?= BASE_URL; ?>admin/maintenance" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'maintenance') ? 'active' : '' ?>">
-                <i class="fas fa-tools"></i> Mode Pemeliharaan
-            </a>
-            <?php if ($_SESSION['user_role'] == 'admin') : ?>
-            <a href="<?= BASE_URL; ?>admin/users" class="list-group-item list-group-item-action d-flex align-items-center <?= (isset($data['active']) && $data['active'] == 'users') ? 'active' : '' ?>">
-                <i class="fas fa-users-gear"></i> Akun Pengguna
-            </a>
-            <?php endif; ?>
-            
+            <div class="sidebar-group-label"></div>
             <a href="<?= BASE_URL; ?>" target="_blank" class="list-group-item list-group-item-action d-flex align-items-center text-secondary">
                 <i class="fas fa-external-link-alt"></i> Lihat Website
             </a>
@@ -264,4 +163,21 @@
             </div>
         </nav>
 
-        <div class="container-fluid px-lg-5 py-4">
+        <div class="container-fluid px-lg-5 py-4 <?= $navCtx ? 'in-hub' : '' ?>">
+        <?php if ($navCtx) : $hub = $navCtx['hub']; ?>
+            <!-- Page hub: every editor of this page as tabs -->
+            <div class="hub-header">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
+                    <div>
+                        <div class="hub-group"><?= AdminNav::GROUPS[$hub['group']] ?></div>
+                        <h1 class="hub-title"><i class="fas <?= $hub['icon'] ?> me-2"></i><?= htmlspecialchars($hub['label']) ?></h1>
+                    </div>
+                    <a href="<?= BASE_URL . $hub['public'] ?>" target="_blank" class="btn btn-light btn-action btn-sm"><i class="fas fa-external-link-alt"></i> Lihat halaman</a>
+                </div>
+                <nav class="hub-tabs" aria-label="Bagian halaman">
+                    <?php foreach ($hub['tabs'] as $i => $tab) : ?>
+                        <a href="<?= BASE_URL . $tab['url'] ?>" class="hub-tab <?= $i === $navCtx['tab'] ? 'active' : '' ?>"><i class="fas <?= $tab['icon'] ?>"></i><?= htmlspecialchars($tab['label']) ?></a>
+                    <?php endforeach; ?>
+                </nav>
+            </div>
+        <?php endif; ?>

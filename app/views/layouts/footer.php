@@ -70,6 +70,24 @@ if (!isset($settings)) {
         </div>
     </footer>
 
+    <?php if (!empty($_SESSION['admin_logged_in'])) : // only admins see this shortcut to the right editor ?>
+      <a href="<?= htmlspecialchars(AdminNav::editUrlFor(array_values(array_filter(explode('/', trim($_GET['url'] ?? '', '/')), 'strlen'))), ENT_QUOTES) ?>"
+         class="admin-edit-shortcut" title="Buka editor halaman ini di panel admin">
+        <i class="fas fa-pen"></i> <span>Edit halaman ini</span>
+      </a>
+      <style>
+        .admin-edit-shortcut {
+          position: fixed; left: 20px; bottom: 20px; z-index: 1080;
+          display: inline-flex; align-items: center; gap: .5rem;
+          padding: .6rem 1rem; border-radius: 999px;
+          background: #111827; color: #fff; font-size: .85rem; font-weight: 600;
+          text-decoration: none; box-shadow: 0 8px 24px rgba(0, 0, 0, .25);
+        }
+        .admin-edit-shortcut:hover { background: #FF7E5F; color: #fff; }
+        @media (max-width: 575px) { .admin-edit-shortcut span { display: none; } .admin-edit-shortcut { padding: .75rem; } }
+      </style>
+    <?php endif; ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>

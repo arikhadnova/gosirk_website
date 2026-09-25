@@ -3,6 +3,10 @@ $groups = [];
 foreach (PageImages::SLOTS as $key => [$page, $label, $default]) {
     $groups[$page][$key] = $label;
 }
+if (!empty($data['only'])) {
+    // opened from a page hub: only that page's groups, in the order of PageImages::PAGES
+    $groups = array_intersect_key($groups, array_flip(PageImages::PAGES[$data['only']] ?? []));
+}
 $pageNames = array_keys($groups);
 $slug = fn($s) => 'pg-' . substr(md5($s), 0, 8);
 ?>
@@ -24,7 +28,7 @@ $slug = fn($s) => 'pg-' . substr(md5($s), 0, 8);
     <p class="text-muted small mb-0">Klik gambar untuk menggantinya. JPG, PNG, atau WEBP.</p>
 </div>
 
-<ul class="nav pi-tabs gap-1 mb-4" role="tablist">
+<ul class="nav pi-tabs gap-1 mb-4 <?= count($pageNames) > 1 ? '' : 'd-none' ?>" role="tablist">
     <?php foreach ($pageNames as $i => $page) : ?>
         <li class="nav-item" role="presentation">
             <button class="nav-link <?= $i === 0 ? 'active' : '' ?>" data-bs-toggle="pill" data-bs-target="#<?= $slug($page) ?>" type="button" role="tab"><?= htmlspecialchars($page) ?></button>
@@ -44,6 +48,7 @@ $slug = fn($s) => 'pg-' . substr(md5($s), 0, 8);
                         <div class="pi-card h-100">
                             <form action="<?= BASE_URL; ?>admin/page_images_update" method="POST" enctype="multipart/form-data" class="m-0">
                                 <input type="hidden" name="slot" value="<?= htmlspecialchars($key) ?>">
+                                <input type="hidden" name="return_page" value="<?= htmlspecialchars($data['only'] ?? '') ?>">
                                 <label class="pi-thumb" title="Ganti gambar">
                                     <img src="<?= PageImages::attr($key) ?>" alt="" loading="lazy"
                                          style="object-fit: <?= $contain ? 'contain; padding: 14px' : 'cover' ?>;"
@@ -58,6 +63,7 @@ $slug = fn($s) => 'pg-' . substr(md5($s), 0, 8);
                                 <?php if ($custom) : ?>
                                     <form action="<?= BASE_URL; ?>admin/page_images_update" method="POST" class="m-0 ms-auto">
                                         <input type="hidden" name="slot" value="<?= htmlspecialchars($key) ?>">
+                                <input type="hidden" name="return_page" value="<?= htmlspecialchars($data['only'] ?? '') ?>">
                                         <input type="hidden" name="reset" value="1">
                                         <button type="submit" class="btn btn-link p-0 text-muted text-decoration-none small" title="Kembalikan ke gambar bawaan"><i class="fas fa-undo"></i></button>
                                     </form>
