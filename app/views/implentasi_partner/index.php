@@ -650,9 +650,13 @@
             <?php endforeach; ?>
         </div>
         <div class="container position-relative">
-            <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n="partner.main_title">
-                <?= $heroPartner ? $heroPartner->title_id : 'IMPLEMENTASI PARTNER' ?>
+            <?php if ($heroPartner && trim(strip_tags($heroPartner->title_id)) !== '') : // title from Admin > Hero > Implementasi Partner ?>
+            <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n-html="true" data-lang-id="<?= htmlspecialchars($heroPartner->title_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($heroPartner->title_en ?: $heroPartner->title_id, ENT_QUOTES) ?>">
+                <?= $heroPartner->title_id ?>
             </h1>
+            <?php else : ?>
+            <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n="partner.main_title">IMPLEMENTASI PARTNER</h1>
+            <?php endif; ?>
             <p class="lead fs-4 mb-2 text-light opacity-90 mx-auto" style="max-width: 900px;" data-lang-id="<?= $heroPartner ? $heroPartner->subtitle_id : 'Program pendampingan desa dan pengembangan komunitas berbasis ekonomi sirkular.' ?>" data-lang-en="<?= $heroPartner ? $heroPartner->subtitle_en : 'Village assistance program and community development based on circular economy.' ?>">
                 <?= $heroPartner ? $heroPartner->subtitle_id : 'Program pendampingan desa dan pengembangan komunitas berbasis ekonomi sirkular.' ?>
             </p>

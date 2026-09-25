@@ -90,6 +90,11 @@
                         <input type="text" id="contact_whatsapp" name="contact_whatsapp" class="form-control" value="<?= $settings['contact_whatsapp'] ?? '628xxxxxxxxx' ?>" placeholder="628xxxxxxxxx" <?= FormRules::attrs('settings_footer', 'contact_whatsapp', 'update') ?>>
                         <div class="form-text small text-muted">Nomor WhatsApp untuk konsultasi layanan gratis.</div>
                     </div>
+                    <div class="mb-3">
+                        <label for="office_hours" class="form-label small fw-bold text-dark">Jam Kerja</label>
+                        <input type="text" id="office_hours" name="office_hours" class="form-control" value="<?= htmlspecialchars($settings['office_hours'] ?? '') ?>" placeholder="Senin - Jumat, 08:00 - 16:00 WIB" <?= FormRules::attrs('settings_footer', 'office_hours', 'update') ?>>
+                        <div class="form-text small text-muted">Tampil di halaman Contact. Versi Bahasa Inggris dibuat otomatis. Kosongkan untuk teks bawaan.</div>
+                    </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="address_hq" class="form-label small fw-bold text-dark">Alamat Pusat (HQ)</label>

@@ -549,6 +549,7 @@ const resources = {
                         "branch_title": "Kantor Cabang, Bali",
                         "branch_addr": "Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan",
                         "hours_title": "Jam Kerja: Senin s/d Jumat",
+                        "hours_label": "Jam Kerja",
                         "hours_desc": "08:00 - 16:00 WIB"
                     },
                     "form": {
@@ -856,6 +857,12 @@ const resources = {
                 "orang": "ORANG",
                 "sarana": "SARANA",
                 "unit": "UNIT",
+                "people": "Orang",
+                "units": "Unit",
+                "kg": "Kg",
+                "instansi": "Instansi",
+                "institusi": "Institusi",
+                "komunitas": "Komunitas",
                 "viewers": "VIEWERS",
                 "events": "KEGIATAN",
                 "hotspots": "HOTSPOT",
@@ -1424,6 +1431,7 @@ const resources = {
                         "branch_title": "Branch Office, Bali",
                         "branch_addr": "Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan",
                         "hours_title": "Working Hours: Mon to Fri",
+                        "hours_label": "Working Hours",
                         "hours_desc": "08:00 - 16:00 WIB"
                     },
                     "form": {
@@ -1748,6 +1756,12 @@ const resources = {
                 "orang": "PEOPLE",
                 "sarana": "FACILITIES",
                 "unit": "UNITS",
+                "people": "People",
+                "units": "Units",
+                "kg": "Kg",
+                "instansi": "Agencies",
+                "institusi": "Institutions",
+                "komunitas": "Communities",
                 "viewers": "VIEWERS",
                 "events": "EVENTS",
                 "hotspots": "HOTSPOTS",

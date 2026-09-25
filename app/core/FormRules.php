@@ -138,6 +138,7 @@ class FormRules {
             'footer_text'      => ['Copyright Text', 'max:255'],
             'contact_email'    => ['Email Kontak', 'email|max:100'],
             'contact_whatsapp' => ['WhatsApp Kontak', 'regex:' . self::PHONE],
+            'office_hours'     => ['Jam Kerja', 'max:100'],
             'address_hq'       => ['Alamat Kantor Pusat', 'max:500'],
             'address_branch'   => ['Alamat Kantor Cabang', 'max:500'],
             'social_facebook'  => ['Facebook', 'url|max:255'],

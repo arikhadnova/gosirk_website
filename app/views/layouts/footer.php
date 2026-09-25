@@ -15,7 +15,7 @@ if (!isset($settings)) {
                 <div class="col-md-3 mb-4">
                     <h6 data-i18n="footer.menu">Menu</h6>
                     <a href="<?= BASE_URL ?>gi" data-i18n="nav.capacity_building">Peningkatan Kapasitas</a>
-                    <a href="<?= BASE_URL ?>partnership" data-i18n="nav.program_dev">Pengembangan Program & Implementasi Partner</a>
+                    <a href="<?= BASE_URL ?>implementasi_partner" data-i18n="nav.program_dev">Pengembangan Program & Implementasi Partner</a>
                     <a href="<?= BASE_URL ?>konsultan" data-i18n="nav.consultancy">Konsultansi</a>
                     <a href="<?= BASE_URL ?>partnership" data-i18n="nav.partnership">Kerjasama</a>
                     <a href="<?= BASE_URL ?>about" data-i18n="nav.about">Tentang</a>

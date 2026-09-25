@@ -2,8 +2,9 @@
 
 class Contact extends Controller {
     public function index() {
+        $data = ['settings' => $this->model('Setting_model')->getAll()];
         $this->views('layouts/header');
-        $this->views('contact/index');
+        $this->views('contact/index', $data);
         $this->views('layouts/footer');
     }
 

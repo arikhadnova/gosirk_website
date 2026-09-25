@@ -34,21 +34,6 @@
              </button>
         </div>
 
-        <!-- User Profile Section in Sidebar -->
-        <div class="px-4 py-3 mb-2 border-bottom">
-            <div class="d-flex align-items-center">
-                <div class="me-3">
-                    <img src="<?= (isset($_SESSION['user_photo']) && $_SESSION['user_photo']) ? ASSETS_URL . 'img/profile/' . $_SESSION['user_photo'] : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user_name'] ?? 'Admin') . '&background=FF7E5F&color=fff&size=200' ?>" 
-                         class="rounded-circle border" 
-                         style="width: 45px; height: 45px; object-fit: cover; background: #eee;">
-                </div>
-                <div>
-                    <h6 class="mb-0 fw-bold text-dark" style="font-size: 14px;"><?= $_SESSION['user_name'] ?? 'Admin' ?></h6>
-                    <p class="mb-0 text-muted extra-small" style="font-size: 11px;"><?= ucfirst($_SESSION['user_role'] ?? 'Admin') ?></p>
-                </div>
-            </div>
-        </div>
-
         <div class="list-group list-group-flush">
             <!-- Overview -->
             <div class="mt-3 mb-2 ps-3"><small class="text-uppercase text-muted fw-bold" style="font-size: 10px; letter-spacing: 1px;">Overview</small></div>
@@ -191,10 +176,9 @@
                     <i class="fas fa-bars-staggered fs-5"></i>
                 </button>
 
-                <!-- Search Bar -->
-                <div class="d-none d-md-flex header-search-container align-items-center me-auto">
-                    <i class="fas fa-search text-muted me-2"></i>
-                    <input type="text" placeholder="Search anything...">
+                <!-- Current page title -->
+                <div class="admin-topbar-title me-auto text-truncate">
+                    <?= htmlspecialchars($data['title'] ?? 'Admin Panel') ?>
                 </div>
 
                 <div class="ms-auto" id="navbarSupportedContent">

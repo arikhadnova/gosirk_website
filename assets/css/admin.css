@@ -172,15 +172,39 @@ body {
     }
 }
 
-/* Top Navbar - Clean */
+/* Top header: stays visible while scrolling */
 .navbar {
-    background: transparent !important;
-    border-bottom: none !important;
-    padding: 1.5rem 2.5rem !important;
+    background: #fff !important;
+    border-bottom: 1px solid #edf0f5 !important;
+    box-shadow: 0 2px 12px rgba(15, 23, 42, 0.04);
+    padding: 0.85rem 2.5rem !important;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+}
+
+.admin-topbar-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text-dark);
+    min-width: 0;
+}
+
+/* Keep toggle, title and icons on one line (title shrinks with "...") */
+.navbar > .container-fluid {
+    flex-wrap: nowrap;
+    gap: 0.75rem;
+}
+.navbar #navbarSupportedContent {
+    flex-shrink: 0;
+}
+@media (max-width: 767.98px) {
+    .admin-topbar-title { font-size: 0.95rem; }
+    #menu-toggle { margin-right: 0 !important; }
 }
 
 #menu-toggle {
-    background: #fff !important;
+    background: #f5f7fb !important;
     width: 42px;
     height: 42px;
     border-radius: 12px;

@@ -243,6 +243,9 @@ class Admin extends Controller {
             'social_linkedin' => $_POST['social_linkedin'] ?? '',
             'social_youtube' => $_POST['social_youtube'] ?? ''
         ];
+        $hours = trim($_POST['office_hours'] ?? '');
+        $footer_data['office_hours'] = $hours;
+        $footer_data['office_hours_en'] = $hours !== '' ? Translator::translate($hours) : '';
         
         foreach ($footer_data as $key => $value) {
             $this->settingModel->update($key, $value);
@@ -1944,7 +1947,7 @@ class Admin extends Controller {
     public function collaboration_requests() {
         $filter = in_array($_GET['status'] ?? '', ['followup', 'sent'], true) ? $_GET['status'] : 'all';
         $data = [
-            'title' => 'Collaboration Request Logs',
+            'title' => 'Permintaan Dokumen',
             'active' => 'collaboration_requests',
             'filter' => $filter,
             'counts' => $this->collaborationModel->countRequests(),

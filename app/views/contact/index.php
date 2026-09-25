@@ -13,11 +13,22 @@
                 <div class="info-panel">
                     <h2 data-i18n="contact.info.title">Mari Terhubung</h2>
                     
+<?php
+                    // Same settings as the footer (Admin > Layouts > Footer)
+                    $set = $data['settings'] ?? [];
+                    $hq = trim($set['address_hq'] ?? '') ?: 'Jln Kepodang, Dusun Kepuh Wetan, RT002 RW005, Desa Kalirejo, Kecamatan Kabat, Kabupaten Banyuwangi, Jawa Timur 68461';
+                    $branch = trim($set['address_branch'] ?? '') ?: 'Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan';
+                    $email = trim($set['contact_email'] ?? '') ?: 'dontwasteourfuture@gosirk.co.id';
+                    $wa = $this->waNumber();
+                    $linkedin = trim($set['social_linkedin'] ?? '');
+                    $hoursId = trim($set['office_hours'] ?? '');
+                    $hoursEn = trim($set['office_hours_en'] ?? '') ?: $hoursId;
+                    ?>
                     <div class="info-item">
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <strong data-i18n="contact.info.hq_title">Kantor Pusat, Banyuwangi</strong>
-                            <span data-i18n="contact.info.hq_addr">Jln Kepodang, Dusun Kepuh Wetan, RT002 RW005, Desa Kalirejo, Kecamatan Kabat, Kabupaten Banyuwangi, Java Timur 68461</span>
+                            <span><?= nl2br(htmlspecialchars($hq)) ?></span>
                         </div>
                     </div>
 
@@ -25,26 +36,44 @@
                         <i class="fas fa-map-marker-alt"></i>
                         <div>
                             <strong data-i18n="contact.info.branch_title">Kantor Cabang, Bali</strong>
-                            <span data-i18n="contact.info.branch_addr">Perum Royal Griya Loka Blok S-23, Samsam, Kec. Kerambitan, Tabanan</span>
+                            <span><?= nl2br(htmlspecialchars($branch)) ?></span>
                         </div>
                     </div>
 
                     <div class="info-item">
                         <i class="fas fa-clock"></i>
                         <div>
-                            <strong data-i18n="contact.info.hours_title">Jam Kerja: Senin s/d Jumat</strong>
-                            <span data-i18n="contact.info.hours_desc">08:00 - 16:00 WIB</span>
+                            <?php if ($hoursId !== '') : ?>
+                                <strong data-i18n="contact.info.hours_label">Jam Kerja</strong>
+                                <span data-lang-id="<?= htmlspecialchars($hoursId, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($hoursEn, ENT_QUOTES) ?>"><?= htmlspecialchars($hoursId) ?></span>
+                            <?php else : ?>
+                                <strong data-i18n="contact.info.hours_title">Jam Kerja: Senin s/d Jumat</strong>
+                                <span data-i18n="contact.info.hours_desc">08:00 - 16:00 WIB</span>
+                            <?php endif; ?>
                         </div>
                     </div>
 
                     <div class="info-item">
                         <i class="fas fa-envelope"></i>
-                        <div>dontwasteourfuture@gosirk.co.id</div>
+                        <div><a href="mailto:<?= htmlspecialchars($email) ?>" class="text-reset text-decoration-none"><?= htmlspecialchars($email) ?></a></div>
                     </div>
+
+                    <?php if ($wa !== '') : ?>
+                    <div class="info-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <div><a href="<?= htmlspecialchars($this->waLink()) ?>" target="_blank" rel="noopener" class="text-reset text-decoration-none">+<?= htmlspecialchars($wa) ?></a></div>
+                    </div>
+                    <?php endif; ?>
 
                     <div class="info-item">
                         <i class="fab fa-linkedin"></i>
-                        <div>Gocircular Solutions Indonesia</div>
+                        <div>
+                            <?php if ($linkedin !== '') : ?>
+                                <a href="<?= htmlspecialchars($linkedin) ?>" target="_blank" rel="noopener" class="text-reset text-decoration-none">Gocircular Solutions Indonesia</a>
+                            <?php else : ?>
+                                Gocircular Solutions Indonesia
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>

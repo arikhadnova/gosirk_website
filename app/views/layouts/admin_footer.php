@@ -70,6 +70,13 @@ Flasher::flash(); ?>
         });
     }
 
+    // Header title follows the page's own heading (controller titles differ in wording/language)
+    (function () {
+        const h1 = document.querySelector('.admin-header-section h1, #page-content-wrapper h1');
+        const target = document.querySelector('.admin-topbar-title');
+        if (h1 && target && h1.textContent.trim()) target.textContent = h1.textContent.trim();
+    })();
+
     // ---- Form validation helpers (rules come from FormRules via HTML attributes) ----
     const uploadLimit = <?= (int) Upload::maxBytes('img') ?>;
     const uploadLimitPdf = <?= (int) Upload::maxBytes('pdf') ?>;

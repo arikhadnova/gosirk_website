@@ -91,11 +91,11 @@ document.addEventListener('DOMContentLoaded', function() {
           <div class="col-lg-3 col-md-6">
             <div class="metric-card">
               <div class="metric-value"><?= $imp->value ?></div>
-              <div class="metric-unit" data-i18n="ggc.impact.m<?= $idx ?>_unit"><?= $imp->unit ?></div>
-              <div class="metric-label" data-i18n="ggc.impact.m<?= $idx ?>_label">
+              <div class="metric-unit" data-i18n="units.<?= strtolower(str_replace([' ', '/', '(', ')'], '_', $imp->unit ?? '')) ?>"><?= htmlspecialchars($imp->unit) ?></div>
+              <div class="metric-label" data-lang-id="<?= htmlspecialchars($imp->label_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($imp->label_en ?: $imp->label_id, ENT_QUOTES) ?>">
                 <?= $imp->label_id ?>
               </div>
-              <div class="metric-note" data-i18n="ggc.impact.m<?= $idx ?>_note">
+              <div class="metric-note" data-lang-id="<?= htmlspecialchars($imp->note_id ?? '', ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars(($imp->note_en ?: $imp->note_id) ?? '', ENT_QUOTES) ?>">
                 <?= $imp->note_id ?>
               </div>
             </div>
@@ -114,11 +114,11 @@ document.addEventListener('DOMContentLoaded', function() {
             <div class="col-lg-3 col-md-6">
               <div class="metric-card">
                 <div class="metric-value"><?= $imp->value ?></div>
-                <div class="metric-unit" data-i18n="ggc.impact.m<?= $idx ?>_unit"><?= $imp->unit ?></div>
-                <div class="metric-label" data-i18n="ggc.impact.m<?= $idx ?>_label">
+                <div class="metric-unit" data-i18n="units.<?= strtolower(str_replace([' ', '/', '(', ')'], '_', $imp->unit ?? '')) ?>"><?= htmlspecialchars($imp->unit) ?></div>
+                <div class="metric-label" data-lang-id="<?= htmlspecialchars($imp->label_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($imp->label_en ?: $imp->label_id, ENT_QUOTES) ?>">
                   <?= $imp->label_id ?>
                 </div>
-                <div class="metric-note" data-i18n="ggc.impact.m<?= $idx ?>_note">
+                <div class="metric-note" data-lang-id="<?= htmlspecialchars($imp->note_id ?? '', ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars(($imp->note_en ?: $imp->note_id) ?? '', ENT_QUOTES) ?>">
                   <?= $imp->note_id ?>
                 </div>
               </div>
