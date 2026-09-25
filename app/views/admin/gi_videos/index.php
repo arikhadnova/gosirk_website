@@ -1,8 +1,8 @@
 <div class="admin-header-section mb-4">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
-            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEOS</span>
-            <h1 class="fw-bold mb-0">Belajar Bersama GoSirk (GI Videos)</h1>
+            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEO</span>
+            <h1 class="fw-bold mb-0">Video Belajar Bersama GoSirk</h1>
             <p class="text-muted small mb-0">Kelola video yang ditampilkan di bagian "Belajar Bersama GoSirk".</p>
         </div>
         <a href="<?= BASE_URL; ?>admin/gi_videos_create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">

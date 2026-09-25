@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block text-uppercase">SERVICES / CATEGORY / EDIT</span>
+            <span class="admin-header-badge mb-1 d-inline-block text-uppercase">LAYANAN / KATEGORI / EDIT</span>
             <h1 class="fw-bold mb-0">Edit Layanan Utama</h1>
         </div>
     </div>

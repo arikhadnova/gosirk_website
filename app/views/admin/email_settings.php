@@ -7,8 +7,8 @@ $source = [
 ][$data['key_source']];
 ?>
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / SYSTEM / EMAIL</span>
-    <h1 class="fw-bold mb-0">Email Settings</h1>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / SISTEM / EMAIL</span>
+    <h1 class="fw-bold mb-0">Pengaturan Email</h1>
     <p class="text-muted small mb-0">Pengaturan pengiriman email lewat Brevo: pengiriman dokumen ke pengunjung dan notifikasi ke admin.</p>
 </div>
 

@@ -5,7 +5,7 @@
                 <i class="fas fa-arrow-left"></i>
             </a>
             <div>
-                <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / SERVICES / <?= $data['category'] ?></span>
+                <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / LAYANAN / <?= $data['category'] ?></span>
                 <h1 class="fw-bold mb-0"><?= $data['title'] ?></h1>
             </div>
         </div>

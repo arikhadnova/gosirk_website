@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">FOUNDERS / EDIT</span>
+            <span class="admin-header-badge mb-1 d-inline-block">FOUNDER / EDIT</span>
             <h1 class="fw-bold mb-0">Edit Founder</h1>
         </div>
     </div>

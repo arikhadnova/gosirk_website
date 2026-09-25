@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge mb-2 d-inline-block">DASHBOARD / WELCOME</span>
-    <h1 class="fw-bold mb-0">Admin Dashboard</h1>
+    <span class="admin-header-badge mb-2 d-inline-block">DASHBOARD / RINGKASAN</span>
+    <h1 class="fw-bold mb-0">Dashboard</h1>
     <p class="text-muted small mb-0">Selamat datang kembali! Berikut ringkasan performa website GoSirk hari ini.</p>
 </div>
 

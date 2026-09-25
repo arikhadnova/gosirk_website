@@ -37,6 +37,13 @@ class Admin extends Controller {
             header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? BASE_URL . 'admin'));
             exit;
         }
+        // CSRF: forms need the session token; links that delete/change data must come from the admin itself
+        $path = strtolower($_GET['url'] ?? '');
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!Csrf::validRequest()) Csrf::reject($this->safeBackUrl());
+        } elseif (preg_match('#delete|_read/#', $path) && !Csrf::sameOrigin()) {
+            Csrf::reject(BASE_URL . 'admin');
+        }
         $this->portfolioModel = $this->model('Portfolio_model');
         $this->articleModel = $this->model('Article_model');
         $this->publicationModel = $this->model('Publication_model');
@@ -75,6 +82,12 @@ class Admin extends Controller {
         $db->execute();
     }
 
+    // Referer inside this site, otherwise the dashboard
+    private function safeBackUrl() {
+        $ref = $_SERVER['HTTP_REFERER'] ?? '';
+        return strpos($ref, BASE_URL) === 0 ? $ref : BASE_URL . 'admin';
+    }
+
     // Items that need an admin's attention (sidebar badges, topbar bell, dashboard). Cached per request.
     public function adminAlerts() {
         static $alerts = null;
@@ -110,7 +123,7 @@ class Admin extends Controller {
         // The view expects objects with: user_name, action_type, target_type, description, created_at
 
         $data = [
-            'title' => 'Admin Dashboard',
+            'title' => 'Dashboard',
             'active' => 'dashboard',
             'activities' => $activities,
             'counts' => [
@@ -186,7 +199,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Manage Profile',
+            'title' => 'Profil Akun',
             'active' => 'profile',
             'user' => $this->userModel->getUserById($_SESSION['user_id'])
         ];
@@ -197,7 +210,7 @@ class Admin extends Controller {
 
     public function settings() {
         $data = [
-            'title' => 'Layout Settings',
+            'title' => 'Pengaturan Layout',
             'active' => 'settings',
             'settings' => $this->settingModel->getAll()
         ];
@@ -261,7 +274,7 @@ class Admin extends Controller {
 
     public function partnership_settings() {
         $data = [
-            'title' => 'Partnership Settings',
+            'title' => 'Pengaturan Partnership',
             'active' => 'partnership_settings',
             'settings' => $this->settingModel->getAll(),
             'portfolios' => $this->portfolioModel->getAll()
@@ -411,7 +424,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Page Sections',
+            'title' => 'Section Halaman',
             'active' => 'page_sections',
             'sections' => $sections,
             'pages' => array_map(fn($item) => $item['label'], $defaults)
@@ -512,7 +525,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Manage Hero',
+            'title' => 'Banner Utama (Hero)',
             'active' => 'hero',
             'heroes' => $hero_data,
             'hero_transitions' => $hero_transitions,
@@ -656,7 +669,7 @@ class Admin extends Controller {
         if ($action === 'delete' && $id) return $this->founders_delete($id);
 
         $data = [
-            'title' => 'Kelola Founders',
+            'title' => 'Kelola Founder',
             'active' => 'founders',
             'founders' => $this->founderModel->getAll()
         ];
@@ -771,7 +784,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->portfolio_create();
         if ($action === 'edit' && $id) return $this->portfolio_edit($id);
         $data = [
-            'title' => 'Manage Portfolio',
+            'title' => 'Kelola Portofolio',
             'active' => 'portfolio',
             'portfolios' => $this->portfolioModel->getAll()
         ];
@@ -1034,7 +1047,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->articles_create('blog');
         if ($action === 'edit' && $id) return $this->articles_edit($id);
         $data = [
-            'title' => 'Manage Blog Articles',
+            'title' => 'Kelola Artikel Blog',
             'active' => 'articles',
             'articles' => $this->articleModel->getByType('blog')
         ];
@@ -1047,7 +1060,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->articles_create('library');
         if ($action === 'edit' && $id) return $this->articles_edit($id);
         $data = [
-            'title' => 'Manage Library Resources',
+            'title' => 'Kelola Library',
             'active' => 'library',
             'articles' => $this->articleModel->getByType('library')
         ];
@@ -1058,7 +1071,7 @@ class Admin extends Controller {
 
     public function articles_create($type = 'blog') {
         $data = [
-            'title' => ($type == 'blog' ? 'Tambah Artikel Blog' : 'Tambah Library Resource'), 
+            'title' => ($type == 'blog' ? 'Tambah Artikel Blog' : 'Tambah Resource Library'), 
             'active' => ($type == 'blog' ? 'articles' : 'library'),
             'type' => $type
         ];
@@ -1226,7 +1239,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->publications_create();
         if ($action === 'edit' && $id) return $this->publications_edit($id);
         $data = [
-            'title' => 'Manage Publications',
+            'title' => 'Kelola Publikasi',
             'active' => 'publications',
             'publications' => $this->publicationModel->getAll()
         ];
@@ -1371,7 +1384,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->services_create();
         if ($action === 'edit' && $id) return $this->services_edit($id);
         $data = [
-            'title' => 'Manage Services',
+            'title' => 'Kategori Layanan',
             'active' => 'services',
             'services' => $this->serviceModel->getAll()
         ];
@@ -1381,7 +1394,7 @@ class Admin extends Controller {
     }
 
     public function services_create() {
-        $data = ['title' => 'Tambah Layanan Baru', 'active' => 'services'];
+        $data = ['title' => 'Tambah Layanan Utama', 'active' => 'services'];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/services_create', $data);
         $this->views('layouts/admin_footer');
@@ -1389,7 +1402,7 @@ class Admin extends Controller {
 
     public function services_edit($id) {
         $data = [
-            'title' => 'Edit Layanan',
+            'title' => 'Edit Layanan Utama',
             'active' => 'services',
             'service' => $this->serviceModel->getById($id)
         ];
@@ -1487,7 +1500,7 @@ class Admin extends Controller {
     }
 
     public function services_pd() {
-        $data['title'] = 'Program Development & Implementation';
+        $data['title'] = 'Layanan Program Development';
         $data['category'] = 'pd';
         $data['items'] = $this->serviceItemModel->getByCategory('pd');
         $this->views('layouts/admin_header', $data);
@@ -1496,7 +1509,7 @@ class Admin extends Controller {
     }
 
     public function services_cs() {
-        $data['title'] = 'Consultancy & Strategic Advisory';
+        $data['title'] = 'Layanan Konsultansi';
         $data['category'] = 'cs';
         $data['items'] = $this->serviceItemModel->getByCategory('cs');
         $this->views('layouts/admin_header', $data);
@@ -1603,7 +1616,7 @@ class Admin extends Controller {
         $allImpacts = $this->impactModel->getByPage($page_target);
         
         $data = [
-            'title' => 'Manage Impact: ' . strtoupper($page_target),
+            'title' => 'Data Dampak: ' . strtoupper($page_target),
             'active' => 'impact_' . $page_target,
             'page_target' => $page_target,
             'impacts' => $allImpacts
@@ -1615,7 +1628,7 @@ class Admin extends Controller {
 
     public function impact_create() {
         $data = [
-            'title' => 'Add Impact Data',
+            'title' => 'Tambah Data Dampak',
             'active' => 'impact',
             'selected_page' => $_GET['page'] ?? 'home'
         ];
@@ -1658,7 +1671,7 @@ class Admin extends Controller {
     public function impact_edit($id) {
         $impact = $this->impactModel->getById($id);
         $data = [
-            'title' => 'Edit Impact Data',
+            'title' => 'Edit Data Dampak',
             'active' => 'impact_' . ($impact->page ?? 'home'),
             'impact' => $impact
         ];
@@ -1719,7 +1732,7 @@ class Admin extends Controller {
         if ($action === 'create') return $this->partners_create();
         if ($action === 'edit' && $id) return $this->partners_edit($id);
         $data = [
-            'title' => 'Manage Partners',
+            'title' => 'Kelola Partner',
             'active' => 'partners',
             'partners' => $this->partnerModel->getAll()
         ];
@@ -1832,7 +1845,7 @@ class Admin extends Controller {
 
     public function collaboration($action = null, $id = null) {
         $data = [
-            'title' => 'Manage Collaboration Documents',
+            'title' => 'Dokumen Kolaborasi',
             'active' => 'collaboration',
             'docs' => $this->collaborationModel->getAllDocuments()
         ];
@@ -1843,7 +1856,7 @@ class Admin extends Controller {
 
     public function collaboration_create() {
         $data = [
-            'title' => 'Add Collaboration Document',
+            'title' => 'Tambah Dokumen',
             'active' => 'collaboration'
         ];
         $this->views('layouts/admin_header', $data);
@@ -1882,7 +1895,7 @@ class Admin extends Controller {
 
     public function collaboration_edit($id) {
         $data = [
-            'title' => 'Edit Collaboration Document',
+            'title' => 'Edit Dokumen',
             'active' => 'collaboration',
             'doc' => $this->collaborationModel->getDocumentById($id)
         ];
@@ -2017,7 +2030,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Account Management',
+            'title' => 'Kelola Akun',
             'active' => 'users',
             'users' => $this->userModel->getAllUsers()
         ];
@@ -2034,7 +2047,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Add New User',
+            'title' => 'Tambah Akun Baru',
             'active' => 'users'
         ];
         $this->views('layouts/admin_header', $data);
@@ -2067,7 +2080,7 @@ class Admin extends Controller {
         }
 
         $data = [
-            'title' => 'Edit User',
+            'title' => 'Edit Akun',
             'active' => 'users',
             'user' => $this->userModel->getUserById($id)
         ];
@@ -2186,7 +2199,7 @@ class Admin extends Controller {
         $testimonials = ($page) ? $this->testimonialModel->getByPage($page, false) : $this->testimonialModel->getAll();
 
         $data = [
-            'title' => 'Manajemen Testimoni',
+            'title' => 'Kelola Testimoni',
             'active' => 'testimonials',
             'testimonials' => $testimonials
         ];
@@ -2302,7 +2315,7 @@ class Admin extends Controller {
         $faqs = ($page) ? $this->faqModel->getByPage($page, false) : $this->faqModel->getAll();
 
         $data = [
-            'title' => 'Manajemen FAQ',
+            'title' => 'Kelola FAQ',
             'active' => 'faqs',
             'faqs' => $faqs
         ];
@@ -2390,7 +2403,7 @@ class Admin extends Controller {
         if ($action === 'edit' && $id) return $this->gi_services_edit($id);
         
         $data = [
-            'title' => 'Manage Capacity Building (GI Services)',
+            'title' => 'Kelola Capacity Building',
             'active' => 'services_cb',
             'services' => $this->giServiceModel->getAll()
         ];
@@ -2626,7 +2639,7 @@ class Admin extends Controller {
 
     public function gi_videos() {
         $data = [
-            'title' => 'Manajemen Video GI',
+            'title' => 'Kelola Video GI',
             'active' => 'gi_videos',
             'videos' => $this->giVideoModel->getAll(),
             'section' => $this->pageSectionModel->getByPageAndSection('gi', 'videos')
@@ -3306,7 +3319,7 @@ class Admin extends Controller {
         $config = Mail::config();
         $key = $config['api_key'];
         $data = [
-            'title' => 'Email Settings',
+            'title' => 'Pengaturan Email',
             'active' => 'email_settings',
             'config' => $config,
             'key_hint' => $key !== '' ? substr($key, 0, 8) . str_repeat('•', 8) . substr($key, -4) : '',
@@ -3390,7 +3403,7 @@ class Admin extends Controller {
 
     public function maintenance() {
         $data = [
-            'title' => 'Maintenance Mode',
+            'title' => 'Mode Pemeliharaan',
             'active' => 'maintenance',
             'is_maintenance' => $this->settingModel->getByKey('is_maintenance')
         ];

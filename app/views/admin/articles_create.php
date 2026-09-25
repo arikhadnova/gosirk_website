@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">PORTFOLIO & MEDIA / <?= ($data['type'] == 'blog' ? 'BLOG / TULIS ARTIKEL' : 'LIBRARY / TAMBAH RESOURCE') ?></span>
+            <span class="admin-header-badge d-inline-block">PORTOFOLIO & MEDIA / <?= ($data['type'] == 'blog' ? 'BLOG / TULIS ARTIKEL' : 'LIBRARY / TAMBAH RESOURCE') ?></span>
             <h1 class="fw-bold mb-0"><?= ($data['type'] == 'blog' ? 'Tulis Artikel Baru' : 'Tambah Resource Library') ?></h1>
         </div>
     </div>

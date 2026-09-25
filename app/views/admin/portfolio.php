@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / PORTFOLIO</span>
-        <h1 class="fw-bold mb-0">Portfolio Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / PORTOFOLIO</span>
+        <h1 class="fw-bold mb-0">Kelola Portofolio</h1>
         <p class="text-muted small mb-0">Kelola proyek dan rekam jejak kolaborasi GoSirk.</p>
     </div>
     <div>

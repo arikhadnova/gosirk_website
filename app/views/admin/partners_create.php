@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">PARTNERS / TAMBAH BARU</span>
+            <span class="admin-header-badge mb-1 d-inline-block">PARTNER / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Partner Baru</h1>
         </div>
     </div>

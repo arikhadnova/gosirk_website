@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">PUBLICATIONS / TAMBAH BARU</span>
+            <span class="admin-header-badge d-inline-block">PUBLIKASI / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Publikasi Baru</h1>
         </div>
     </div>

@@ -4,8 +4,8 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEOS / EDIT</span>
-            <h1 class="fw-bold mb-0">Update Video GI</h1>
+            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEO / EDIT</span>
+            <h1 class="fw-bold mb-0">Edit Video GI</h1>
         </div>
     </div>
 </div>

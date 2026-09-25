@@ -4,8 +4,8 @@ $pages = $data['pages'] ?? [];
 ?>
 
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / PAGE SECTIONS</span>
-    <h1 class="fw-bold mb-0">Page Sections</h1>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / SECTION HALAMAN</span>
+    <h1 class="fw-bold mb-0">Section Halaman</h1>
     <p class="text-muted small mb-0">Kelola konten section About/Tentang di halaman utama layanan dan ekosistem.</p>
 </div>
 

@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / SETTINGS / ACCOUNTS</span>
-        <h1 class="fw-bold mb-0">Account Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / PENGATURAN / AKUN</span>
+        <h1 class="fw-bold mb-0">Kelola Akun</h1>
         <p class="text-muted small mb-0">Kelola akun administrator dan editor untuk akses panel kontrol.</p>
     </div>
     <div>

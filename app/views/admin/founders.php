@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / FOUNDERS</span>
-        <h1 class="fw-bold mb-0">Founder Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / FOUNDER</span>
+        <h1 class="fw-bold mb-0">Kelola Founder</h1>
         <p class="text-muted small mb-0">Kelola daftar founder yang ditampilkan di halaman About.</p>
     </div>
      <div>

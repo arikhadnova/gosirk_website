@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">IMPACT / CREATE</span>
+            <span class="admin-header-badge mb-1 d-inline-block">DATA DAMPAK / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Data Dampak Baru</h1>
         </div>
     </div>

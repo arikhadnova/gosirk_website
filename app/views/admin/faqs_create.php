@@ -1,5 +1,5 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / FAQS / CREATE</span>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / FAQ / TAMBAH</span>
     <h1 class="fw-bold mb-0">Tambah FAQ</h1>
     <p class="text-muted small">Tambahkan pertanyaan sering diajukan untuk kategori tertentu.</p>
 </div>

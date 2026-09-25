@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">SETTINGS / ACCOUNTS / NEW</span>
+            <span class="admin-header-badge d-inline-block">PENGATURAN / AKUN / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Akun Baru</h1>
             <p class="text-muted small mb-0">Daftarkan administrator atau editor baru untuk panel kontrol.</p>
         </div>

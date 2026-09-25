@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / PILOT VILLAGES</span>
-        <h1 class="fw-bold mb-0">Manajemen Desa Pilot</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / DESA PILOT</span>
+        <h1 class="fw-bold mb-0">Kelola Desa Pilot</h1>
         <p class="text-muted small mb-0">Kelola daftar desa percontohan untuk halaman Implementasi Partner.</p>
     </div>
     <div>

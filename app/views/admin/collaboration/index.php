@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / COLLABORATION</span>
-        <h1 class="fw-bold mb-0">Collaboration Documents</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / KOLABORASI</span>
+        <h1 class="fw-bold mb-0">Dokumen Kolaborasi</h1>
         <p class="text-muted small mb-0">Kelola Executive Summary dan Company Profile yang bersifat rahasia.</p>
     </div>
     <div class="d-flex gap-2">

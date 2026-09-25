@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">PORTFOLIO & MEDIA / <?= ($data['active'] == 'articles' ? 'BLOG ARTICLES' : 'LIBRARY RESOURCES') ?></span>
-        <h1 class="fw-bold mb-0"><?= ($data['active'] == 'articles' ? 'Blog Management' : 'Library Management') ?></h1>
+        <span class="admin-header-badge d-inline-block">PORTOFOLIO & MEDIA / <?= ($data['active'] == 'articles' ? 'ARTIKEL BLOG' : 'LIBRARY') ?></span>
+        <h1 class="fw-bold mb-0"><?= ($data['active'] == 'articles' ? 'Kelola Artikel Blog' : 'Kelola Library') ?></h1>
         <p class="text-muted small mb-0"><?= ($data['active'] == 'articles' ? 'Kelola konten berita, edukasi, dan update terbaru dari GoSirk.' : 'Kelola resource edukatif, series belajar, dan tutorial.') ?></p>
     </div>
     <div>

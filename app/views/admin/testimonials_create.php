@@ -1,5 +1,5 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONIALS / CREATE</span>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONI / TAMBAH</span>
     <h1 class="fw-bold mb-0">Tambah Testimoni</h1>
     <p class="text-muted small">Tambahkan testimoni baru dari klien atau mitra.</p>
 </div>

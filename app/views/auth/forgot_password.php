@@ -143,6 +143,7 @@
             </div>
 
             <form action="<?= BASE_URL; ?>auth/send_reset_link" method="POST">
+                <?= Csrf::field() ?>
                 <div class="mb-4">
                     <label for="email" class="form-label">Email Address</label>
                     <div class="input-group">

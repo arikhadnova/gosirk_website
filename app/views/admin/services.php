@@ -1,8 +1,8 @@
 <div class="admin-header-section mb-4">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
-            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / SERVICES</span>
-            <h1 class="fw-bold mb-0">Services Category</h1>
+            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / LAYANAN</span>
+            <h1 class="fw-bold mb-0">Kategori Layanan</h1>
             <p class="text-muted small mb-0">Kelola kategori layanan utama yang ditampilkan di halaman depan.</p>
         </div>
         <a href="<?= BASE_URL; ?>admin/services/create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">

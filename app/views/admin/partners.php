@@ -17,8 +17,8 @@ foreach ($partners as $p) {
 
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / STRATEGIC PARTNERS</span>
-        <h1 class="fw-bold mb-0">Partner Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / PARTNER</span>
+        <h1 class="fw-bold mb-0">Kelola Partner</h1>
         <p class="text-muted small mb-0">Kelola daftar logo partner strategis yang bekerja sama dengan GoSirk.</p>
     </div>
     <div>

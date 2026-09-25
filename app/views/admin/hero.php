@@ -11,8 +11,8 @@ $pages = [
 ?>
 
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / HERO SECTION</span>
-    <h1 class="fw-bold mb-0">Hero Section Management</h1>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / BANNER UTAMA</span>
+    <h1 class="fw-bold mb-0">Banner Utama (Hero)</h1>
     <p class="text-muted small mb-0">Manage the hero banners and messaging across various pages of your website.</p>
 </div>
 

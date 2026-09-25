@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / PUBLICATIONS</span>
-        <h1 class="fw-bold mb-0">Publications Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / PUBLIKASI</span>
+        <h1 class="fw-bold mb-0">Kelola Publikasi</h1>
         <p class="text-muted small mb-0">Kelola laporan tahunan, policy brief, modul, dan referensi regulasi eksternal.</p>
     </div>
     <div>

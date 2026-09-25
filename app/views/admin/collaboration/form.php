@@ -12,7 +12,7 @@ $currentSize = $currentFile ? round(filesize($currentFile) / 1048576, 2) . ' MB'
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">DASHBOARD / DOCUMENTS / <?= $doc ? 'EDIT' : 'TAMBAH' ?></span>
+            <span class="admin-header-badge d-inline-block">DASHBOARD / DOKUMEN / <?= $doc ? 'EDIT' : 'TAMBAH' ?></span>
             <h1 class="fw-bold mb-0"><?= $doc ? 'Edit Dokumen' : 'Tambah Dokumen' ?></h1>
             <p class="text-muted small mb-0">Executive Summary, Company Profile, atau Concept Note yang dikirim ke pengunjung lewat email.</p>
         </div>

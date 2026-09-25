@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">PORTFOLIO / TAMBAH BARU</span>
+            <span class="admin-header-badge d-inline-block">PORTOFOLIO / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Proyek Baru</h1>
         </div>
     </div>

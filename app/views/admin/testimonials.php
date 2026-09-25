@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONIALS</span>
-        <h1 class="fw-bold mb-0">Manajemen Testimoni</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONI</span>
+        <h1 class="fw-bold mb-0">Kelola Testimoni</h1>
         <p class="text-muted small mb-0">Kelola testimoni dari klien atau mitra untuk ditampilkan di halaman depan.</p>
     </div>
     <div>

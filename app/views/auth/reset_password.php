@@ -143,6 +143,7 @@
             </div>
 
             <form action="<?= BASE_URL; ?>auth/process_reset" method="POST">
+                <?= Csrf::field() ?>
                 <input type="hidden" name="token" value="<?= $data['token']; ?>">
                 
                 <div class="mb-3">

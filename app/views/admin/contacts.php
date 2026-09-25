@@ -1,6 +1,6 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / CONTACTS</span>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / PESAN KONTAK</span>
         <h1 class="fw-bold mb-0">Kotak Masuk Kontak</h1>
         <p class="text-muted small mb-0">Kelola pesan masuk dari pengunjung website melalui halaman Kontak.</p>
     </div>

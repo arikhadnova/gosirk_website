@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">SYSTEM / MAINTENANCE</span>
-    <h1 class="fw-bold mb-0">Maintenance Mode</h1>
+    <span class="admin-header-badge d-inline-block">SISTEM / PEMELIHARAAN</span>
+    <h1 class="fw-bold mb-0">Mode Pemeliharaan</h1>
     <p class="text-muted small mb-0">Kontrol akses publik ke website GoSirk selama masa pemeliharaan.</p>
 </div>
 

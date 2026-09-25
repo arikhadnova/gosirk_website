@@ -144,6 +144,7 @@
             </div>
 
             <form action="<?= BASE_URL; ?>auth/login" method="POST">
+                <?= Csrf::field() ?>
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <div class="input-group">

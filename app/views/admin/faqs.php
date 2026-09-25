@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / FAQS</span>
-        <h1 class="fw-bold mb-0">Manajemen FAQ</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / FAQ</span>
+        <h1 class="fw-bold mb-0">Kelola FAQ</h1>
         <p class="text-muted small mb-0">Kelola pertanyaan sering diajukan untuk setiap kategori halaman.</p>
     </div>
     <div>

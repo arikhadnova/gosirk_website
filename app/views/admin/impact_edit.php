@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">IMPACT / EDIT</span>
+            <span class="admin-header-badge mb-1 d-inline-block">DATA DAMPAK / EDIT</span>
             <h1 class="fw-bold mb-0">Edit Data Dampak</h1>
         </div>
     </div>

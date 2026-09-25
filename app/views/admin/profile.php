@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / PROFILE</span>
-    <h1 class="fw-bold mb-0">Manage Account Profile</h1>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / PROFIL</span>
+    <h1 class="fw-bold mb-0">Profil Akun</h1>
     <p class="text-muted small mb-0">Perbarui informasi personal dan pengaturan keamanan akun Anda.</p>
 </div>
 

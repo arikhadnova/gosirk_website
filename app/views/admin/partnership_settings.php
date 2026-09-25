@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">DASHBOARD / PARTNERSHIP SETTINGS</span>
+            <span class="admin-header-badge mb-1 d-inline-block">DASHBOARD / PENGATURAN PARTNERSHIP</span>
             <h1 class="fw-bold mb-0">Pengaturan Halaman Partnership</h1>
             <p class="text-muted small mb-0">Kelola judul, deskripsi, foto kategori, dan proyek sedang berjalan secara dinamis.</p>
         </div>

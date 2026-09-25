@@ -1,6 +1,13 @@
 <?php
 
 class Auth extends Controller {
+    public function __construct() {
+        // Login and password forms must carry the CSRF token of this session
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && !Csrf::validRequest()) {
+            Csrf::reject(BASE_URL . 'auth');
+        }
+    }
+
     public function index() {
         if (isset($_SESSION['admin_logged_in'])) {
             header('Location: ' . BASE_URL . 'admin');
@@ -17,13 +24,16 @@ class Auth extends Controller {
             exit;
         }
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
+        $username = $_POST['username'] ?? '';
+        $password = $_POST['password'] ?? '';
 
         $user = $this->model('User_model')->getUserByUsername($username);
 
         if ($user) {
             if (password_verify($password, $user->password)) {
+                // New session id after login, so an id planted before login is worthless
+                session_regenerate_id(true);
+                Csrf::rotate();
                 $_SESSION['admin_logged_in'] = true;
                 $_SESSION['user_id'] = $user->id;
                 $_SESSION['user_name'] = $user->name;
@@ -45,7 +55,14 @@ class Auth extends Controller {
     }
 
     public function logout() {
-        session_unset();
+        // Ignore logout links placed on other websites
+        if (!Csrf::sameOrigin()) {
+            header('Location: ' . BASE_URL . 'admin');
+            exit;
+        }
+        $_SESSION = [];
+        $p = session_get_cookie_params();
+        setcookie(session_name(), '', ['expires' => time() - 3600, 'path' => $p['path'], 'domain' => $p['domain'], 'secure' => $p['secure'], 'httponly' => $p['httponly'], 'samesite' => $p['samesite'] ?: 'Lax']);
         session_destroy();
         header('Location: ' . BASE_URL . 'auth');
         exit;

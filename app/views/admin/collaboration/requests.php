@@ -10,7 +10,7 @@ $tabs = [
 ?>
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / DOCUMENTS / REQUESTS</span>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / DOKUMEN / PERMINTAAN</span>
         <h1 class="fw-bold mb-0">Permintaan Dokumen</h1>
         <p class="text-muted small mb-0">Pengunjung yang meminta Executive Summary, Company Profile, atau Concept Note, beserta status pengirimannya.</p>
     </div>

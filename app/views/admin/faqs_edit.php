@@ -1,5 +1,5 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / FAQS / EDIT</span>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / FAQ / EDIT</span>
     <h1 class="fw-bold mb-0">Edit FAQ</h1>
     <p class="text-muted small">Perbarui pertanyaan dan jawaban FAQ terpilih.</p>
 </div>

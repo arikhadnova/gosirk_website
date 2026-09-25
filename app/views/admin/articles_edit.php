@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge mb-1 d-inline-block">PORTFOLIO & MEDIA / <?= ($article->type == 'blog' ? 'BLOG / EDIT ARTIKEL' : 'LIBRARY / EDIT RESOURCE') ?></span>
+            <span class="admin-header-badge mb-1 d-inline-block">PORTOFOLIO & MEDIA / <?= ($article->type == 'blog' ? 'BLOG / EDIT ARTIKEL' : 'LIBRARY / EDIT RESOURCE') ?></span>
             <h1 class="fw-bold mb-0">Edit <?= ($article->type == 'blog' ? 'Artikel' : 'Resource Library') ?></h1>
         </div>
     </div>

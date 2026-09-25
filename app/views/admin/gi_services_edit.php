@@ -5,7 +5,7 @@
         </a>
         <div>
             <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / EDIT</span>
-            <h1 class="fw-bold mb-0">Update Layanan GI</h1>
+            <h1 class="fw-bold mb-0">Edit Layanan GI</h1>
         </div>
     </div>
 </div>

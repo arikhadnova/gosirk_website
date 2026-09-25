@@ -1,8 +1,8 @@
 <div class="admin-header-section mb-4">
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
         <div>
-            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / LIST</span>
-            <h1 class="fw-bold mb-0">Capacity Building (GI Services)</h1>
+            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / DAFTAR</span>
+            <h1 class="fw-bold mb-0">Kelola Capacity Building</h1>
             <p class="text-muted small mb-0">Kelola layanan yang ditampilkan di halaman GoSirk Institute.</p>
         </div>
         <a href="<?= BASE_URL; ?>admin/gi_services_create" class="btn btn-primary rounded-pill px-4 py-2 shadow-sm">

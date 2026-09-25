@@ -1,7 +1,7 @@
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / IMPACT DATA</span>
-        <h1 class="fw-bold mb-0">Impact Data Management</h1>
+        <span class="admin-header-badge d-inline-block">DASHBOARD / DATA DAMPAK</span>
+        <h1 class="fw-bold mb-0">Kelola Data Dampak</h1>
         <p class="text-muted small mb-0">Kelola metrik dampak. Tersedia 4 slot tetap per halaman yang dapat diperbarui.</p>
     </div>
 </div>

@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEOS / CREATE</span>
+            <span class="admin-header-badge d-inline-block text-uppercase">DASHBOARD / CAPACITY BUILDING / VIDEO / TAMBAH</span>
             <h1 class="fw-bold mb-0">Tambah Video GI Baru</h1>
         </div>
     </div>

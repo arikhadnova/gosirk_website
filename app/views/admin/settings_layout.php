@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / LAYOUT SETTINGS</span>
-    <h1 class="fw-bold mb-0">Konfigurasi Website</h1>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / PENGATURAN LAYOUT</span>
+    <h1 class="fw-bold mb-0">Pengaturan Layout</h1>
     <p class="text-muted small mb-0">Atur tampilan header, footer, dan informasi identitas website GoSirk secara terpusat.</p>
 </div>
 

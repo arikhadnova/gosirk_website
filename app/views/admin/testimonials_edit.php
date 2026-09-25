@@ -1,5 +1,5 @@
 <div class="admin-header-section mb-4">
-    <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONIALS / EDIT</span>
+    <span class="admin-header-badge d-inline-block">DASHBOARD / TESTIMONI / EDIT</span>
     <h1 class="fw-bold mb-0">Edit Testimoni</h1>
     <p class="text-muted small">Perbarui data testimoni terpilih.</p>
 </div>

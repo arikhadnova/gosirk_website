@@ -4,7 +4,7 @@
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
-            <span class="admin-header-badge d-inline-block">SETTINGS / ACCOUNTS / EDIT</span>
+            <span class="admin-header-badge d-inline-block">PENGATURAN / AKUN / EDIT</span>
             <h1 class="fw-bold mb-0">Edit Akun</h1>
             <p class="text-muted small mb-0">Perbarui informasi akun <strong><?= $user->username; ?></strong>.</p>
         </div>
