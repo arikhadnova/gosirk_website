@@ -63,7 +63,7 @@
                         <div class="col-md-8">
                             <label class="form-label fw-bold small">Ganti Foto Profil (opsional)</label>
                             <input type="file" name="image" class="form-control bg-light border-0" accept="image/*">
-                            <div class="form-text extra-small">Format: JPG, PNG, JPEG. Max 2MB. Abaikan jika tidak ingin mengganti.</div>
+                            <div class="form-text extra-small">Format: JPG, PNG, JPEG. Maks. 10 MB. Abaikan jika tidak ingin mengganti.</div>
                         </div>
                     </div>
 

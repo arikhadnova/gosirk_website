@@ -94,6 +94,7 @@
                                 <label class="form-label" data-i18n="contact.form.message">Pesan</label>
                                 <textarea name="message" class="form-control" rows="5" placeholder="Pesan Anda" data-i18n="contact.form.message_placeholder" <?= FormRules::attrs('contact', 'message') ?>></textarea>
                             </div>
+                        <p class="form-consent small text-muted mb-3"><span data-i18n="common.consent">Dengan mengirim formulir ini, Anda menyetujui data Anda digunakan GoSirk untuk menanggapi permintaan Anda dan memberi informasi program terkait, sesuai</span> <a href="<?= BASE_URL ?>privacy" target="_blank" rel="noopener" data-i18n="common.privacy_link">Kebijakan Privasi</a>.</p>
                         <button type="submit" id="btnSubmit" class="btn btn-submit" data-i18n="contact.form.submit">Submit</button>
                     </form>
                 </div>

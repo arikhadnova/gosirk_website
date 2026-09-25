@@ -55,7 +55,7 @@
                             <span class="text-muted">Pratinjau Logo</span>
                         </div>
                         <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" <?= FormRules::attrs('partner', 'logo', 'store') ?>>
-                        <div class="form-text small mt-2">Gunakan format PNG transparan jika memungkinkan. Max 1MB.</div>
+                        <div class="form-text small mt-2">Gunakan format PNG transparan jika memungkinkan. Maks. 10 MB.</div>
                     </div>
                     <hr>
                     <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm">

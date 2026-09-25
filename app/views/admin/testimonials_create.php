@@ -49,7 +49,7 @@
                         <div class="col-12">
                             <label class="form-label fw-bold small">Foto Profil (opsional)</label>
                             <input type="file" name="image" class="form-control bg-light border-0" accept="image/*">
-                            <div class="form-text extra-small">Format: JPG, PNG, JPEG. Max 2MB.</div>
+                            <div class="form-text extra-small">Format: JPG, PNG, JPEG. Maks. 10 MB.</div>
                         </div>
                     </div>
 

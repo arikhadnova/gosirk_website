@@ -57,7 +57,7 @@
                              <input type="file" name="image" id="image-input" class="form-control form-control-sm mt-2" accept="image/*">
                         </div>
                         <div class="small text-muted mb-2">
-                            <i class="fas fa-exclamation-triangle me-1"></i> Batas ukuran: <strong>Maks 2MB</strong>. Format: JPG, PNG, WEBP.
+                            <i class="fas fa-exclamation-triangle me-1"></i> Batas ukuran: <strong>Maks. 10 MB</strong>, otomatis dikompres. Format: JPG, PNG, WEBP.
                         </div>
                     </div>
                     <div class="mb-4">

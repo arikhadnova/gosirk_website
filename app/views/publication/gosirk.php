@@ -204,7 +204,8 @@ document.addEventListener('DOMContentLoaded', function() {
             <label for="pubJabatan" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.position">Jabatan</label>
             <input type="text" class="form-control bg-light border-0 py-2" id="pubJabatan" placeholder="Posisi atau jabatan Anda" data-i18n-placeholder="collaboration.modal.position_placeholder" <?= FormRules::attrs('pub_request', 'jabatan') ?>>
           </div>
-          <p class="small text-muted mb-4"><i class="fas fa-lock me-1"></i><span data-i18n="publication.modal_remember">Data Anda disimpan di perangkat ini agar form berikutnya terisi otomatis.</span></p>
+          <p class="small text-muted mb-2"><i class="fas fa-lock me-1"></i><span data-i18n="publication.modal_remember">Data Anda disimpan di perangkat ini agar form berikutnya terisi otomatis.</span></p>
+          <p class="form-consent small text-muted mb-3"><span data-i18n="common.consent">Dengan mengirim formulir ini, Anda menyetujui data Anda digunakan GoSirk untuk menanggapi permintaan Anda dan memberi informasi program terkait, sesuai</span> <a href="<?= BASE_URL ?>privacy" target="_blank" rel="noopener" data-i18n="common.privacy_link">Kebijakan Privasi</a>.</p>
           <div class="d-grid">
             <button type="submit" class="btn btn-primary fw-bold py-2 rounded-pill shadow-sm" data-i18n="publication.modal_submit">Unduh Sekarang</button>
           </div>

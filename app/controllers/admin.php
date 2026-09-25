@@ -237,7 +237,8 @@ class Admin extends Controller {
         
         // Handle Logo Upload if any
         if (!empty($_FILES['logo_file']['name'])) {
-            $newLogo = Upload::file($_FILES['logo_file'], 'img');
+            // Kept in its original format: the logo is also the link preview image (og:image) for other sites
+            $newLogo = Upload::file($_FILES['logo_file'], 'img', ['jpg', 'jpeg', 'png', 'gif', 'webp'], null, false);
             if ($newLogo) {
                 // Optional: Delete old logo if it's not the default one
                 $oldLogo = $this->settingModel->getByKey('site_logo');
@@ -3283,12 +3284,43 @@ class Admin extends Controller {
         exit;
     }
 
+    // Privacy policy page (/privacy): one rich-text document per language
+    public function privacy() {
+        $data = [
+            'title' => 'Kebijakan Privasi',
+            'active' => 'privacy',
+            'content_id' => PrivacyPolicy::content('id'),
+            'content_en' => PrivacyPolicy::content('en'),
+            'updated_at' => PrivacyPolicy::updatedAt(),
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/privacy', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function privacy_update() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = trim($_POST['content_id'] ?? '');
+            $en = trim($_POST['content_en'] ?? '');
+            if (trim(strip_tags($id)) === '' || trim(strip_tags($en)) === '') {
+                Flasher::setFlash('Kebijakan Privasi belum disimpan.', 'Isi versi Indonesia dan Inggris tidak boleh kosong.', 'danger');
+            } else {
+                PrivacyPolicy::save($id, $en);
+                $this->activityLogModel->log('UPDATE', 'Kebijakan Privasi', 'Memperbarui Kebijakan Privasi');
+                Flasher::setFlash('Kebijakan Privasi', 'berhasil disimpan.', 'success');
+            }
+        }
+        header('Location: ' . BASE_URL . 'admin/privacy');
+        exit;
+    }
+
     // Per-page <title> and meta description (settings "seo.<page>.title|description")
     const SEO_PAGES = [
         'home' => 'Home', 'about' => 'About Us', 'gi' => 'GoSirk Institute', 'ggc' => 'GoSirk Green Community',
         'go_ngompos_project' => 'Go Ngompos Project', 'implementasi_partner' => 'Implementasi Partner',
         'konsultan' => 'Konsultansi', 'partnership' => 'Partnership', 'collaboration' => 'Collaboration',
         'contact' => 'Contact', 'blog' => 'Blog', 'library' => 'Library', 'publication' => 'Publikasi',
+        'privacy' => 'Kebijakan Privasi',
     ];
 
     public function seo() {

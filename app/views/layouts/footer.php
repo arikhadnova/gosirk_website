@@ -66,6 +66,7 @@ if (!isset($settings)) {
             </div>
             <div class="copyright">
                 &copy; <?= date('Y') ?> <?= $settings['footer_copyright'] ?? 'PT Gocircular Solution Indonesia' ?>
+                &middot; <a href="<?= BASE_URL ?>privacy" class="text-reset" data-i18n="common.privacy_link">Kebijakan Privasi</a>
             </div>
         </div>
     </footer>

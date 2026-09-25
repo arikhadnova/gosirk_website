@@ -7,12 +7,20 @@ class App {
     protected $params = [];
 
     public function __construct() {
+        // Search engine files, generated from the database (not counted as visits)
+        $path = $this->parseUrl() ?: [];
+        if (count($path) === 1 && in_array($path[0], ['sitemap.xml', 'robots.txt'], true)) {
+            require_once dirname(__DIR__) . '/core/Sitemap.php';
+            Sitemap::serve($path[0]);
+        }
+
         // Log Visitor Hit
         require_once dirname(__DIR__) . '/models/Visitor_model.php';
         $visitorModel = new Visitor_model();
         $visitorModel->logHit();
 
         $url = $this->parseUrl() ?: [];
+
 
         // Maintenance Mode Check
         require_once dirname(__DIR__) . '/models/Setting_model.php';

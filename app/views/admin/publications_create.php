@@ -51,7 +51,7 @@
                             <i class="fas fa-file-pdf fa-2x text-danger mb-2 opacity-50"></i>
                             <input type="file" name="file_path" class="form-control form-control-sm" accept=".pdf">
                         </div>
-                        <small class="text-muted extra-small">Upload file jika tersedia (Maks. 5MB)</small>
+                        <small class="text-muted extra-small">Upload file jika tersedia (Maks. 10 MB)</small>
                     </div>
 
                     <div class="mb-4">

@@ -123,7 +123,7 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                                                     <?php endif; ?>
                                                 </div>
 
-                                                <div class="text-muted extra-small mt-2">Maksimal 5 gambar. Max 5MB/file.</div>
+                                                <div class="text-muted extra-small mt-2">Maksimal 5 gambar. Maks. 10 MB/file, otomatis dikompres.</div>
                                             </div>
                                         <?php endif; ?>
                                     </div>

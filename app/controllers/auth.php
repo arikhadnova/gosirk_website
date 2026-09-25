@@ -24,34 +24,44 @@ class Auth extends Controller {
             exit;
         }
 
-        $username = $_POST['username'] ?? '';
+        $username = trim($_POST['username'] ?? '');
         $password = $_POST['password'] ?? '';
 
-        $user = $this->model('User_model')->getUserByUsername($username);
-
-        if ($user) {
-            if (password_verify($password, $user->password)) {
-                // New session id after login, so an id planted before login is worthless
-                session_regenerate_id(true);
-                Csrf::rotate();
-                $_SESSION['admin_logged_in'] = true;
-                $_SESSION['user_id'] = $user->id;
-                $_SESSION['user_name'] = $user->name;
-                $_SESSION['user_role'] = $user->role;
-                $_SESSION['user_photo'] = $user->photo;
-                
-                header('Location: ' . BASE_URL . 'admin');
-                exit;
-            } else {
-                Flasher::setFlash('Username atau Password', 'salah!', 'danger');
-                header('Location: ' . BASE_URL . 'auth');
-                exit;
-            }
-        } else {
-            Flasher::setFlash('User', 'tidak ditemukan!', 'danger');
+        // Too many wrong passwords for this username or from this IP: wait first
+        $wait = LoginThrottle::lockedFor('login', $username);
+        if ($wait > 0) {
+            Flasher::setFlash('Terlalu banyak percobaan login.', 'Demi keamanan, coba lagi dalam ' . LoginThrottle::waitLabel($wait) . '.', 'danger');
             header('Location: ' . BASE_URL . 'auth');
             exit;
         }
+
+        $user = $username !== '' ? $this->model('User_model')->getUserByUsername($username) : null;
+
+        if ($user && password_verify($password, $user->password)) {
+            LoginThrottle::clear('login', $username);
+            // New session id after login, so an id planted before login is worthless
+            session_regenerate_id(true);
+            Csrf::rotate();
+            $_SESSION['admin_logged_in'] = true;
+            $_SESSION['user_id'] = $user->id;
+            $_SESSION['user_name'] = $user->name;
+            $_SESSION['user_role'] = $user->role;
+            $_SESSION['user_photo'] = $user->photo;
+
+            header('Location: ' . BASE_URL . 'admin');
+            exit;
+        }
+
+        // Same message for unknown user and wrong password, so usernames cannot be guessed
+        LoginThrottle::hit('login', $username);
+        $left = LoginThrottle::remaining('login', $username);
+        if ($left === 0) {
+            Flasher::setFlash('Terlalu banyak percobaan login.', 'Demi keamanan, coba lagi dalam ' . LoginThrottle::waitLabel(LoginThrottle::WINDOW) . '.', 'danger');
+        } else {
+            Flasher::setFlash('Username atau password salah.', $left <= 2 ? "Sisa $left percobaan sebelum login dikunci sementara." : '', 'danger');
+        }
+        header('Location: ' . BASE_URL . 'auth');
+        exit;
     }
 
     public function logout() {
@@ -74,7 +84,17 @@ class Auth extends Controller {
     }
 
     public function send_reset_link() {
-        $email = $_POST['email'];
+        $email = trim($_POST['email'] ?? '');
+
+        // Limit reset emails (prevents using this form to flood an inbox)
+        $wait = LoginThrottle::lockedFor('reset', $email);
+        if ($wait > 0) {
+            Flasher::setFlash('Terlalu banyak permintaan.', 'Coba lagi dalam ' . LoginThrottle::waitLabel($wait) . '.', 'danger');
+            header('Location: ' . BASE_URL . 'auth/forgot_password');
+            exit;
+        }
+        LoginThrottle::hit('reset', $email);
+
         $userModel = $this->model('User_model');
         $user = $userModel->getUserByEmail($email);
 
@@ -110,7 +130,8 @@ class Auth extends Controller {
                 Flasher::setFlash('Terjadi kesalahan', 'saat memproses token.', 'danger');
             }
         } else {
-            Flasher::setFlash('Email', 'tidak terdaftar!', 'danger');
+            // Same answer as for a registered email, so the form does not reveal which emails have an account
+            Flasher::setFlash('Jika email terdaftar,', 'link reset password telah dikirim ke email tersebut.', 'success');
         }
 
         header('Location: ' . BASE_URL . 'auth/forgot_password');

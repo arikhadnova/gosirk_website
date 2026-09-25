@@ -12,6 +12,8 @@ $isDetail = substr_count(trim($_GET['url'] ?? '', '/'), '/') >= 1 && !empty($dat
 if ($isDetail) {
     $seoTitle = strip_tags($data['title']) . ' | ' . $site_title;
     $seoDesc = trim($data['meta_description'] ?? '') ?: $seoDesc;
+} elseif ($seoTitle === '' && !empty($data['title'])) {
+    $seoTitle = strip_tags($data['title']) . ' | ' . $site_title; // simple pages with their own title (e.g. privacy)
 }
 $pageTitle = $seoTitle ?: $site_title;
 $pageDesc = $seoDesc ?: ($settings['site_description'] ?? 'Go Circular Solutions Indonesia - Solusi pengelolaan sampah berkelanjutan');

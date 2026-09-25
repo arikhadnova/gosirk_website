@@ -55,7 +55,7 @@
                              </div>
                              <input type="file" name="image" id="image-input" class="form-control form-control-sm mt-2" accept="image/*">
                         </div>
-                        <div class="text-muted extra-small">Recommended size: 1200x800px. Max: 2MB.</div>
+                        <div class="text-muted extra-small">Ukuran disarankan: 1200x800px. Maks. 10 MB, otomatis dikompres.</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Kategori</label>

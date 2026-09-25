@@ -102,6 +102,8 @@ class AdminNav {
             'site' => ['group' => 'settings', 'label' => 'Situs', 'icon' => 'fa-globe', 'public' => '', 'tabs' => [
                 $t('Header & Footer', 'admin/settings', ['active' => 'settings'], 'fa-layer-group'),
                 $t('Teks Navigasi & Footer', 'admin/page_texts?page=layouts', ['active' => 'page_texts', 'page' => 'layouts'], 'fa-font'),
+                $t('Kebijakan Privasi', 'admin/privacy', ['active' => 'privacy'], 'fa-user-shield'),
+                $t('SEO Kebijakan Privasi', 'admin/seo?page=privacy', ['active' => 'seo', 'page' => 'privacy'], 'fa-search'),
             ]],
         ];
     }

@@ -5,6 +5,10 @@
 const resources = {
     id: {
         translation: {
+            "privacy": {
+                "title": "Kebijakan Privasi",
+                "updated_label": "Terakhir diperbarui"
+            },
             "portfolio": {
                 "detail_title": "Detail Proyek",
                 "about": "Tentang",
@@ -942,6 +946,8 @@ const resources = {
                 "jobs": "PEKERJAAN"
             },
             "common": {
+                "consent": "Dengan mengirim formulir ini, Anda menyetujui data Anda digunakan GoSirk untuk menanggapi permintaan Anda dan memberi informasi program terkait, sesuai",
+                "privacy_link": "Kebijakan Privasi",
                 "breadcrumb_home": "Beranda",
                 "no_data": "Data belum tersedia.",
                 "no_partners": "Belum ada partner untuk kategori ini.",
@@ -964,6 +970,10 @@ const resources = {
     },
     en: {
         translation: {
+            "privacy": {
+                "title": "Privacy Policy",
+                "updated_label": "Last updated"
+            },
             "portfolio": {
                 "detail_title": "Project Details",
                 "about": "About",
@@ -1858,6 +1868,8 @@ const resources = {
                 }
             },
             "common": {
+                "consent": "By submitting this form, you agree that GoSirk may use your details to respond to your request and share related program information, as described in our",
+                "privacy_link": "Privacy Policy",
                 "breadcrumb_home": "Home",
                 "no_data": "No data available yet.",
                 "no_partners": "No partners in this category yet.",

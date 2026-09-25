@@ -50,7 +50,7 @@
                                 <div id="uploadPlaceholder">
                                     <i class="fas fa-cloud-upload-alt text-primary display-6 mb-2"></i>
                                     <p class="small text-muted mb-0">Klik atau seret gambar ke sini</p>
-                                    <p class="extra-small text-muted">Format: JPG, PNG, WEBP (Maks. 2MB)</p>
+                                    <p class="extra-small text-muted">Format: JPG, PNG, WEBP (Maks. 10 MB)</p>
                                 </div>
                             </div>
                         </div>

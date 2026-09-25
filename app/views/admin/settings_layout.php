@@ -49,7 +49,7 @@
                     <div class="mb-4">
                         <label for="logo_file" class="form-label small fw-bold text-dark">Ganti Logo Website</label>
                         <input type="file" id="logo_file" name="logo_file" class="form-control form-control-sm" accept="image/*">
-                        <small class="text-muted mt-2 d-block extra-small">Format: PNG, SVG, JPG. Max size 2MB.</small>
+                        <small class="text-muted mt-2 d-block extra-small">Format: PNG, SVG, JPG. Maks. 10 MB.</small>
                     </div>
                     <div class="d-grid">
                         <button type="submit" class="btn btn-primary py-2 fw-bold">
