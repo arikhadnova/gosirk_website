@@ -95,8 +95,9 @@
                                                 </a>
                                             <?php endif; ?>
                                         <?php else : ?>
-                                            <a href="<?= ASSETS_URL ?>docs/<?= $pub->file_path ?>" target="_blank" class="btn btn-sm btn-outline-secondary rounded-pill px-3 flex-grow-1" data-i18n="publication.btn.open_pdf">Buka PDF</a>
-                                            <a href="<?= ASSETS_URL ?>docs/<?= $pub->file_path ?>" download class="btn btn-sm btn-primary rounded-pill px-3 flex-grow-1" data-i18n="publication.btn_download">Download</a>
+                                            <?php $pubTitle = htmlspecialchars($pub->title_id, ENT_QUOTES); ?>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3 flex-grow-1 pub-get" data-pub-id="<?= (int) $pub->id ?>" data-pub-title="<?= $pubTitle ?>" data-mode="open" data-i18n="publication.btn.open_pdf">Buka PDF</button>
+                                            <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 flex-grow-1 pub-get" data-pub-id="<?= (int) $pub->id ?>" data-pub-title="<?= $pubTitle ?>" data-mode="download" data-i18n="publication.btn_download">Download</button>
                                         <?php endif; ?>
                                     </div>
                             </div>
@@ -166,6 +167,119 @@ document.addEventListener('DOMContentLoaded', function() {
                 item.style.display = 'none';
             }
         });
+    });
+});
+</script>
+
+<!-- Download form (same fields as the Executive Summary request) -->
+<div class="modal fade" id="pubDownloadModal" tabindex="-1" aria-labelledby="pubDownloadModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold" id="pubDownloadModalLabel" data-i18n="publication.modal_title">Unduh Publikasi</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4">
+        <p class="mb-4 text-muted" data-i18n="publication.modal_desc">Isi data berikut untuk mengunduh publikasi GoSirk.</p>
+
+        <div class="alert alert-primary bg-primary bg-opacity-10 border-0 d-flex align-items-center gap-2 mb-4" role="alert">
+            <span class="material-symbols-outlined">menu_book</span>
+            <div><span data-i18n="collaboration.modal.doc_label">Dokumen</span>: <strong id="pubModalTitle">...</strong></div>
+        </div>
+
+        <form id="pubDownloadForm" novalidate>
+          <div class="mb-3">
+            <label for="pubName" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.name">Nama Lengkap</label>
+            <input type="text" class="form-control bg-light border-0 py-2" id="pubName" placeholder="Masukkan nama Anda" data-i18n-placeholder="collaboration.modal.name_placeholder" <?= FormRules::attrs('pub_request', 'name') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="pubEmail" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.email">Alamat Email</label>
+            <input type="email" class="form-control bg-light border-0 py-2" id="pubEmail" placeholder="name@company.com" <?= FormRules::attrs('pub_request', 'email') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="pubOrganization" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.org">Organisasi / Perusahaan</label>
+            <input type="text" class="form-control bg-light border-0 py-2" id="pubOrganization" placeholder="Nama organisasi Anda" data-i18n-placeholder="collaboration.modal.org_placeholder" <?= FormRules::attrs('pub_request', 'organization') ?>>
+          </div>
+          <div class="mb-3">
+            <label for="pubJabatan" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.position">Jabatan</label>
+            <input type="text" class="form-control bg-light border-0 py-2" id="pubJabatan" placeholder="Posisi atau jabatan Anda" data-i18n-placeholder="collaboration.modal.position_placeholder" <?= FormRules::attrs('pub_request', 'jabatan') ?>>
+          </div>
+          <p class="small text-muted mb-4"><i class="fas fa-lock me-1"></i><span data-i18n="publication.modal_remember">Data Anda disimpan di perangkat ini agar form berikutnya terisi otomatis.</span></p>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary fw-bold py-2 rounded-pill shadow-sm" data-i18n="publication.modal_submit">Unduh Sekarang</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const modalEl = document.getElementById('pubDownloadModal');
+    const form = document.getElementById('pubDownloadForm');
+    const fields = { name: 'pubName', email: 'pubEmail', organization: 'pubOrganization', jabatan: 'pubJabatan' };
+    const t = (key, fallback) => {
+        const lang = (typeof GoSirkLang !== 'undefined') ? GoSirkLang.getCurrent() : 'id';
+        return key.split('.').reduce((o, k) => (o ? o[k] : undefined), resources?.[lang]?.translation) || fallback;
+    };
+    let pending = null; // publication being requested: { id, title, mode }
+
+    function openForm(pub) {
+        pending = pub;
+        document.getElementById('pubModalTitle').textContent = pub.title;
+        GosirkLead.fill('pub', true);
+        bootstrap.Modal.getOrCreateInstance(modalEl).show();
+    }
+
+    // "Buka PDF" needs a tab opened during the click, otherwise the browser blocks it as a pop-up
+    function deliver(url, mode, tab) {
+        if (mode === 'open') {
+            if (tab) tab.location.href = url + '?view=1'; else window.location.href = url + '?view=1';
+        } else {
+            const a = document.createElement('a');
+            a.href = url; a.download = '';
+            document.body.appendChild(a); a.click(); a.remove();
+        }
+    }
+
+    function requestAccess(pub, lead) {
+        const fd = new FormData();
+        fd.append('pub_id', pub.id);
+        Object.keys(fields).forEach((k) => fd.append(k, lead[k] || ''));
+        return fetch('<?= BASE_URL ?>publication/request', { method: 'POST', body: fd }).then((r) => r.json());
+    }
+
+    // Always show the form; details saved earlier are filled in automatically
+    document.querySelectorAll('.pub-get').forEach((btn) => btn.addEventListener('click', () => {
+        openForm({ id: btn.dataset.pubId, title: btn.dataset.pubTitle, mode: btn.dataset.mode });
+    }));
+
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        const lead = {};
+        Object.entries(fields).forEach(([k, id]) => { lead[k] = document.getElementById(id).value.trim(); });
+
+        const pub = pending;
+        const tab = pub.mode === 'open' ? window.open('about:blank', '_blank') : null;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        const html = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2"></span> ${t('publication.preparing', 'Menyiapkan...')}`;
+
+        requestAccess(pub, lead)
+            .then((data) => {
+                if (data.status !== 'success') {
+                    if (tab) tab.close();
+                    return Swal.fire({ title: 'Oops!', text: data.message, icon: 'error' });
+                }
+                GosirkLead.save(lead);
+                bootstrap.Modal.getInstance(modalEl).hide();
+                deliver(data.url, pub.mode, tab);
+            })
+            .catch(() => { if (tab) tab.close(); Swal.fire({ title: 'Error!', text: 'Terjadi kesalahan sistem.', icon: 'error' }); })
+            .finally(() => { submitBtn.disabled = false; submitBtn.innerHTML = html; });
     });
 });
 </script>

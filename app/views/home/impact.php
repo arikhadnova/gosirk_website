@@ -24,43 +24,17 @@
 <section class="section bg-light">
   <div class="container">
     
-    <?php 
-    $sustainability = array_filter($data['impacts'], fn($i) => $i->section === 'Sustainability');
-    $social = array_filter($data['impacts'], fn($i) => $i->section === 'Social');
+    <?php
+    // One list under one heading (older "Sustainability" rows are shown here too, so no data disappears)
+    $social = array_filter($data['impacts'], fn($i) => in_array($i->section, ['Social', 'Sustainability'], true));
     ?>
 
-    <!-- Category A: Sustainability Impact -->
     <div class="mb-5">
-      <div class="d-flex align-items-center mb-5 pb-2 border-bottom border-primary border-3">
-        <h3 class="fw-bold text-primary mb-0 me-3" data-i18n="home.impact_detail.sustainability_title">A. Sustainability Impact</h3>
-        <div class="flex-grow-1" style="height: 1px; background-color: rgba(13, 74, 124, 0.2);"></div>
+      <div class="text-center mb-5">
+        <h3 class="fw-bold text-primary mb-2" data-i18n="home.impact_detail.social_title">Project Social Impact</h3>
+        <div class="mx-auto rounded-pill" style="width: 60px; height: 3px; background: #FF8F56;"></div>
       </div>
-      
-      <div class="row g-4 justify-content-center">
-        <?php if (!empty($sustainability)) : ?>
-          <?php foreach($sustainability as $imp): ?>
-            <div class="col-lg-3 col-md-4 col-sm-6">
-              <div class="metric-card bg-white">
-                  <div class="metric-value"><?= $imp->value ?></div>
-                  <div class="metric-unit" data-i18n="units.<?= strtolower(str_replace([' ', '/', '(', ')'], '_', $imp->unit ?? '')) ?>"><?= $imp->unit ?></div>
-                  <div class="metric-label" data-lang-id="<?= $imp->label_id ?>" data-lang-en="<?= $imp->label_en ?>"><?= $imp->label_id ?></div>
-                  <div class="metric-note" data-lang-id="<?= $imp->note_id ?>" data-lang-en="<?= $imp->note_en ?>"><?= $imp->note_id ?></div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <div class="col-12 text-center text-muted" data-i18n="home.impact_detail.no_data_sustainability">No sustainability impact data available.</div>
-        <?php endif; ?>
-      </div>
-    </div>
 
-    <!-- Category B: Project & Social Impact -->
-    <div class="mb-5">
-      <div class="d-flex align-items-center mb-5 pb-2 border-bottom border-primary border-3">
-        <h3 class="fw-bold text-primary mb-0 me-3" data-i18n="home.impact_detail.social_title">B. Project & Social Impact</h3>
-        <div class="flex-grow-1" style="height: 1px; background-color: rgba(13, 74, 124, 0.2);"></div>
-      </div>
-      
       <div class="row g-4 justify-content-center">
         <?php if (!empty($social)) : ?>
           <?php foreach($social as $imp): ?>

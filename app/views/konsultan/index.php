@@ -34,32 +34,6 @@
         margin-bottom: 1.5rem;
     }
 
-    /* Hero Section - GI Style */
-    .hero-konsultan {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                    url('https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-        min-height: 80vh;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        padding: 100px 0;
-    }
-
-    .hero-konsultan .display-3 {
-        font-weight: 700;
-        color: #ff9f43; /* GI Gold-ish Orange */
-        margin-bottom: 1rem;
-    }
-
-    .hero-konsultan .lead {
-        max-width: 900px;
-        margin: 0 auto 2.5rem;
-        opacity: 0.9;
-        font-weight: 400;
-    }
 
     /* About Section - GI Style */
     .about-section {
@@ -443,23 +417,23 @@
     if (empty($konsultanHeroImages)) $konsultanHeroImages[] = 'https://images.unsplash.com/photo-1557804506-669a67965ba0?auto=format&fit=crop&w=1920&q=80';
     $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
     ?>
-    <section class="hero-konsultan hero-media-shell">
+    <section class="hero-konsultan hero-full hero-media-shell">
         <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
             <?php foreach (array_slice($konsultanHeroImages, 0, 5) as $index => $slide): ?>
-                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
             <?php endforeach; ?>
         </div>
         <div class="container position-relative">
-            <h1 class="display-3 fw-bold text-uppercase mb-3" data-lang-id="<?= $heroKonsultan->title_id ?>" data-lang-en="<?= $heroKonsultan->title_en ?>" data-i18n-html="true">
+            <h1 class="hero-full-title text-uppercase" data-lang-id="<?= $heroKonsultan->title_id ?>" data-lang-en="<?= $heroKonsultan->title_en ?>" data-i18n-html="true">
                 <?= $heroKonsultan->title_id ?>
             </h1>
-            <p class="lead fs-4 mb-2 text-light opacity-90 mx-auto" style="max-width: 900px;" data-lang-id="<?= $heroKonsultan->subtitle_id ?>" data-lang-en="<?= $heroKonsultan->subtitle_en ?>">
+            <p class="hero-full-lead" data-lang-id="<?= $heroKonsultan->subtitle_id ?>" data-lang-en="<?= $heroKonsultan->subtitle_en ?>">
                 <?= $heroKonsultan->subtitle_id ?>
             </p>
-            <p class="text-light fs-5 mb-5 opacity-75 fw-medium" data-lang-id="<?= $heroKonsultan->tag_id ?>" data-lang-en="<?= $heroKonsultan->tag_en ?>"><?= $heroKonsultan->tag_id ?></p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#tentang" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-uppercase" style="color: var(--gosirk-orange) !important;" data-i18n="konsultan.explore">Eksplorasi</a>
-                <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light rounded-pill px-5 py-3 fw-bold text-uppercase" data-i18n="gi.btn_contact">Hubungi Kami</a>
+            <p class="hero-full-tag" data-lang-id="<?= $heroKonsultan->tag_id ?>" data-lang-en="<?= $heroKonsultan->tag_en ?>"><?= $heroKonsultan->tag_id ?></p>
+            <div class="hero-full-actions">
+                <a href="#tentang" class="btn btn-light" data-i18n="konsultan.explore">Eksplorasi</a>
+                <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="gi.btn_contact">Hubungi Kami</a>
             </div>
         </div>
     </section>

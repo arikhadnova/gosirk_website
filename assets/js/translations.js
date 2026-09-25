@@ -71,7 +71,7 @@ const resources = {
                         "item8_val": "3", "item8_unit": "RENCANA", "item8_label": "Integrasi RKPDes", "item8_note": "Rencana operasional yang terintegrasi dalam pembangunan desa",
                         "item9_val": "584", "item9_unit": "ALAT", "item9_label": "Sarana Pendukung", "item9_note": "Disediakan untuk optimalisasi TPS3R dan Bank Sampah"
                     },
-                    "social_title": "B. Dampak Proyek & Sosial",
+                    "social_title": "Project Social Impact",
                     "social": {
                         "item1_val": "6.056", "item1_unit": "RUMAH TANGGA", "item1_label": "Keterlibatan Masyarakat", "item1_note": "Menjangkau 19.908 orang di tingkat komunitas desa",
                         "item2_val": "3.189", "item2_unit": "RUMAH TANGGA", "item2_label": "Layanan Langsung", "item2_note": "Terlayani langsung oleh sistem pengelolaan sampah desa",
@@ -376,7 +376,7 @@ const resources = {
                 "impact_number": "Jumlah",
                 "impact_unit": "Satuan",
                 "impact": {
-                    "title": "Impact Metrics CLOCC",
+                    "title": "INTERVENSI DAN DUKUNGAN PROGRAM CLOCC X GO SIRK",
                     "subtitle": "Wrap-up of Program (Per September 2025)",
                     "wp1": {
                         "title": "Pelatihan & Peningkatan Kapasitas tingkat Desa",
@@ -594,6 +594,11 @@ const resources = {
                     }
                 },
                 "publication": {
+                    "modal_title": "Unduh Publikasi",
+                    "modal_desc": "Isi data berikut untuk mengunduh publikasi GoSirk.",
+                    "modal_remember": "Data Anda disimpan di perangkat ini agar form berikutnya terisi otomatis.",
+                    "modal_submit": "Unduh Sekarang",
+                    "preparing": "Menyiapkan...",
                     "badge_pdf": "PDF",
                     "badge_free": "GRATIS",
                     "btn_download": "Unduh",
@@ -1027,7 +1032,7 @@ const resources = {
                         "item8_val": "3", "item8_unit": "PLANS", "item8_label": "RKPDes Integration", "item8_note": "Operational plans integrated into village development planning",
                         "item9_val": "584", "item9_unit": "TOOLS", "item9_label": "Supporting Tools", "item9_note": "Provided for TPS3R and Waste Bank optimization"
                     },
-                    "social_title": "B. Project & Social Impact",
+                    "social_title": "Project Social Impact",
                     "social": {
                         "item1_val": "6,056", "item1_unit": "HOUSEHOLDS", "item1_label": "Community Involvement", "item1_note": "Reaching 19,908 people at the village community level",
                         "item2_val": "3,189", "item2_unit": "HOUSEHOLDS", "item2_label": "Direct Service", "item2_note": "Served directly by village waste management systems",
@@ -1329,7 +1334,7 @@ const resources = {
                 },
                 "portfolio_empty": "Portfolio data is not yet available.",
                 "impact": {
-                    "title": "IMPACT METRICS CLOCC",
+                    "title": "CLOCC X GO SIRK PROGRAM INTERVENTION AND SUPPORT",
                     "subtitle": "Wrap-up of Program (Per September 2025)",
                     "wp1": {
                         "title": "Training and Capacity Building in Village-Level",
@@ -1544,6 +1549,11 @@ const resources = {
                     }
                 },
                 "publication": {
+                    "modal_title": "Download Publication",
+                    "modal_desc": "Fill in your details to download GoSirk publications.",
+                    "modal_remember": "Your details are kept on this device so the next form is filled in automatically.",
+                    "modal_submit": "Download Now",
+                    "preparing": "Preparing...",
                     "badge_pdf": "PDF",
                     "badge_free": "FREE",
                     "btn_download": "Download",

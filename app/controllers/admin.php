@@ -3164,6 +3164,7 @@ class Admin extends Controller {
             $keys = [];
             $files = glob($viewsDir . $folder . '/*.php');
             usort($files, fn($a, $b) => (basename($b) === 'index.php') <=> (basename($a) === 'index.php')); // main page first
+            if ($folder === 'home') $files = array_merge($files, glob($viewsDir . 'partials/*.php')); // shared sections first appear on Home
             foreach ($files as $file) {
                 if ($folder === 'layouts' && !in_array(basename($file), ['header.php', 'footer.php'], true)) continue;
                 preg_match_all('/data-i18n(?:-placeholder)?="([a-z0-9_]+(?:\.[a-z0-9_]+)+)"/i', file_get_contents($file), $m);

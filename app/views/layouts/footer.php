@@ -73,29 +73,49 @@ if (!isset($settings)) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+      // Visitor details from the document/publication forms, remembered in this browser for 30 days
+      // to fill those forms in automatically next time. Inputs use ids <prefix>Name/Email/Organization/Jabatan.
+      window.GosirkLead = (function () {
+        const KEY = 'gosirk_lead', TTL = 30 * 24 * 60 * 60 * 1000;
+        const FIELDS = { name: 'Name', email: 'Email', organization: 'Organization', jabatan: 'Jabatan' };
+        return {
+          get() {
+            try {
+              const d = JSON.parse(localStorage.getItem(KEY) || 'null');
+              if (d && d.name && d.email && Date.now() - (d.saved_at || 0) < TTL) return d;
+            } catch (e) {}
+            return null;
+          },
+          save(d) {
+            try {
+              localStorage.setItem(KEY, JSON.stringify({ name: d.name, email: d.email, organization: d.organization, jabatan: d.jabatan, saved_at: Date.now() }));
+            } catch (e) {}
+          },
+          // Fill a form's empty inputs (or all of them with overwrite = true)
+          fill(prefix, overwrite) {
+            const d = this.get();
+            if (!d) return;
+            Object.entries(FIELDS).forEach(([k, suffix]) => {
+              const el = document.getElementById(prefix + suffix);
+              if (el && (overwrite || !el.value)) el.value = d[k] || '';
+            });
+          },
+          // Save from a form's inputs
+          saveFrom(prefix) {
+            const d = {};
+            Object.entries(FIELDS).forEach(([k, suffix]) => { d[k] = (document.getElementById(prefix + suffix)?.value || '').trim(); });
+            if (d.name && d.email) this.save(d);
+          },
+        };
+      })();
+      document.addEventListener('DOMContentLoaded', () => ['dl', 'cp', 'cn'].forEach((p) => GosirkLead.fill(p)));
+
       // Initialize Swiper for logo slider
       const logoSlider = new Swiper('.logo-slider', {
         loop: true,
         autoplay: {
           delay: 0,
           disableOnInteraction: false,
-        },
-        speed: 8000,
-        slidesPerView: 1,
-        spaceBetween: 20,
-        breakpoints: {
-          576: { slidesPerView: 2 },
-          768: { slidesPerView: 3 },
-          1024: { slidesPerView: 5 },
-        },
-      });
-
-      const networkSlider = new Swiper('.network-slider', {
-        loop: true,
-        autoplay: {
-          delay: 0,
-          disableOnInteraction: false,
-          reverseDirection: true,
         },
         speed: 8000,
         slidesPerView: 1,

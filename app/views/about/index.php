@@ -1,10 +1,10 @@
 <!-- Hero Section -->
-<section class="about-hero" style="background-image: url('<?= PageImages::attr('about.hero_bg') ?>');">
-    <div class="container hero-content">
-        <h1 class="hero-title" data-i18n="about.hero.title">GoSirk | Solusi Untuk Indonesia</h1>
-        <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="#about" class="btn btn-light rounded-pill text-uppercase fw-semibold" style="color: #0d4a7c !important;" data-i18n="about.hero.cta_about">ABOUT US</a>
-            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light rounded-pill text-uppercase" data-i18n="about.hero.cta_contact">CONTACT US</a>
+<section class="about-hero hero-full" style="background-image: url('<?= PageImages::attr('about.hero_bg') ?>');">
+    <div class="container">
+        <h1 class="hero-full-title" data-i18n="about.hero.title">GoSirk | Solusi Untuk Indonesia</h1>
+        <div class="hero-full-actions">
+            <a href="#about" class="btn btn-light" data-i18n="about.hero.cta_about">ABOUT US</a>
+            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="about.hero.cta_contact">CONTACT US</a>
         </div>
     </div>
 </section>

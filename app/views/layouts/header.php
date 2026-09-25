@@ -62,6 +62,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
         echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/about.css?v=' . time() . '">';
     } 
     // Blog and Publication pages use inline styles or default bootstrap, no specific CSS file needed.
+    echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/hero.css?v=' . time() . '">';
     ?>
 
     <style>

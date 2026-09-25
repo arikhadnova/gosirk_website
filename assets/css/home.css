@@ -56,10 +56,6 @@
       z-index: 1;
     }
 
-    .hero-home h1 {
-      font-family: 'Open Sans', sans-serif;
-      margin-top: -50px;
-    }
 
     .hero-home .btn {
       margin: 0 0 10px;
@@ -266,6 +262,32 @@
       font-size: 20px;
       background: transparent; /* Mockup doesn't show distinct bg for icon */
     }
+
+    /* Contributions & partners: all logos in a wrapping grid */
+    .partner-logo-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 16px;
+    }
+    .partner-logo-item {
+      flex: 0 0 calc((100% - 4 * 16px) / 5);
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 3px rgba(16, 24, 40, .06);
+    }
+    .partner-logo-item img {
+      max-width: 100%;
+      max-height: 80px;
+      object-fit: contain;
+    }
+    @media (max-width: 991px) { .partner-logo-item { flex-basis: calc((100% - 2 * 16px) / 3); } }
+    @media (max-width: 575px) { .partner-logo-item { flex-basis: calc((100% - 16px) / 2); height: 100px; } }
 
     /* Logo Slider Styles */
     .logo-slider, .network-slider {
@@ -491,7 +513,8 @@
     /* Service Detail Cards Animation */
     .service-detail-slider-1 .card,
     .service-detail-slider-2 .card,
-    .service-detail-slider-3 .card {
+    .service-detail-slider-3 .card,
+    .service-detail-grid .card {
       transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
       border: 1px solid rgba(0,0,0,0.03) !important;
       box-shadow: 0 10px 25px rgba(0,0,0,0.03) !important;
@@ -499,7 +522,8 @@
 
     .service-detail-slider-1 .card:hover,
     .service-detail-slider-2 .card:hover,
-    .service-detail-slider-3 .card:hover {
+    .service-detail-slider-3 .card:hover,
+    .service-detail-grid .card:hover {
       transform: translateY(-12px);
       box-shadow: 0 25px 50px rgba(0,0,0,0.08) !important;
       border-color: rgba(255, 143, 86, 0.2) !important;
@@ -507,26 +531,30 @@
 
     .service-detail-slider-1 .card .material-symbols-outlined,
     .service-detail-slider-2 .card .material-symbols-outlined,
-    .service-detail-slider-3 .card .material-symbols-outlined {
+    .service-detail-slider-3 .card .material-symbols-outlined,
+    .service-detail-grid .card .material-symbols-outlined {
       transition: all 0.5s ease;
     }
 
     .service-detail-slider-1 .card:hover .material-symbols-outlined,
     .service-detail-slider-2 .card:hover .material-symbols-outlined,
-    .service-detail-slider-3 .card:hover .material-symbols-outlined {
+    .service-detail-slider-3 .card:hover .material-symbols-outlined,
+    .service-detail-grid .card:hover .material-symbols-outlined {
       transform: scale(1.2) rotate(-8deg);
       color: #FF8F56 !important;
     }
 
     .service-detail-slider-1 .card .btn-gi-orange,
     .service-detail-slider-2 .card .btn-gi-orange,
-    .service-detail-slider-3 .card .btn-gi-orange {
+    .service-detail-slider-3 .card .btn-gi-orange,
+    .service-detail-grid .card .btn-gi-orange {
       transition: all 0.4s ease;
     }
 
     .service-detail-slider-1 .card:hover .btn-gi-orange,
     .service-detail-slider-2 .card:hover .btn-gi-orange,
-    .service-detail-slider-3 .card:hover .btn-gi-orange {
+    .service-detail-slider-3 .card:hover .btn-gi-orange,
+    .service-detail-grid .card:hover .btn-gi-orange {
       padding-left: 30px;
       padding-right: 30px;
       box-shadow: 0 6px 15px rgba(255, 143, 86, 0.3);

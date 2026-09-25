@@ -308,9 +308,11 @@ document.addEventListener('DOMContentLoaded', function () {
             .then((r) => r.json())
             .then((data) => {
                 if (data.status === 'success') {
+                    GosirkLead.saveFrom('cn');
                     Swal.fire({ icon: 'success', title: 'Berhasil!', text: data.message, confirmButtonColor: '#29b471' }).then(() => {
                         bootstrap.Modal.getInstance(document.getElementById('conceptNoteModal')).hide();
                         form.reset();
+                        GosirkLead.fill('cn');
                     });
                 } else {
                     Swal.fire({ icon: 'error', title: 'Oops!', text: data.message });

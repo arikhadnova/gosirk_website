@@ -5,14 +5,14 @@ $qs = $filter !== 'all' ? '?status=' . $filter : '';
 $tabs = [
     'all' => ['Semua', (int) $counts->total, 'secondary'],
     'followup' => ['Perlu Tindak Lanjut', (int) $counts->followup, 'warning'],
-    'sent' => ['Terkirim', (int) $counts->sent, 'success'],
+    'sent' => ['Terkirim / Diunduh', (int) $counts->sent, 'success'],
 ];
 ?>
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
         <span class="admin-header-badge d-inline-block">DASHBOARD / DOKUMEN / PERMINTAAN</span>
         <h1 class="fw-bold mb-0">Permintaan Dokumen</h1>
-        <p class="text-muted small mb-0">Pengunjung yang meminta Executive Summary, Company Profile, atau Concept Note, beserta status pengirimannya.</p>
+        <p class="text-muted small mb-0">Pengunjung yang meminta Executive Summary, Company Profile, atau Concept Note, serta yang mengunduh Publikasi GoSirk.</p>
     </div>
     <a href="<?= BASE_URL; ?>admin/collaboration" class="btn btn-light text-secondary fw-bold px-3 rounded-pill">
         <i class="fas fa-folder-open me-2"></i> Kelola Dokumen
@@ -53,8 +53,9 @@ $tabs = [
                         [$statusLabel, $statusColor] = Collaboration_model::DELIVERY[$req->delivery_status] ?? Collaboration_model::DELIVERY['unknown'];
                         $needsAction = in_array($req->delivery_status, ['pending', 'failed'], true);
                         $docLabel = $req->doc_title ?: 'Dokumen dihapus';
-                        $typeLabel = Collaboration_model::DOC_TYPES[$req->doc_type] ?? '-';
-                        $mode = $req->doc_title ? (((int) ($req->doc_auto_send ?? 1)) === 1 ? 'Otomatis' : 'Manual') : '-';
+                        $isPublication = $req->doc_type === 'publication';
+                        $typeLabel = $isPublication ? 'Publikasi GoSirk' : (Collaboration_model::DOC_TYPES[$req->doc_type] ?? '-');
+                        $mode = $isPublication ? 'Unduh langsung' : ($req->doc_title ? (((int) ($req->doc_auto_send ?? 1)) === 1 ? 'Otomatis' : 'Manual') : '-');
                         $deliveredInfo = $req->delivered_at ? date('d M Y H:i', strtotime($req->delivered_at)) . ($req->delivered_by ? ' oleh ' . $req->delivered_by : '') : '';
                         $detail = [
                             'Waktu permintaan' => date('d M Y, H:i', strtotime($req->requested_at)) . ' WIB',

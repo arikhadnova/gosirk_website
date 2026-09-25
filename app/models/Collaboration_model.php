@@ -18,6 +18,7 @@ class Collaboration_model {
         'manual_sent' => ['Dikirim admin', 'success'],
         'pending'     => ['Menunggu dikirim manual', 'warning'],
         'failed'      => ['Gagal dikirim otomatis', 'danger'],
+        'downloaded'  => ['Diunduh langsung', 'info'],   // publication downloads (Publikasi GoSirk)
         'unknown'     => ['Tidak tercatat', 'secondary'],
     ];
 
@@ -41,6 +42,12 @@ class Collaboration_model {
                 ADD COLUMN delivery_status VARCHAR(20) NOT NULL DEFAULT 'unknown',
                 ADD COLUMN delivered_at DATETIME NULL,
                 ADD COLUMN delivered_by VARCHAR(255) NULL");
+        }
+
+        $this->db->query("SHOW COLUMNS FROM {$this->table_requests} LIKE 'publication_id'");
+        if (!$this->db->single()) {
+            // Downloads of GoSirk publications are logged here too (doc_id stays NULL)
+            $this->migrate("ALTER TABLE {$this->table_requests} ADD COLUMN publication_id INT NULL AFTER doc_id");
         }
 
         $this->db->query("SHOW COLUMNS FROM {$this->table_docs} LIKE 'type'");
@@ -144,15 +151,36 @@ class Collaboration_model {
         return $this->db->execute() ? $this->db->lastInsertId() : false;
     }
 
-    /** @param string $filter all | followup (pending/failed) | sent (sent/manual_sent) */
+    /** Log a publication download. Repeated downloads of the same file by the same email within a day count once. */
+    public function logPublicationDownload($pubId, $data) {
+        $this->db->query("SELECT id FROM {$this->table_requests}
+                          WHERE publication_id = :pub AND email = :email AND requested_at > (NOW() - INTERVAL 1 DAY) LIMIT 1");
+        $this->db->bind(':pub', $pubId);
+        $this->db->bind(':email', $data['email']);
+        if ($this->db->single()) return true;
+
+        $this->db->query("INSERT INTO {$this->table_requests} (publication_id, name, email, organization, jabatan, delivery_status, delivered_at)
+                          VALUES (:pub, :name, :email, :organization, :jabatan, 'downloaded', NOW())");
+        $this->db->bind(':pub', $pubId);
+        $this->db->bind(':name', $data['name']);
+        $this->db->bind(':email', $data['email']);
+        $this->db->bind(':organization', $data['organization']);
+        $this->db->bind(':jabatan', $data['jabatan']);
+        return $this->db->execute();
+    }
+
+    /** @param string $filter all | followup (pending/failed) | sent (sent/manual_sent/downloaded) */
     public function getAllRequests($filter = 'all') {
         $where = [
             'followup' => "WHERE r.delivery_status IN ('pending', 'failed')",
-            'sent' => "WHERE r.delivery_status IN ('sent', 'manual_sent')",
+            'sent' => "WHERE r.delivery_status IN ('sent', 'manual_sent', 'downloaded')",
         ][$filter] ?? '';
-        $this->db->query('SELECT r.*, d.title_id AS doc_title, d.type AS doc_type, d.auto_send AS doc_auto_send, d.file_path AS doc_file
+        $this->db->query('SELECT r.*, COALESCE(d.title_id, p.title_id) AS doc_title,
+                                 IF(r.publication_id IS NULL, d.type, \'publication\') AS doc_type,
+                                 d.auto_send AS doc_auto_send, d.file_path AS doc_file
                           FROM ' . $this->table_requests . ' r
                           LEFT JOIN ' . $this->table_docs . ' d ON r.doc_id = d.id
+                          LEFT JOIN publications p ON r.publication_id = p.id
                           ' . $where . '
                           ORDER BY r.requested_at DESC');
         return $this->db->resultSet();
@@ -168,7 +196,7 @@ class Collaboration_model {
     public function countRequests() {
         $this->db->query("SELECT COUNT(*) AS total,
                                  SUM(delivery_status IN ('pending', 'failed')) AS followup,
-                                 SUM(delivery_status IN ('sent', 'manual_sent')) AS sent
+                                 SUM(delivery_status IN ('sent', 'manual_sent', 'downloaded')) AS sent
                           FROM {$this->table_requests}");
         return $this->db->single();
     }

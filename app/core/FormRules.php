@@ -201,6 +201,13 @@ class FormRules {
             'organization' => ['Instansi', 'required|min:2|max:150'],
             'jabatan'      => ['Jabatan', 'required|min:2|max:100'],
         ],
+        'pub_request' => [
+            'pub_id'       => ['Publikasi', 'required|int'],
+            'name'         => ['Nama', 'required|min:2|max:100'],
+            'email'        => ['Email', 'required|email|max:100'],
+            'organization' => ['Instansi', 'required|min:2|max:150'],
+            'jabatan'      => ['Jabatan', 'required|min:2|max:100'],
+        ],
         'password_change' => [
             'current_password' => ['Password Lama', 'required'],
             'new_password'     => ['Password Baru', 'required|min:8|max:255'],

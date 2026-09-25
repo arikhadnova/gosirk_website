@@ -5,6 +5,7 @@ class implementasi_partner extends Controller {
         $data = [
             'hero' => $this->model('Hero_model')->getByPage('partner'),
             'impacts' => $this->model('Impact_model')->getByPage('clocc'),
+            'home_impacts' => $this->model('Impact_model')->getByPage('home'),
             'testimonials' => $this->model('Testimonial_model')->getByPage('implentasi_partner'),
             'faqs' => $this->model('Faq_model')->getByPage('implentasi_partner'),
             'partners' => $this->model('Partner_model')->getAll(),

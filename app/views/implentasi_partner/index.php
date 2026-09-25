@@ -41,32 +41,6 @@
         margin-bottom: 1.5rem;
     }
 
-    /* Hero Section - GI Style */
-    .hero-partner {
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-                    url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=1920&auto=format&fit=crop') center/cover no-repeat;
-        min-height: 80vh;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
-        color: white;
-        padding: 100px 0;
-    }
-
-    .hero-partner .display-3 {
-        font-weight: 700;
-        color: #ff9f43; /* GI Gold-ish Orange */
-        margin-bottom: 1rem;
-    }
-
-    .hero-partner .lead {
-        max-width: 900px;
-        margin: 0 auto 2.5rem;
-        opacity: 0.9;
-        font-weight: 400;
-    }
 
     /* About Section - GI Style */
     .about-section {
@@ -643,27 +617,27 @@
     if (empty($partnerHeroImages)) $partnerHeroImages[] = ASSETS_URL . 'img/IMG_8084.jpg';
     $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
     ?>
-    <section class="hero-partner hero-media-shell">
+    <section class="hero-partner hero-full hero-media-shell">
         <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
             <?php foreach (array_slice($partnerHeroImages, 0, 5) as $index => $slide): ?>
-                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+                <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
             <?php endforeach; ?>
         </div>
         <div class="container position-relative">
             <?php if ($heroPartner && trim(strip_tags($heroPartner->title_id)) !== '') : // title from Admin > Hero > Implementasi Partner ?>
-            <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n-html="true" data-lang-id="<?= htmlspecialchars($heroPartner->title_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($heroPartner->title_en ?: $heroPartner->title_id, ENT_QUOTES) ?>">
+            <h1 class="hero-full-title text-uppercase" data-i18n-html="true" data-lang-id="<?= htmlspecialchars($heroPartner->title_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($heroPartner->title_en ?: $heroPartner->title_id, ENT_QUOTES) ?>">
                 <?= $heroPartner->title_id ?>
             </h1>
             <?php else : ?>
-            <h1 class="display-3 fw-bold text-uppercase mb-3" data-i18n="partner.main_title">IMPLEMENTASI PARTNER</h1>
+            <h1 class="hero-full-title text-uppercase" data-i18n="partner.main_title">IMPLEMENTASI PARTNER</h1>
             <?php endif; ?>
-            <p class="lead fs-4 mb-2 text-light opacity-90 mx-auto" style="max-width: 900px;" data-lang-id="<?= $heroPartner ? $heroPartner->subtitle_id : 'Program pendampingan desa dan pengembangan komunitas berbasis ekonomi sirkular.' ?>" data-lang-en="<?= $heroPartner ? $heroPartner->subtitle_en : 'Village assistance program and community development based on circular economy.' ?>">
+            <p class="hero-full-lead" data-lang-id="<?= $heroPartner ? $heroPartner->subtitle_id : 'Program pendampingan desa dan pengembangan komunitas berbasis ekonomi sirkular.' ?>" data-lang-en="<?= $heroPartner ? $heroPartner->subtitle_en : 'Village assistance program and community development based on circular economy.' ?>">
                 <?= $heroPartner ? $heroPartner->subtitle_id : 'Program pendampingan desa dan pengembangan komunitas berbasis ekonomi sirkular.' ?>
             </p>
-            <p class="text-light fs-5 mb-5 opacity-75 fw-medium" data-lang-id="<?= $heroPartner ? $heroPartner->tag_id : '#GoSirkImpact' ?>" data-lang-en="<?= $heroPartner ? $heroPartner->tag_en : '#GoSirkImpact' ?>"><?= $heroPartner ? $heroPartner->tag_id : '#GoSirkImpact' ?></p>
-            <div class="d-flex justify-content-center gap-3 flex-wrap">
-                <a href="#tentang" class="btn btn-light rounded-pill px-5 py-3 fw-bold text-uppercase" style="color: var(--gosirk-orange) !important;" data-i18n="partner.cta_explore">Eksplorasi</a>
-                <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light rounded-pill px-5 py-3 fw-bold text-uppercase" data-i18n="partner.cta_secondary">Hubungi Kami</a>
+            <p class="hero-full-tag" data-lang-id="<?= $heroPartner ? $heroPartner->tag_id : '#GoSirkImpact' ?>" data-lang-en="<?= $heroPartner ? $heroPartner->tag_en : '#GoSirkImpact' ?>"><?= $heroPartner ? $heroPartner->tag_id : '#GoSirkImpact' ?></p>
+            <div class="hero-full-actions">
+                <a href="#tentang" class="btn btn-light" data-i18n="partner.cta_explore">Eksplorasi</a>
+                <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="partner.cta_secondary">Hubungi Kami</a>
             </div>
         </div>
     </section>
@@ -697,6 +671,9 @@
         });
     });
     </script>
+
+    <!-- IMPACT FOOTPRINT (same numbers as Home) -->
+    <?php $this->views('partials/impact_footprint', ['impacts' => $data['home_impacts']]); ?>
 
     <!-- MITRA PENGEMBANGAN PROYEK & IMPLEMENTASI SECTION -->
     <section id="mitra-pengembangan" class="py-5 bg-white">
@@ -1042,8 +1019,7 @@
     <section class="py-5 bg-white overflow-hidden">
         <div class="container">
             <div class="text-center mb-5">
-                <span class="section-subheader" data-i18n="partner.impact.title">Impact Metrics CLOCC</span>
-                <h4 class="fw-bold mb-2" data-i18n="partner.impact.subtitle">Wrap-up of Program (Per September 2025)</h4>
+                <h4 class="fw-bold mb-2 text-uppercase" data-i18n="partner.impact.title">Intervensi dan Dukungan Program CLOCC x Go Sirk</h4>
                 <div class="mx-auto mt-2 rounded-pill bg-orange opacity-25" style="width: 50px; height: 3px;"></div>
             </div>
 

@@ -20,23 +20,23 @@
   $heroSlides = array_slice(array_unique(array_filter($heroSlides)), 0, 5);
   $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
 ?>
-<section class="hero-home text-center">
+<section class="hero-home hero-full">
   <div class="hero-home-slider hero-home-slider-<?= $heroTransition ?>" aria-hidden="true">
     <?php foreach ($heroSlides as $index => $slide) : ?>
-      <div class="hero-home-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(121, 121, 121, 0.55)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+      <div class="hero-home-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
     <?php endforeach; ?>
   </div>
   <div class="container">
-    <h1 class="fw-bold display-5" data-lang-id="<?= $heroHome->title_id ?>" data-lang-en="<?= $heroHome->title_en ?>" data-i18n-html="true">
+    <h1 class="hero-full-title" data-lang-id="<?= $heroHome->title_id ?>" data-lang-en="<?= $heroHome->title_en ?>" data-i18n-html="true">
       <?= $heroHome->title_id ?>
     </h1>
-    <p class="lead mt-3" data-lang-id="<?= $heroHome->subtitle_id ?>" data-lang-en="<?= $heroHome->subtitle_en ?>">
+    <p class="hero-full-lead" data-lang-id="<?= $heroHome->subtitle_id ?>" data-lang-en="<?= $heroHome->subtitle_en ?>">
       <?= $heroHome->subtitle_id ?>
     </p>
-    <div class="mt-5 d-flex justify-content-center gap-3 flex-wrap">
-      <a href="#services" class="btn btn-light rounded-pill text-uppercase fw-semibold" style="color: #0d4a7c !important;" data-i18n="home.hero.cta_services">Lihat Layanan</a>
-      <a href="#portfolio" class="btn btn-outline-light rounded-pill text-uppercase" data-i18n="home.hero.cta_portfolio">Portofolio</a>
-      <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light rounded-pill text-uppercase" data-i18n="home.hero.cta_contact">Hubungi Kami</a>
+    <div class="hero-full-actions">
+      <a href="#services" class="btn btn-light" data-i18n="home.hero.cta_services">Lihat Layanan</a>
+      <a href="#portfolio" class="btn btn-outline-light" data-i18n="home.hero.cta_portfolio">Portofolio</a>
+      <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="home.hero.cta_contact">Hubungi Kami</a>
     </div>
   </div>
 </section>
@@ -61,38 +61,8 @@
   });
 </script>
 
-<!-- IMPACT -->
-<section class="section bg-light">
-  <div class="container">
-    <h3 class="text-center fw-bold mb-5" data-i18n="home.impact.title">KAMI MULAI MENCIPTAKAN DAMPAK</h3>
-    <div class="row g-4 justify-content-center">
-                <?php 
-                $main_impacts = array_filter($data['impacts'], fn($imp) => $imp->section === 'Main');
-                if (!empty($main_impacts)) : 
-                    foreach ($main_impacts as $imp) : 
-                ?>
-                    <div class="col-md-4 col-6">
-                        <div class="stat-box">
-                            <h1 class="fw-bold text-primary counter" 
-                                data-target="<?= $imp->value ?>" 
-                                <?= strpos($imp->value, '.') !== false ? 'data-decimals="2"' : '' ?>>
-                                0
-                            </h1>
-                            <p data-lang-id="<?= $imp->label_id ?>" data-lang-en="<?= $imp->label_en ?>">
-                                <?= $imp->label_id ?>
-                            </p>
-                        </div>
-                    </div>
-                <?php 
-                    endforeach; 
-                endif; 
-                ?>
-    
-    <div class="text-center mt-5">
-      <a href="<?= BASE_URL ?>home/impact" class="btn btn-outline-primary rounded-pill px-4" data-i18n="home.common.read_more">Selengkapnya</a>
-    </div>
-  </div>
-</section>
+<!-- IMPACT FOOTPRINT -->
+<?php $this->views('partials/impact_footprint', ['impacts' => $data['impacts']]); ?>
 
 <!-- APPROACH -->
 <section class="section">
@@ -186,27 +156,15 @@
     
     <!-- Capacity Building -->
     <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold" data-i18n="home.services.cb_title">Layanan Capacity Building</h3>
-        <div class="service-detail-nav d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-detail-1" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-detail-1" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
-      </div>
-      
-      <div class="swiper service-detail-slider-1">
-        <div class="swiper-wrapper">
+      <h3 class="fw-bold mb-4" data-i18n="home.services.cb_title">Layanan Capacity Building</h3>
+      <div class="row g-4 service-detail-grid">
           <?php if (!empty($services_cb)) : ?>
             <?php foreach ($services_cb as $item) : ?>
-              <div class="swiper-slide">
+              <div class="col-md-6 col-lg-4">
                 <div class="card border border-light shadow-sm h-100 rounded-3">
                   <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
                     <?php if (!empty($item->image)) : ?>
-                      <img src="<?= ASSETS_URL ?>img/gi/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover">
+                      <img src="<?= ASSETS_URL ?>img/gi/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
                     <?php else : ?>
                       <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
                     <?php endif; ?>
@@ -226,33 +184,20 @@
               </div>
             <?php endforeach; ?>
           <?php endif; ?>
-        </div>
       </div>
     </div>
 
     <!-- Implementasi Partner -->
     <div class="mb-5">
-      <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="fw-bold" data-i18n="home.services.pd_title">Pengembangan Program dan Implementasi Partner</h3>
-        <div class="service-detail-nav d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-detail-2" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-detail-2" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
-      </div>
-      
-      <div class="swiper service-detail-slider-2">
-        <div class="swiper-wrapper">
+      <h3 class="fw-bold mb-4" data-i18n="home.services.pd_title">Pengembangan Program dan Implementasi Partner</h3>
+      <div class="row g-4 service-detail-grid">
           <?php if (!empty($services_pd)) : ?>
             <?php foreach ($services_pd as $item) : ?>
-              <div class="swiper-slide">
+              <div class="col-md-6 col-lg-4">
                 <div class="card border border-light shadow-sm h-100 rounded-3">
                   <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
                     <?php if (!empty($item->image)) : ?>
-                      <img src="<?= ASSETS_URL ?>img/services/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover">
+                      <img src="<?= ASSETS_URL ?>img/services/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
                     <?php else : ?>
                       <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
                     <?php endif; ?>
@@ -267,7 +212,6 @@
               </div>
             <?php endforeach; ?>
           <?php endif; ?>
-        </div>
       </div>
     </div>
 
@@ -301,38 +245,6 @@
 
   </div>
   
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      // Configuration for all service detail sliders
-      const sliderConfig = {
-        slidesPerView: 1,
-        spaceBetween: 24,
-        breakpoints: {
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 }
-        }
-      };
-
-      // Initialize Slider 1
-      new Swiper(".service-detail-slider-1", {
-        ...sliderConfig,
-        navigation: {
-          nextEl: ".next-detail-1",
-          prevEl: ".prev-detail-1",
-        },
-      });
-
-      // Initialize Slider 2
-      new Swiper(".service-detail-slider-2", {
-        ...sliderConfig,
-        navigation: {
-          nextEl: ".next-detail-2",
-          prevEl: ".prev-detail-2",
-        },
-      });
-
-    });
-  </script>
 </section>
 
 <!-- PORTFOLIO & PARTNERSHIP -->
@@ -343,81 +255,42 @@
       <p class="text-muted" data-i18n="home.portfolio.subtitle">Portofolio kerja sama kami mencerminkan komitmen GoSirk dalam memperluas dampak melalui kolaborasi strategis.</p>
     </div>
 
-    <!-- All portfolios shown on home (single row) -->
-    <div class="mb-5">
-      <div class="d-flex justify-content-end mb-4">
-        <div class="d-flex gap-2">
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center prev-port" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-left"></i>
-           </button>
-           <button class="btn btn-outline-dark rounded-circle p-2 d-flex align-items-center justify-content-center next-port" style="width: 40px; height: 40px;">
-             <i class="fas fa-arrow-right"></i>
-           </button>
-        </div>
-      </div>
-
-      <div class="swiper portfolio-slider">
-        <div class="swiper-wrapper">
-          <?php
-          $defaultIcons = ['institute' => 'fas fa-folder', 'partner' => 'fas fa-handshake', 'advisory' => 'fas fa-lightbulb'];
-          $foundPortfolio = false;
-          if (!empty($portfolios)) :
-            foreach ($portfolios as $p) :
-              if ($p->show_home) :
-                $foundPortfolio = true;
-          ?>
-                <div class="swiper-slide">
-                  <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden">
-                    <?php if ($p->cover_image) : ?>
-                      <div class="portfolio-cover" style="height: 180px; background-image: url('<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>'); background-size: cover; background-position: center;"></div>
-                    <?php else : ?>
-                      <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 180px;">
-                        <i class="<?= $p->icon_name ?: ($defaultIcons[$p->home_category] ?? 'fas fa-folder') ?> text-muted opacity-25" style="font-size: 80px;"></i>
-                      </div>
-                    <?php endif; ?>
-                    <div class="card-body p-4 d-flex flex-column">
-                      <h6 class="fw-bold mb-1" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
-                      <p class="text-muted small mb-3"><?= $p->client_name ?: '&nbsp;' ?></p>
-                      <p class="card-text small text-secondary flex-grow-1" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
-                        <?= $p->subtitle_id ?>
-                      </p>
-                      <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill align-self-end mt-3 px-3" data-i18n="home.common.read_more">Selengkapnya</a>
-                    </div>
-                  </div>
-                </div>
-              <?php endif; ?>
-            <?php endforeach; ?>
-          <?php endif; ?>
-
-          <?php if (!$foundPortfolio) : ?>
-            <div class="swiper-slide">
-                <div class="text-center p-5 w-100">
-                    <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
-                </div>
+    <!-- Portfolios marked "show on home": grid of max 3 x 3 -->
+    <div class="row g-4">
+      <?php
+      $defaultIcons = ['institute' => 'fas fa-folder', 'partner' => 'fas fa-handshake', 'advisory' => 'fas fa-lightbulb'];
+      $homePortfolios = array_slice(array_values(array_filter($portfolios ?? [], fn($p) => $p->show_home)), 0, 9);
+      foreach ($homePortfolios as $p) :
+      ?>
+        <div class="col-md-6 col-lg-4">
+          <div class="card border-0 shadow-sm h-100 rounded-3 overflow-hidden">
+            <?php if ($p->cover_image) : ?>
+              <div class="portfolio-cover" style="height: 180px; background-image: url('<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>'); background-size: cover; background-position: center;"></div>
+            <?php else : ?>
+              <div class="bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center" style="height: 180px;">
+                <i class="<?= $p->icon_name ?: ($defaultIcons[$p->home_category] ?? 'fas fa-folder') ?> text-muted opacity-25" style="font-size: 80px;"></i>
+              </div>
+            <?php endif; ?>
+            <div class="card-body p-4 d-flex flex-column">
+              <h6 class="fw-bold mb-1" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
+              <p class="text-muted small mb-3"><?= $p->client_name ?: '&nbsp;' ?></p>
+              <p class="card-text small text-secondary flex-grow-1" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
+                <?= $p->subtitle_id ?>
+              </p>
+              <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill align-self-end mt-3 px-3" data-i18n="home.common.read_more">Selengkapnya</a>
             </div>
-          <?php endif; ?>
+          </div>
         </div>
-      </div>
+      <?php endforeach; ?>
+
+      <?php if (empty($homePortfolios)) : ?>
+        <div class="col-12 text-center p-5">
+          <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
+        </div>
+      <?php endif; ?>
     </div>
 
   </div>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      new Swiper(".portfolio-slider", {
-        slidesPerView: 1,
-        spaceBetween: 24,
-        breakpoints: {
-          640: { slidesPerView: 2 },
-          1024: { slidesPerView: 3 }
-        },
-        navigation: {
-          nextEl: ".next-port",
-          prevEl: ".prev-port",
-        },
-      });
-    });
-  </script>
 </section>
 
 <!-- ECOSYSTEM -->
@@ -477,89 +350,34 @@
   </div>
 </section>
 
-<!-- LOGO PARTNERS SLIDER -->
-<section class="section bg-light pb-4">
+<!-- CONTRIBUTIONS & PARTNERS: all logos -->
+<section class="section bg-light">
   <div class="container">
     <h3 class="text-center fw-bold mb-5" data-i18n="home.partners.title">OUR CONTRIBUTIONS AND PARTNER</h3>
-    <div class="swiper logo-slider">
-      <div class="swiper-wrapper align-items-center">
-        <?php 
-        $foundContribution = false;
-        if (!empty($partners)) : 
-          foreach ($partners as $ptr) : 
-            if (($ptr->category ?? '') == 'contribution') :
-              $foundContribution = true;
+    <?php
+      $contributions = array_filter($partners ?? [], fn($ptr) => ($ptr->category ?? '') == 'contribution');
+      $publicPath = dirname($_SERVER['SCRIPT_FILENAME']);
+    ?>
+    <?php if ($contributions) : ?>
+      <div class="partner-logo-grid">
+        <?php foreach ($contributions as $ptr) :
+          $logoFile = $ptr->logo;
+          if (empty($logoFile)) {
+              $logoUrl = ASSETS_URL . 'img/Logo-GoSirk-01.png';
+          } elseif (!file_exists($publicPath . '/assets/img/partners/' . $logoFile) && file_exists($publicPath . '/assets/img/' . $logoFile)) {
+              $logoUrl = ASSETS_URL . 'img/' . $logoFile;
+          } else {
+              $logoUrl = ASSETS_URL . 'img/partners/' . $logoFile;
+          }
         ?>
-            <div class="swiper-slide text-center">
-              <?php 
-                $logoFile = $ptr->logo;
-                
-                // Default to the new partners folder
-                $logoUrl = ASSETS_URL . 'img/partners/' . $logoFile;
-                
-                // Determine absolute path for file_exists check
-                $publicPath = dirname($_SERVER['SCRIPT_FILENAME']);
-                $pathInPartners = $publicPath . '/assets/img/partners/' . $logoFile;
-                $pathInRootImg = $publicPath . '/assets/img/' . $logoFile;
-
-                if (!empty($logoFile)) {
-                    if (file_exists($pathInPartners)) {
-                        $logoUrl = ASSETS_URL . 'img/partners/' . $logoFile;
-                    } elseif (file_exists($pathInRootImg)) {
-                        $logoUrl = ASSETS_URL . 'img/' . $logoFile;
-                    }
-                } else {
-                    $logoUrl = ASSETS_URL . 'img/Logo-GoSirk-01.png';
-                }
-              ?>
-              <img src="<?= $logoUrl ?>" alt="<?= $ptr->name ?>" style="max-height: 80px; width: auto;" onerror="this.src='<?= ASSETS_URL ?>img/Logo-GoSirk-01.png'; this.style.opacity='0.3';">
-            </div>
-        <?php 
-            endif;
-          endforeach; 
-        endif; 
-        
-        if (!$foundContribution) : ?>
-          <div class="swiper-slide text-center text-muted small" data-i18n="home.partners.empty">No contribution partners yet</div>
-        <?php endif; ?>
+          <div class="partner-logo-item">
+            <img src="<?= $logoUrl ?>" alt="<?= htmlspecialchars($ptr->name) ?>" title="<?= htmlspecialchars($ptr->name) ?>" loading="lazy" onerror="this.src='<?= ASSETS_URL ?>img/Logo-GoSirk-01.png'; this.style.opacity='0.3';">
+          </div>
+        <?php endforeach; ?>
       </div>
-    </div>
-  </div>
-</section>
-
-<section class="section bg-light pt-4">
-  <div class="container">
-    <h3 class="text-center fw-bold mb-4" data-i18n="home.network.title">OUR NETWORK</h3>
-    <div class="swiper network-slider">
-      <div class="swiper-wrapper align-items-center">
-        <?php 
-        $foundNetwork = false;
-        if (!empty($partners)) : 
-          foreach ($partners as $ptr) : 
-            if (($ptr->category ?? 'network') == 'network') :
-              $foundNetwork = true;
-        ?>
-            <div class="swiper-slide text-center">
-              <?php 
-                $logoFile = $ptr->logo;
-                $logoUrl = ASSETS_URL . 'img/partners/' . $logoFile;
-                
-                if (!file_exists('assets/img/partners/' . $logoFile) && file_exists('assets/img/' . $logoFile)) {
-                    $logoUrl = ASSETS_URL . 'img/' . $logoFile;
-                }
-              ?>
-              <img src="<?= $logoUrl ?>" alt="<?= $ptr->name ?>" style="max-height: 60px; transition: all 0.3s;">
-            </div>
-        <?php 
-            endif;
-          endforeach; 
-        endif; 
-        
-        if (!$foundNetwork) : ?>
-          <div class="swiper-slide text-center text-muted small" data-i18n="home.network.empty">No network partners yet</div>
-        <?php endif; ?>
-      </div>
-    </div>
+    <?php else : ?>
+      <div class="text-center text-muted small" data-i18n="home.partners.empty">No contribution partners yet</div>
+    <?php endif; ?>
   </div>
 </section>
 
@@ -720,6 +538,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
+                    GosirkLead.saveFrom('cp');
                     Swal.fire({
                         title: 'Berhasil!',
                         text: data.message,
@@ -729,6 +548,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         const modal = bootstrap.Modal.getInstance(document.getElementById('companyProfileModal'));
                         modal.hide();
                         cpForm.reset();
+                        GosirkLead.fill('cp');
                     });
                 } else {
                     Swal.fire({

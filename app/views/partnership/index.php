@@ -1,22 +1,17 @@
 
 <!-- Hero Section -->
-<section class="partnership-hero" style="background-image: url('<?= PageImages::attr('partnership.hero_bg') ?>');">
-    <div class="hero-overlay"></div>
-    <div class="container position-relative z-3 text-center">
-        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown text-uppercase" style="color: var(--text-dark-blue);" data-i18n-html="true" data-i18n="partnership.hero_title">
+<section class="partnership-hero hero-full" style="background-image: url('<?= PageImages::attr('partnership.hero_bg') ?>');">
+    <div class="container">
+        <h1 class="hero-full-title text-uppercase" data-i18n-html="true" data-i18n="partnership.hero_title">
             KOLABORASI UNTUK SOLUSI <br>
-            <span class="text-primary">PERSAMPAHAN BERKELANJUTAN</span>
+            <span>PERSAMPAHAN BERKELANJUTAN</span>
         </h1>
-        <p class="lead mb-5 text-secondary animate__animated animate__fadeInUp animate__delay-1s mx-auto" style="max-width: 800px;" data-i18n="partnership.hero_desc">
+        <p class="hero-full-lead" data-i18n="partnership.hero_desc">
             Kami telah dipercaya untuk menjalankan berbagai proyek di bidang sanitasi...
         </p>
-        <div class="d-flex justify-content-center gap-3 animate__animated animate__fadeInUp animate__delay-2s mb-5">
-             <a href="#partnership" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm" data-i18n="partnership.our_partnership">
-                KERJASAMA KAMI
-            </a>
-            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-bold" data-i18n="partnership.btn_contact">
-                HUBUNGI KAMI
-            </a>
+        <div class="hero-full-actions">
+            <a href="#partnership" class="btn btn-light" data-i18n="partnership.our_partnership">KERJASAMA KAMI</a>
+            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="partnership.btn_contact">HUBUNGI KAMI</a>
         </div>
     </div>
 </section>

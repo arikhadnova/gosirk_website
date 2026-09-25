@@ -176,6 +176,7 @@
             .then(response => response.json())
             .then(data => {
                 if (data.status === 'success') {
+                    GosirkLead.saveFrom('dl');
                     const lang = localStorage.getItem('gosirk_language') || 'en';
                     Swal.fire({
                         title: resources[lang].translation.common.success,
@@ -186,6 +187,7 @@
                         const modal = bootstrap.Modal.getInstance(downloadModal);
                         modal.hide();
                         downloadForm.reset();
+                        GosirkLead.fill('dl');
                     });
                 } else {
                     Swal.fire({

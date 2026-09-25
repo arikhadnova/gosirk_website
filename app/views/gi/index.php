@@ -21,25 +21,25 @@ $heroGIImages = array_values(array_filter(array_map(function ($image) {
 if (empty($heroGIImages)) $heroGIImages[] = ASSETS_URL . 'img/gosirk_institute_hero.png';
 $heroTransition = in_array(($data['hero_transition'] ?? 'slide'), ['slide', 'fade']) ? $data['hero_transition'] : 'slide';
 ?>
-<section class="hero-gi d-flex align-items-center justify-content-center hero-media-shell">
+<section class="hero-gi hero-full hero-media-shell">
     <div class="hero-media-slider hero-media-slider-<?= $heroTransition ?>" aria-hidden="true">
         <?php foreach (array_slice($heroGIImages, 0, 5) as $index => $slide): ?>
-            <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(255, 255, 255, 0.2)), url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
+            <div class="hero-media-slide <?= $index === 0 ? 'active' : '' ?>" style="background-image: url('<?= htmlspecialchars($slide, ENT_QUOTES) ?>');"></div>
         <?php endforeach; ?>
     </div>
-    <div class="container text-center position-relative z-2">
-        <h1 class="display-3 fw-bold text-gi-gold mb-3" data-lang-id="<?= $heroGI->title_id ?>" data-lang-en="<?= $heroGI->title_en ?>" data-i18n-html="true">
+    <div class="container">
+        <h1 class="hero-full-title" data-lang-id="<?= $heroGI->title_id ?>" data-lang-en="<?= $heroGI->title_en ?>" data-i18n-html="true">
             <?= $heroGI->title_id ?>
         </h1>
-        <p class="lead text-light mx-auto mb-1 fs-4" style="max-width: 900px;" data-lang-id="<?= $heroGI->subtitle_id ?>" data-lang-en="<?= $heroGI->subtitle_en ?>">
+        <p class="hero-full-lead" data-lang-id="<?= $heroGI->subtitle_id ?>" data-lang-en="<?= $heroGI->subtitle_en ?>">
             <?= $heroGI->subtitle_id ?>
         </p>
-        <p class="text-light fs-5 mb-5 opacity-75" data-lang-id="<?= $heroGI->tag_id ?>" data-lang-en="<?= $heroGI->tag_en ?>"><?= $heroGI->tag_id ?></p>
+        <p class="hero-full-tag" data-lang-id="<?= $heroGI->tag_id ?>" data-lang-en="<?= $heroGI->tag_en ?>"><?= $heroGI->tag_id ?></p>
         
-        <div class="d-flex justify-content-center gap-3 flex-wrap mb-5">
-            <a href="#services" class="btn btn-light rounded-pill px-4 py-2 text-uppercase fw-semibold" style="color: #FF8F56 !important;" data-i18n="gi.btn_services">Our Services</a>
-            <a href="#portfolio" class="btn btn-outline-light rounded-pill px-4 py-2 text-uppercase" data-i18n="gi.btn_portfolio">Our Portfolio</a>
-            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light rounded-pill px-4 py-2 text-uppercase" data-i18n="gi.btn_contact">Contact Us</a>
+        <div class="hero-full-actions">
+            <a href="#services" class="btn btn-light" data-i18n="gi.btn_services">Our Services</a>
+            <a href="#portfolio" class="btn btn-outline-light" data-i18n="gi.btn_portfolio">Our Portfolio</a>
+            <a href="<?= BASE_URL ?>contact" class="btn btn-outline-light" data-i18n="gi.btn_contact">Contact Us</a>
         </div>
     </div>
 </section>
