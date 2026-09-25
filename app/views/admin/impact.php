@@ -40,8 +40,8 @@ $display_name = $page_names[$page_target] ?? 'Impact Data';
                     <tr>
                         <th class="ps-4" style="width: 150px;">Section</th>
                         <th>Label</th>
-                        <th class="text-center">Value</th>
-                        <th>Note</th>
+                        <th class="text-center">Nilai</th>
+                        <th>Keterangan</th>
                         <th class="text-end pe-4">Aksi</th>
                     </tr>
                 </thead>

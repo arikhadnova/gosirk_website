@@ -130,6 +130,12 @@ Flasher::flash(); ?>
         });
     }
 
+    // Buttons that only hold an icon (edit/delete/view) share one round style (see .btn-icon in admin.css)
+    document.querySelectorAll('#page-content-wrapper > .container-fluid .btn').forEach((b) => {
+        if (b.classList.contains('btn-link') || b.textContent.trim() !== '') return;
+        if (b.querySelector('i, svg')) b.classList.add('btn-icon');
+    });
+
     // Long sidebar menu: bring the active item into view
     (function () {
         const list = document.querySelector('#sidebar-wrapper .list-group');

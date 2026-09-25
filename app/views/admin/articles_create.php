@@ -40,11 +40,11 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0">Publishing Settings</h5>
+                    <h5 class="fw-bold mb-0">Pengaturan Publikasi</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Thumbnail Image</label>
+                        <label class="form-label small fw-bold text-dark">Gambar Thumbnail</label>
                         <div class="p-3 border rounded-3 text-center bg-light border-dashed mb-2 position-relative">
                              <div id="image-preview-container" class="mb-2 d-none">
                                 <img id="image-preview" src="#" alt="Preview" class="img-fluid rounded-3 shadow-sm" style="max-height: 200px;">
@@ -58,7 +58,7 @@
                         <div class="text-muted extra-small">Recommended size: 1200x800px. Max: 2MB.</div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Category</label>
+                        <label class="form-label small fw-bold text-dark">Kategori</label>
                         <select name="category" class="form-select">
                             <?php foreach (array_keys(Article_model::CATEGORIES) as $cat) : ?>
                                 <option value="<?= $cat ?>"><?= $cat ?></option>
@@ -66,15 +66,15 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Tags</label>
+                        <label class="form-label small fw-bold text-dark">Tag</label>
                         <input type="text" name="tags" class="form-control" placeholder="Contoh: Environment, Sustainability, GoSirk" <?= FormRules::attrs('article', 'tags', 'store') ?>>
                         <div class="text-muted extra-small mt-1">Pisahkan dengan koma (,)</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Status</label>
                         <select name="status" class="form-select">
-                            <option value="draft">Draft</option>
-                            <option value="published">Published</option>
+                            <option value="draft">Draf</option>
+                            <option value="published">Terbit</option>
                         </select>
                     </div>
                     <hr class="my-4">

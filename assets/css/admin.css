@@ -853,3 +853,79 @@ body {
 .admin-search-results a small { color: #9aa3b2; white-space: nowrap; }
 .admin-search-results a.selected, .admin-search-results a:hover { background: #fff3ec; color: var(--primary-color); }
 .admin-search-empty { padding: 1.25rem; text-align: center; color: #9aa3b2; font-size: .9rem; }
+
+/* ======================================================================
+   UI polish: one look for every admin screen
+   (scoped to the content area, so the sidebar/topbar keep their own styles)
+   ====================================================================== */
+#page-content-wrapper > .container-fluid > * { max-width: 1320px; }
+
+/* Buttons: pill shape, two sizes (40px / 34px) */
+#page-content-wrapper > .container-fluid .btn:not(.btn-link):not(.btn-close) {
+    border-radius: 999px !important;
+    min-height: 40px;
+    padding: .5rem 1.15rem !important;
+    font-size: .875rem !important;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .45rem;
+    line-height: 1.2;
+}
+#page-content-wrapper > .container-fluid .btn.btn-sm:not(.btn-link),
+#page-content-wrapper > .container-fluid .btn.btn-action {
+    min-height: 34px;
+    padding: .3rem .9rem !important;
+    font-size: .8rem !important;
+}
+#page-content-wrapper > .container-fluid .btn.btn-lg:not(.btn-link) { min-height: 48px; font-size: .95rem !important; }
+#page-content-wrapper > .container-fluid .btn .me-1,
+#page-content-wrapper > .container-fluid .btn .me-2 { margin-right: 0 !important; }
+/* segmented controls and input groups keep their joined corners */
+#page-content-wrapper > .container-fluid .btn-group > .btn:not(:first-child) { border-top-left-radius: 0 !important; border-bottom-left-radius: 0 !important; }
+#page-content-wrapper > .container-fluid .btn-group > .btn:not(:last-child) { border-top-right-radius: 0 !important; border-bottom-right-radius: 0 !important; }
+#page-content-wrapper > .container-fluid .input-group > .btn { border-radius: 0 10px 10px 0 !important; }
+#page-content-wrapper > .container-fluid .btn-link { font-weight: 500; }
+
+/* Secondary buttons: one quiet style */
+#page-content-wrapper > .container-fluid .btn-light,
+#page-content-wrapper > .container-fluid .btn-white { background: #f1f3f7 !important; border: 1px solid transparent !important; color: #374151; }
+#page-content-wrapper > .container-fluid .btn-light:hover,
+#page-content-wrapper > .container-fluid .btn-white:hover { background: #e6e9ef !important; }
+#page-content-wrapper > .container-fluid .btn-outline-secondary { border-color: #d6dbe4 !important; color: #4b5563 !important; }
+#page-content-wrapper > .container-fluid .btn-outline-secondary:hover { background: #f1f3f7 !important; }
+
+/* Icon-only buttons (edit / delete / view in tables and on cards): one round button.
+   admin_footer.php adds .btn-icon to every button that has an icon but no text. */
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link) {
+    width: 34px !important;
+    height: 34px !important;
+    min-height: 34px;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: #f1f3f7 !important;
+    border: 0 !important;
+    color: #4b5563 !important;
+    box-shadow: none !important;
+    flex-shrink: 0;
+}
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link) i { font-size: .82rem; margin: 0 !important; }
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link):has(.fa-edit, .fa-pen, .fa-pencil-alt, .fa-pen-to-square, .fa-eye) { color: #2563eb !important; }
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link):has(.fa-trash, .fa-trash-alt, .fa-trash-can, .fa-times) { color: #dc2626 !important; }
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link):hover { background: #e6e9ef !important; transform: none; }
+/* on top of a photo the button needs a solid background */
+#page-content-wrapper > .container-fluid .position-absolute > .btn.btn-icon,
+#page-content-wrapper > .container-fluid .btn.btn-icon.btn-icon:not(.btn-link).position-absolute { background: #fff !important; box-shadow: 0 2px 8px rgba(0, 0, 0, .15) !important; }
+
+/* Card headings: dark text, accent only on the icon */
+#page-content-wrapper > .container-fluid .card :is(h4, h5, h6, .card-title).text-primary,
+#page-content-wrapper > .container-fluid .card :is(h4, h5, h6, .card-title).text-info { color: #1f2937 !important; }
+#page-content-wrapper > .container-fluid .card :is(h4, h5, h6, .card-title) > i:first-child { color: var(--primary-color) !important; }
+
+/* Cards: one corner radius */
+#page-content-wrapper > .container-fluid .card:not(.rounded-pill) { border-radius: 16px !important; }
+#page-content-wrapper > .container-fluid .card > .card-header:first-child { border-top-left-radius: 16px !important; border-top-right-radius: 16px !important; }
+
+/* Dashboard quick actions stay full-width rows with the icon on the right */
+#page-content-wrapper > .container-fluid .btn.quick-action-btn.quick-action-btn { justify-content: space-between; border-radius: 12px !important; padding: .8rem 1.1rem !important; }

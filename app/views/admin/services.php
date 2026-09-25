@@ -68,7 +68,7 @@
                                 <div class="text-muted extra-small text-truncate" style="max-width: 300px;"><?= strip_tags($s->description_id); ?></div>
                             </td>
                             <td class="text-center">
-                                <span class="badge bg-light text-primary border-0 px-3">Active</span>
+                                <span class="badge bg-light text-primary border-0 px-3">Aktif</span>
                             </td>
                             <td class="text-end pe-4">
                                 <div class="d-flex justify-content-end gap-2">

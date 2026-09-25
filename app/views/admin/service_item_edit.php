@@ -42,7 +42,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0">Attributes & Action</h5>
+                    <h5 class="fw-bold mb-0">Gambar & Tautan</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -58,7 +58,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Link URL / Slug (Optional)</label>
+                        <label class="form-label fw-bold small text-dark">Link URL / Slug (opsional)</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-link"></i></span>
                             <input type="text" name="link_url" class="form-control" value="<?= $item->link_url ?>" placeholder="gi/detail/slug-layanan" <?= FormRules::attrs('service_item', 'link_url', 'update') ?>>
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Nama Partner (Optional)</label>
+                        <label class="form-label fw-bold small text-dark">Nama Partner (opsional)</label>
                         <input type="text" name="partner_name" class="form-control" value="<?= $item->partner_name ?>" placeholder="Misal: Sirk Norge & Norad" <?= FormRules::attrs('service_item', 'partner_name', 'update') ?>>
                         <small class="text-muted extra-small">Gunakan untuk Program Development.</small>
                     </div>

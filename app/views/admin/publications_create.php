@@ -36,7 +36,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0 text-dark">File & Metadata</h5>
+                    <h5 class="fw-bold mb-0 text-dark">File & Detail</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -72,7 +72,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Thumbnail (Image)</label>
+                        <label class="form-label small fw-bold text-dark">Thumbnail (gambar)</label>
                         <div class="p-3 border rounded-3 text-center bg-light border-dashed">
                             <i class="fas fa-image fa-2x text-muted mb-2 opacity-50"></i>
                             <input type="file" name="thumbnail" class="form-control form-control-sm" accept="image/*">

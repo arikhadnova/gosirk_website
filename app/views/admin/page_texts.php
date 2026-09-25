@@ -34,7 +34,7 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
     <p class="text-muted small mb-0">Klik teks untuk mengubahnya. Perubahan disimpan dengan tombol di bawah.</p>
 </div>
 
-<form action="<?= BASE_URL; ?>admin/page_texts_update" method="POST" id="pageTextsForm" style="max-width: 980px;">
+<form action="<?= BASE_URL; ?>admin/page_texts_update" method="POST" id="pageTextsForm">
     <input type="hidden" name="page" value="<?= htmlspecialchars($page) ?>">
 
     <div class="pt-toolbar card border-0 shadow-sm rounded-4 mb-3">

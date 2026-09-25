@@ -20,7 +20,7 @@
                         <i class="fas fa-window-maximize"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0">Header Configuration</h5>
+                        <h5 class="fw-bold mb-0">Pengaturan Header</h5>
                         <small class="text-muted">Logo, judul situs, dan navigasi atas.</small>
                     </div>
                 </div>
@@ -28,15 +28,15 @@
             <div class="card-body p-4">
                 <form action="<?= BASE_URL; ?>admin/update_header" method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label for="site_title" class="form-label small fw-bold text-dark">Site Title</label>
+                        <label for="site_title" class="form-label small fw-bold text-dark">Judul Situs</label>
                         <input type="text" id="site_title" name="site_title" class="form-control" value="<?= $settings['site_title'] ?? 'GoSirk' ?>" <?= FormRules::attrs('settings_header', 'site_title', 'update') ?>>
                     </div>
                     <div class="mb-3">
-                        <label for="site_description" class="form-label small fw-bold text-dark">Site Description (SEO)</label>
+                        <label for="site_description" class="form-label small fw-bold text-dark">Deskripsi Situs (SEO)</label>
                         <textarea id="site_description" name="site_description" class="form-control" rows="3" placeholder="Deskripsi yang muncul di hasil pencarian Google" <?= FormRules::attrs('settings_header', 'site_description', 'update') ?>><?= $settings['site_description'] ?? '' ?></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="logo_url" class="form-label small fw-bold text-dark">Current Logo</label>
+                        <label for="logo_url" class="form-label small fw-bold text-dark">Logo Saat Ini</label>
                         <div class="p-3 border rounded-3 text-center bg-light">
                             <?php 
                                 $logo = $settings['site_logo'] ?? 'Logo-GoSirk-01.png';
@@ -47,7 +47,7 @@
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label for="logo_file" class="form-label small fw-bold text-dark">Update Website Logo</label>
+                        <label for="logo_file" class="form-label small fw-bold text-dark">Ganti Logo Website</label>
                         <input type="file" id="logo_file" name="logo_file" class="form-control form-control-sm" accept="image/*">
                         <small class="text-muted mt-2 d-block extra-small">Format: PNG, SVG, JPG. Max size 2MB.</small>
                     </div>
@@ -70,7 +70,7 @@
                         <i class="fas fa-columns"></i>
                     </div>
                     <div>
-                        <h5 class="fw-bold mb-0">Footer Configuration</h5>
+                        <h5 class="fw-bold mb-0">Pengaturan Footer</h5>
                         <small class="text-muted">Informasi kontak, alamat, dan social media.</small>
                     </div>
                 </div>

@@ -34,7 +34,7 @@
                 <th style="width: 60px;">ID</th>
                 <th>Nama Lengkap</th>
                 <th>Username</th>
-                <th>Role</th>
+                <th>Peran</th>
                 <th>Terdaftar Pada</th>
                 <th class="text-end">Aksi</th>
             </tr>

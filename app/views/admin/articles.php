@@ -26,16 +26,16 @@
         </div>
     </div>
     <div class="col-lg-7 d-flex justify-content-lg-end flex-wrap gap-2">
-        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 180px;">
-            <option selected disabled>Semua Kategori</option>
-            <option>Environment</option>
-            <option>Education</option>
-            <option>Innovation</option>
+        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 180px;" id="articleCategory">
+            <option value="">Semua Kategori</option>
+            <?php foreach (Article_model::usedCategories($articles ?? []) as $cat) : ?>
+                <option value="<?= htmlspecialchars(strtolower($cat)) ?>"><?= htmlspecialchars($cat) ?></option>
+            <?php endforeach; ?>
         </select>
-        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 150px;">
-            <option selected disabled>Semua Status</option>
-            <option>Published</option>
-            <option>Draft</option>
+        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 150px;" id="articleStatus">
+            <option value="">Semua Status</option>
+            <option value="published">Terbit</option>
+            <option value="draft">Draf</option>
         </select>
     </div>
 </div>
@@ -61,7 +61,7 @@
                 </tr>
             <?php else : ?>
                 <?php foreach ($articles as $a) : ?>
-                    <tr class="shadow-sm">
+                    <tr class="shadow-sm" data-category="<?= htmlspecialchars(strtolower($a->category ?? '')) ?>" data-status="<?= htmlspecialchars($a->status) ?>">
                         <td>
                             <?php if ($a->image) : ?>
                                 <img src="<?= ASSETS_URL; ?>img/blog/<?= $a->image; ?>" alt="Article" class="rounded-3" style="width: 50px; height: 50px; object-fit: cover;">
@@ -78,9 +78,9 @@
                         <td><span class="badge bg-light text-muted border-0 extra-small px-2 py-1"><?= $a->category; ?></span></td>
                         <td>
                             <?php if ($a->status == 'published') : ?>
-                                <span class="badge bg-success bg-opacity-10 text-success extra-small fw-bold">Published</span>
+                                <span class="badge bg-success bg-opacity-10 text-success extra-small fw-bold">Terbit</span>
                             <?php else : ?>
-                                <span class="badge bg-warning bg-opacity-10 text-orange extra-small fw-bold">Draft</span>
+                                <span class="badge bg-warning bg-opacity-10 text-orange extra-small fw-bold">Draf</span>
                             <?php endif; ?>
                         </td>
                         <td><span class="text-muted extra-small"><?= date('d M Y', strtotime($a->created_at)); ?></span></td>
@@ -97,40 +97,29 @@
     </table>
 </div>
 
-<!-- Pagination -->
-<nav aria-label="Page navigation" class="mt-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-        </li>
-    </ul>
-</nav>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('articleSearch');
     const tableRows = document.querySelectorAll('#articleTableBody tr');
 
-    searchInput.addEventListener('input', function() {
-        const term = this.value.toLowerCase();
+    const categorySelect = document.getElementById('articleCategory');
+    const statusSelect = document.getElementById('articleStatus');
+
+    // Search, category and status work together
+    function applyFilters() {
+        const term = searchInput.value.toLowerCase();
+        const cat = categorySelect.value, status = statusSelect.value;
         tableRows.forEach(row => {
             const titleEl = row.querySelector('.article-title');
-            if (titleEl) {
-                const title = titleEl.innerText.toLowerCase();
-                const category = row.querySelector('.badge').innerText.toLowerCase();
-                if (title.includes(term) || category.includes(term)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            }
+            if (!titleEl) return;
+            const text = titleEl.innerText.toLowerCase() + ' ' + (row.dataset.category || '');
+            const show = text.includes(term) && (!cat || row.dataset.category === cat) && (!status || row.dataset.status === status);
+            row.style.display = show ? '' : 'none';
         });
-    });
+    }
+    searchInput.addEventListener('input', applyFilters);
+    categorySelect.addEventListener('change', applyFilters);
+    statusSelect.addEventListener('change', applyFilters);
 });
 </script>

@@ -68,7 +68,7 @@
                     <hr class="my-4 border-dashed">
 
                     <div class="mb-0">
-                        <label class="form-label fw-bold small text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> SOROTAN FOTO (Highlights Gallery)</label>
+                        <label class="form-label fw-bold small text-dark mb-3"><i class="fas fa-images me-1 text-primary"></i> SOROTAN FOTO</label>
                         <div id="highlights-container" class="row g-2">
                              <?php 
                              $highlights = json_decode($service->highlights ?: '[]', true);

@@ -58,7 +58,7 @@
 
                     <div class="row g-3">
                         <div class="col-md-4 mb-3">
-                            <label class="form-label fw-bold">Nilai (Value)</label>
+                            <label class="form-label fw-bold">Nilai</label>
                             <input type="text" name="value" class="form-control" value="<?= $impact->value; ?>" <?= FormRules::attrs('impact', 'value', 'update') ?>>
                         </div>
                         <div class="col-md-4 mb-3">
@@ -72,12 +72,12 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Section Title (Optional)</label>
+                        <label class="form-label fw-bold">Judul Section (opsional)</label>
                         <input type="text" name="section_title_id" class="form-control" value="<?= $impact->section_title_id; ?>" placeholder="Judul kelompok data jika ada" <?= FormRules::attrs('impact', 'section_title_id', 'update') ?>>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Note / Keterangan</label>
+                        <label class="form-label fw-bold">Keterangan</label>
                         <textarea name="note_id" class="form-control" rows="3" <?= FormRules::attrs('impact', 'note_id', 'update') ?>><?= $impact->note_id; ?></textarea>
                     </div>
                 </div>

@@ -24,7 +24,7 @@
     <table class="table align-middle">
         <thead>
             <tr>
-                <th style="width: 80px;">Icon</th>
+                <th style="width: 80px;">Ikon</th>
                 <th>Judul Dokumen</th>
                 <th>Tipe</th>
                 <th class="text-center">Status</th>

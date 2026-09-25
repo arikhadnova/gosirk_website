@@ -35,7 +35,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0">File & Metadata</h5>
+                    <h5 class="fw-bold mb-0">File & Detail</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -46,7 +46,7 @@
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Update File (PDF)</label>
+                        <label class="form-label fw-bold">Ganti File (PDF)</label>
                         <input type="file" name="file_path" class="form-control">
                         <small class="text-muted">Kosongkan jika tidak ingin mengubah file</small>
                         <?php if ($publication->file_path) : ?>
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label fw-bold">Update Preview (PDF)</label>
+                        <label class="form-label fw-bold">Ganti Preview (PDF)</label>
                         <input type="file" name="preview_path" class="form-control">
                         <small class="text-muted">Kosongkan jika tidak ingin mengubah preview</small>
                         <?php if ($publication->preview_path) : ?>

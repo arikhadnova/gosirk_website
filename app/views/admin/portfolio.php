@@ -27,10 +27,10 @@
     </div>
     <div class="col-lg-4">
         <select class="form-select border-0 shadow-sm rounded-pill px-4 py-2" style="height: 50px;" id="filterCategory">
-            <option value="all">Semua Kategori</option>
-            <option value="capacity_building">Capacity Building</option>
-            <option value="program_development">Program Development</option>
-            <option value="consultancy">Consultancy</option>
+            <option value="all">Semua portofolio</option>
+            <option value="home">Tampil di Home</option>
+            <option value="partnership">Tampil di Partnership</option>
+            <option value="gi">Tampil di GoSirk Institute</option>
         </select>
     </div>
 </div>
@@ -45,7 +45,7 @@
         </div>
     <?php else : ?>
         <?php foreach ($portfolios as $p) : ?>
-            <div class="col-xl-4 col-md-6 portfolio-item" data-category="<?= $p->main_category; ?>">
+            <div class="col-xl-4 col-md-6 portfolio-item" data-show="<?= trim(($p->show_home ? 'home ' : '') . ($p->show_partnership ? 'partnership ' : '') . ($p->show_gi ? 'gi' : '')) ?>">
                 <div class="card h-100 border-0 shadow-sm overflow-hidden">
                     <div class="position-relative">
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">
@@ -73,7 +73,7 @@
                                 </a>
                                 <a href="<?= BASE_URL; ?>admin/portfolio_delete/<?= $p->id; ?>" class="btn btn-sm btn-light text-danger btn-delete-confirm" title="Hapus" data-confirm-message="Proyek ini akan dihapus permanen!"><i class="fas fa-trash"></i></a>
                             </div>
-                            <span class="badge bg-success bg-opacity-10 text-success extra-small">Published</span>
+                            <span class="badge bg-success bg-opacity-10 text-success extra-small">Terbit</span>
                         </div>
                     </div>
                 </div>
@@ -82,20 +82,6 @@
     <?php endif; ?>
 </div>
 
-<!-- Pagination -->
-<nav aria-label="Page navigation" class="mt-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-        </li>
-    </ul>
-</nav>
 
 <style>
 .line-clamp-3 {
@@ -111,17 +97,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('portfolioSearch');
     const cards = document.querySelectorAll('#portfolioGrid > div.portfolio-item');
 
-    searchInput.addEventListener('input', function() {
-        const term = this.value.toLowerCase();
+    const placeSelect = document.getElementById('filterCategory');
+
+    function applyFilters() {
+        const term = searchInput.value.toLowerCase();
+        const place = placeSelect.value;
         cards.forEach(col => {
-            const title = col.querySelector('.portfolio-title').innerText.toLowerCase();
-            const desc = col.querySelector('.portfolio-desc').innerText.toLowerCase();
-            if (title.includes(term) || desc.includes(term)) {
-                col.style.display = 'block';
-            } else {
-                col.style.display = 'none';
-            }
+            const text = col.querySelector('.portfolio-title').innerText.toLowerCase() + ' ' + col.querySelector('.portfolio-desc').innerText.toLowerCase();
+            const shownOn = (col.dataset.show || '').split(' ');
+            const show = text.includes(term) && (place === 'all' || shownOn.includes(place));
+            col.style.display = show ? '' : 'none';
         });
-    });
+    }
+    searchInput.addEventListener('input', applyFilters);
+    placeSelect.addEventListener('change', applyFilters);
 });
 </script>

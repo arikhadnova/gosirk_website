@@ -22,12 +22,12 @@
                         <div class="col-md-3">
                             <label class="form-label fw-bold small">Status</label>
                             <select name="status" class="form-select bg-light border-0">
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Nonaktif</option>
                             </select>
                         </div>
                         <div class="col-md-3">
-                            <label class="form-label fw-bold small">Urutan (Sort Order)</label>
+                            <label class="form-label fw-bold small">Urutan</label>
                             <input type="number" name="sort_order" class="form-control bg-light border-0" value="0" <?= FormRules::attrs('faq', 'sort_order', 'store') ?>>
                         </div>
                         

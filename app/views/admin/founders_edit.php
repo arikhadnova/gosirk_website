@@ -59,7 +59,7 @@
                             <?php if ($founder->image) : ?>
                                 <img src="<?= ASSETS_URL; ?>img/<?= $founder->image; ?>" style="width: 100%; height: 100%; object-fit: cover;">
                             <?php else : ?>
-                                <span class="text-muted">Preview</span>
+                                <span class="text-muted">Pratinjau</span>
                             <?php endif; ?>
                         </div>
                         <input type="file" name="image" class="form-control" accept="image/*" id="imageInput" <?= FormRules::attrs('founder', 'image', 'update') ?>>

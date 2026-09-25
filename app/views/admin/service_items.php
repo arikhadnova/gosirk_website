@@ -27,7 +27,7 @@
             <thead class="bg-light">
                 <tr>
                     <th class="ps-4" style="width: 60px;">#</th>
-                    <th style="width: 80px;">Icon</th>
+                    <th style="width: 80px;">Ikon</th>
                     <th>Judul Item</th>
                     <th>Link / URL</th>
                     <th class="text-end pe-4">Aksi</th>

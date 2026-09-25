@@ -40,7 +40,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0 text-dark">Attributes & Action</h5>
+                    <h5 class="fw-bold mb-0 text-dark">Gambar & Tautan</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -50,7 +50,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Link URL / Slug (Optional)</label>
+                        <label class="form-label fw-bold small text-dark">Link URL / Slug (opsional)</label>
                         <div class="input-group input-group-sm">
                             <span class="input-group-text bg-light"><i class="fas fa-link"></i></span>
                             <input type="text" name="link_url" class="form-control" placeholder="Contoh: gi/detail/slug-item" <?= FormRules::attrs('service_item', 'link_url', 'store') ?>>
@@ -64,7 +64,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Nama Partner (Optional)</label>
+                        <label class="form-label fw-bold small text-dark">Nama Partner (opsional)</label>
                         <input type="text" name="partner_name" class="form-control" placeholder="Contoh: Sirk Norge & Norad" <?= FormRules::attrs('service_item', 'partner_name', 'store') ?>>
                         <small class="text-muted extra-small">Nama partner khusus kategori Program Development.</small>
                     </div>

@@ -55,7 +55,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4 text-center">
                         <div id="imagePreview" class="border rounded-circle mb-3 d-flex align-items-center justify-content-center bg-light mx-auto" style="width: 150px; height: 150px; overflow: hidden;">
-                            <span class="text-muted">Preview</span>
+                            <span class="text-muted">Pratinjau</span>
                         </div>
                         <input type="file" name="image" class="form-control" accept="image/*" id="imageInput" <?= FormRules::attrs('founder', 'image', 'store') ?>>
                         <div class="form-text small mt-2">Format JPG/PNG. Rasio 1:1 disarankan.</div>

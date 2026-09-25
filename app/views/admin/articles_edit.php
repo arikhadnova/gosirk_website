@@ -41,7 +41,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0">Publishing Settings</h5>
+                    <h5 class="fw-bold mb-0">Pengaturan Publikasi</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -61,7 +61,7 @@
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">Category</label>
+                        <label class="form-label">Kategori</label>
                         <select name="category" class="form-select">
                             <?php foreach (array_keys(Article_model::CATEGORIES) as $cat) : ?>
                                 <option value="<?= $cat ?>" <?= $article->category == $cat ? 'selected' : ''; ?>><?= $cat ?></option>
@@ -69,15 +69,15 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label">Tags</label>
+                        <label class="form-label">Tag</label>
                         <input type="text" name="tags" class="form-control" value="<?= $article->tags ?? ''; ?>" placeholder="Contoh: Environment, Sustainability, GoSirk" <?= FormRules::attrs('article', 'tags', 'update') ?>>
                         <div class="text-muted small mt-1">Pisahkan dengan koma (,)</div>
                     </div>
                     <div class="mb-4">
                         <label class="form-label">Status</label>
                         <select name="status" class="form-select">
-                            <option value="draft" <?= $article->status == 'draft' ? 'selected' : ''; ?>>Draft</option>
-                            <option value="published" <?= $article->status == 'published' ? 'selected' : ''; ?>>Published</option>
+                            <option value="draft" <?= $article->status == 'draft' ? 'selected' : ''; ?>>Draf</option>
+                            <option value="published" <?= $article->status == 'published' ? 'selected' : ''; ?>>Terbit</option>
                         </select>
                     </div>
                     <hr>

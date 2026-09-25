@@ -52,7 +52,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4 text-center">
                         <div id="logoPreview" class="border rounded-4 mb-3 d-flex align-items-center justify-content-center bg-light" style="height: 150px;">
-                            <span class="text-muted">Preview Logo</span>
+                            <span class="text-muted">Pratinjau Logo</span>
                         </div>
                         <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" <?= FormRules::attrs('partner', 'logo', 'store') ?>>
                         <div class="form-text small mt-2">Gunakan format PNG transparan jika memungkinkan. Max 1MB.</div>

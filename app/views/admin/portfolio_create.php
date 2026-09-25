@@ -32,7 +32,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold">Deskripsi Ringkas (Card Link)</label>
+                        <label class="form-label small fw-bold">Deskripsi Ringkas (di kartu)</label>
                         <textarea name="description_id" class="form-control" rows="3" placeholder="Deskripsi pendek yang muncul di card portfolio..." <?= FormRules::attrs('portfolio', 'description_id', 'store') ?>></textarea>
                     </div>
 
@@ -41,7 +41,7 @@
                     <!-- NEW: Media Section moved here -->
                     <div class="row g-4 mb-4">
                         <div class="col-md-6">
-                            <label class="form-label small fw-bold">Icon FontAwesome</label>
+                            <label class="form-label small fw-bold">Ikon (FontAwesome)</label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-light border-end-0"><i class="fas fa-icons text-muted"></i></span>
                                 <input type="text" name="icon_name" class="form-control border-start-0" placeholder="fas fa-recycle" id="iconInput" <?= FormRules::attrs('portfolio', 'icon_name', 'store') ?>>
@@ -99,7 +99,7 @@
             <!-- Metadata & Settings -->
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0">Metadata & Kategori</h5>
+                    <h5 class="fw-bold mb-0">Detail & Kategori</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -113,7 +113,7 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Client Name</label>
+                        <label class="form-label small fw-bold text-dark">Nama Klien</label>
                         <input type="text" name="client_name" class="form-control" placeholder="Nama instansi/perusahaan mitra..." <?= FormRules::attrs('portfolio', 'client_name', 'store') ?>>
                     </div>
                 </div>

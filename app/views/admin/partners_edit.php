@@ -56,7 +56,7 @@
                             <?php if ($partner->logo) : ?>
                                 <img src="<?= ASSETS_URL; ?>img/partners/<?= $partner->logo; ?>" style="max-width: 100%; max-height: 100%;">
                             <?php else : ?>
-                                <span class="text-muted">No Logo</span>
+                                <span class="text-muted">Belum ada logo</span>
                             <?php endif; ?>
                         </div>
                         <input type="file" name="logo" class="form-control" accept="image/*" id="logoInput" <?= FormRules::attrs('partner', 'logo', 'update') ?>>

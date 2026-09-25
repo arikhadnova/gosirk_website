@@ -11,7 +11,7 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
 </div>
 
 <div class="row">
-    <div class="col-lg-11 mx-auto">
+    <div class="col-12">
         <div class="card border-0 shadow-sm">
             <div class="card-header bg-white border-bottom p-0 <?= count($sections) > 1 ? '' : 'd-none' ?>">
                 <ul class="nav nav-tabs border-0 px-4 pt-3" role="tablist">
@@ -71,7 +71,7 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
                                             </div>
 
                                             <div class="col-12">
-                                                <label class="form-label small fw-bold text-dark">Title</label>
+                                                <label class="form-label small fw-bold text-dark">Judul</label>
                                                 <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('page_section', 'title_id', 'update') ?>><?= htmlspecialchars($section->title_id ?? ''); ?></textarea>
                                                 <div class="text-muted extra-small mt-1">HTML sederhana seperti span/bold boleh dipakai.</div>
                                             </div>
@@ -100,7 +100,7 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
 
                                 <div class="col-lg-4">
                                     <div class="p-4 bg-white rounded-4 border shadow-sm sticky-lg-top" style="top: 90px;">
-                                        <h6 class="fw-bold mb-3">Preview & Gambar</h6>
+                                        <h6 class="fw-bold mb-3">Pratinjau & Gambar</h6>
 
                                         <div class="section-preview rounded-4 overflow-hidden bg-light mb-3">
                                             <?php if ($imageUrl): ?>
@@ -115,7 +115,7 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
                                         <div class="text-muted extra-small mt-2">Rekomendasi: 900x700px, JPG/PNG/WebP. Kosongkan jika tidak ingin mengganti.</div>
 
                                         <div class="border-top mt-4 pt-4">
-                                            <div class="text-muted extra-small text-uppercase fw-bold mb-2">Preview teks</div>
+                                            <div class="text-muted extra-small text-uppercase fw-bold mb-2">Pratinjau teks</div>
                                             <div class="small fw-bold text-primary mb-1"><?= htmlspecialchars($section->badge_id ?? ''); ?></div>
                                             <div class="fw-bold mb-2"><?= $section->title_id ?? ''; ?></div>
                                             <p class="text-muted small mb-2"><?= $section->content_id ?? ''; ?></p>

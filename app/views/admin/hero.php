@@ -18,7 +18,7 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
 </div>
 
 <div class="row">
-    <div class="col-lg-11 mx-auto">
+    <div class="col-12">
         <div class="card border-0 shadow-sm mb-4">
             <div class="card-header bg-white border-bottom p-0 <?= count($pages) > 1 ? '' : 'd-none' ?>">
                 <ul class="nav nav-tabs border-0 px-4 pt-3" id="heroTabs" role="tablist">
@@ -50,7 +50,7 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                             <div class="row mb-5">
                                 <div class="col-12">
                                     <div class="p-4 bg-light rounded-4 border text-center mb-4">
-                                        <div class="small fw-bold text-muted mb-3 text-uppercase tracking-wider">Current Hero Layout Preview</div>
+                                        <div class="small fw-bold text-muted mb-3 text-uppercase tracking-wider">Pratinjau Hero</div>
                                         <div class="hero-preview-container position-relative rounded-3 overflow-hidden shadow-sm mx-auto" style="max-width: 800px; height: 350px;">
                                             <?php
                                                 $decodedImages = json_decode($hero->image ?? '', true);
@@ -79,11 +79,11 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                                             <div class="hero-slider-manager text-start mt-4" data-max-slides="5">
                                                 <div class="d-flex align-items-center justify-content-between flex-wrap gap-3 mb-3">
                                                     <div>
-                                                        <label class="form-label small fw-bold text-dark mb-1">Hero Slider Images</label>
+                                                        <label class="form-label small fw-bold text-dark mb-1">Gambar Slider</label>
                                                         <div class="text-muted extra-small">Rekomendasi: 1920x900px, format JPG/PNG/WebP.</div>
                                                     </div>
                                                     <div class="d-flex align-items-center gap-2">
-                                                        <label class="small fw-bold text-muted mb-0" for="<?= $key; ?>-transition">Transition</label>
+                                                        <label class="small fw-bold text-muted mb-0" for="<?= $key; ?>-transition">Transisi</label>
                                                         <select name="hero_transition" id="<?= $key; ?>-transition" class="form-select form-select-sm rounded-pill" style="width: 130px;">
                                                             <?php $homeTransition = $data['hero_transitions'][$key] ?? 'slide'; ?>
                                                             <option value="slide" <?= $homeTransition === 'slide' ? 'selected' : ''; ?>>Slide</option>
@@ -143,7 +143,7 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                                     </div>
                                     
                                     <div class="mb-3">
-                                        <label class="form-label small fw-bold text-dark">Hero Title (HTML allowed)</label>
+                                        <label class="form-label small fw-bold text-dark">Judul Hero (boleh HTML)</label>
                                         <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('hero', 'title_id', 'update') ?>><?= htmlspecialchars($hero->title_id); ?></textarea>
                                     </div>
                                     

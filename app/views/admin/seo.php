@@ -20,7 +20,7 @@ $seoPages = !empty($data['only']) ? array_intersect_key($data['pages'], [$data['
     <p class="text-muted small mb-0">Tampilan setiap halaman di hasil pencarian Google dan saat link dibagikan. Klik Edit untuk mengubah.</p>
 </div>
 
-<form action="<?= BASE_URL; ?>admin/update_seo" method="POST" style="max-width: 860px;">
+<form action="<?= BASE_URL; ?>admin/update_seo" method="POST">
     <div class="card border-0 shadow-sm rounded-4">
         <div class="card-body p-0">
             <?php foreach ($seoPages as $page => $label) :

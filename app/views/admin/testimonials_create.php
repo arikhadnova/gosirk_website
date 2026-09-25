@@ -17,8 +17,8 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Status / Aktif</label>
                             <select name="status" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'status', 'store') ?>>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="active">Aktif</option>
+                                <option value="inactive">Nonaktif</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -47,7 +47,7 @@
                         </div>
 
                         <div class="col-12">
-                            <label class="form-label fw-bold small">Foto Profil (Optional)</label>
+                            <label class="form-label fw-bold small">Foto Profil (opsional)</label>
                             <input type="file" name="image" class="form-control bg-light border-0" accept="image/*">
                             <div class="form-text extra-small">Format: JPG, PNG, JPEG. Max 2MB.</div>
                         </div>

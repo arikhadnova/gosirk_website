@@ -76,9 +76,9 @@
                                     </td>
                                     <td>
                                         <?php if ($f->status == 'active') : ?>
-                                            <span class="badge bg-success bg-opacity-10 text-success extra-small">Active</span>
+                                            <span class="badge bg-success bg-opacity-10 text-success extra-small">Aktif</span>
                                         <?php else : ?>
-                                            <span class="badge bg-secondary bg-opacity-10 text-secondary extra-small">Inactive</span>
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary extra-small">Nonaktif</span>
                                         <?php endif; ?>
                                     </td>
                                     <td class="text-end pe-4">

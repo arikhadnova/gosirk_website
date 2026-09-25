@@ -18,8 +18,8 @@
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Status / Aktif</label>
                             <select name="status" class="form-select bg-light border-0" <?= FormRules::attrs('testimonial', 'status', 'update') ?>>
-                                <option value="active" <?= $testimonial->status == 'active' ? 'selected' : '' ?>>Active</option>
-                                <option value="inactive" <?= $testimonial->status == 'inactive' ? 'selected' : '' ?>>Inactive</option>
+                                <option value="active" <?= $testimonial->status == 'active' ? 'selected' : '' ?>>Aktif</option>
+                                <option value="inactive" <?= $testimonial->status == 'inactive' ? 'selected' : '' ?>>Nonaktif</option>
                             </select>
                         </div>
                         <div class="col-md-6">
@@ -61,7 +61,7 @@
                         </div>
 
                         <div class="col-md-8">
-                            <label class="form-label fw-bold small">Ganti Foto Profil (Optional)</label>
+                            <label class="form-label fw-bold small">Ganti Foto Profil (opsional)</label>
                             <input type="file" name="image" class="form-control bg-light border-0" accept="image/*">
                             <div class="form-text extra-small">Format: JPG, PNG, JPEG. Max 2MB. Abaikan jika tidak ingin mengganti.</div>
                         </div>

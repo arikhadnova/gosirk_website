@@ -70,7 +70,12 @@ if (!isset($settings)) {
         </div>
     </footer>
 
-    <?php if (!empty($_SESSION['admin_logged_in'])) : // only admins see this shortcut to the right editor ?>
+    <?php
+    // Shortcut to the right editor: only for a logged-in admin, and only while Maintenance Mode is on
+    // (while the site is live, nobody sees it, not even admins)
+    $showEditShortcut = !empty($_SESSION['admin_logged_in'])
+        && $this->model('Setting_model')->getByKey('is_maintenance') == '1';
+    if ($showEditShortcut) : ?>
       <a href="<?= htmlspecialchars(AdminNav::editUrlFor(array_values(array_filter(explode('/', trim($_GET['url'] ?? '', '/')), 'strlen'))), ENT_QUOTES) ?>"
          class="admin-edit-shortcut" title="Buka editor halaman ini di panel admin">
         <i class="fas fa-pen"></i> <span>Edit halaman ini</span>

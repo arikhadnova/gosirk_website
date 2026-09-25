@@ -36,7 +36,7 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-header bg-white border-bottom p-4">
-                    <h5 class="fw-bold mb-0 text-dark">Visual & Priority</h5>
+                    <h5 class="fw-bold mb-0 text-dark">Gambar & Urutan</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Order Priority</label>
+                        <label class="form-label fw-bold small text-dark">Urutan Tampil</label>
                         <input type="number" name="order_priority" class="form-control" value="1" <?= FormRules::attrs('service', 'order_priority', 'store') ?>>
                     </div>
                     <hr class="my-4">

@@ -26,16 +26,15 @@
         </div>
     </div>
     <div class="col-lg-7 d-flex justify-content-lg-end flex-wrap gap-2">
-        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 200px;">
-            <option selected>Semua Tipe</option>
-            <option>GoSirk Publications</option>
-            <option>Reference Publications</option>
+        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 200px;" id="pubType">
+            <option value="">Semua Tipe</option>
+            <option value="gosirk">Publikasi GoSirk</option>
+            <option value="reference">Referensi</option>
         </select>
-        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 150px;">
-            <option selected disabled>Semua Tahun</option>
-            <option>2026</option>
-            <option>2025</option>
-            <option>2024</option>
+        <?php $pubYears = array_unique(array_map(fn($x) => date('Y', strtotime($x->created_at)), $publications ?? [])); rsort($pubYears); ?>
+        <select class="form-select w-auto border-0 shadow-sm rounded-pill px-4" style="min-width: 150px;" id="pubYear">
+            <option value="">Semua Tahun</option>
+            <?php foreach ($pubYears as $y) : ?><option value="<?= $y ?>"><?= $y ?></option><?php endforeach; ?>
         </select>
     </div>
 </div>
@@ -60,7 +59,7 @@
                 </tr>
             <?php else : ?>
                 <?php foreach ($publications as $pub) : ?>
-                    <tr class="shadow-sm">
+                    <tr class="shadow-sm" data-type="<?= htmlspecialchars($pub->type) ?>" data-year="<?= date('Y', strtotime($pub->created_at)) ?>">
                         <td>
                             <div class="stat-icon-box stat-icon-orange m-0" style="width: 45px; height: 45px;">
                                 <i class="fas fa-file-pdf fs-6 text-danger"></i>
@@ -89,36 +88,29 @@
     </table>
 </div>
 
-<!-- Pagination -->
-<nav aria-label="Page navigation" class="mt-5">
-    <ul class="pagination justify-content-center">
-        <li class="page-item disabled">
-            <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-        </li>
-        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item">
-            <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-        </li>
-    </ul>
-</nav>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     const searchInput = document.getElementById('pubSearch');
     const tableRows = document.querySelectorAll('#pubTableBody tr');
 
-    searchInput.addEventListener('input', function() {
-        const term = this.value.toLowerCase();
+    const typeSelect = document.getElementById('pubType');
+    const yearSelect = document.getElementById('pubYear');
+
+    // Search, type and year work together
+    function applyFilters() {
+        const term = searchInput.value.toLowerCase();
+        const type = typeSelect.value, year = yearSelect.value;
         tableRows.forEach(row => {
-            const title = row.querySelector('.pub-title-link').innerText.toLowerCase();
-            const desc = row.querySelector('.text-muted').innerText.toLowerCase();
-            if (title.includes(term) || desc.includes(term)) {
-                row.style.display = '';
-            } else {
-                row.style.display = 'none';
-            }
+            const titleEl = row.querySelector('.pub-title-link');
+            if (!titleEl) return;
+            const text = titleEl.innerText.toLowerCase() + ' ' + (row.querySelector('.text-muted')?.innerText.toLowerCase() || '');
+            const show = text.includes(term) && (!type || row.dataset.type === type) && (!year || row.dataset.year === year);
+            row.style.display = show ? '' : 'none';
         });
-    });
+    }
+    searchInput.addEventListener('input', applyFilters);
+    typeSelect.addEventListener('change', applyFilters);
+    yearSelect.addEventListener('change', applyFilters);
 });
 </script>

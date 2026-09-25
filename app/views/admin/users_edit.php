@@ -47,7 +47,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Role / Izin Akses</label>
+                        <label class="form-label small fw-bold text-dark">Peran / Izin Akses</label>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="role-card border rounded-3 p-3 d-block cursor-pointer position-relative <?= $user->role == 'admin' ? 'border-primary' : '' ?>">
@@ -106,7 +106,7 @@
                         <i class="fas fa-exclamation-triangle me-2"></i> Profil Anda Sendiri
                     </h6>
                     <p class="text-muted small mb-0">
-                        Anda sedang mengedit akun Anda sendiri. Jika Anda mengubah <strong>Role</strong> menjadi Editor, Anda akan kehilangan akses ke halaman Manajemen Akun ini setelah disimpan.
+                        Anda sedang mengedit akun Anda sendiri. Jika Anda mengubah <strong>Peran</strong> menjadi Editor, Anda akan kehilangan akses ke halaman Manajemen Akun ini setelah disimpan.
                     </p>
                 </div>
             </div>

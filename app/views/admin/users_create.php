@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Role / Izin Akses</label>
+                        <label class="form-label small fw-bold text-dark">Peran / Izin Akses</label>
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="role-card border rounded-3 p-3 d-block cursor-pointer position-relative">

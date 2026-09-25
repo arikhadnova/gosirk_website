@@ -18,7 +18,7 @@
                 <div class="stat-trend <?= $counts['visitor_stats']['increase'] >= 0 ? 'text-success' : 'text-danger'; ?>">
                     <i class="fas fa-arrow-<?= $counts['visitor_stats']['increase'] >= 0 ? 'up' : 'down'; ?> me-1"></i> 
                     <?= number_format(abs($counts['visitor_stats']['increase']), 1); ?>% 
-                    <span class="text-muted fw-normal">last month</span>
+                    <span class="text-muted fw-normal">dari bulan lalu</span>
                 </div>
             </div>
         </div>
@@ -33,7 +33,7 @@
                 <div class="stat-label">Pesan Baru</div>
                 <div class="stat-value text-dark"><?= $counts['unread_messages']; ?></div>
                 <div class="stat-trend <?= $counts['unread_messages'] > 0 ? 'text-orange' : 'text-success'; ?>">
-                    <i class="fas fa-envelope me-1"></i> <?= $counts['unread_messages'] > 0 ? 'Urgent' : 'No'; ?> <span class="text-muted fw-normal">actions needed</span>
+                    <i class="fas fa-envelope me-1"></i> <?= $counts['unread_messages'] > 0 ? 'Perlu dibalas' : 'Tidak ada pesan baru'; ?>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
                 <div class="stat-label">Artikel Blog</div>
                 <div class="stat-value text-dark"><?= $counts['articles']; ?></div>
                 <div class="stat-trend text-success">
-                    <i class="fas fa-plus me-1"></i> Data Real <span class="text-muted fw-normal">from database</span>
+                    <i class="fas fa-newspaper me-1"></i> Artikel di website
                 </div>
             </div>
         </div>
@@ -125,7 +125,7 @@ function time_elapsed_string($datetime, $full = false) {
         <div class="card border-0 shadow-sm p-4">
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h5 class="fw-bold mb-0">Aktivitas Terkini</h5>
-                <a href="#" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold" onclick="location.reload()">Refresh</a>
+                <a href="#" class="btn btn-sm btn-light text-primary rounded-pill px-3 fw-bold" onclick="location.reload()">Muat Ulang</a>
             </div>
             <div class="activity-list" style="max-height: 580px; overflow-y: auto; padding-right: 10px;">
                 <?php if (!empty($activities)): ?>
@@ -188,20 +188,20 @@ function time_elapsed_string($datetime, $full = false) {
         <div class="card border-0 quick-action-card p-4 text-white">
             <h5 class="fw-bold mb-4">Aksi Cepat</h5>
             <div class="d-grid gap-3">
-                <a href="<?= BASE_URL ?>admin/articles" class="btn quick-action-btn w-100 btn-lg">
+                <a href="<?= BASE_URL ?>admin/articles_create" class="btn quick-action-btn w-100 btn-lg">
                     <span>Tulis Artikel Baru</span>
                     <i class="fas fa-pen-nib"></i>
                 </a>
-                <a href="<?= BASE_URL ?>admin/library/create" class="btn quick-action-btn w-100 btn-lg">
-                    <span>Tambah Library Resource</span>
+                <a href="<?= BASE_URL ?>admin/articles_create/library" class="btn quick-action-btn w-100 btn-lg">
+                    <span>Tambah Resource Library</span>
                     <i class="fas fa-book"></i>
                 </a>
                 <a href="<?= BASE_URL ?>admin/portfolio" class="btn quick-action-btn w-100 btn-lg">
-                    <span>Manajemen Portfolio</span>
+                    <span>Kelola Portofolio</span>
                     <i class="fas fa-briefcase"></i>
                 </a>
                 <a href="<?= BASE_URL ?>admin/settings" class="btn quick-action-btn w-100 btn-lg">
-                    <span>Pengaturan Website</span>
+                    <span>Pengaturan Situs</span>
                     <i class="fas fa-cog"></i>
                 </a>
             </div>

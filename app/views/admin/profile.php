@@ -105,7 +105,7 @@
                 </div>
                 
                 <h4 class="fw-bold text-dark mb-1"><?= $user->name ?></h4>
-                <p class="text-primary small fw-bold mb-4"><?= ucfirst($user->role) ?> Role</p>
+                <p class="text-primary small fw-bold mb-4"><?= ucfirst($user->role) ?> Peran</p>
             </div>
             
             <div class="text-start border-top pt-4 mt-2">
