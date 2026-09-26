@@ -27,7 +27,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold">Label Dampak</label>
-                        <input type="text" name="label_id" class="form-control" value="<?= $impact->label_id; ?>" <?= FormRules::attrs('impact', 'label_id', 'update') ?>>
+                        <input type="text" name="label_id" class="form-control" value="<?= $impact->label_id; ?>" <?= FormRules::attrs('impact', 'label_id', 'update') ?>><?= EnField::render('label', $impact->label_id ?? '', $impact->label_en ?? '', 'text', 1) ?>
                     </div>
                 </div>
             </div>
@@ -73,12 +73,12 @@
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Judul Section (opsional)</label>
-                        <input type="text" name="section_title_id" class="form-control" value="<?= $impact->section_title_id; ?>" placeholder="Judul kelompok data jika ada" <?= FormRules::attrs('impact', 'section_title_id', 'update') ?>>
+                        <input type="text" name="section_title_id" class="form-control" value="<?= $impact->section_title_id; ?>" placeholder="Judul kelompok data jika ada" <?= FormRules::attrs('impact', 'section_title_id', 'update') ?>><?= EnField::render('section_title', $impact->section_title_id ?? '', $impact->section_title_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Keterangan</label>
-                        <textarea name="note_id" class="form-control" rows="3" <?= FormRules::attrs('impact', 'note_id', 'update') ?>><?= $impact->note_id; ?></textarea>
+                        <textarea name="note_id" class="form-control" rows="3" <?= FormRules::attrs('impact', 'note_id', 'update') ?>><?= $impact->note_id; ?></textarea><?= EnField::render('note', $impact->note_id ?? '', $impact->note_en ?? '', 'textarea', 3) ?>
                     </div>
                 </div>
             </div>

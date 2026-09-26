@@ -43,7 +43,7 @@
                                     data-bs-target="#editActionModal"
                                     data-id="<?= $a->id ?>"
                                     data-title-id="<?= htmlspecialchars($a->title_id) ?>"
-                                    data-desc-id="<?= htmlspecialchars($a->description_id) ?>"
+                                    data-desc-id="<?= htmlspecialchars($a->description_id) ?>" data-title-en="<?= htmlspecialchars($a->title_en ?? '') ?>" data-desc-en="<?= htmlspecialchars($a->description_en ?? '') ?>"
                                     data-order="<?= $a->order_priority ?>">
                                 <i class="fas fa-edit text-primary"></i>
                             </button>
@@ -80,11 +80,11 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold">Judul Aksi</label>
-                            <input type="text" name="title_id" class="form-control" placeholder="Aksi Tanam Mangrove" <?= FormRules::attrs('ggc_action', 'title_id', 'store') ?>>
+                            <input type="text" name="title_id" class="form-control" placeholder="Aksi Tanam Mangrove" <?= FormRules::attrs('ggc_action', 'title_id', 'store') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold">Deskripsi</label>
-                            <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'store') ?>></textarea>
+                            <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 3) ?>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label small fw-bold">Foto Aksi</label>
@@ -119,11 +119,11 @@
                     <div class="row g-3">
                         <div class="col-12">
                             <label class="form-label small fw-bold">Judul Aksi</label>
-                            <input type="text" name="title_id" id="edit-title-id" class="form-control" <?= FormRules::attrs('ggc_action', 'title_id', 'update') ?>>
+                            <input type="text" name="title_id" id="edit-title-id" class="form-control" <?= FormRules::attrs('ggc_action', 'title_id', 'update') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                         </div>
                         <div class="col-12">
                             <label class="form-label small fw-bold">Deskripsi</label>
-                            <textarea name="description_id" id="edit-desc-id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'update') ?>></textarea>
+                            <textarea name="description_id" id="edit-desc-id" class="form-control" rows="3" <?= FormRules::attrs('ggc_action', 'description_id', 'update') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 3) ?>
                         </div>
                         <div class="col-md-8">
                             <label class="form-label small fw-bold">Ganti Foto (Opsional)</label>
@@ -165,6 +165,9 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('edit-title-id').value = this.dataset.titleId;
             document.getElementById('edit-desc-id').value = this.dataset.descId;
             document.getElementById('edit-order').value = this.dataset.order;
+            const f = document.getElementById('edit-title-id').form;
+            fillEn(f, 'title', this.dataset.titleId, this.dataset.titleEn);
+            fillEn(f, 'description', this.dataset.descId, this.dataset.descEn);
         });
     });
 });

@@ -20,14 +20,14 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Publikasi</label>
-                        <input type="text" name="title_id" class="form-control" placeholder="Contoh: Laporan Tahunan 2025" <?= FormRules::attrs('publication', 'title_id', 'store') ?>>
+                        <input type="text" name="title_id" class="form-control" placeholder="Contoh: Laporan Tahunan 2025" <?= FormRules::attrs('publication', 'title_id', 'store') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                     </div>
                     <div class="mb-0">
                         <label class="form-label small fw-bold text-dark">Deskripsi Singkat</label>
-                        <textarea name="description_id" class="form-control" rows="5" placeholder="Tulis ringkasan isi publikasi..." <?= FormRules::attrs('publication', 'description_id', 'store') ?>></textarea>
+                        <textarea name="description_id" class="form-control" rows="5" placeholder="Tulis ringkasan isi publikasi..." <?= FormRules::attrs('publication', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 5) ?>
                     </div>
                     <div class="mt-3">
-                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>
+                        <small class="text-muted"><i class="fas fa-language me-1"></i> Versi Bahasa Inggris: pilih EN di header halaman (kosong = diterjemahkan otomatis).</small>
                     </div>
                 </div>
             </div>

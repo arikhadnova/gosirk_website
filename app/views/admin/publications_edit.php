@@ -22,11 +22,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label">Judul Publikasi</label>
-                        <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" <?= FormRules::attrs('publication', 'title_id', 'update') ?>>
+                        <input type="text" name="title_id" class="form-control" value="<?= $publication->title_id; ?>" <?= FormRules::attrs('publication', 'title_id', 'update') ?>><?= EnField::render('title', $publication->title_id ?? '', $publication->title_en ?? '', 'text', 1) ?>
                     </div>
                     <div class="mb-0">
                         <label class="form-label">Deskripsi Singkat</label>
-                        <textarea name="description_id" class="form-control" rows="5" <?= FormRules::attrs('publication', 'description_id', 'update') ?>><?= $publication->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="5" <?= FormRules::attrs('publication', 'description_id', 'update') ?>><?= $publication->description_id; ?></textarea><?= EnField::render('description', $publication->description_id ?? '', $publication->description_en ?? '', 'textarea', 5) ?>
                     </div>
                 </div>
             </div>

@@ -113,6 +113,36 @@ class Admin extends Controller {
         return $en;
     }
 
+    /**
+     * English program points of a GI service. Each row posted from the form (program_points_en)
+     * follows the same rules as Admin::en(): edited English is kept, empty English is translated,
+     * English left untouched while the Indonesian changed is translated again (old English kept if that fails).
+     */
+    private function pointsEn(array $pointsId) {
+        $posted = json_decode($_POST['program_points_en'] ?? '[]', true) ?: [];
+        $out = [];
+        foreach ($pointsId as $i => $point) {
+            $row = $posted[$i] ?? [];
+            $item = [];
+            foreach (['title', 'desc'] as $f) {
+                $id = (string) ($point[$f] ?? '');
+                $en = trim((string) ($row[$f] ?? ''));
+                $enWas = trim((string) ($row[$f . '_en_was'] ?? ''));
+                $idWas = $row[$f . '_was'] ?? null;
+                if ($en === '') {
+                    $item[$f] = Translator::translate($id);
+                } elseif ($en !== $enWas || $idWas === null || trim($idWas) === trim($id)) {
+                    $item[$f] = $en;
+                } else {
+                    $t = Translator::translate($id);
+                    $item[$f] = trim(strip_tags($t)) === trim(strip_tags($id)) ? $en : $t;
+                }
+            }
+            $out[] = $item;
+        }
+        return $out;
+    }
+
     // "Terjemahkan" button in the English box
     public function translate() {
         header('Content-Type: application/json');
@@ -312,7 +342,7 @@ class Admin extends Controller {
         ];
         $hours = trim($_POST['office_hours'] ?? '');
         $footer_data['office_hours'] = $hours;
-        $footer_data['office_hours_en'] = $hours !== '' ? Translator::translate($hours) : '';
+        $footer_data['office_hours_en'] = $hours !== '' ? $this->en('office_hours', $hours) : '';
         
         foreach ($footer_data as $key => $value) {
             $this->settingModel->update($key, $value);
@@ -339,16 +369,11 @@ class Admin extends Controller {
     public function update_partnership_settings() {
         $this->validateForm('partnership_settings', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Only the page texts (ps_..._id) and their English versions; nothing else from the form is stored
             foreach ($_POST as $key => $value) {
-                // Update the Indonesian version
+                if (!preg_match('/^(ps_[a-z_]+)_id$/', $key, $m) || !is_string($value)) continue;
                 $this->settingModel->update($key, $value);
-
-                // Auto-translate to English if it's an _id field
-                if (strpos($key, '_id') !== false) {
-                    $en_key = str_replace('_id', '_en', $key);
-                    $en_value = Translator::translate($value);
-                    $this->settingModel->update($en_key, $en_value);
-                }
+                $this->settingModel->update($m[1] . '_en', $this->en($m[1], $value));
             }
 
             // Handle Image Uploads for Categories
@@ -753,9 +778,9 @@ class Admin extends Controller {
             $data = [
                 'name' => $_POST['name'],
                 'role_id' => $_POST['role_id'],
-                'role_en' => Translator::translate($_POST['role_id']),
+                'role_en' => $this->en('role', $_POST['role_id']),
                 'quote_id' => $_POST['quote_id'],
-                'quote_en' => Translator::translate($_POST['quote_id']),
+                'quote_en' => $this->en('quote', $_POST['quote_id']),
                 'linkedin_url' => $_POST['linkedin_url'],
                 'display_order' => $_POST['display_order'] ?? 0,
                 'image' => $image
@@ -802,9 +827,9 @@ class Admin extends Controller {
                 'id' => $id,
                 'name' => $_POST['name'],
                 'role_id' => $_POST['role_id'],
-                'role_en' => Translator::translate($_POST['role_id']),
+                'role_en' => $this->en('role', $_POST['role_id']),
                 'quote_id' => $_POST['quote_id'],
-                'quote_en' => Translator::translate($_POST['quote_id']),
+                'quote_en' => $this->en('quote', $_POST['quote_id']),
                 'linkedin_url' => $_POST['linkedin_url'],
                 'display_order' => $_POST['display_order'] ?? 0,
                 'image' => $image
@@ -1360,13 +1385,13 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_path,
                 'preview_path' => $preview_path,
                 'thumbnail' => $thumbnail,
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'external_link' => $_POST['external_link'] ?? '',
                 'is_paid' => isset($_POST['is_paid']) ? 1 : 0,
                 'price' => $_POST['price'] ?? 0
@@ -1394,13 +1419,13 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_path ?: '',
                 'preview_path' => $preview_path ?: '',
                 'thumbnail' => $thumbnail ?: '',
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'external_link' => $_POST['external_link'] ?? '',
                 'is_paid' => isset($_POST['is_paid']) ? 1 : 0,
                 'price' => $_POST['price'] ?? 0
@@ -1699,16 +1724,16 @@ class Admin extends Controller {
             $page = $_POST['page'] ?? 'home';
             $data = [
                 'label_id' => $_POST['label_id'],
-                'label_en' => Translator::translate($_POST['label_id']),
+                'label_en' => $this->en('label', $_POST['label_id']),
                 'value' => $_POST['value'],
                 'unit' => $_POST['unit'],
                 'icon' => '', // Icon removed as per request
                 'page' => $page,
                 'section' => $_POST['section'],
                 'section_title_id' => $_POST['section_title_id'] ?? '',
-                'section_title_en' => ($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : '',
+                'section_title_en' => ($_POST['section_title_id'] ?? '') ? $this->en('section_title', $_POST['section_title_id']) : '',
                 'note_id' => $_POST['note_id'] ?? '',
-                'note_en' => ($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : '',
+                'note_en' => ($_POST['note_id'] ?? '') ? $this->en('note', $_POST['note_id']) : '',
                 'order_num' => $_POST['order_num'] ?? 0
             ];
 
@@ -1744,16 +1769,16 @@ class Admin extends Controller {
             $data = [
                 'id' => $_POST['id'],
                 'label_id' => $_POST['label_id'],
-                'label_en' => Translator::translate($_POST['label_id']),
+                'label_en' => $this->en('label', $_POST['label_id']),
                 'value' => $_POST['value'],
                 'unit' => $_POST['unit'],
                 'icon' => '', // Icon removed
                 'page' => $page,
                 'section' => $_POST['section'],
                 'section_title_id' => $_POST['section_title_id'] ?? '',
-                'section_title_en' => ($_POST['section_title_id'] ?? '') ? Translator::translate($_POST['section_title_id']) : '',
+                'section_title_en' => ($_POST['section_title_id'] ?? '') ? $this->en('section_title', $_POST['section_title_id']) : '',
                 'note_id' => $_POST['note_id'] ?? '',
-                'note_en' => ($_POST['note_id'] ?? '') ? Translator::translate($_POST['note_id']) : '',
+                'note_en' => ($_POST['note_id'] ?? '') ? $this->en('note', $_POST['note_id']) : '',
                 'order_num' => $_POST['order_num'] ?? 0
             ];
 
@@ -1929,7 +1954,7 @@ class Admin extends Controller {
             if ($file_name) {
                 $data = [
                     'title_id' => $_POST['title_id'],
-                    'title_en' => Translator::translate($_POST['title_id']),
+                    'title_en' => $this->en('title', $_POST['title_id']),
                     'type' => $_POST['type'],
                     'file_path' => $file_name,
                     'status' => $_POST['status'],
@@ -1979,7 +2004,7 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'type' => $_POST['type'],
                 'file_path' => $file_name,
                 'status' => $_POST['status'],
@@ -2520,14 +2545,7 @@ class Admin extends Controller {
             if (!empty($data['program_points_id'])) {
                 $points_id = json_decode($data['program_points_id'], true);
                 if (is_array($points_id)) {
-                    $points_en = [];
-                    foreach ($points_id as $point) {
-                        $points_en[] = [
-                            'title' => Translator::translate($point['title'] ?? ''),
-                            'desc' => Translator::translate($point['desc'] ?? '')
-                        ];
-                    }
-                    $data['program_points_en'] = json_encode($points_en);
+                    $data['program_points_en'] = json_encode($this->pointsEn($points_id));
                 } else {
                      $data['program_points_en'] = $data['program_points_id']; // Fallback
                 }
@@ -2635,14 +2653,7 @@ class Admin extends Controller {
             if (!empty($data['program_points_id'])) {
                 $points_id = json_decode($data['program_points_id'], true);
                 if (is_array($points_id)) {
-                    $points_en = [];
-                    foreach ($points_id as $point) {
-                        $points_en[] = [
-                            'title' => Translator::translate($point['title'] ?? ''),
-                            'desc' => Translator::translate($point['desc'] ?? '')
-                        ];
-                    }
-                    $data['program_points_en'] = json_encode($points_en);
+                    $data['program_points_en'] = json_encode($this->pointsEn($points_id));
                 } else {
                      $data['program_points_en'] = $data['program_points_id']; // Fallback
                 }
@@ -2725,9 +2736,9 @@ class Admin extends Controller {
             'page_name' => 'gi',
             'section_key' => 'videos',
             'title_id' => $titleId,
-            'title_en' => $titleId !== '' ? Translator::translate($titleId) : '',
+            'title_en' => $titleId !== '' ? $this->en('title', $titleId) : '',
             'content_id' => $subtitleId,
-            'content_en' => $subtitleId !== '' ? Translator::translate($subtitleId) : '',
+            'content_en' => $subtitleId !== '' ? $this->en('content', $subtitleId) : '',
             'content_2_id' => $youtubeUrl,
             'content_2_en' => $youtubeUrl,
             'is_active' => isset($_POST['is_active']) ? 1 : 0
@@ -2936,7 +2947,7 @@ class Admin extends Controller {
 
             $data = [
                 'name_id' => $_POST['name_id'],
-                'name_en' => Translator::translate($_POST['name_id']),
+                'name_en' => $this->en('name', $_POST['name_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -2969,7 +2980,7 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'name_id' => $_POST['name_id'],
-                'name_en' => Translator::translate($_POST['name_id']),
+                'name_en' => $this->en('name', $_POST['name_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -3022,9 +3033,9 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];
@@ -3057,9 +3068,9 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority'] ?: 0
             ];

@@ -30,15 +30,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_comm_title_id" class="form-control" value="<?= $settings['ps_comm_title_id'] ?? 'Community Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_title_id', 'update') ?>>
+                                <input type="text" name="ps_comm_title_id" class="form-control" value="<?= $settings['ps_comm_title_id'] ?? 'Community Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_title_id', 'update') ?>><?= EnField::render('ps_comm_title', $settings['ps_comm_title_id'] ?? '', $settings['ps_comm_title_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_comm_sub_id" class="form-control" value="<?= $settings['ps_comm_sub_id'] ?? 'Focal on community empowerment and social impact.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_sub_id', 'update') ?>>
+                                <input type="text" name="ps_comm_sub_id" class="form-control" value="<?= $settings['ps_comm_sub_id'] ?? 'Focal on community empowerment and social impact.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_comm_sub_id', 'update') ?>><?= EnField::render('ps_comm_sub', $settings['ps_comm_sub_id'] ?? '', $settings['ps_comm_sub_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_comm_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_comm_desc_id', 'update') ?>><?= $settings['ps_comm_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_comm_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_comm_desc_id', 'update') ?>><?= $settings['ps_comm_desc_id'] ?? '' ?></textarea><?= EnField::render('ps_comm_desc', $settings['ps_comm_desc_id'] ?? '', $settings['ps_comm_desc_en'] ?? '', 'textarea', 3) ?>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -68,15 +68,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_acad_title_id" class="form-control" value="<?= $settings['ps_acad_title_id'] ?? 'Academic Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_title_id', 'update') ?>>
+                                <input type="text" name="ps_acad_title_id" class="form-control" value="<?= $settings['ps_acad_title_id'] ?? 'Academic Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_title_id', 'update') ?>><?= EnField::render('ps_acad_title', $settings['ps_acad_title_id'] ?? '', $settings['ps_acad_title_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_acad_sub_id" class="form-control" value="<?= $settings['ps_acad_sub_id'] ?? 'Collaboration with research and higher education institutions.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_sub_id', 'update') ?>>
+                                <input type="text" name="ps_acad_sub_id" class="form-control" value="<?= $settings['ps_acad_sub_id'] ?? 'Collaboration with research and higher education institutions.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_acad_sub_id', 'update') ?>><?= EnField::render('ps_acad_sub', $settings['ps_acad_sub_id'] ?? '', $settings['ps_acad_sub_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_acad_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_acad_desc_id', 'update') ?>><?= $settings['ps_acad_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_acad_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_acad_desc_id', 'update') ?>><?= $settings['ps_acad_desc_id'] ?? '' ?></textarea><?= EnField::render('ps_acad_desc', $settings['ps_acad_desc_id'] ?? '', $settings['ps_acad_desc_en'] ?? '', 'textarea', 3) ?>
                             </div>
                         </div>
                         <div class="col-md-4">
@@ -106,15 +106,15 @@
                         <div class="col-md-8">
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Judul</label>
-                                <input type="text" name="ps_prog_title_id" class="form-control" value="<?= $settings['ps_prog_title_id'] ?? 'Program Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_title_id', 'update') ?>>
+                                <input type="text" name="ps_prog_title_id" class="form-control" value="<?= $settings['ps_prog_title_id'] ?? 'Program Partnership' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_title_id', 'update') ?>><?= EnField::render('ps_prog_title', $settings['ps_prog_title_id'] ?? '', $settings['ps_prog_title_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Sub-judul</label>
-                                <input type="text" name="ps_prog_sub_id" class="form-control" value="<?= $settings['ps_prog_sub_id'] ?? 'Strategic partnerships with government and CSR.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_sub_id', 'update') ?>>
+                                <input type="text" name="ps_prog_sub_id" class="form-control" value="<?= $settings['ps_prog_sub_id'] ?? 'Strategic partnerships with government and CSR.' ?>" <?= FormRules::attrs('partnership_settings', 'ps_prog_sub_id', 'update') ?>><?= EnField::render('ps_prog_sub', $settings['ps_prog_sub_id'] ?? '', $settings['ps_prog_sub_en'] ?? '', 'text', 1) ?>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label small fw-bold">Deskripsi</label>
-                                <textarea name="ps_prog_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_prog_desc_id', 'update') ?>><?= $settings['ps_prog_desc_id'] ?? '' ?></textarea>
+                                <textarea name="ps_prog_desc_id" class="form-control" rows="3" <?= FormRules::attrs('partnership_settings', 'ps_prog_desc_id', 'update') ?>><?= $settings['ps_prog_desc_id'] ?? '' ?></textarea><?= EnField::render('ps_prog_desc', $settings['ps_prog_desc_id'] ?? '', $settings['ps_prog_desc_en'] ?? '', 'textarea', 3) ?>
                             </div>
                         </div>
                         <div class="col-md-4">

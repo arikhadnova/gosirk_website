@@ -134,6 +134,13 @@ Flasher::flash(); ?>
         });
     }
 
+    // Edit modals filled by JS: set the English field and what it was (so unchanged English is kept on save)
+    window.fillEn = function (form, field, idValue, enValue) {
+        const set = (name, v) => { const el = form.querySelector(`[name="${name}"]`); if (el) el.value = v || ''; };
+        set(field + '_en', enValue); set(field + '_en_was', enValue); set(field + '_id_was', idValue);
+        form.querySelector(`[name="${field}_en"]`)?.dispatchEvent(new Event('input'));
+    };
+
     // One ID | EN toggle for the whole page (app/core/EnField.php), shown in the page header:
     // in EN mode every translatable field shows its English version in the same place.
     // Runs after the page's own DOMContentLoaded handlers, so pages that follow the toggle (Teks) are ready
@@ -144,7 +151,7 @@ Flasher::flash(); ?>
         const norm = (t) => (t || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
         const pairs = ens.map((en) => {
             const form = en.closest('form');
-            const id = form && form.querySelector(`[name="${en.dataset.enFor}_id"]`);
+            const id = form && form.querySelector(`[name="${en.dataset.idName || en.dataset.enFor + '_id'}"]`);
             const idUi = () => (id && id.nextElementSibling && id.nextElementSibling.classList && id.nextElementSibling.classList.contains('ck-editor')) ? id.nextElementSibling : id;
             const idText = () => { const ui = idUi(), ed = ui !== id && ui.querySelector('.ck-editor__editable'); return ed && ed.ckeditorInstance ? ed.ckeditorInstance.getData() : (id ? id.value : ''); };
             return { en, id, idUi, idText, editor: null };

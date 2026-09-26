@@ -60,7 +60,7 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
                                         <div class="d-flex align-items-center justify-content-between gap-3 mb-3">
                                             <div>
                                                 <h6 class="fw-bold mb-1">Konten About / Tentang</h6>
-                                                <p class="text-muted extra-small mb-0">Versi English akan dibuat otomatis saat disimpan.</p>
+                                                <p class="text-muted extra-small mb-0">Versi Bahasa Inggris: pilih EN di header halaman (kosong = diterjemahkan otomatis).</p>
                                             </div>
                                         </div>
 

@@ -10,10 +10,12 @@
 
 class EnField {
     /** $kind: 'text' (one line), 'textarea', or 'editor' (rich text, like the Indonesian field) */
-    public static function render($field, $idValue, $enValue, $kind = 'textarea', $rows = 3) {
+    /** $idName: name of the Indonesian input when it is not "<field>_id" (e.g. office_hours) */
+    public static function render($field, $idValue, $enValue, $kind = 'textarea', $rows = 3, $idName = null) {
         $f = htmlspecialchars($field, ENT_QUOTES);
         $en = htmlspecialchars((string) $enValue, ENT_QUOTES);
-        $attrs = 'name="' . $f . '_en" data-en-for="' . $f . '" placeholder="English version (kosongkan untuk terjemahan otomatis)"';
+        $attrs = 'name="' . $f . '_en" data-en-for="' . $f . '"' . ($idName ? ' data-id-name="' . htmlspecialchars($idName, ENT_QUOTES) . '"' : '')
+            . ' placeholder="English version (kosongkan untuk terjemahan otomatis)"';
 
         $input = $kind === 'text'
             ? '<input type="text" class="form-control en-input d-none" ' . $attrs . ' value="' . $en . '">'

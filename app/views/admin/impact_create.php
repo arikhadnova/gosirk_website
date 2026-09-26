@@ -26,7 +26,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold">Label Dampak</label>
-                        <input type="text" name="label_id" class="form-control" placeholder="Contoh: Mitra Kerja Sama" <?= FormRules::attrs('impact', 'label_id', 'store') ?>>
+                        <input type="text" name="label_id" class="form-control" placeholder="Contoh: Mitra Kerja Sama" <?= FormRules::attrs('impact', 'label_id', 'store') ?>><?= EnField::render('label', '', '', 'text', 1) ?>
                     </div>
                 </div>
             </div>
@@ -73,12 +73,12 @@
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Judul Section (opsional)</label>
-                        <input type="text" name="section_title_id" class="form-control" placeholder="Judul kelompok data (misal: Keberlanjutan)" <?= FormRules::attrs('impact', 'section_title_id', 'store') ?>>
+                        <input type="text" name="section_title_id" class="form-control" placeholder="Judul kelompok data (misal: Keberlanjutan)" <?= FormRules::attrs('impact', 'section_title_id', 'store') ?>><?= EnField::render('section_title', '', '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold">Keterangan</label>
-                        <textarea name="note_id" class="form-control" rows="3" placeholder="Keterangan tambahan jika diperlukan..." <?= FormRules::attrs('impact', 'note_id', 'store') ?>></textarea>
+                        <textarea name="note_id" class="form-control" rows="3" placeholder="Keterangan tambahan jika diperlukan..." <?= FormRules::attrs('impact', 'note_id', 'store') ?>></textarea><?= EnField::render('note', '', '', 'textarea', 3) ?>
                     </div>
 
                 </div>

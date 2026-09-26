@@ -179,15 +179,16 @@ document.addEventListener('DOMContentLoaded', function() {
           Ubah sisa organik menjadi dampak baik bagi lingkungan, tanaman, dan komunitas.
         </p>
         <div class="d-flex flex-column align-items-center gap-3">
-          <?php if (!empty($data['concept_notes'])) : ?>
+          <?php if (!empty($data['concept_notes'])) : // concept note available: this button replaces "Hubungi Kami" ?>
           <button type="button" class="btn btn-warning btn-cta-yellow rounded-pill px-4 py-2 d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#conceptNoteModal">
             <span class="material-symbols-outlined">description</span>
             <span data-i18n="gnp.cta.button_partnership" data-i18n-html="true">We are calling for partnership. <i class="text-decoration-underline">Get the concept note. Contact us.</i></span>
           </button>
-          <?php endif; ?>
+          <?php else : ?>
           <a href="<?= BASE_URL ?>contact" class="btn btn-ggc-light btn-lg shadow-lg" data-i18n="gnp.cta.btn">
             <i class="bi bi-chat-dots-fill me-2"></i> Hubungi Kami
           </a>
+          <?php endif; ?>
         </div>
       </div>
     </div>

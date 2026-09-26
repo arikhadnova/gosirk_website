@@ -26,12 +26,12 @@
 
                     <div class="mb-4">
                         <label class="form-label">Jabatan</label>
-                        <input type="text" name="role_id" class="form-control" value="<?= $founder->role_id; ?>" <?= FormRules::attrs('founder', 'role_id', 'update') ?>>
+                        <input type="text" name="role_id" class="form-control" value="<?= $founder->role_id; ?>" <?= FormRules::attrs('founder', 'role_id', 'update') ?>><?= EnField::render('role', $founder->role_id ?? '', $founder->role_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kutipan</label>
-                        <textarea name="quote_id" class="form-control" rows="3" <?= FormRules::attrs('founder', 'quote_id', 'update') ?>><?= $founder->quote_id; ?></textarea>
+                        <textarea name="quote_id" class="form-control" rows="3" <?= FormRules::attrs('founder', 'quote_id', 'update') ?>><?= $founder->quote_id; ?></textarea><?= EnField::render('quote', $founder->quote_id ?? '', $founder->quote_en ?? '', 'textarea', 3) ?>
                     </div>
 
                     <div class="row mb-0">

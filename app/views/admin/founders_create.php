@@ -25,12 +25,12 @@
 
                     <div class="mb-4">
                         <label class="form-label">Jabatan</label>
-                        <input type="text" name="role_id" class="form-control" placeholder="Contoh: Direktur" <?= FormRules::attrs('founder', 'role_id', 'store') ?>>
+                        <input type="text" name="role_id" class="form-control" placeholder="Contoh: Direktur" <?= FormRules::attrs('founder', 'role_id', 'store') ?>><?= EnField::render('role', '', '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Kutipan</label>
-                        <textarea name="quote_id" class="form-control" rows="3" placeholder="Kutipan inspiratif..." <?= FormRules::attrs('founder', 'quote_id', 'store') ?>></textarea>
+                        <textarea name="quote_id" class="form-control" rows="3" placeholder="Kutipan inspiratif..." <?= FormRules::attrs('founder', 'quote_id', 'store') ?>></textarea><?= EnField::render('quote', '', '', 'textarea', 3) ?>
                     </div>
 
                     <div class="row mb-0">

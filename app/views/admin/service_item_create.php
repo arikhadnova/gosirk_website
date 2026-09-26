@@ -30,7 +30,7 @@
                         <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." <?= FormRules::attrs('service_item', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 6) ?>
                     </div>
                     <div class="mt-3">
-                        <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>
+                        <small class="text-muted"><i class="fas fa-language me-1"></i> Versi Bahasa Inggris: pilih EN di header halaman (kosong = diterjemahkan otomatis).</small>
                     </div>
                 </div>
             </div>

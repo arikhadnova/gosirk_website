@@ -42,7 +42,7 @@
                                     data-bs-toggle="modal" 
                                     data-bs-target="#editVillageModal"
                                     data-id="<?= $v->id ?>"
-                                    data-name-id="<?= htmlspecialchars($v->name_id) ?>"
+                                    data-name-id="<?= htmlspecialchars($v->name_id) ?>" data-name-en="<?= htmlspecialchars($v->name_en ?? '') ?>"
                                     data-order="<?= $v->order_priority ?>">
                                 <i class="fas fa-edit text-primary"></i>
                             </button>
@@ -74,7 +74,7 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nama Desa</label>
-                        <input type="text" name="name_id" class="form-control" placeholder="Contoh: Desa Bengkel" <?= FormRules::attrs('pilot_village', 'name_id', 'store') ?>>
+                        <input type="text" name="name_id" class="form-control" placeholder="Contoh: Desa Bengkel" <?= FormRules::attrs('pilot_village', 'name_id', 'store') ?>><?= EnField::render('name', '', '', 'text', 1) ?>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Foto Desa</label>
@@ -107,7 +107,7 @@
                 <div class="modal-body p-4">
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Nama Desa</label>
-                        <input type="text" name="name_id" id="edit-name-id" class="form-control" <?= FormRules::attrs('pilot_village', 'name_id', 'update') ?>>
+                        <input type="text" name="name_id" id="edit-name-id" class="form-control" <?= FormRules::attrs('pilot_village', 'name_id', 'update') ?>><?= EnField::render('name', '', '', 'text', 1) ?>
                     </div>
                     <div class="mb-3">
                         <label class="form-label small fw-bold">Ganti Foto (Opsional)</label>
@@ -141,6 +141,7 @@ document.addEventListener('DOMContentLoaded', function() {
         btn.addEventListener('click', function() {
             document.getElementById('edit-id').value = this.dataset.id;
             document.getElementById('edit-name-id').value = this.dataset.nameId;
+            fillEn(document.getElementById('edit-name-id').form, 'name', this.dataset.nameId, this.dataset.nameEn);
             document.getElementById('edit-order').value = this.dataset.order;
         });
     });

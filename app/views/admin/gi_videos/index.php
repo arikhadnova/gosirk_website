@@ -21,14 +21,14 @@
 <div class="card border-0 shadow-sm rounded-4 mb-4">
     <div class="card-header bg-white border-bottom p-4">
         <h5 class="fw-bold mb-0 text-dark">Pengaturan Section</h5>
-        <small class="text-muted">Judul, subjudul, dan link YouTube di bagian "Belajar Bersama GoSirk". Terjemahan bahasa Inggris dibuat otomatis. Kosongkan untuk memakai teks default.</small>
+        <small class="text-muted">Judul, subjudul, dan link YouTube di bagian "Belajar Bersama GoSirk". Kosongkan untuk memakai teks default.</small>
     </div>
     <div class="card-body p-4">
         <form action="<?= BASE_URL; ?>admin/update_gi_video_section" method="POST">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold small text-dark">Judul</label>
-                    <input type="text" name="title_id" class="form-control" placeholder="BELAJAR BERSAMA GOSIRK" value="<?= htmlspecialchars($section->title_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('gi_video_section', 'title_id', 'update') ?>>
+                    <input type="text" name="title_id" class="form-control" placeholder="BELAJAR BERSAMA GOSIRK" value="<?= htmlspecialchars($section->title_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('gi_video_section', 'title_id', 'update') ?>><?= EnField::render('title', $section->title_id ?? '', $section->title_en ?? '', 'text', 1) ?>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold small text-dark">Link Tombol YouTube</label>
@@ -36,7 +36,7 @@
                 </div>
                 <div class="col-12">
                     <label class="form-label fw-bold small text-dark">Subjudul</label>
-                    <textarea name="content_id" class="form-control" rows="2" placeholder="Ruang pembelajaran terbuka untuk berbagi pengalaman, praktik baik, dan pengetahuan pengelolaan sampah dari lapangan." <?= FormRules::attrs('gi_video_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? '', ENT_QUOTES); ?></textarea>
+                    <textarea name="content_id" class="form-control" rows="2" placeholder="Ruang pembelajaran terbuka untuk berbagi pengalaman, praktik baik, dan pengetahuan pengelolaan sampah dari lapangan." <?= FormRules::attrs('gi_video_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? '', ENT_QUOTES); ?></textarea><?= EnField::render('content', $section->content_id ?? '', $section->content_en ?? '', 'textarea', 2) ?>
                 </div>
                 <div class="col-12 d-flex align-items-center justify-content-between flex-wrap gap-3">
                     <div class="form-check form-switch">

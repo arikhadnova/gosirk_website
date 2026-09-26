@@ -969,3 +969,7 @@ body {
 .hub-lang .lang-translate { font-size: .8rem; font-weight: 600; min-height: 0 !important; white-space: nowrap; }
 .lang-en-mode .en-input, .lang-en-mode .en-input + .ck-editor .ck-editor__editable { background: #f5f9ff !important; border-color: #bfd4f6 !important; }
 .hub-fact strong.is-warn { color: #b45309; }
+
+/* List rows with both languages (e.g. GI program points): the header ID | EN toggle picks which one shows */
+body.lang-en-mode .id-only, body:not(.lang-en-mode) .en-only { display: none !important; }
+body.lang-en-mode .en-only { background: #f5f9ff !important; }

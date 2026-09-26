@@ -92,8 +92,8 @@
                     </div>
                     <div class="mb-3">
                         <label for="office_hours" class="form-label small fw-bold text-dark">Jam Kerja</label>
-                        <input type="text" id="office_hours" name="office_hours" class="form-control" value="<?= htmlspecialchars($settings['office_hours'] ?? '') ?>" placeholder="Senin - Jumat, 08:00 - 16:00 WIB" <?= FormRules::attrs('settings_footer', 'office_hours', 'update') ?>>
-                        <div class="form-text small text-muted">Tampil di halaman Contact. Versi Bahasa Inggris dibuat otomatis. Kosongkan untuk teks bawaan.</div>
+                        <input type="text" id="office_hours" name="office_hours" class="form-control" value="<?= htmlspecialchars($settings['office_hours'] ?? '') ?>" placeholder="Senin - Jumat, 08:00 - 16:00 WIB" <?= FormRules::attrs('settings_footer', 'office_hours', 'update') ?>><?= EnField::render('office_hours', $settings['office_hours'] ?? '', $settings['office_hours_en'] ?? '', 'text', 1, 'office_hours') ?>
+                        <div class="form-text small text-muted">Tampil di halaman Contact. Versi Inggris: pilih EN di atas. Kosongkan untuk teks bawaan.</div>
                     </div>
                     <div class="row">
                         <div class="col-md-6 mb-3">

@@ -35,8 +35,8 @@ $currentSize = $currentFile ? round(filesize($currentFile) / 1048576, 2) . ' MB'
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Dokumen</label>
                         <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Concept Note Go Ngompos 2026"
-                               value="<?= htmlspecialchars($doc->title_id ?? '') ?>" <?= FormRules::attrs('collaboration', 'title_id', $mode) ?>>
-                        <small class="text-muted extra-small d-block mt-1"><i class="fas fa-magic me-1"></i> Judul tampil di halaman publik dan di email. Versi Bahasa Inggris dibuat otomatis.</small>
+                               value="<?= htmlspecialchars($doc->title_id ?? '') ?>" <?= FormRules::attrs('collaboration', 'title_id', $mode) ?>><?= EnField::render('title', $doc->title_id ?? '', $doc->title_en ?? '', 'text', 1) ?>
+                        <small class="text-muted extra-small d-block mt-1"><i class="fas fa-magic me-1"></i> Judul tampil di halaman publik dan di email. Versi Bahasa Inggris: pilih EN di header halaman (kosong = diterjemahkan otomatis).</small>
                     </div>
                     <div class="row g-4">
                         <div class="col-md-6">
