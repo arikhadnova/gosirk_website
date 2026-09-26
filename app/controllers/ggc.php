@@ -6,6 +6,8 @@ class ggc extends Controller {
             'hero' => $this->model('Hero_model')->getByPage('ggc'),
             'impacts' => $this->model('Impact_model')->getByPage('ggc'),
             'actions' => $this->model('GgcAction_model')->getAll(),
+            'programs' => $this->model('GgcProgram_model')->getAll(),
+            'programs_section' => $this->model('PageSection_model')->getByPageAndSection('ggc', 'programs'),
             'hero_transition' => $this->model('Setting_model')->getByKey('ggc_hero_transition') ?: 'slide',
             'hero_logo' => $this->model('Setting_model')->getByKey('ggc_hero_logo') ?: 'logo-ggc.png',
             'about_section' => $this->model('PageSection_model')->getByPageAndSection('ggc', 'about')

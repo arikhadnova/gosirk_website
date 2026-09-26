@@ -25,11 +25,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold">Judul Artikel</label>
-                        <input type="text" name="title_id" class="form-control" value="<?= $article->title_id; ?>" <?= FormRules::attrs('article', 'title_id', 'update') ?>>
+                        <input type="text" name="title_id" class="form-control" value="<?= $article->title_id; ?>" <?= FormRules::attrs('article', 'title_id', 'update') ?>><?= EnField::render('title', $article->title_id ?? '', $article->title_en ?? '', 'text', 1) ?>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Konten Artikel</label>
-                        <textarea name="content_id" class="form-control" rows="15" <?= FormRules::attrs('article', 'content_id', 'update') ?>><?= $article->content_id; ?></textarea>
+                        <textarea name="content_id" class="form-control" rows="15" <?= FormRules::attrs('article', 'content_id', 'update') ?>><?= $article->content_id; ?></textarea><?= EnField::render('content', $article->content_id ?? '', $article->content_en ?? '', 'editor', 12) ?>
                         <div class="form-text text-muted mt-2">
                             <i class="fas fa-info-circle me-1"></i> Kapasitas maksimal konten adalah 16MB (MediumText).
                         </div>

@@ -34,12 +34,12 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
     <p class="text-muted small mb-0">Klik teks untuk mengubahnya. Perubahan disimpan dengan tombol di bawah.</p>
 </div>
 
-<form action="<?= BASE_URL; ?>admin/page_texts_update" method="POST" id="pageTextsForm">
+<form action="<?= BASE_URL; ?>admin/page_texts_update" method="POST" id="pageTextsForm" data-lang-aware>
     <input type="hidden" name="page" value="<?= htmlspecialchars($page) ?>">
 
     <div class="pt-toolbar card border-0 shadow-sm rounded-4 mb-3">
         <div class="card-body p-2 d-flex flex-wrap gap-2 align-items-center">
-            <div class="btn-group btn-group-sm pt-lang" role="group" aria-label="Bahasa">
+            <div class="btn-group btn-group-sm pt-lang d-none" role="group" aria-label="Bahasa">
                 <button type="button" class="btn btn-dark" data-lang="id">ID</button>
                 <button type="button" class="btn btn-light" data-lang="en">EN</button>
             </div>
@@ -139,6 +139,9 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelectorAll('.pt-input').forEach((ta) => ta.classList.toggle('d-none', ta.dataset.lang !== lang));
         document.querySelectorAll('.pt-input:not(.d-none)').forEach(autosize);
     }));
+
+    // The ID | EN toggle in the page header switches the language here too
+    document.addEventListener('admin-lang', (e) => document.querySelector(`.pt-lang [data-lang="${e.detail}"]`)?.click());
 
     // Size textareas when a section opens
     document.querySelectorAll('.accordion-collapse').forEach((c) => c.addEventListener('shown.bs.collapse', () => c.querySelectorAll('.pt-input:not(.d-none)').forEach(autosize)));

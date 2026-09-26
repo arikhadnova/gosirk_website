@@ -1,24 +1,27 @@
 <?php
+// Used for both the Go Ngompos Project and the GoSirk Green Community programs ($data['kind'], see Admin::programKind)
+$k = $data['kind'];
+$route = BASE_URL . 'admin/' . $k['route'];
 $programs = $data['programs'];
 $section = $data['section'] ?? null;
 $sectionActive = !$section || (int) $section->is_active === 1;
 
 // Form fields shared by the add and edit modals
-$programFields = function ($mode) {
+$programFields = function ($mode) use ($k) {
     $p = $mode === 'store' ? 'add' : 'edit';
     ?>
     <div class="row g-3">
         <div class="col-12">
             <label class="form-label fw-bold small text-dark">Judul Program</label>
-            <input type="text" name="title_id" id="<?= $p ?>Title" class="form-control" placeholder="Contoh: Kelas Ngompos" <?= FormRules::attrs('gnp_program', 'title_id', $mode) ?>>
+            <input type="text" name="title_id" id="<?= $p ?>Title" class="form-control" placeholder="Contoh: <?= $k['kind'] === 'ggc' ? 'Pelatihan Pengolahan Sampah' : 'Kelas Ngompos' ?>" <?= FormRules::attrs('gnp_program', 'title_id', $mode) ?>><?= EnField::render('title', '', '', 'text') ?>
         </div>
         <div class="col-12">
             <label class="form-label fw-bold small text-dark">Deskripsi</label>
-            <textarea name="description_id" id="<?= $p ?>Desc" rows="3" class="form-control" placeholder="Penjelasan singkat program..." <?= FormRules::attrs('gnp_program', 'description_id', $mode) ?>></textarea>
+            <textarea name="description_id" id="<?= $p ?>Desc" rows="3" class="form-control" placeholder="Penjelasan singkat program..." <?= FormRules::attrs('gnp_program', 'description_id', $mode) ?>></textarea><?= EnField::render('description', '', '', 'textarea', 3) ?>
         </div>
         <div class="col-md-5">
             <label class="form-label fw-bold small text-dark">Label</label>
-            <input type="text" name="badge_id" id="<?= $p ?>Badge" class="form-control" placeholder="Contoh: Edukasi" <?= FormRules::attrs('gnp_program', 'badge_id', $mode) ?>>
+            <input type="text" name="badge_id" id="<?= $p ?>Badge" class="form-control" placeholder="Contoh: Edukasi" <?= FormRules::attrs('gnp_program', 'badge_id', $mode) ?>><?= EnField::render('badge', '', '', 'text') ?>
         </div>
         <div class="col-md-4">
             <label class="form-label fw-bold small text-dark">Warna Label</label>
@@ -38,15 +41,14 @@ $programFields = function ($mode) {
             <small class="text-muted extra-small d-block mt-1"><?= $mode === 'store' ? 'Format JPG, PNG, atau WEBP. Disarankan rasio lanskap (4:3).' : 'Kosongkan jika tidak ingin mengganti foto.' ?></small>
         </div>
     </div>
-    <small class="text-muted d-block mt-3"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris (judul, deskripsi, label) dibuat otomatis saat disimpan.</small>
+    <small class="text-muted d-block mt-3"><i class="fas fa-language me-1"></i> Pilih EN di header halaman untuk melihat atau mengubah versi Bahasa Inggris. Kolom EN yang kosong diterjemahkan otomatis saat disimpan.</small>
     <?php
 };
 ?>
 <div class="admin-header-section d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
     <div>
-        <span class="admin-header-badge d-inline-block">DASHBOARD / GO NGOMPOS / PROGRAM</span>
-        <h1 class="fw-bold mb-0">Program Go Ngompos</h1>
-        <p class="text-muted small mb-0">Kartu di section "Program Utama" halaman Go Ngompos Project.</p>
+        <h1 class="fw-bold mb-0"><?= htmlspecialchars($k['title']) ?></h1>
+        <p class="text-muted small mb-0"><?= htmlspecialchars($k['desc']) ?></p>
     </div>
     <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addProgramModal">
         <i class="fas fa-plus-circle me-2"></i> Tambah Program
@@ -55,15 +57,15 @@ $programFields = function ($mode) {
 
 <div class="card border-0 shadow-sm rounded-4 mb-4">
     <div class="card-body p-4">
-        <form action="<?= BASE_URL; ?>admin/gnp_programs_section" method="POST">
+        <form action="<?= $route ?>_section" method="POST">
             <div class="row g-3 align-items-end">
                 <div class="col-md-4">
                     <label class="form-label fw-bold small text-dark">Judul Section</label>
-                    <input type="text" name="title_id" class="form-control" placeholder="PROGRAM UTAMA" value="<?= htmlspecialchars($section->title_id ?? '') ?>" <?= FormRules::attrs('gnp_program_section', 'title_id', 'update') ?>>
+                    <input type="text" name="title_id" class="form-control" placeholder="<?= htmlspecialchars($k['default_title']) ?>" value="<?= htmlspecialchars($section->title_id ?? '') ?>" <?= FormRules::attrs('gnp_program_section', 'title_id', 'update') ?>><?= EnField::render('title', $section->title_id ?? '', $section->title_en ?? '', 'text') ?>
                 </div>
                 <div class="col-md-5">
                     <label class="form-label fw-bold small text-dark">Subjudul</label>
-                    <input type="text" name="content_id" class="form-control" placeholder="Langkah praktis untuk membangun kebiasaan ngompos yang konsisten." value="<?= htmlspecialchars($section->content_id ?? '') ?>" <?= FormRules::attrs('gnp_program_section', 'content_id', 'update') ?>>
+                    <input type="text" name="content_id" class="form-control" placeholder="<?= htmlspecialchars($k['default_subtitle']) ?>" value="<?= htmlspecialchars($section->content_id ?? '') ?>" <?= FormRules::attrs('gnp_program_section', 'content_id', 'update') ?>><?= EnField::render('content', $section->content_id ?? '', $section->content_en ?? '', 'text') ?>
                 </div>
                 <div class="col-md-3 d-flex align-items-center justify-content-between gap-2">
                     <div class="form-check form-switch mb-0">
@@ -73,7 +75,7 @@ $programFields = function ($mode) {
                     <button type="submit" class="btn btn-outline-primary rounded-pill px-3 btn-sm">Simpan</button>
                 </div>
             </div>
-            <small class="text-muted extra-small d-block mt-2">Kosongkan judul/subjudul untuk memakai teks bawaan. Versi Bahasa Inggris dibuat otomatis.</small>
+            <small class="text-muted extra-small d-block mt-2">Kosongkan judul/subjudul untuk memakai teks bawaan.</small>
         </form>
     </div>
 </div>
@@ -92,12 +94,12 @@ $programFields = function ($mode) {
             <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
                 <div class="position-relative">
                     <?php if ($p->image) : ?>
-                        <img src="<?= htmlspecialchars(GnpProgram_model::imageUrl($p->image)) ?>" class="w-100" alt="" style="height: 190px; object-fit: cover;">
+                        <img src="<?= htmlspecialchars($k['model']::imageUrl($p->image)) ?>" class="w-100" alt="" style="height: 190px; object-fit: cover;">
                     <?php else : ?>
                         <div class="bg-light d-flex align-items-center justify-content-center" style="height: 190px;"><i class="fas fa-image fa-2x text-muted opacity-25"></i></div>
                     <?php endif; ?>
                     <?php if ($p->badge_id) : ?>
-                        <span class="position-absolute top-0 start-0 m-3 px-3 py-1 text-white rounded-pill small fw-bold" style="<?= $badgeStyle ?>"><?= htmlspecialchars($p->badge_id) ?></span>
+                        <span class="position-absolute top-0 start-0 m-3 px-3 py-1 <?= $p->badge_color === 'warning' ? 'text-dark' : 'text-white' ?> rounded-pill small fw-bold" style="<?= $badgeStyle ?>"><?= htmlspecialchars($p->badge_id) ?></span>
                     <?php endif; ?>
                     <?php if (preg_match('#^https?://#i', (string) $p->image)) : ?>
                         <span class="position-absolute bottom-0 end-0 m-2 badge bg-dark bg-opacity-75 fw-normal" title="Masih memakai foto contoh dari internet">Foto contoh</span>
@@ -111,10 +113,11 @@ $programFields = function ($mode) {
                         <div class="d-flex gap-2">
                             <button type="button" class="btn btn-light text-primary btn-icon btn-edit-program" title="Edit"
                                     data-id="<?= (int) $p->id ?>" data-title="<?= htmlspecialchars($p->title_id) ?>" data-desc="<?= htmlspecialchars($p->description_id) ?>"
-                                    data-badge="<?= htmlspecialchars($p->badge_id) ?>" data-color="<?= htmlspecialchars($p->badge_color) ?>" data-order="<?= (int) $p->order_priority ?>">
+                                    data-badge="<?= htmlspecialchars($p->badge_id) ?>" data-color="<?= htmlspecialchars($p->badge_color) ?>" data-order="<?= (int) $p->order_priority ?>"
+                                    data-title-en="<?= htmlspecialchars($p->title_en) ?>" data-desc-en="<?= htmlspecialchars($p->description_en) ?>" data-badge-en="<?= htmlspecialchars($p->badge_en) ?>">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <a href="<?= BASE_URL; ?>admin/gnp_programs_delete/<?= (int) $p->id ?>" class="btn btn-light text-danger btn-icon btn-delete-confirm" title="Hapus"
+                            <a href="<?= $route ?>_delete/<?= (int) $p->id ?>" class="btn btn-light text-danger btn-icon btn-delete-confirm" title="Hapus"
                                data-confirm-message="Program &quot;<?= htmlspecialchars($p->title_id) ?>&quot; akan dihapus permanen."><i class="fas fa-trash"></i></a>
                         </div>
                     </div>
@@ -127,7 +130,7 @@ $programFields = function ($mode) {
 <div class="modal fade" id="addProgramModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 border-0">
-            <form action="<?= BASE_URL; ?>admin/gnp_programs_store" method="POST" enctype="multipart/form-data">
+            <form action="<?= $route ?>_store" method="POST" enctype="multipart/form-data">
                 <div class="modal-header"><h5 class="modal-title fw-bold">Tambah Program</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body p-4"><?php $programFields('store'); ?></div>
                 <div class="modal-footer"><button type="button" class="btn btn-light rounded-pill" data-bs-dismiss="modal">Batal</button><button type="submit" class="btn btn-primary rounded-pill px-4"><i class="fas fa-save me-2"></i>Simpan</button></div>
@@ -139,7 +142,7 @@ $programFields = function ($mode) {
 <div class="modal fade" id="editProgramModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content rounded-4 border-0">
-            <form action="<?= BASE_URL; ?>admin/gnp_programs_update" method="POST" enctype="multipart/form-data">
+            <form action="<?= $route ?>_update" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="editId">
                 <div class="modal-header"><h5 class="modal-title fw-bold">Edit Program</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
                 <div class="modal-body p-4"><?php $programFields('update'); ?></div>
@@ -160,6 +163,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('editBadge').value = d.badge;
         document.getElementById('editColor').value = d.color;
         document.getElementById('editOrder').value = d.order;
+        // English versions + what they were, so unchanged English is kept on save (Admin::en)
+        const form = document.getElementById('editProgramModal').querySelector('form');
+        [['title', d.title, d.titleEn], ['description', d.desc, d.descEn], ['badge', d.badge, d.badgeEn]].forEach(([f, id, en]) => {
+            form.querySelector(`[name="${f}_en"]`).value = en || '';
+            form.querySelector(`[name="${f}_en_was"]`).value = en || '';
+            form.querySelector(`[name="${f}_id_was"]`).value = id || '';
+            form.querySelector(`[name="${f}_en"]`).dispatchEvent(new Event('input'));
+        });
         modal.show();
     }));
 });

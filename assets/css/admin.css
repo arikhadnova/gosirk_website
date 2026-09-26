@@ -962,3 +962,10 @@ body {
 
 /* Dashboard quick actions stay full-width rows with the icon on the right */
 #page-content-wrapper > .container-fluid .btn.quick-action-btn.quick-action-btn { justify-content: space-between; border-radius: 12px !important; padding: .8rem 1.1rem !important; }
+
+/* Page-wide ID | EN toggle (EnField), in the page header */
+.hub-lang { display: flex; align-items: center; gap: .75rem; }
+.hub-lang .btn-group .btn { min-width: 48px; }
+.hub-lang .lang-translate { font-size: .8rem; font-weight: 600; min-height: 0 !important; white-space: nowrap; }
+.lang-en-mode .en-input, .lang-en-mode .en-input + .ck-editor .ck-editor__editable { background: #f5f9ff !important; border-color: #bfd4f6 !important; }
+.hub-fact strong.is-warn { color: #b45309; }

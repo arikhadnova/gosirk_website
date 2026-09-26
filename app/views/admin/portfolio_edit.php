@@ -24,17 +24,17 @@
                     <!-- Basic Info -->
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Proyek</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $portfolio->title_id; ?>" <?= FormRules::attrs('portfolio', 'title_id', 'update') ?>>
+                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $portfolio->title_id; ?>" <?= FormRules::attrs('portfolio', 'title_id', 'update') ?>><?= EnField::render('title', $portfolio->title_id ?? '', $portfolio->title_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Sub-judul</label>
-                        <input type="text" name="subtitle_id" class="form-control" value="<?= $portfolio->subtitle_id; ?>" <?= FormRules::attrs('portfolio', 'subtitle_id', 'update') ?>>
+                        <input type="text" name="subtitle_id" class="form-control" value="<?= $portfolio->subtitle_id; ?>" <?= FormRules::attrs('portfolio', 'subtitle_id', 'update') ?>><?= EnField::render('subtitle', $portfolio->subtitle_id ?? '', $portfolio->subtitle_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Deskripsi Ringkas (di kartu)</label>
-                        <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('portfolio', 'description_id', 'update') ?>><?= $portfolio->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('portfolio', 'description_id', 'update') ?>><?= $portfolio->description_id; ?></textarea><?= EnField::render('description', $portfolio->description_id ?? '', $portfolio->description_en ?? '', 'textarea', 3) ?>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -104,7 +104,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark"><i class="fas fa-info-circle me-1 text-primary"></i> 1. TENTANG PROYEK (Isi Detail)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" <?= FormRules::attrs('portfolio', 'detail_content_id', 'update') ?>><?= $portfolio->detail_content_id; ?></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" <?= FormRules::attrs('portfolio', 'detail_content_id', 'update') ?>><?= $portfolio->detail_content_id; ?></textarea><?= EnField::render('detail_content', $portfolio->detail_content_id ?? '', $portfolio->detail_content_en ?? '', 'editor', 10) ?>
                     </div>
 
                     <?php

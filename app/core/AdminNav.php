@@ -51,6 +51,7 @@ class AdminNav {
             'ggc' => ['group' => 'pages', 'label' => 'GoSirk Green Community', 'icon' => 'fa-leaf', 'public' => 'ggc', 'tabs' => array_merge([
                 $hero('ggc'),
                 $section('ggc'),
+                $t('Program', 'admin/ggc_programs', ['active' => 'ggc_programs'], 'fa-list-check'),
                 $t('Aksi GGC', 'admin/ggc_actions', ['active' => 'ggc_actions'], 'fa-running'),
                 $impact('ggc'),
             ], $common('ggc', 'ggc', 'ggc'))],
@@ -153,9 +154,21 @@ class AdminNav {
             $settings = (new Setting_model())->getAll();
         }
         $out = [];
+        $untranslated = 0; $translateUrl = null;
         foreach ($hub['tabs'] as $tab) {
             $page = $tab['match']['page'] ?? null;
             $active = $tab['match']['active'] ?? null;
+            // Hero and "Tentang" section: texts whose English is missing or still the Indonesian text
+            if (($active === 'hero' || $active === 'page_sections') && $page) {
+                $row = $active === 'hero' ? self::row('Hero_model', 'getByPage', [$page]) : self::row('PageSection_model', 'getByPageAndSection', [$page, 'about']);
+                $fields = $active === 'hero' ? ['tag', 'title', 'subtitle'] : ['badge', 'title', 'content', 'content_2', 'content_3'];
+                foreach ($fields as $f) {
+                    if ($row && trim(strip_tags((string) ($row->{$f . '_id'} ?? ''))) !== '' && EnField::untranslated($row->{$f . '_id'} ?? '', $row->{$f . '_en'} ?? '')) {
+                        $untranslated++;
+                        $translateUrl = $translateUrl ?? $tab['url'];
+                    }
+                }
+            }
             if ($active === 'seo' && $page) {
                 $set = trim($settings["seo.$page.title"] ?? '') !== '' || trim($settings["seo.$page.description"] ?? '') !== '';
                 $out[] = ['label' => 'SEO', 'value' => $set ? 'Diatur' : 'Bawaan', 'ok' => $set, 'url' => $tab['url']];
@@ -170,7 +183,15 @@ class AdminNav {
                 $out[] = ['label' => 'Gambar diganti', 'value' => "$custom/$total", 'ok' => null, 'url' => $tab['url']];
             }
         }
+        if ($untranslated) {
+            array_unshift($out, ['label' => 'Belum diterjemahkan', 'value' => $untranslated . ' teks', 'ok' => 'warn', 'url' => $translateUrl]);
+        }
         return $out;
+    }
+
+    private static function row($model, $method, $args) {
+        if (!class_exists($model)) require_once dirname(__DIR__) . '/models/' . $model . '.php';
+        try { return (new $model())->$method(...$args) ?: null; } catch (Throwable $e) { return null; }
     }
 
     /** Everything the Ctrl+K search can jump to: [label, hint, url, keywords] */

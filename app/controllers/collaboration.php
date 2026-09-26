@@ -27,6 +27,8 @@ class collaboration extends Controller {
             echo json_encode(['status' => 'error', 'message' => implode(' ', array_merge(...array_values($errors)))]);
             exit;
         }
+        // Documents are emailed to the typed address: limit per address and per IP
+        FormGuard::check('docs', $_POST['email']);
 
         $collaborationModel = $this->model('Collaboration_model');
         $doc = $collaborationModel->getDocumentById((int) $_POST['doc_id']);

@@ -104,7 +104,7 @@
             </div>
         </div>
 
-        <form id="downloadForm">
+        <form id="downloadForm"><?= FormGuard::honeypot() ?>
           <input type="hidden" name="doc_id" id="modalDocId">
           <div class="mb-3">
             <label for="dlName" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.name">Nama Lengkap</label>

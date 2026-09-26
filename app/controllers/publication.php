@@ -30,6 +30,7 @@ class Publication extends Controller {
             echo json_encode(['status' => 'error', 'field_error' => true, 'message' => implode(' ', array_merge(...array_values($errors)))]);
             exit;
         }
+        FormGuard::check('pubs', $_POST['email']);
 
         $pub = $this->model('Publication_model')->getById((int) $_POST['pub_id']);
         if (!$pub || $pub->is_paid || !$this->publicationFile($pub)) {

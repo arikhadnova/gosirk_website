@@ -23,6 +23,7 @@ class Admin extends Controller {
     private $pilotVillageModel;
     private $ggcActionModel;
     private $gnpProgramModel;
+    private $ggcProgramModel;
     private $pageTextModel;
     private $pageSectionModel;
 
@@ -66,6 +67,7 @@ class Admin extends Controller {
         $this->pilotVillageModel = $this->model('PilotVillage_model');
         $this->ggcActionModel = $this->model('GgcAction_model');
         $this->gnpProgramModel = $this->model('GnpProgram_model');
+        $this->ggcProgramModel = $this->model('GgcProgram_model');
         $this->pageTextModel = $this->model('PageText_model');
         $this->pageSectionModel = $this->model('PageSection_model');
 
@@ -80,6 +82,46 @@ class Admin extends Controller {
           UNIQUE KEY `setting_key` (`setting_key`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4");
         $db->execute();
+    }
+
+    /**
+     * English version of a field (the "English" box under each Indonesian field, see EnField):
+     * - box edited by the admin            -> the admin's text is kept, never overwritten
+     * - box empty                          -> automatic translation
+     * - Indonesian changed, box untouched  -> translated again so both stay in step
+     * - nothing changed                    -> stays as it was (no new translation request)
+     * Forms without the box keep the old behaviour (always translated).
+     */
+    private function en($field, $idValue) {
+        $idValue = (string) $idValue;
+        if (!array_key_exists($field . '_en', $_POST)) return Translator::translate($idValue);
+
+        $en = trim((string) $_POST[$field . '_en']);
+        $enBefore = trim((string) ($_POST[$field . '_en_was'] ?? ''));
+        $idBefore = $_POST[$field . '_id_was'] ?? null;
+        $idNow = (string) ($_POST[$field . '_id'] ?? $idValue);
+
+        if ($en === '') return Translator::translate($idValue);
+        if ($en !== $enBefore) return $en;
+        if ($idBefore === null || trim($idBefore) !== trim($idNow)) {
+            $translated = Translator::translate($idValue);
+            // The translator returns the Indonesian text when it fails (e.g. rate limited):
+            // keep the previous English then - slightly outdated English beats Indonesian on the English site
+            $failed = trim(strip_tags($translated)) === trim(strip_tags($idValue));
+            return $failed && $en !== '' ? $en : $translated;
+        }
+        return $en;
+    }
+
+    // "Terjemahkan" button in the English box
+    public function translate() {
+        header('Content-Type: application/json');
+        $text = (string) ($_POST['text'] ?? '');
+        $out = trim($text) === '' ? '' : Translator::translate($text);
+        $failed = trim(strip_tags($out)) === trim(strip_tags($text)) && trim($text) !== '';
+        echo json_encode(['status' => $failed ? 'error' : 'success', 'text' => $out,
+            'message' => $failed ? 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi, atau tulis versi Inggris sendiri.' : '']);
+        exit;
     }
 
     // Shared editors (hero, sections, texts, images, SEO) show one page at a time: ?page=<key>.
@@ -479,15 +521,15 @@ class Admin extends Controller {
             'page_name' => $page,
             'section_key' => 'about',
             'badge_id' => $_POST['badge_id'] ?? '',
-            'badge_en' => Translator::translate($_POST['badge_id'] ?? ''),
+            'badge_en' => $this->en('badge', $_POST['badge_id'] ?? ''),
             'title_id' => $_POST['title_id'] ?? '',
-            'title_en' => Translator::translate(strip_tags($_POST['title_id'] ?? '')),
+            'title_en' => $this->en('title', strip_tags($_POST['title_id'] ?? '')),
             'content_id' => $_POST['content_id'] ?? '',
-            'content_en' => Translator::translate(strip_tags($_POST['content_id'] ?? '')),
+            'content_en' => $this->en('content', strip_tags($_POST['content_id'] ?? '')),
             'content_2_id' => $_POST['content_2_id'] ?? '',
-            'content_2_en' => Translator::translate(strip_tags($_POST['content_2_id'] ?? '')),
+            'content_2_en' => $this->en('content_2', strip_tags($_POST['content_2_id'] ?? '')),
             'content_3_id' => $_POST['content_3_id'] ?? '',
-            'content_3_en' => Translator::translate(strip_tags($_POST['content_3_id'] ?? '')),
+            'content_3_en' => $this->en('content_3', strip_tags($_POST['content_3_id'] ?? '')),
             'image' => $image,
             'is_active' => 1
         ];
@@ -558,11 +600,11 @@ class Admin extends Controller {
 
         $data = [
             'tag_id' => $_POST['tag_id'] ?? '',
-            'tag_en' => Translator::translate($_POST['tag_id'] ?? ''),
+            'tag_en' => $this->en('tag', $_POST['tag_id'] ?? ''),
             'title_id' => $_POST['title_id'] ?? '',
-            'title_en' => Translator::translate($_POST['title_id'] ?? ''),
+            'title_en' => $this->en('title', $_POST['title_id'] ?? ''),
             'subtitle_id' => $_POST['subtitle_id'] ?? '',
-            'subtitle_en' => Translator::translate($_POST['subtitle_id'] ?? '')
+            'subtitle_en' => $this->en('subtitle', $_POST['subtitle_id'] ?? '')
         ];
 
         // Handle Hero Slider Upload
@@ -848,11 +890,11 @@ class Admin extends Controller {
 
             $data = [
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'subtitle_id' => $_POST['subtitle_id'],
-                'subtitle_en' => Translator::translate($_POST['subtitle_id']),
+                'subtitle_en' => $this->en('subtitle', $_POST['subtitle_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image ?: '',
                 'main_category' => '',
@@ -869,11 +911,11 @@ class Admin extends Controller {
                 'tags' => $_POST['tags'] ?? '',
                 'video_url' => '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
-                'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
+                'detail_content_en' => $this->en('detail_content', $_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
-                'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
+                'targets_en' => $this->en('targets', $_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
-                'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
+                'metrics_en' => $this->en('metrics', $_POST['metrics_id'] ?? ''),
                 'approach_id' => $approach_id,
                 'approach_en' => $approach_en,
                 'highlights' => json_encode($highlights),
@@ -995,11 +1037,11 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
-                'title_en' => Translator::translate($_POST['title_id']),
+                'title_en' => $this->en('title', $_POST['title_id']),
                 'subtitle_id' => $_POST['subtitle_id'],
-                'subtitle_en' => Translator::translate($_POST['subtitle_id']),
+                'subtitle_en' => $this->en('subtitle', $_POST['subtitle_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image,
                 'main_category' => $old_portfolio->main_category,
@@ -1016,11 +1058,11 @@ class Admin extends Controller {
                 'tags' => $_POST['tags'] ?? '',
                 'video_url' => '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
-                'detail_content_en' => Translator::translate($_POST['detail_content_id'] ?? ''),
+                'detail_content_en' => $this->en('detail_content', $_POST['detail_content_id'] ?? ''),
                 'targets_id' => $_POST['targets_id'] ?? '',
-                'targets_en' => Translator::translate($_POST['targets_id'] ?? ''),
+                'targets_en' => $this->en('targets', $_POST['targets_id'] ?? ''),
                 'metrics_id' => $_POST['metrics_id'] ?? '',
-                'metrics_en' => Translator::translate($_POST['metrics_id'] ?? ''),
+                'metrics_en' => $this->en('metrics', $_POST['metrics_id'] ?? ''),
                 'approach_id' => $approach_id,
                 'approach_en' => $approach_en,
                 'highlights' => json_encode($highlights),
@@ -1126,17 +1168,18 @@ class Admin extends Controller {
                         Upload::delete($old_article->image, 'img/blog');
                         $image = $new_image;
                     } else {
-                        Flasher::setFlash('Gambar', 'gagal diunggah (Cek ukuran maks 2MB)', 'warning');
+                        Flasher::setFlash('Gambar', 'gagal diunggah (cek format dan ukuran maks. 10 MB)', 'warning');
                     }
                 }
 
                 // Handle Translation safely
-                $title_en = Translator::translate($_POST['title_id']);
+                $title_en = $this->en('title', $_POST['title_id']);
 
                 if (strlen($_POST['content_id']) < 3000) {
-                    $content_en = Translator::translate($_POST['content_id']);
+                    $content_en = $this->en('content', $_POST['content_id']);
                 } else {
-                    $content_en = $_POST['content_id'];
+                    // too long for the automatic translator: use the English written by the admin, if any
+                    $content_en = trim($_POST['content_en'] ?? '') !== '' ? $_POST['content_en'] : $_POST['content_id'];
                 }
 
                 $data = [
@@ -1182,16 +1225,17 @@ class Admin extends Controller {
                 if (!empty($_FILES['image']['name'])) {
                     $image = Upload::file($_FILES['image'], 'img/blog');
                     if (!$image) {
-                        Flasher::setFlash('Gambar', 'gagal diunggah (Cek ukuran maks 2MB)', 'warning');
+                        Flasher::setFlash('Gambar', 'gagal diunggah (cek format dan ukuran maks. 10 MB)', 'warning');
                     }
                 }
 
-                $title_en = Translator::translate($_POST['title_id']);
+                $title_en = $this->en('title', $_POST['title_id']);
 
                 if (strlen($_POST['content_id']) < 3000) {
-                    $content_en = Translator::translate($_POST['content_id']);
+                    $content_en = $this->en('content', $_POST['content_id']);
                 } else {
-                    $content_en = $_POST['content_id'];
+                    // too long for the automatic translator: use the English written by the admin, if any
+                    $content_en = trim($_POST['content_en'] ?? '') !== '' ? $_POST['content_en'] : $_POST['content_id'];
                 }
 
                 $data = [
@@ -1431,9 +1475,9 @@ class Admin extends Controller {
 
             $data = [
                 'name_id' => $_POST['name_id'],
-                'name_en' => Translator::translate($_POST['name_id']),
+                'name_en' => $this->en('name', $_POST['name_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'image' => $image ?: '',
                 'order_priority' => $_POST['order_priority']
             ];
@@ -1470,9 +1514,9 @@ class Admin extends Controller {
             $data = [
                 'id' => $id,
                 'name_id' => $_POST['name_id'],
-                'name_en' => Translator::translate($_POST['name_id']),
+                'name_en' => $this->en('name', $_POST['name_id']),
                 'description_id' => $_POST['description_id'],
-                'description_en' => Translator::translate($_POST['description_id']),
+                'description_en' => $this->en('description', $_POST['description_id']),
                 'image' => $image,
                 'order_priority' => $_POST['order_priority']
             ];
@@ -1544,8 +1588,8 @@ class Admin extends Controller {
             
             $data = $_POST;
             $data['image'] = $image ?: '';
-            $data['title_en'] = Translator::translate($_POST['title_id']);
-            $data['description_en'] = Translator::translate($_POST['description_id']);
+            $data['title_en'] = $this->en('title', $_POST['title_id']);
+            $data['description_en'] = $this->en('description', $_POST['description_id']);
             
             if ($this->serviceItemModel->add($data)) {
                 $this->activityLogModel->log('CREATE', 'Service Items', "Menambahkan item layanan baru '{$_POST['title_id']}'");
@@ -1586,8 +1630,8 @@ class Admin extends Controller {
 
             $data = $_POST;
             $data['image'] = $image;
-            $data['title_en'] = Translator::translate($_POST['title_id']);
-            $data['description_en'] = Translator::translate($_POST['description_id']);
+            $data['title_en'] = $this->en('title', $_POST['title_id']);
+            $data['description_en'] = $this->en('description', $_POST['description_id']);
 
             if ($this->serviceItemModel->update($data)) {
                 $this->activityLogModel->log('UPDATE', 'Service Items', "Memperbarui item layanan '{$_POST['title_id']}'");
@@ -2467,10 +2511,10 @@ class Admin extends Controller {
             $data['highlights'] = json_encode($highlights);
             
             // Auto-translate
-            $data['title_en'] = Translator::translate($data['title_id']);
+            $data['title_en'] = $this->en('title', $data['title_id']);
 
-            $data['description_en'] = Translator::translate($data['description_id']);
-            $data['detail_content_en'] = Translator::translate($data['detail_content_id']);
+            $data['description_en'] = $this->en('description', $data['description_id']);
+            $data['detail_content_en'] = $this->en('detail_content', $data['detail_content_id']);
             
             // Handle JSON Translation for Program Points
             if (!empty($data['program_points_id'])) {
@@ -2489,8 +2533,8 @@ class Admin extends Controller {
                 }
             }
             
-            $data['location_en'] = Translator::translate($data['location_id'] ?: '');
-            $data['service_type_en'] = Translator::translate($data['service_type_id'] ?: '');
+            $data['location_en'] = $this->en('location', $data['location_id'] ?: '');
+            $data['service_type_en'] = $this->en('service_type', $data['service_type_id'] ?: '');
 
             $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
 
@@ -2582,10 +2626,10 @@ class Admin extends Controller {
             $data['highlights'] = json_encode($highlights);
 
             // Auto-translate
-            $data['title_en'] = Translator::translate($data['title_id']);
+            $data['title_en'] = $this->en('title', $data['title_id']);
 
-            $data['description_en'] = Translator::translate($data['description_id']);
-            $data['detail_content_en'] = Translator::translate($data['detail_content_id']);
+            $data['description_en'] = $this->en('description', $data['description_id']);
+            $data['detail_content_en'] = $this->en('detail_content', $data['detail_content_id']);
 
             // Handle JSON Translation for Program Points
             if (!empty($data['program_points_id'])) {
@@ -2604,8 +2648,8 @@ class Admin extends Controller {
                 }
             }
 
-            $data['location_en'] = Translator::translate($data['location_id']);
-            $data['service_type_en'] = Translator::translate($data['service_type_id']);
+            $data['location_en'] = $this->en('location', $data['location_id']);
+            $data['service_type_en'] = $this->en('service_type', $data['service_type_id']);
 
             $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
 
@@ -3046,25 +3090,43 @@ class Admin extends Controller {
         exit;
     }
     // "Program Utama" on the Go Ngompos Project page
-    public function gnp_programs() {
+    // Program cards of the Go Ngompos Project page and the GoSirk Green Community page share one module
+    private function programKind($kind) {
+        $kinds = [
+            'gnp' => ['model' => $this->gnpProgramModel, 'page' => 'go_ngompos_project', 'route' => 'gnp_programs', 'log' => 'Go Ngompos',
+                      'title' => 'Program Go Ngompos', 'desc' => 'Kartu di section "Program Utama" halaman Go Ngompos Project.',
+                      'default_title' => 'PROGRAM UTAMA', 'default_subtitle' => 'Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.'],
+            'ggc' => ['model' => $this->ggcProgramModel, 'page' => 'ggc', 'route' => 'ggc_programs', 'log' => 'GGC',
+                      'title' => 'Program GGC', 'desc' => 'Kartu di section "Program Berdampak Kami" halaman GoSirk Green Community.',
+                      'default_title' => 'PROGRAM BERDAMPAK KAMI', 'default_subtitle' => 'Kami merancang inisiatif yang fokus pada pemberdayaan dan perubahan perilaku masyarakat.'],
+        ];
+        return $kinds[$kind] + ['kind' => $kind];
+    }
+
+    private function programsPage($kind) {
+        $k = $this->programKind($kind);
         $data = [
-            'title' => 'Program Go Ngompos',
-            'active' => 'gnp_programs',
-            'programs' => $this->gnpProgramModel->getAll(),
-            'section' => $this->pageSectionModel->getByPageAndSection('go_ngompos_project', 'programs')
+            'title' => $k['title'],
+            'active' => $k['route'],
+            'kind' => $k,
+            'programs' => $k['model']->getAll(),
+            'section' => $this->pageSectionModel->getByPageAndSection($k['page'], 'programs')
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/gnp_programs', $data);
         $this->views('layouts/admin_footer');
     }
 
-    private function gnpProgramData($old = null) {
+    private function programData($k, $old = null) {
+        $model = $k['model'];
+        $folder = $model::FOLDER;
         $image = $old->image ?? null;
         if (!empty($_FILES['image']['name'])) {
-            $uploaded = Upload::file($_FILES['image'], 'img/gnp', ['jpg', 'jpeg', 'png', 'webp']);
+            $uploaded = Upload::file($_FILES['image'], $folder, ['jpg', 'jpeg', 'png', 'webp']);
             if ($uploaded) {
-                if ($old && $old->image && !preg_match('#^https?://#i', $old->image)) {
-                    Upload::delete($old->image, 'img/gnp');
+                // only files uploaded here are removed (not starter images or shared page images)
+                if ($old && $old->image && !preg_match('#^https?://#i', $old->image) && strpos($old->image, '/') === false) {
+                    Upload::delete($old->image, $folder);
                 }
                 $image = $uploaded;
             }
@@ -3072,81 +3134,98 @@ class Admin extends Controller {
         $badge = trim($_POST['badge_id'] ?? '');
         return [
             'badge_id' => $badge,
-            'badge_en' => $badge !== '' ? Translator::translate($badge) : '',
-            'badge_color' => $_POST['badge_color'] ?? 'success',
+            'badge_en' => $badge !== '' ? $this->en('badge', $badge) : '',
+            'badge_color' => isset(GnpProgram_model::BADGE_COLORS[$_POST['badge_color'] ?? '']) ? $_POST['badge_color'] : 'success',
             'title_id' => trim($_POST['title_id']),
-            'title_en' => Translator::translate(trim($_POST['title_id'])),
+            'title_en' => $this->en('title', trim($_POST['title_id'])),
             'description_id' => trim($_POST['description_id']),
-            'description_en' => Translator::translate(trim($_POST['description_id'])),
+            'description_en' => $this->en('description', trim($_POST['description_id'])),
             'image' => $image,
             'order_priority' => $_POST['order_priority'] ?? 0,
         ];
     }
 
-    public function gnp_programs_store() {
+    private function programsStore($kind) {
+        $k = $this->programKind($kind);
         $this->validateForm('gnp_program', 'store');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $data = $this->gnpProgramData();
-            if ($data['image'] && $this->gnpProgramModel->add($data)) {
-                $this->activityLogModel->log('CREATE', 'Go Ngompos', "Menambahkan program '{$data['title_id']}'");
+            $data = $this->programData($k);
+            if ($data['image'] && $k['model']->add($data)) {
+                $this->activityLogModel->log('CREATE', $k['log'], "Menambahkan program '{$data['title_id']}'");
                 Flasher::setFlash('Program', 'berhasil ditambahkan', 'success');
             } else {
                 Flasher::setFlash('Program', 'gagal ditambahkan', 'danger');
             }
         }
-        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        header('Location: ' . BASE_URL . 'admin/' . $k['route']);
         exit;
     }
 
-    public function gnp_programs_update() {
+    private function programsUpdate($kind) {
+        $k = $this->programKind($kind);
         $this->validateForm('gnp_program', 'update');
-        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($old = $this->gnpProgramModel->getById((int) $_POST['id']))) {
-            $data = $this->gnpProgramData($old);
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($old = $k['model']->getById((int) $_POST['id']))) {
+            $data = $this->programData($k, $old);
             $data['id'] = $old->id;
-            if ($this->gnpProgramModel->update($data)) {
-                $this->activityLogModel->log('UPDATE', 'Go Ngompos', "Memperbarui program '{$data['title_id']}'");
+            if ($k['model']->update($data)) {
+                $this->activityLogModel->log('UPDATE', $k['log'], "Memperbarui program '{$data['title_id']}'");
                 Flasher::setFlash('Program', 'berhasil diperbarui', 'success');
             } else {
                 Flasher::setFlash('Program', 'gagal diperbarui', 'danger');
             }
         }
-        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        header('Location: ' . BASE_URL . 'admin/' . $k['route']);
         exit;
     }
 
-    public function gnp_programs_delete($id) {
-        $old = $this->gnpProgramModel->getById((int) $id);
-        if ($old && $this->gnpProgramModel->delete($old->id)) {
-            if ($old->image && !preg_match('#^https?://#i', $old->image)) {
-                Upload::delete($old->image, 'img/gnp');
+    private function programsDelete($kind, $id) {
+        $k = $this->programKind($kind);
+        $model = $k['model'];
+        $old = $model->getById((int) $id);
+        if ($old && $model->delete($old->id)) {
+            if ($old->image && !preg_match('#^https?://#i', $old->image) && strpos($old->image, '/') === false) {
+                Upload::delete($old->image, $model::FOLDER);
             }
-            $this->activityLogModel->log('DELETE', 'Go Ngompos', "Menghapus program '{$old->title_id}'");
+            $this->activityLogModel->log('DELETE', $k['log'], "Menghapus program '{$old->title_id}'");
             Flasher::setFlash('Program', 'berhasil dihapus', 'success');
         }
-        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        header('Location: ' . BASE_URL . 'admin/' . $k['route']);
         exit;
     }
 
-    public function gnp_programs_section() {
+    private function programsSection($kind) {
+        $k = $this->programKind($kind);
         $this->validateForm('gnp_program_section', 'update');
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $title = trim($_POST['title_id'] ?? '');
             $subtitle = trim($_POST['content_id'] ?? '');
             $this->pageSectionModel->upsert([
-                'page_name' => 'go_ngompos_project',
+                'page_name' => $k['page'],
                 'section_key' => 'programs',
                 'title_id' => $title,
-                'title_en' => $title !== '' ? Translator::translate($title) : '',
+                'title_en' => $title !== '' ? $this->en('title', $title) : '',
                 'content_id' => $subtitle,
-                'content_en' => $subtitle !== '' ? Translator::translate($subtitle) : '',
+                'content_en' => $subtitle !== '' ? $this->en('content', $subtitle) : '',
                 'is_active' => isset($_POST['is_active']) ? 1 : 0
             ]);
-            $this->activityLogModel->log('UPDATE', 'Go Ngompos', 'Memperbarui pengaturan section Program Utama');
+            $this->activityLogModel->log('UPDATE', $k['log'], 'Memperbarui pengaturan section program');
             Flasher::setFlash('Pengaturan section', 'berhasil disimpan', 'success');
         }
-        header('Location: ' . BASE_URL . 'admin/gnp_programs');
+        header('Location: ' . BASE_URL . 'admin/' . $k['route']);
         exit;
     }
+
+    public function gnp_programs() { $this->programsPage('gnp'); }
+    public function gnp_programs_store() { $this->programsStore('gnp'); }
+    public function gnp_programs_update() { $this->programsUpdate('gnp'); }
+    public function gnp_programs_delete($id) { $this->programsDelete('gnp', $id); }
+    public function gnp_programs_section() { $this->programsSection('gnp'); }
+
+    public function ggc_programs() { $this->programsPage('ggc'); }
+    public function ggc_programs_store() { $this->programsStore('ggc'); }
+    public function ggc_programs_update() { $this->programsUpdate('ggc'); }
+    public function ggc_programs_delete($id) { $this->programsDelete('ggc', $id); }
+    public function ggc_programs_section() { $this->programsSection('ggc'); }
 
     // Public pages whose texts can be edited (view folder => label)
     const TEXT_PAGES = [

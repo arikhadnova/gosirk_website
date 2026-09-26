@@ -42,18 +42,23 @@ class App {
         $base = dirname(__DIR__); // app/
 
         // Check for controller (ensure index exists before accessing)
-        if (isset($url[0]) && file_exists($base . '/controllers/' . $url[0] . '.php')) {
+        $isPanel = isset($url[0]) && in_array($url[0], ['admin', 'auth'], true);
+        if (isset($url[0]) && preg_match('/^[a-z_]+$/', $url[0]) && file_exists($base . '/controllers/' . $url[0] . '.php')) {
             $this->controller = $url[0];
             unset($url[0]);
+        } elseif (isset($url[0])) {
+            (new Controller)->notFound(); // unknown address: real 404 instead of silently showing Home
         }
 
         require_once $base . '/controllers/' . $this->controller . '.php';
         $this->controller = new $this->controller;
 
         // Check for method
-        if (isset($url[1]) && method_exists($this->controller, $url[1])) {
+        if (isset($url[1]) && method_exists($this->controller, $url[1]) && is_callable([$this->controller, $url[1]])) {
             $this->method = $url[1];
             unset($url[1]);
+        } elseif (isset($url[1]) && !$isPanel) {
+            $this->controller->notFound(); // e.g. /about/xyz
         }
 
         // Get params

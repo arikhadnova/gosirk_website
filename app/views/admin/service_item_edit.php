@@ -25,11 +25,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $item->title_id ?>" placeholder="Masukkan judul dalam Bahasa Indonesia" <?= FormRules::attrs('service_item', 'title_id', 'update') ?>>
+                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $item->title_id ?>" placeholder="Masukkan judul dalam Bahasa Indonesia" <?= FormRules::attrs('service_item', 'title_id', 'update') ?>><?= EnField::render('title', $item->title_id ?? '', $item->title_en ?? '', 'text', 1) ?>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
-                        <textarea name="description_id" class="form-control" rows="8" placeholder="Masukkan deskripsi detail dalam Bahasa Indonesia..." <?= FormRules::attrs('service_item', 'description_id', 'update') ?>><?= $item->description_id ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" placeholder="Masukkan deskripsi detail dalam Bahasa Indonesia..." <?= FormRules::attrs('service_item', 'description_id', 'update') ?>><?= $item->description_id ?></textarea><?= EnField::render('description', $item->description_id ?? '', $item->description_en ?? '', 'textarea', 6) ?>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>

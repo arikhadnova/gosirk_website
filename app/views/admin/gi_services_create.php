@@ -20,12 +20,12 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul Layanan</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Training dan Workshop" <?= FormRules::attrs('gi_service', 'title_id', 'store') ?>>
+                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Contoh: Training dan Workshop" <?= FormRules::attrs('gi_service', 'title_id', 'store') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Deskripsi Singkat</label>
-                        <textarea name="description_id" class="form-control" rows="3" placeholder="Ringkasan layanan untuk kartu di halaman utama..." <?= FormRules::attrs('gi_service', 'description_id', 'store') ?>></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" placeholder="Ringkasan layanan untuk kartu di halaman utama..." <?= FormRules::attrs('gi_service', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 3) ?>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -55,7 +55,7 @@
 
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark"><i class="fas fa-align-left me-1 text-primary"></i> KONTEN DETAIL (Rich Text)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="15" <?= FormRules::attrs('gi_service', 'detail_content_id', 'store') ?>></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="15" <?= FormRules::attrs('gi_service', 'detail_content_id', 'store') ?>></textarea><?= EnField::render('detail_content', '', '', 'editor', 10) ?>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -107,11 +107,11 @@
                     <hr class="my-3 border-dashed">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Lokasi Layanan</label>
-                        <input type="text" name="location_id" class="form-control" placeholder="Contoh: Online / Offline (Disesuaikan)" value="Online / Offline (Disesuaikan)" <?= FormRules::attrs('gi_service', 'location_id', 'store') ?>>
+                        <input type="text" name="location_id" class="form-control" placeholder="Contoh: Online / Offline (Disesuaikan)" value="Online / Offline (Disesuaikan)" <?= FormRules::attrs('gi_service', 'location_id', 'store') ?>><?= EnField::render('location', '', '', 'text', 1) ?>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Sifat Layanan</label>
-                        <input type="text" name="service_type_id" class="form-control" placeholder="Contoh: Profesional & Adaptif" value="Profesional & Adaptif" <?= FormRules::attrs('gi_service', 'service_type_id', 'store') ?>>
+                        <input type="text" name="service_type_id" class="form-control" placeholder="Contoh: Profesional & Adaptif" value="Profesional & Adaptif" <?= FormRules::attrs('gi_service', 'service_type_id', 'store') ?>><?= EnField::render('service_type', '', '', 'text', 1) ?>
                     </div>
                     <hr class="my-4">
                     <button type="submit" class="btn btn-primary w-100 py-3 fw-bold rounded-pill shadow-sm">

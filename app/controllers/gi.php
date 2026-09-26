@@ -23,10 +23,7 @@ class gi extends Controller {
 
     public function detail($slug = '') {
         $service = $this->model('GiService_model')->getBySlug($slug);
-        if (!$service) {
-            header('Location: ' . BASE_URL . 'gi');
-            exit;
-        }
+        if (!$service) $this->notFound();
         $data = [
             'service' => $service,
             'title' => $service->title_id,

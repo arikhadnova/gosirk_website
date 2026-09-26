@@ -180,11 +180,13 @@
                             <?php foreach ($hubFacts as $f) : ?>
                                 <a href="<?= BASE_URL . $f['url'] ?>" class="hub-fact">
                                     <span><?= $f['label'] ?></span>
-                                    <strong class="<?= $f['ok'] === true ? 'is-ok' : ($f['ok'] === false ? 'is-muted' : '') ?>"><?= $f['value'] ?></strong>
+                                    <strong class="<?= $f['ok'] === true ? 'is-ok' : ($f['ok'] === false ? 'is-muted' : ($f['ok'] === 'warn' ? 'is-warn' : '')) ?>"><?= $f['value'] ?></strong>
                                 </a>
                             <?php endforeach; ?>
                         </div>
                     <?php endif; ?>
+                    <!-- ID | EN for every text field on this page (filled in by admin_footer.php when there are English fields) -->
+                    <div class="hub-lang d-none" id="hubLang"></div>
                     <a href="<?= BASE_URL . $hub['public'] ?>" target="_blank" class="btn btn-light btn-action btn-sm hub-view"><i class="fas fa-external-link-alt"></i> Lihat halaman</a>
                 </div>
                 <nav class="hub-tabs" aria-label="Bagian halaman">

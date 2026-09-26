@@ -484,7 +484,7 @@
       </div>
       <div class="modal-body text-start">
         <p class="mb-4 text-muted small" data-i18n="home.modal.desc">Silakan isi formulir di bawah ini untuk mendapatkan profil perusahaan terbaru kami.</p>
-        <form id="cpDownloadForm">
+        <form id="cpDownloadForm"><?= FormGuard::honeypot() ?>
           <input type="hidden" name="doc_id" value="<?= $data['company_profile']->id ?? '' ?>">
           <div class="mb-3">
             <label for="cpName" class="form-label" data-i18n="home.modal.name">Nama Lengkap</label>

@@ -5,9 +5,9 @@
         <p class="text-muted small mb-0">Kelola konten "Aksi Kami" di halaman GoSirk Green Community (GGC).</p>
     </div>
     <div>
-        <!-- <button type="button" class="btn btn-success rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#addActionModal">
+        <button type="button" class="btn btn-primary px-4" data-bs-toggle="modal" data-bs-target="#addActionModal">
             <i class="fas fa-plus-circle me-2"></i> Tambah Aksi
-        </button> -->
+        </button>
     </div>
 </div>
 
@@ -47,9 +47,10 @@
                                     data-order="<?= $a->order_priority ?>">
                                 <i class="fas fa-edit text-primary"></i>
                             </button>
-                            <!-- <a href="<?= BASE_URL ?>admin/ggc_actions_delete/<?= $a->id ?>" class="btn btn-sm btn-white shadow-sm rounded-circle" onclick="return confirm('Hapus aksi ini?')">
+                            <a href="<?= BASE_URL ?>admin/ggc_actions_delete/<?= $a->id ?>" class="btn btn-sm btn-white shadow-sm rounded-circle btn-delete-confirm" title="Hapus"
+                               data-confirm-message="Aksi &quot;<?= htmlspecialchars($a->title_id, ENT_QUOTES) ?>&quot; akan dihapus dari halaman GGC.">
                                 <i class="fas fa-trash text-danger"></i>
-                            </a> -->
+                            </a>
                         </div>
                     </div>
                     <div class="card-body p-4">

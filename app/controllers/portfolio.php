@@ -12,13 +12,9 @@ class Portfolio extends Controller {
         exit;
     }
 
-    public function detail($id) {
-        $portfolio = $this->portfolioModel->getById($id);
-        
-        if (!$portfolio) {
-            header('Location: ' . BASE_URL);
-            exit;
-        }
+    public function detail($id = null) {
+        $portfolio = $id ? $this->portfolioModel->getById($id) : null;
+        if (!$portfolio) $this->notFound();
 
         $data = [
             'title' => $portfolio->title_id,

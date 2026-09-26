@@ -21,11 +21,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Nama Layanan</label>
-                        <input type="text" name="name_id" class="form-control form-control-lg" value="<?= $service->name_id; ?>" <?= FormRules::attrs('service', 'name_id', 'update') ?>>
+                        <input type="text" name="name_id" class="form-control form-control-lg" value="<?= $service->name_id; ?>" <?= FormRules::attrs('service', 'name_id', 'update') ?>><?= EnField::render('name', $service->name_id ?? '', $service->name_en ?? '', 'text', 1) ?>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi Layanan</label>
-                        <textarea name="description_id" class="form-control" rows="8" <?= FormRules::attrs('service', 'description_id', 'update') ?>><?= $service->description_id; ?></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" <?= FormRules::attrs('service', 'description_id', 'update') ?>><?= $service->description_id; ?></textarea><?= EnField::render('description', $service->description_id ?? '', $service->description_en ?? '', 'textarea', 6) ?>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>

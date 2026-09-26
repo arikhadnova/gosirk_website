@@ -67,31 +67,31 @@ if (!empty($data['only'])) $sections = array_intersect_key($sections, [$data['on
                                         <div class="row g-3">
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Badge</label>
-                                                <input type="text" name="badge_id" class="form-control" value="<?= htmlspecialchars($section->badge_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('page_section', 'badge_id', 'update') ?>>
+                                                <input type="text" name="badge_id" class="form-control" value="<?= htmlspecialchars($section->badge_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('page_section', 'badge_id', 'update') ?>><?= EnField::render('badge', $section->badge_id ?? '', $section->badge_en ?? '', 'text', 1) ?>
                                             </div>
 
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Judul</label>
-                                                <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('page_section', 'title_id', 'update') ?>><?= htmlspecialchars($section->title_id ?? ''); ?></textarea>
+                                                <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('page_section', 'title_id', 'update') ?>><?= htmlspecialchars($section->title_id ?? ''); ?></textarea><?= EnField::render('title', $section->title_id ?? '', $section->title_en ?? '', 'textarea', 2) ?>
                                                 <div class="text-muted extra-small mt-1">HTML sederhana seperti span/bold boleh dipakai.</div>
                                             </div>
 
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Paragraf 1</label>
-                                                <textarea name="content_id" class="form-control" rows="5" <?= FormRules::attrs('page_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? ''); ?></textarea>
+                                                <textarea name="content_id" class="form-control" rows="5" <?= FormRules::attrs('page_section', 'content_id', 'update') ?>><?= htmlspecialchars($section->content_id ?? ''); ?></textarea><?= EnField::render('content', $section->content_id ?? '', $section->content_en ?? '', 'textarea', 5) ?>
                                             </div>
 
                                             <?php if ($paragraphCount >= 2): ?>
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Paragraf 2</label>
-                                                <textarea name="content_2_id" class="form-control" rows="4"><?= htmlspecialchars($section->content_2_id ?? ''); ?></textarea>
+                                                <textarea name="content_2_id" class="form-control" rows="4"><?= htmlspecialchars($section->content_2_id ?? ''); ?></textarea><?= EnField::render('content_2', $section->content_2_id ?? '', $section->content_2_en ?? '', 'textarea', 4) ?>
                                             </div>
                                             <?php endif; ?>
 
                                             <?php if ($paragraphCount >= 3): ?>
                                             <div class="col-12">
                                                 <label class="form-label small fw-bold text-dark">Paragraf 3</label>
-                                                <textarea name="content_3_id" class="form-control" rows="4"><?= htmlspecialchars($section->content_3_id ?? ''); ?></textarea>
+                                                <textarea name="content_3_id" class="form-control" rows="4"><?= htmlspecialchars($section->content_3_id ?? ''); ?></textarea><?= EnField::render('content_3', $section->content_3_id ?? '', $section->content_3_en ?? '', 'textarea', 4) ?>
                                             </div>
                                             <?php endif; ?>
                                         </div>

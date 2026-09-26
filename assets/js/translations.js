@@ -5,6 +5,15 @@
 const resources = {
     id: {
         translation: {
+            "error404": {
+                "title": "Halaman tidak ditemukan",
+                "desc": "Maaf, halaman yang Anda cari tidak ada atau sudah dipindahkan. Periksa kembali alamatnya, atau lanjutkan ke salah satu halaman berikut.",
+                "btn_home": "Kembali ke Beranda",
+                "link_partner": "Implementasi Partner",
+                "link_consult": "Konsultansi",
+                "link_blog": "Blog",
+                "link_contact": "Hubungi Kami",
+            },
             "privacy": {
                 "title": "Kebijakan Privasi",
                 "updated_label": "Terakhir diperbarui"
@@ -970,6 +979,15 @@ const resources = {
     },
     en: {
         translation: {
+            "error404": {
+                "title": "Page not found",
+                "desc": "Sorry, the page you are looking for does not exist or has been moved. Check the address, or continue to one of these pages.",
+                "btn_home": "Back to Home",
+                "link_partner": "Implementing Partner",
+                "link_consult": "Consultancy",
+                "link_blog": "Blog",
+                "link_contact": "Contact Us",
+            },
             "privacy": {
                 "title": "Privacy Policy",
                 "updated_label": "Last updated"

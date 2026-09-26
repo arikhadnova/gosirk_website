@@ -23,17 +23,17 @@
                     <!-- Basic Info -->
                     <div class="mb-4">
                         <label class="form-label small fw-bold">Judul Proyek</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg border-primary-soft" placeholder="Contoh: Pendampingan Desa Bengkel" <?= FormRules::attrs('portfolio', 'title_id', 'store') ?>>
+                        <input type="text" name="title_id" class="form-control form-control-lg border-primary-soft" placeholder="Contoh: Pendampingan Desa Bengkel" <?= FormRules::attrs('portfolio', 'title_id', 'store') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold">Sub-judul</label>
-                        <input type="text" name="subtitle_id" class="form-control" placeholder="Contoh: Pemerintah Desa Bengkel, Tabanan" <?= FormRules::attrs('portfolio', 'subtitle_id', 'store') ?>>
+                        <input type="text" name="subtitle_id" class="form-control" placeholder="Contoh: Pemerintah Desa Bengkel, Tabanan" <?= FormRules::attrs('portfolio', 'subtitle_id', 'store') ?>><?= EnField::render('subtitle', '', '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold">Deskripsi Ringkas (di kartu)</label>
-                        <textarea name="description_id" class="form-control" rows="3" placeholder="Deskripsi pendek yang muncul di card portfolio..." <?= FormRules::attrs('portfolio', 'description_id', 'store') ?>></textarea>
+                        <textarea name="description_id" class="form-control" rows="3" placeholder="Deskripsi pendek yang muncul di card portfolio..." <?= FormRules::attrs('portfolio', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 3) ?>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -82,7 +82,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark"><i class="fas fa-info-circle me-1 text-primary"></i> 1. TENTANG PROYEK (Isi Detail)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" placeholder="Tuliskan detail panjang mengenai proyek di sini..." <?= FormRules::attrs('portfolio', 'detail_content_id', 'store') ?>></textarea>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" placeholder="Tuliskan detail panjang mengenai proyek di sini..." <?= FormRules::attrs('portfolio', 'detail_content_id', 'store') ?>></textarea><?= EnField::render('detail_content', '', '', 'editor', 10) ?>
                     </div>
 
                     <?php

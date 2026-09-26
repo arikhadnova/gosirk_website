@@ -25,6 +25,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="form-token" content="<?= FormGuard::token() ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($pageTitle) ?></title>
     <meta name="description" content="<?= htmlspecialchars($pageDesc, ENT_QUOTES) ?>">

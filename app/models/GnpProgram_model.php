@@ -1,9 +1,11 @@
 <?php
-// "Program Utama" cards on the Go Ngompos Project page (Admin > Program Go Ngompos)
+// "Program Utama" cards on the Go Ngompos Project page (Admin > Go Ngompos Project > Program).
+// GgcProgram_model reuses this class for the programs on the GoSirk Green Community page.
 
 class GnpProgram_model {
-    private $table = 'gnp_programs';
-    private $db;
+    protected $table = 'gnp_programs';
+    protected $db;
+    const FOLDER = 'img/gnp'; // uploaded images
 
     // Badge colours offered in the admin form => CSS for the public page
     const BADGE_COLORS = [
@@ -11,6 +13,7 @@ class GnpProgram_model {
         'primary' => ['Biru', 'background-color: #0d6efd;'],
         'orange'  => ['Oranye', 'background-color: #f97316;'],
         'warning' => ['Kuning', 'background-color: #f6c23e;'],
+        'info'    => ['Biru muda', 'background-color: #0dcaf0;'],
         'dark'    => ['Gelap', 'background-color: #212529;'],
     ];
 
@@ -44,7 +47,15 @@ class GnpProgram_model {
             return;
         }
 
-        $seed = [
+        $seed = $this->seed();
+        foreach ($seed as $r) {
+            $this->add(array_combine(['badge_id', 'badge_en', 'badge_color', 'title_id', 'title_en', 'description_id', 'description_en', 'image', 'order_priority'], $r));
+        }
+    }
+
+    // Starter rows: [badge_id, badge_en, color, title_id, title_en, description_id, description_en, image, order]
+    protected function seed() {
+        return [
             ['Edukasi', 'Education', 'success', 'Kelas Ngompos', 'Composting Class',
              'Sesi belajar praktik pemilahan organik dan metode kompos sederhana.', 'Hands-on learning sessions for organic sorting and simple composting methods.',
              'https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&q=80&w=800', 1],
@@ -55,9 +66,6 @@ class GnpProgram_model {
              'Pemanfaatan kompos untuk tanaman pangan, toga, dan ruang hijau komunitas.', 'Using compost for food crops, medicinal plants, and community green spaces.',
              'https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&q=80&w=800', 3],
         ];
-        foreach ($seed as $r) {
-            $this->add(array_combine(['badge_id', 'badge_en', 'badge_color', 'title_id', 'title_en', 'description_id', 'description_en', 'image', 'order_priority'], $r));
-        }
     }
 
     public function getAll() {
@@ -104,9 +112,11 @@ class GnpProgram_model {
         $this->db->bind(':order_priority', (int) ($data['order_priority'] ?? 0));
     }
 
-    /** Public URL of a program image (uploaded file or full URL). */
+    /** Public URL of a program image: full URL, a path under assets/img/ ("pages/x.jpg"), or an uploaded file. */
     public static function imageUrl($image) {
         if (!$image) return '';
-        return preg_match('#^https?://#i', $image) ? $image : ASSETS_URL . 'img/gnp/' . $image;
+        if (preg_match('#^https?://#i', $image)) return $image;
+        if (strpos($image, '/') !== false) return ASSETS_URL . 'img/' . $image;
+        return ASSETS_URL . static::FOLDER . '/' . $image;
     }
 }

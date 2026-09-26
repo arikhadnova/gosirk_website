@@ -81,7 +81,7 @@
             <div class="col-lg-7">
                 <div class="form-panel">
                     <p data-i18n="contact.form.title">Silahkan tinggalkan pesan anda dibawah ini</p>
-                    <form id="contactForm">
+                    <form id="contactForm"><?= FormGuard::honeypot() ?>
                             <div class="mb-4">
                                 <label class="form-label" data-i18n="contact.form.name">Nama</label>
                                 <input type="text" name="name" class="form-control" placeholder="Nama Anda" data-i18n="contact.form.name_placeholder" <?= FormRules::attrs('contact', 'name') ?>>

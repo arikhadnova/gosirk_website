@@ -165,49 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
 </section>
 <?php endif; ?>
 
-<?php
-$programsSection = $data['programs_section'] ?? null;
-$programs = $data['programs'] ?? [];
-if ((!$programsSection || (int) $programsSection->is_active === 1) && $programs) :
-    // Admin-defined title/subtitle, otherwise the built-in bilingual defaults
-    $headingAttrs = function ($id, $en, $i18nKey) {
-        return trim((string) $id) !== ''
-            ? 'data-lang-id="' . htmlspecialchars($id, ENT_QUOTES) . '" data-lang-en="' . htmlspecialchars($en ?: $id, ENT_QUOTES) . '"'
-            : 'data-i18n="' . $i18nKey . '"';
-    };
-?>
-<section class="section bg-light-subtle" id="programs">
-  <div class="container">
-    <div class="section-title-wrapper text-center">
-      <div class="title-bg" data-i18n="gnp.programs.title_bg">Programs</div>
-      <h4 class="fw-bold fs-2 mb-2 text-success" <?= $headingAttrs($programsSection->title_id ?? '', $programsSection->title_en ?? '', 'gnp.programs.title') ?>><?= htmlspecialchars(($programsSection->title_id ?? '') ?: 'PROGRAM UTAMA') ?></h4>
-      <p class="text-muted mx-auto" style="max-width: 600px;" <?= $headingAttrs($programsSection->content_id ?? '', $programsSection->content_en ?? '', 'gnp.programs.subtitle') ?>><?= htmlspecialchars(($programsSection->content_id ?? '') ?: 'Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.') ?></p>
-    </div>
-
-    <div class="row g-4 justify-content-center">
-      <?php foreach ($programs as $p) : [, $badgeStyle] = GnpProgram_model::BADGE_COLORS[$p->badge_color] ?? GnpProgram_model::BADGE_COLORS['success']; ?>
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <?php if ($p->image) : ?>
-              <img loading="lazy" decoding="async" src="<?= htmlspecialchars(GnpProgram_model::imageUrl($p->image)) ?>" alt="<?= htmlspecialchars($p->title_id) ?>" loading="lazy">
-            <?php endif; ?>
-            <?php if ($p->badge_id) : ?>
-              <div class="position-absolute top-0 start-0 m-3 px-3 py-1 text-white rounded-pill small fw-bold" style="<?= $badgeStyle ?>"
-                   data-lang-id="<?= htmlspecialchars($p->badge_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->badge_en ?: $p->badge_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->badge_id) ?></div>
-            <?php endif; ?>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-lang-id="<?= htmlspecialchars($p->title_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->title_en ?: $p->title_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->title_id) ?></h6>
-            <p class="text-muted small" data-lang-id="<?= htmlspecialchars($p->description_id, ENT_QUOTES) ?>" data-lang-en="<?= htmlspecialchars($p->description_en ?: $p->description_id, ENT_QUOTES) ?>"><?= htmlspecialchars($p->description_id) ?></p>
-          </div>
-        </div>
-      </div>
-      <?php endforeach; ?>
-    </div>
-  </div>
-</section>
-<?php endif; ?>
+<?php $this->views('partials/programs', [
+    'programs' => $data['programs'] ?? [], 'section' => $data['programs_section'] ?? null, 'model' => 'GnpProgram_model',
+    'i18n' => 'gnp.programs', 'default_title' => 'PROGRAM UTAMA', 'default_subtitle' => 'Langkah praktis untuk membangun kebiasaan ngompos yang konsisten.',
+]); ?>
 
 <section class="cta-ggc text-center" style="background-image: linear-gradient(rgba(10, 50, 20, 0.85), rgba(10, 50, 20, 0.85)), url('<?= PageImages::attr('gnp.cta_bg') ?>');">
   <div class="container">
@@ -244,7 +205,7 @@ if ((!$programsSection || (int) $programsSection->is_active === 1) && $programs)
       </div>
       <div class="modal-body text-start">
         <p class="mb-4 text-muted small" data-i18n="gnp.concept_modal.desc">Silakan isi formulir di bawah ini. Concept note akan dikirim ke email Anda.</p>
-        <form id="conceptNoteForm">
+        <form id="conceptNoteForm"><?= FormGuard::honeypot() ?>
           <?php if (count($conceptNotes) === 1) : ?>
             <input type="hidden" name="doc_id" value="<?= (int) $conceptNotes[0]->id ?>">
             <div class="alert alert-warning border-0 small mb-4">

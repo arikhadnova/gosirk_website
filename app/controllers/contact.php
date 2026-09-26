@@ -21,6 +21,7 @@ class Contact extends Controller {
             echo json_encode(['status' => 'error', 'message' => implode(' ', array_merge(...array_values($errors)))]);
             exit;
         }
+        FormGuard::check('contact', $_POST['email']);
 
         $data = [
             'name' => trim($_POST['name']),

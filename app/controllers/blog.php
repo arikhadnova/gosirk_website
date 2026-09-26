@@ -14,6 +14,10 @@ class Blog extends Controller {
         $data = [
             'article' => $this->model('Article_model')->getById($id)
         ];
+        // Missing articles and drafts are not public (admins may preview drafts)
+        if (empty($data['article']) || (($data['article']->status ?? 'published') !== 'published' && empty($_SESSION['admin_logged_in']))) {
+            $this->notFound();
+        }
         if (!empty($data['article'])) {
             $data['title'] = $data['article']->title_id;
             $data['meta_description'] = mb_substr(trim(preg_replace('/\s+/', ' ', strip_tags($data['article']->content_id ?? ''))), 0, 160);

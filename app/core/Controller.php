@@ -55,6 +55,15 @@ class Controller {
         return preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|shorts)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', (string) $url, $m) ? $m[1] : null;
     }
 
+    // "Page not found" page with a real 404 status (so search engines do not index broken links)
+    public function notFound() {
+        http_response_code(404);
+        $this->views('layouts/header', ['title' => 'Halaman tidak ditemukan']);
+        $this->views('errors/404');
+        $this->views('layouts/footer');
+        exit;
+    }
+
     // Backwards-compatible alias
     public function view($view, $data = []) {
         return $this->views($view, $data);

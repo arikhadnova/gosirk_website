@@ -5,13 +5,21 @@
 // Attempts are stored as unix timestamps in `login_attempts` (table created automatically).
 
 class LoginThrottle {
-    const WINDOW = 900; // 15 minutes
+    const WINDOW = 900; // 15 minutes (default)
 
-    // scope => [max per username/email, max per IP address]
+    // scope => [max per username/email, max per IP address, window in seconds]
     const LIMITS = [
-        'login' => [5, 15],
-        'reset' => [3, 5],
+        'login'   => [5, 15, 900],
+        'reset'   => [3, 5, 900],
+        // public forms (see FormGuard)
+        'contact' => [3, 6, 900],     // messages to the admin
+        'docs'    => [3, 10, 3600],   // documents emailed to the address typed in the form
+        'pubs'    => [30, 60, 3600],  // publication downloads (no email sent)
     ];
+
+    public static function window($scope) {
+        return self::LIMITS[$scope][2] ?? self::WINDOW;
+    }
 
     private static function db() {
         static $db = null;
@@ -46,7 +54,7 @@ class LoginThrottle {
     /** Seconds until this username/email (or this IP) may try again; 0 = allowed. */
     public static function lockedFor($scope, $ident) {
         [$maxIdent, $maxIp] = self::LIMITS[$scope];
-        $since = time() - self::WINDOW;
+        $since = time() - self::window($scope);
         $wait = 0;
         foreach ([['ident', self::norm($ident), $maxIdent], ['ip', self::ip(), $maxIp]] as [$col, $value, $max]) {
             $db = self::db();
@@ -58,7 +66,7 @@ class LoginThrottle {
             $rows = $db->resultSet();
             if (count($rows) >= $max) {
                 // free again when the oldest of the last $max attempts leaves the window
-                $wait = max($wait, (int) end($rows)->attempted_at + self::WINDOW - time());
+                $wait = max($wait, (int) end($rows)->attempted_at + self::window($scope) - time());
             }
         }
         return max(0, $wait);
@@ -70,7 +78,7 @@ class LoginThrottle {
         $db->query("SELECT COUNT(*) AS n FROM login_attempts WHERE scope = :scope AND ident = :v AND attempted_at > :since");
         $db->bind(':scope', $scope);
         $db->bind(':v', self::norm($ident));
-        $db->bind(':since', time() - self::WINDOW);
+        $db->bind(':since', time() - self::window($scope));
         return max(0, self::LIMITS[$scope][0] - (int) $db->single()->n);
     }
 

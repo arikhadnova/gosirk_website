@@ -93,3 +93,6 @@ html, body { overflow-x: clip; }
     /* Small buttons stay comfortable to tap */
     .btn.btn-sm { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
 }
+
+/* Spam-trap field of the public forms (FormGuard): off-screen, never seen by visitors */
+.hp-field { position: absolute !important; left: -10000px !important; width: 1px; height: 1px; overflow: hidden; }

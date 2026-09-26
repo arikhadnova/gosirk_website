@@ -144,17 +144,17 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Tag / Hashtag</label>
-                                        <input type="text" name="tag_id" class="form-control" value="<?= htmlspecialchars($hero->tag_id); ?>" <?= FormRules::attrs('hero', 'tag_id', 'update') ?>>
+                                        <input type="text" name="tag_id" class="form-control" value="<?= htmlspecialchars($hero->tag_id); ?>" <?= FormRules::attrs('hero', 'tag_id', 'update') ?>><?= EnField::render('tag', $hero->tag_id ?? '', $hero->tag_en ?? '', 'text', 1) ?>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Judul Hero (boleh HTML)</label>
-                                        <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('hero', 'title_id', 'update') ?>><?= htmlspecialchars($hero->title_id); ?></textarea>
+                                        <textarea name="title_id" class="form-control" rows="2" <?= FormRules::attrs('hero', 'title_id', 'update') ?>><?= htmlspecialchars($hero->title_id); ?></textarea><?= EnField::render('title', $hero->title_id ?? '', $hero->title_en ?? '', 'textarea', 2) ?>
                                     </div>
                                     
                                     <div class="mb-3">
                                         <label class="form-label small fw-bold text-dark">Hero Subtitle</label>
-                                        <textarea name="subtitle_id" class="form-control" rows="3" <?= FormRules::attrs('hero', 'subtitle_id', 'update') ?>><?= htmlspecialchars($hero->subtitle_id); ?></textarea>
+                                        <textarea name="subtitle_id" class="form-control" rows="3" <?= FormRules::attrs('hero', 'subtitle_id', 'update') ?>><?= htmlspecialchars($hero->subtitle_id); ?></textarea><?= EnField::render('subtitle', $hero->subtitle_id ?? '', $hero->subtitle_en ?? '', 'textarea', 3) ?>
                                     </div>
 
                                     <div class="mt-2">

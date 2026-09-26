@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <div><span data-i18n="collaboration.modal.doc_label">Dokumen</span>: <strong id="pubModalTitle">...</strong></div>
         </div>
 
-        <form id="pubDownloadForm" novalidate>
+        <form id="pubDownloadForm" novalidate><?= FormGuard::honeypot() ?>
           <div class="mb-3">
             <label for="pubName" class="form-label fw-bold small text-uppercase text-muted" data-i18n="collaboration.modal.name">Nama Lengkap</label>
             <input type="text" class="form-control bg-light border-0 py-2" id="pubName" placeholder="Masukkan nama Anda" data-i18n-placeholder="collaboration.modal.name_placeholder" <?= FormRules::attrs('pub_request', 'name') ?>>

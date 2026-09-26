@@ -40,6 +40,8 @@ require_once __DIR__ . '/core/Controller.php';
 require_once __DIR__ . '/core/Flasher.php';
 require_once __DIR__ . '/core/Csrf.php';
 require_once __DIR__ . '/core/LoginThrottle.php';
+require_once __DIR__ . '/core/FormGuard.php';
+require_once __DIR__ . '/core/EnField.php';
 require_once __DIR__ . '/core/Validator.php';
 require_once __DIR__ . '/core/FormRules.php';
 require_once __DIR__ . '/core/PageImages.php';

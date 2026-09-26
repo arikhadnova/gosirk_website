@@ -180,7 +180,7 @@ class FormRules {
             'title_id'       => ['Judul Program', 'required|min:3|max:255'],
             'description_id' => ['Deskripsi', 'required|min:10|max:1000'],
             'badge_id'       => ['Label', 'max:100'],
-            'badge_color'    => ['Warna Label', 'in:success,primary,orange,warning,dark'],
+            'badge_color'    => ['Warna Label', 'in:success,primary,orange,warning,info,dark'],
             'order_priority' => ['Urutan', 'int|min_value:0'],
             'image'          => ['Foto', 'file|required_store'],
         ],

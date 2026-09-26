@@ -134,6 +134,97 @@ Flasher::flash(); ?>
         });
     }
 
+    // One ID | EN toggle for the whole page (app/core/EnField.php), shown in the page header:
+    // in EN mode every translatable field shows its English version in the same place.
+    // Runs after the page's own DOMContentLoaded handlers, so pages that follow the toggle (Teks) are ready
+    document.addEventListener('DOMContentLoaded', function () {
+        const ens = [...document.querySelectorAll('.en-input')];
+        // pages with their own bilingual editor listen to the "admin-lang" event instead (data-lang-aware)
+        if (!ens.length && !document.querySelector('[data-lang-aware]')) return;
+        const norm = (t) => (t || '').replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ').replace(/\s+/g, ' ').trim();
+        const pairs = ens.map((en) => {
+            const form = en.closest('form');
+            const id = form && form.querySelector(`[name="${en.dataset.enFor}_id"]`);
+            const idUi = () => (id && id.nextElementSibling && id.nextElementSibling.classList && id.nextElementSibling.classList.contains('ck-editor')) ? id.nextElementSibling : id;
+            const idText = () => { const ui = idUi(), ed = ui !== id && ui.querySelector('.ck-editor__editable'); return ed && ed.ckeditorInstance ? ed.ckeditorInstance.getData() : (id ? id.value : ''); };
+            return { en, id, idUi, idText, editor: null };
+        });
+        const enText = (p) => p.editor ? p.editor.getData() : p.en.value;
+        const setEn = (p, v) => { if (p.editor) p.editor.setData(v); else p.en.value = v; };
+        // fields inside a closed modal (e.g. "Tambah" forms) are not counted
+        const visible = (p) => !p.en.closest('.modal') || p.en.closest('.modal').classList.contains('show');
+        const missing = () => pairs.filter((p) => visible(p) && norm(p.idText()) !== '' && (norm(enText(p)) === '' || norm(enText(p)) === norm(p.idText())));
+
+        // In a page hub the toggle sits in the header; elsewhere above the page content
+        let bar = document.getElementById('hubLang');
+        if (!bar) {
+            bar = document.createElement('div');
+            bar.className = 'hub-lang mb-3';
+            (document.querySelector('.admin-header-section') || document.querySelector('#page-content-wrapper > .container-fluid')).after(bar);
+        }
+        bar.classList.remove('d-none');
+        bar.innerHTML = '<div class="btn-group btn-group-sm" role="group" aria-label="Bahasa teks yang diedit" title="Bahasa teks yang diedit di halaman ini">'
+            + '<button type="button" class="btn btn-dark" data-lang="id">ID</button><button type="button" class="btn btn-light" data-lang="en">EN</button></div>'
+            + '<button type="button" class="btn btn-link btn-sm p-0 lang-translate d-none"></button>';
+        const translateBtn = bar.querySelector('.lang-translate');
+        let lang = 'id';
+        const refresh = () => {
+            const n = missing().length;
+            translateBtn.innerHTML = `<i class="fas fa-language"></i> Terjemahkan ${n} kolom`;
+            translateBtn.classList.toggle('d-none', lang !== 'en' || n === 0);
+        };
+        const show = (l) => {
+            lang = l;
+            try { sessionStorage.setItem('gosirk_admin_lang', l); } catch (e) {}
+            bar.querySelectorAll('[data-lang]').forEach((b) => { b.classList.toggle('btn-dark', b.dataset.lang === l); b.classList.toggle('btn-light', b.dataset.lang !== l); });
+            document.body.classList.toggle('lang-en-mode', l === 'en');
+            document.dispatchEvent(new CustomEvent('admin-lang', { detail: l }));
+            pairs.forEach((p) => {
+                const idEl = p.idUi();
+                if (idEl) idEl.classList.toggle('d-none', l === 'en');
+                if (p.en.classList.contains('en-editor')) {
+                    if (l === 'en' && !p.editor && window.ClassicEditor) {
+                        p.en.classList.remove('d-none');
+                        ClassicEditor.create(p.en, { toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', '|', 'undo', 'redo'] })
+                            .then((e) => { p.editor = e; e.model.document.on('change:data', refresh); });
+                    } else if (p.editor) {
+                        p.editor.ui.view.element.classList.toggle('d-none', l !== 'en');
+                    }
+                } else {
+                    p.en.classList.toggle('d-none', l !== 'en');
+                }
+            });
+            refresh();
+        };
+        bar.querySelectorAll('[data-lang]').forEach((b) => b.addEventListener('click', () => show(b.dataset.lang)));
+        pairs.forEach((p) => p.en.addEventListener('input', refresh));
+        document.addEventListener('shown.bs.modal', refresh);
+        document.addEventListener('hidden.bs.modal', refresh);
+        translateBtn.addEventListener('click', async () => {
+            const todo = missing();
+            if (!todo.length) return;
+            translateBtn.disabled = true;
+            let failed = 0;
+            for (const [i, p] of todo.entries()) {
+                translateBtn.innerHTML = `<span class="spinner-border spinner-border-sm"></span> Menerjemahkan ${i + 1}/${todo.length}…`;
+                try {
+                    const fd = new FormData(); fd.append('text', p.idText());
+                    const res = await fetch('<?= BASE_URL ?>admin/translate', { method: 'POST', body: fd }).then((r) => r.json());
+                    if (res.status === 'success') setEn(p, res.text); else failed++;
+                } catch (e) { failed++; }
+            }
+            translateBtn.disabled = false;
+            refresh();
+            if (failed) Swal.fire({ icon: 'warning', title: 'Sebagian belum diterjemahkan', text: 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi, atau tulis versi Inggrisnya sendiri.' });
+        });
+        // Keep the chosen language while moving between the tabs of a page
+        let saved = 'id';
+        try { saved = sessionStorage.getItem('gosirk_admin_lang') || 'id'; } catch (e) {}
+        show(saved === 'en' ? 'en' : 'id');
+        // rich-text editors of the Indonesian fields are created a moment later: apply again once ready
+        window.addEventListener('load', () => setTimeout(() => show(lang), 300));
+    });
+
     // Buttons that only hold an icon (edit/delete/view) share one round style (see .btn-icon in admin.css)
     document.querySelectorAll('#page-content-wrapper > .container-fluid .btn').forEach((b) => {
         if (b.classList.contains('btn-link') || b.textContent.trim() !== '') return;

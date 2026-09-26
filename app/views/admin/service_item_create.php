@@ -23,11 +23,11 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label fw-bold small text-dark">Judul</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Masukkan judul layanan..." <?= FormRules::attrs('service_item', 'title_id', 'store') ?>>
+                        <input type="text" name="title_id" class="form-control form-control-lg" placeholder="Masukkan judul layanan..." <?= FormRules::attrs('service_item', 'title_id', 'store') ?>><?= EnField::render('title', '', '', 'text', 1) ?>
                     </div>
                     <div class="mb-0">
                         <label class="form-label fw-bold small text-dark">Deskripsi</label>
-                        <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." <?= FormRules::attrs('service_item', 'description_id', 'store') ?>></textarea>
+                        <textarea name="description_id" class="form-control" rows="8" placeholder="Tuliskan deskripsi lengkap layanan..." <?= FormRules::attrs('service_item', 'description_id', 'store') ?>></textarea><?= EnField::render('description', '', '', 'textarea', 6) ?>
                     </div>
                     <div class="mt-3">
                         <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

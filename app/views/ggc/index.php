@@ -181,94 +181,11 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
 </section>
 <?php endif; ?>
 
-<!-- PROGRAM SECTION -->
-<section class="section bg-light-subtle">
-  <div class="container">
-    <div class="section-title-wrapper text-center">
-      <div class="title-bg" data-i18n="ggc.programs.title_bg">Programs</div>
-      <h4 class="fw-bold fs-2 mb-2 text-success" data-i18n="ggc.programs.title">PROGRAM BERDAMPAK KAMI</h4>
-      <p class="text-muted mx-auto" style="max-width: 600px;" data-i18n="ggc.programs.subtitle">Kami merancang inisiatif yang fokus pada pemberdayaan dan perubahan perilaku masyarakat.</p>
-    </div>
-
-    <div class="row g-4 justify-content-center">
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_1') ?>" alt="Pelatihan Pengolahan Sampah">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-success text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p1_badge">Pemberdayaan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="ggc.programs.p1_title">Pelatihan Pengolahan Sampah</h6>
-            <p class="text-muted small" data-i18n="ggc.programs.p1_desc">
-              Meningkatkan kemampuan kader desa dalam pemilahan dan pengolahan sampah.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_2') ?>" alt="Pelatihan Kader (PRA)">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p2_badge">Edukasi</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="ggc.programs.p2_title">Pelatihan Kader (PRA)</h6>
-            <p class="text-muted small" data-i18n="ggc.programs.p2_desc">
-              Mendorong peran kader PKK dalam pengelolaan sampah rumah tangga.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_3') ?>" alt="Pendampingan & Edukasi">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-orange text-white rounded-pill small fw-bold" style="background-color: var(--ggc-orange);" data-i18n="ggc.programs.p3_badge">Pendampingan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="ggc.programs.p3_title">Pendampingan & Edukasi</h6>
-            <p class="text-muted small" data-i18n="ggc.programs.p3_desc">
-              Praktik pengelolaan sampah berkelanjutan di desa binaan.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_4') ?>" alt="Pengurangan Emisi">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-info text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p4_badge">Lingkungan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="ggc.programs.p4_title">Pelatihan Pengolahan Sampah</h6>
-            <p class="text-muted small" data-i18n="ggc.programs.p4_desc">
-              Berkontribusi dalam pengurangan emisi gas rumah kaca.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-6">
-        <div class="program-card">
-          <div class="program-card-img-wrapper">
-            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_5') ?>" alt="Penanaman Bibit">
-            <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-warning text-dark rounded-pill small fw-bold" data-i18n="ggc.programs.p5_badge">Ketahanan Pangan</div>
-          </div>
-          <div class="program-card-content text-center">
-            <h6 class="fw-bold" data-i18n="ggc.programs.p5_title">Penanaman Bibit Tanaman</h6>
-            <p class="text-muted small" data-i18n="ggc.programs.p5_desc">
-              Mendukung ketahanan pangan dan pemenuhan tanaman obat.
-            </p>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
+<!-- PROGRAM SECTION (Admin > GoSirk Green Community > Program) -->
+<?php $this->views('partials/programs', [
+    'programs' => $data['programs'] ?? [], 'section' => $data['programs_section'] ?? null, 'model' => 'GgcProgram_model',
+    'i18n' => 'ggc.programs', 'default_title' => 'PROGRAM BERDAMPAK KAMI', 'default_subtitle' => 'Kami merancang inisiatif yang fokus pada pemberdayaan dan perubahan perilaku masyarakat.',
+]); ?>
 
 <!-- GALLERY SECTION -->
 <section class="section pb-5" id="gallery">

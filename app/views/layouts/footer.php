@@ -99,6 +99,25 @@ if (!isset($settings)) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+      // Spam protection (see app/core/FormGuard.php): every same-site form post carries the page token
+      // and the value of the form's hidden honeypot field
+      (function () {
+        const token = document.querySelector('meta[name="form-token"]')?.content || '';
+        let honeypot = '';
+        document.addEventListener('submit', (e) => { honeypot = e.target.querySelector('input[name="website"]')?.value || ''; }, true);
+        const nativeFetch = window.fetch.bind(window);
+        window.fetch = function (input, init) {
+          try {
+            const url = new URL(input instanceof Request ? input.url : input, location.href);
+            if (init && init.body instanceof FormData && (init.method || '').toUpperCase() === 'POST' && url.origin === location.origin) {
+              if (!init.body.has('_ft')) init.body.append('_ft', token);
+              if (!init.body.has('website')) init.body.append('website', honeypot);
+            }
+          } catch (e) {}
+          return nativeFetch(input, init);
+        };
+      })();
+
       // Visitor details from the document/publication forms, remembered in this browser for 30 days
       // to fill those forms in automatically next time. Inputs use ids <prefix>Name/Email/Organization/Jabatan.
       window.GosirkLead = (function () {
