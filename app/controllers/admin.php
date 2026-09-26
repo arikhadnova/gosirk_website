@@ -143,6 +143,13 @@ class Admin extends Controller {
         return $out;
     }
 
+    // URL-safe slug: lowercase letters, digits and single dashes ("Training & Workshop" -> "training-workshop")
+    private function slugify($text) {
+        $text = strtolower(trim(strip_tags(html_entity_decode((string) $text, ENT_QUOTES, 'UTF-8'))));
+        $text = trim(preg_replace('/[^a-z0-9]+/', '-', $text), '-');
+        return $text !== '' ? $text : 'layanan';
+    }
+
     // "Terjemahkan" button in the English box
     public function translate() {
         header('Content-Type: application/json');
@@ -2554,7 +2561,7 @@ class Admin extends Controller {
             $data['location_en'] = $this->en('location', $data['location_id'] ?: '');
             $data['service_type_en'] = $this->en('service_type', $data['service_type_id'] ?: '');
 
-            $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
+            $data['slug'] = $this->slugify($data['title_en'] ?: $data['title_id']);
 
             // Ensure unique slug
             $base_slug = $data['slug'];
@@ -2662,7 +2669,9 @@ class Admin extends Controller {
             $data['location_en'] = $this->en('location', $data['location_id']);
             $data['service_type_en'] = $this->en('service_type', $data['service_type_id']);
 
-            $data['slug'] = str_replace(' ', '-', strtolower($data['title_en']));
+            // The address of the detail page stays the same after edits (shared links and Google keep working);
+            // a new one is only made when the service has none yet
+            $data['slug'] = !empty($old->slug) ? $old->slug : $this->slugify($data['title_en'] ?: $data['title_id']);
 
             // Ensure unique slug for update
             $base_slug = $data['slug'];
