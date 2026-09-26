@@ -1,4 +1,8 @@
 <?php
+// Same overlay as .hero-full::after in assets/css/hero.css, so the preview matches the website
+if (!defined('HERO_PREVIEW_OVERLAY')) define('HERO_PREVIEW_OVERLAY', 'linear-gradient(to top, rgba(7, 17, 33, .92) 0%, rgba(7, 17, 33, .62) 35%, rgba(7, 17, 33, .28) 70%, rgba(7, 17, 33, .18) 100%)');
+?>
+<?php
 $heroes = $data['heroes'];
 $pages = [
     'home' => 'Home',
@@ -66,13 +70,14 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
                                                 }, $heroImages);
                                                 $imageUrl = $previewImages[0] ?? '';
                                             ?>
-                                            <div class="preview-bg" data-preview-bg style="background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('<?= $imageUrl; ?>') center/cover no-repeat; width: 100%; height: 100%;"></div>
-                                            <div class="preview-content position-absolute top-50 start-50 translate-middle w-100 px-4 text-white">
+                                            <!-- Same look as the website: dark at the bottom, text aligned to the bottom -->
+                                            <div class="preview-bg" data-preview-bg style="background: <?= HERO_PREVIEW_OVERLAY ?>, url('<?= $imageUrl; ?>') center/cover no-repeat; width: 100%; height: 100%;"></div>
+                                            <div class="preview-content position-absolute bottom-0 start-0 w-100 px-4 pb-4 text-white text-center">
+                                                <h3 class="fw-bold mb-1 <?= in_array($key, ['partner', 'konsultan'], true) ? 'text-uppercase' : '' ?>"><?= $hero->title_id; ?></h3>
+                                                <p class="small mb-1" style="max-width: 600px; margin: 0 auto; opacity: .88;"><?= $hero->subtitle_id; ?></p>
                                                 <?php if($hero->tag_id): ?>
-                                                    <span class="badge bg-primary mb-2"><?= $hero->tag_id; ?></span>
+                                                    <div class="small fw-semibold" style="color: #ff9f43;"><?= $hero->tag_id; ?></div>
                                                 <?php endif; ?>
-                                                <h3 class="fw-bold mb-1"><?= $hero->title_id; ?></h3>
-                                                <p class="small opacity-75 mb-0" style="max-width: 600px; margin: 0 auto;"><?= $hero->subtitle_id; ?></p>
                                             </div>
                                         </div>
                                         <?php if (true): ?>
@@ -212,8 +217,9 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
         font-size: 0.75rem;
     }
     .preview-content h3 {
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        font-size: 1.75rem;
+        line-height: 1.15;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, .35);
     }
     .border-dashed {
         border-style: dashed !important;
@@ -282,7 +288,7 @@ if (!empty($data['only'])) $pages = array_intersect_key($pages, [$data['only'] =
 
         function updatePreview(imageUrl) {
             if (!imageUrl || !previewBg) return;
-            previewBg.style.background = "linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('" + imageUrl + "') center/cover no-repeat";
+            previewBg.style.background = "<?= HERO_PREVIEW_OVERLAY ?>, url('" + imageUrl + "') center/cover no-repeat";
         }
 
         function renumberSlots() {

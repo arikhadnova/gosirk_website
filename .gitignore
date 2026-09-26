@@ -9,3 +9,7 @@ Thumbs.db
 .vscode/
 .idea/
 /brain/
+
+# Server-side record of the image optimizer (Admin > Situs > Optimasi Gambar)
+/app/storage/optimized_server.json
+/assets/img/**/*.opt.webp

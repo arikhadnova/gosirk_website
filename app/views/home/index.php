@@ -125,9 +125,9 @@
             <div class="service-card h-100">
               <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
                 <?php if (isset($s->image) && $s->image) : ?>
-                  <img src="<?= ASSETS_URL ?>img/services/<?= $s->image ?>" alt="<?= $s->name_id ?>" class="w-100 h-100 object-fit-cover">
+                  <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/services/<?= $s->image ?>" alt="<?= $s->name_id ?>" class="w-100 h-100 object-fit-cover">
                 <?php else : ?>
-                  <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
+                  <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
                 <?php endif; ?>
               </div>
               <div class="p-4">
@@ -164,9 +164,9 @@
                 <div class="card border border-light shadow-sm h-100 rounded-3">
                   <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
                     <?php if (!empty($item->image)) : ?>
-                      <img src="<?= ASSETS_URL ?>img/gi/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
+                      <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/gi/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
                     <?php else : ?>
-                      <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
+                      <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
                     <?php endif; ?>
                   </div>
                   <div class="card-body p-4 d-flex flex-column">
@@ -197,9 +197,9 @@
                 <div class="card border border-light shadow-sm h-100 rounded-3">
                   <div class="card-image-wrapper bg-light d-flex align-items-center justify-content-center rounded-top-3" style="height: 200px; overflow: hidden;">
                     <?php if (!empty($item->image)) : ?>
-                      <img src="<?= ASSETS_URL ?>img/services/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
+                      <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/services/<?= $item->image ?>" alt="<?= $item->title_id ?>" class="w-100 h-100 object-fit-cover" loading="lazy">
                     <?php else : ?>
-                      <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
+                      <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-25" style="width: 120px;">
                     <?php endif; ?>
                   </div>
                   <div class="card-body p-4 d-flex flex-column">
@@ -309,7 +309,7 @@
 
       <div class="col-md-5">
         <div class="stat-box">
-          <img src="<?= ASSETS_URL ?>img/logo-gi.png" alt="GoSirk Institute" class="ecosystem-logo">
+          <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/logo-gi.png" alt="GoSirk Institute" class="ecosystem-logo">
           <div class="ecosystem-content">
             <h5 data-i18n="home.ecosystem.gi.title">GoSirk Institute</h5>
             <p data-i18n="home.ecosystem.gi.desc">Platform edukasi persampahan berbasis praktik dan pengalaman lapangan</p>
@@ -322,7 +322,7 @@
 
       <div class="col-md-5">
         <div class="stat-box">
-          <img src="<?= htmlspecialchars($ggcHeroLogoUrl, ENT_QUOTES) ?>" alt="GoSirk Green Community" class="ecosystem-logo">
+          <img loading="lazy" decoding="async" src="<?= htmlspecialchars($ggcHeroLogoUrl, ENT_QUOTES) ?>" alt="GoSirk Green Community" class="ecosystem-logo">
           <div class="ecosystem-content">
             <h5 data-i18n="home.ecosystem.ggc.title">GoSirk Green Community</h5>
             <p data-i18n="home.ecosystem.ggc.desc">Solusi nyata dalam pengelolaan sampah berbasis komunitas</p>
@@ -335,7 +335,7 @@
 
       <div class="col-md-5">
         <div class="stat-box">
-          <img src="<?= htmlspecialchars($gnpHeroLogoUrl, ENT_QUOTES) ?>" alt="Go Ngompos Project" class="ecosystem-logo">
+          <img loading="lazy" decoding="async" src="<?= htmlspecialchars($gnpHeroLogoUrl, ENT_QUOTES) ?>" alt="Go Ngompos Project" class="ecosystem-logo">
           <div class="ecosystem-content">
             <h5 data-i18n="home.ecosystem.gnp.title">Go Ngompos Project</h5>
             <p data-i18n="home.ecosystem.gnp.desc">Gerakan pengolahan sampah organik menjadi kompos dari rumah dan komunitas</p>
@@ -371,7 +371,7 @@
           }
         ?>
           <div class="partner-logo-item">
-            <img src="<?= $logoUrl ?>" alt="<?= htmlspecialchars($ptr->name) ?>" title="<?= htmlspecialchars($ptr->name) ?>" loading="lazy" onerror="this.src='<?= ASSETS_URL ?>img/Logo-GoSirk-01.png'; this.style.opacity='0.3';">
+            <img loading="lazy" decoding="async" src="<?= $logoUrl ?>" alt="<?= htmlspecialchars($ptr->name) ?>" title="<?= htmlspecialchars($ptr->name) ?>" loading="lazy" onerror="this.src='<?= ASSETS_URL ?>img/Logo-GoSirk-01.png'; this.style.opacity='0.3';">
           </div>
         <?php endforeach; ?>
       </div>
@@ -408,7 +408,7 @@
               <div class="blog-card">
                 <div class="blog-image">
                   <?php if ($art->image) : ?>
-                    <img src="<?= ASSETS_URL ?>img/blog/<?= $art->image ?>" alt="<?= $art->title_id ?>">
+                    <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/blog/<?= $art->image ?>" alt="<?= $art->title_id ?>">
                   <?php else : ?>
                     <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="fas fa-newspaper text-muted opacity-25" style="font-size: 64px;"></i></div>
                   <?php endif; ?>
@@ -471,7 +471,7 @@
 
 <!-- BANNER -->
 <div class="banner-section">
-    <img src="<?= PageImages::attr('home.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
+    <img loading="lazy" decoding="async" src="<?= PageImages::attr('home.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
 </div>
 
 <!-- Company Profile Modal -->

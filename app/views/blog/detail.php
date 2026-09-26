@@ -27,7 +27,7 @@
               </h1>
               
               <div class="d-flex align-items-center gap-3">
-                  <img src="https://ui-avatars.com/api/?name=<?= urlencode($article->author ?: 'Admin'); ?>&background=random" class="rounded-circle" width="48" height="48" alt="Author">
+                  <img loading="lazy" decoding="async" src="https://ui-avatars.com/api/?name=<?= urlencode($article->author ?: 'Admin'); ?>&background=random" class="rounded-circle" width="48" height="48" alt="Author">
                   <div>
                       <h6 class="fw-bold mb-0"><?= $article->author ?: 'Admin GoSirk'; ?></h6>
                       <small class="text-muted" data-i18n="blog.editorial_team">Tim Redaksi</small>
@@ -38,7 +38,7 @@
             <?php if ($article->image) : ?>
             <!-- Featured Image -->
             <div class="mb-5 rounded-4 overflow-hidden shadow-sm">
-                 <img src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" class="img-fluid w-100 object-fit-cover" style="max-height: 500px;" alt="<?= $article->title_id ?>">
+                 <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" class="img-fluid w-100 object-fit-cover" style="max-height: 500px;" alt="<?= $article->title_id ?>">
             </div>
             <?php endif; ?>
 

@@ -41,7 +41,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="<?= htmlspecialchars(material_symbols_url(), ENT_QUOTES) ?>" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -51,20 +51,20 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
     $page = $segments[0];
 
     if ($page == 'home' || $page == '') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/home.css?v=' . time() . '">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/home.css') . '">';
     } elseif ($page == 'contact') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/contact.css">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/contact.css') . '">';
     } elseif ($page == 'ggc' || $page == 'go_ngompos_project') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/ggc.css?v=' . time() . '">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/ggc.css') . '">';
     } elseif ($page == 'partnership') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/partnership.css?v=' . time() . '">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/partnership.css') . '">';
     } elseif ($page == 'gi' || $page == 'konsultan' || $page == 'implementasi_partner' || $page == 'implentasi_partner') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/gi.css?v=' . time() . '">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/gi.css') . '">';
     } elseif ($page == 'about') {
-        echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/about.css?v=' . time() . '">';
+        echo '<link rel="stylesheet" href="' . asset_v('css/about.css') . '">';
     } 
     // Blog and Publication pages use inline styles or default bootstrap, no specific CSS file needed.
-    echo '<link rel="stylesheet" href="' . ASSETS_URL . 'css/hero.css?v=' . time() . '">';
+    echo '<link rel="stylesheet" href="' . asset_v('css/hero.css') . '">';
     ?>
 
     <style>
@@ -262,7 +262,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
     <!-- Load required JS libraries for interactive components -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
     <script src="<?= ASSETS_URL ?>js/about.js"></script>
-    <script src="<?= ASSETS_URL ?>js/translations.js?v=<?= time() ?>"></script>
+    <script src="<?= asset_v('js/translations.js') ?>"></script>
     <?php $pageTexts = class_exists('Controller') && isset($this) ? $this->model('PageText_model')->getAll() : []; ?>
     <?php if ($pageTexts) : ?>
     <script>
@@ -281,7 +281,7 @@ $logo_url = (strpos($site_logo, 'http') === 0) ? $site_logo : ASSETS_URL . 'img/
     })(<?= json_encode($pageTexts, JSON_HEX_TAG | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE) ?>);
     </script>
     <?php endif; ?>
-    <script src="<?= ASSETS_URL ?>js/lang.js?v=<?= time() ?>"></script>
+    <script src="<?= asset_v('js/lang.js') ?>"></script>
 
 </head>
 <body>

@@ -85,7 +85,7 @@
         <div class="card p-4 h-100 border-0 shadow-sm">
             <div class="profile-card-left">
                 <div class="profile-avatar-wrapper">
-                    <img src="<?= ($user->photo && !empty($user->photo)) ? ASSETS_URL . 'img/profile/' . $user->photo . '?v=' . time() : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=FF8F56&color=fff&size=200' ?>" 
+                    <img src="<?= ($user->photo && !empty($user->photo)) ? asset_v('img/profile/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=FF8F56&color=fff&size=200' ?>" 
                          alt="Profile" 
                          id="profilePreview"
                          class="profile-avatar-preview">

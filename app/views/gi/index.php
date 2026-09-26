@@ -164,10 +164,10 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
             </div>
             <div class="col-lg-6 position-relative">
                 <div class="about-image-wrapper position-relative">
-                    <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" alt="Tentang GoSirk Institute" class="img-fluid rounded-4 shadow-lg position-relative z-2">
+                    <img loading="lazy" decoding="async" src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" alt="Tentang GoSirk Institute" class="img-fluid rounded-4 shadow-lg position-relative z-2">
                     <!-- Logo Overlay like About Page -->
                     <div class="bg-white bg-opacity-75 rounded-3 shadow-sm position-absolute m-3" style="top: 20px; left: 20px; z-index: 5; display: flex; align-items: center; justify-content: center;">
-                        <img src="<?= ASSETS_URL ?>img/logo-gi.png" alt="GI Logo" class="img-fluid" style="max-height: 80px;">
+                        <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/logo-gi.png" alt="GI Logo" class="img-fluid" style="max-height: 80px;">
                     </div>
                     <!-- Decor element -->
                     <div class="position-absolute bg-primary rounded-circle opacity-10" style="width: 200px; height: 200px; top: -20px; right: -20px; z-index: 1;"></div>
@@ -225,9 +225,9 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
                                 <div class="col-lg-4">
                                     <div class="bg-light rounded-4 h-100 service-img-placeholder position-relative overflow-hidden">
                                         <?php if ($s->image) : ?>
-                                            <img src="<?= ASSETS_URL ?>img/gi/<?= $s->image ?>" class="w-100 h-100 object-fit-cover">
+                                            <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/gi/<?= $s->image ?>" class="w-100 h-100 object-fit-cover">
                                         <?php else : ?>
-                                            <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-10" style="width: 100px;">
+                                            <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" class="opacity-10" style="width: 100px;">
                                         <?php endif; ?>
                                     </div>
                                 </div>
@@ -345,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-building' ?>"></i>
@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-house-door-fill' ?>"></i>
@@ -427,7 +427,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card shadow-sm border-0 rounded-4 overflow-hidden">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-megaphone-fill' ?>"></i>
@@ -470,7 +470,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card shadow-sm border-0 rounded-4 overflow-hidden">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-file-earmark-text-fill' ?>"></i>
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card shadow-sm border-0 rounded-4 overflow-hidden">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-laptop-fill' ?>"></i>
@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                     <div class="card h-100 portfolio-card shadow-sm border-0 rounded-4 overflow-hidden">
                                         <div class="portfolio-img-wrapper" style="height: 180px; overflow: hidden;">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="h-100 w-100 object-fit-cover" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="d-flex h-100 align-items-center justify-content-center bg-light opacity-50 text-secondary display-4">
                                                     <i class="<?= $p->icon_name ?: 'bi bi-mortarboard-fill' ?>"></i>
@@ -637,7 +637,7 @@ $videoYoutubeUrl = ($videoSection->content_2_id ?? '') ?: 'https://youtube.com/@
                              data-video-title-en="<?= htmlspecialchars($vid->title_en) ?>">
                             <div class="ratio ratio-16x9 bg-dark">
                                 <?php if ($thumb) : ?>
-                                    <img src="<?= $thumb ?>" class="w-100 h-100 object-fit-cover" alt="<?= htmlspecialchars($vid->title_id ?: 'Video GoSirk Institute') ?>" loading="lazy">
+                                    <img loading="lazy" decoding="async" src="<?= $thumb ?>" class="w-100 h-100 object-fit-cover" alt="<?= htmlspecialchars($vid->title_id ?: 'Video GoSirk Institute') ?>" loading="lazy">
                                 <?php endif; ?>
                                 <div class="play-overlay">
                                     <div class="play-btn-circle small">
@@ -758,7 +758,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="card article-card border-0 shadow-sm">
                                 <div class="article-image">
                                     <?php if ($article->image) : ?>
-                                        <img src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" class="img-fluid w-100 h-100 object-fit-cover" alt="<?= $article->title_id ?>">
+                                        <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/blog/<?= $article->image ?>" class="img-fluid w-100 h-100 object-fit-cover" alt="<?= $article->title_id ?>">
                                     <?php else : ?>
                                         <div class="d-flex gap-3 text-secondary opacity-25 display-4">
                                             <i class="bi bi-circle-fill" style="font-size: 2rem;"></i>

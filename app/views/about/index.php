@@ -31,9 +31,9 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
         <div class="row align-items-center g-5">
             <div class="col-lg-6">
                 <div class="about-image-wrapper">
-                    <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="about-image" alt="About Presentation">
+                    <img loading="lazy" decoding="async" src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="about-image" alt="About Presentation">
                     <div class="logo-overlay m-3">
-                         <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="Logo">
+                         <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="Logo">
                     </div>
                     <div class="decor-circle"></div>
                 </div>
@@ -156,7 +156,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
                     <div class="col-md-4 col-sm-6">
                         <div class="founder-card">
                             <div class="founder-img-wrapper">
-                                <img src="<?= ASSETS_URL ?>img/<?= $founder->image ?>" class="founder-img" alt="<?= $founder->name ?>">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/<?= $founder->image ?>" class="founder-img" alt="<?= $founder->name ?>">
                             </div>
                             <h5 class="fw-bold mb-1"><?= $founder->name ?></h5>
                             <p class="text-muted mb-3 small" data-lang-id="<?= $founder->role_id ?>" data-lang-en="<?= $founder->role_en ?>">
@@ -182,5 +182,5 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
 
 <!-- BANNER -->
 <div class="banner-section">
-    <img src="<?= PageImages::attr('about.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
+    <img loading="lazy" decoding="async" src="<?= PageImages::attr('about.banner') ?>" alt="Banner GoSirk" class="img-fluid w-100">
 </div>

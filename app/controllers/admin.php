@@ -3284,6 +3284,29 @@ class Admin extends Controller {
         exit;
     }
 
+    // Make images uploaded before automatic compression lighter (see ImageOptimizer)
+    public function image_optimize() {
+        $pending = ImageOptimizer::pending();
+        $data = [
+            'title' => 'Optimasi Gambar',
+            'active' => 'image_optimize',
+            'pending' => $pending,
+            'pending_bytes' => array_sum(array_column($pending, 'bytes')),
+        ];
+        $this->views('layouts/admin_header', $data);
+        $this->views('admin/image_optimize', $data);
+        $this->views('layouts/admin_footer');
+    }
+
+    public function image_optimize_run() {
+        header('Content-Type: application/json');
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') { echo json_encode(['status' => 'error']); exit; }
+        $result = ImageOptimizer::runBatch(6);
+        if ($result['remaining'] === 0) $this->activityLogModel->log('UPDATE', 'Optimasi Gambar', 'Mengoptimalkan gambar lama');
+        echo json_encode(['status' => 'success'] + $result);
+        exit;
+    }
+
     // Privacy policy page (/privacy): one rich-text document per language
     public function privacy() {
         $data = [

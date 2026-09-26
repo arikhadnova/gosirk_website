@@ -104,6 +104,7 @@ class AdminNav {
                 $t('Teks Navigasi & Footer', 'admin/page_texts?page=layouts', ['active' => 'page_texts', 'page' => 'layouts'], 'fa-font'),
                 $t('Kebijakan Privasi', 'admin/privacy', ['active' => 'privacy'], 'fa-user-shield'),
                 $t('SEO Kebijakan Privasi', 'admin/seo?page=privacy', ['active' => 'seo', 'page' => 'privacy'], 'fa-search'),
+                $t('Optimasi Gambar', 'admin/image_optimize', ['active' => 'image_optimize'], 'fa-bolt'),
             ]],
         ];
     }
@@ -139,6 +140,37 @@ class AdminNav {
             }
         }
         return null;
+    }
+
+    /**
+     * Quick facts about a hub for its header and the dashboard:
+     * [['label' => ..., 'value' => ..., 'ok' => bool|null, 'url' => ...], ...]
+     */
+    public static function status($hub) {
+        static $settings = null;
+        if ($settings === null) {
+            if (!class_exists('Setting_model')) require_once dirname(__DIR__) . '/models/Setting_model.php';
+            $settings = (new Setting_model())->getAll();
+        }
+        $out = [];
+        foreach ($hub['tabs'] as $tab) {
+            $page = $tab['match']['page'] ?? null;
+            $active = $tab['match']['active'] ?? null;
+            if ($active === 'seo' && $page) {
+                $set = trim($settings["seo.$page.title"] ?? '') !== '' || trim($settings["seo.$page.description"] ?? '') !== '';
+                $out[] = ['label' => 'SEO', 'value' => $set ? 'Diatur' : 'Bawaan', 'ok' => $set, 'url' => $tab['url']];
+            }
+            if ($active === 'page_images' && $page && isset(PageImages::PAGES[$page])) {
+                $total = 0; $custom = 0;
+                foreach (PageImages::SLOTS as $key => [$group]) {
+                    if (!in_array($group, PageImages::PAGES[$page], true)) continue;
+                    $total++;
+                    if (PageImages::custom($key)) $custom++;
+                }
+                $out[] = ['label' => 'Gambar diganti', 'value' => "$custom/$total", 'ok' => null, 'url' => $tab['url']];
+            }
+        }
+        return $out;
     }
 
     /** Everything the Ctrl+K search can jump to: [label, hint, url, keywords] */

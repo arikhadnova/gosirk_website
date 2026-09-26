@@ -720,7 +720,7 @@
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
                                 <span class="badge-scope" data-i18n="partner.scope_design">Design</span>
-                                <img src="<?= PageImages::attr('partner.service_1') ?>" alt="Project Design">
+                                <img loading="lazy" decoding="async" src="<?= PageImages::attr('partner.service_1') ?>" alt="Project Design">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service1_title">1. Perancangan Program & Proyek</h4>
@@ -733,7 +733,7 @@
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
                                 <span class="badge-scope" data-i18n="partner.scope_support">Support</span>
-                                <img src="<?= PageImages::attr('partner.service_2') ?>" alt="Field Implementation Support">
+                                <img loading="lazy" decoding="async" src="<?= PageImages::attr('partner.service_2') ?>" alt="Field Implementation Support">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service2_title">2. Pendampingan Implementasi Lapangan</h4>
@@ -746,7 +746,7 @@
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
                                 <span class="badge-scope" data-i18n="partner.scope_engagement">Engagement</span>
-                                <img src="<?= PageImages::attr('partner.service_3') ?>" alt="Community Engagement">
+                                <img loading="lazy" decoding="async" src="<?= PageImages::attr('partner.service_3') ?>" alt="Community Engagement">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service3_title">3. Penguatan Keterlibatan Komunitas</h4>
@@ -759,7 +759,7 @@
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
                                 <span class="badge-scope" data-i18n="partner.scope_system">System</span>
-                                <img src="<?= PageImages::attr('partner.service_4') ?>" alt="Waste Management Systems">
+                                <img loading="lazy" decoding="async" src="<?= PageImages::attr('partner.service_4') ?>" alt="Waste Management Systems">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service4_title">4. Pengembangan Sistem Pengelolaan Sampah</h4>
@@ -772,7 +772,7 @@
                         <div class="service-card shadow-sm border-0">
                             <div class="service-img-wrapper">
                                 <span class="badge-scope" data-i18n="partner.scope_local">Local</span>
-                                <img src="<?= PageImages::attr('partner.service_5') ?>" alt="Local Solutions">
+                                <img loading="lazy" decoding="async" src="<?= PageImages::attr('partner.service_5') ?>" alt="Local Solutions">
                             </div>
                             <div class="card-body">
                                 <h4 class="fw-bold mb-3 h5" data-i18n="partner.dev_service5_title">5. Pengembangan Solusi Tepat Guna & Bisnis Lokal</h4>
@@ -847,16 +847,16 @@
             <!-- PARTNER LOGOS -->
             <div class="row align-items-center justify-content-center g-4 g-md-5 mb-5">
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
                 <div class="col-6 col-md-2 text-center">
-                    <img src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" class="img-fluid" style="max-height: 70px; width: auto;">
+                    <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" class="img-fluid" style="max-height: 70px; width: auto;">
                 </div>
             </div>
 
@@ -955,7 +955,7 @@
                         <div class="col-lg-4 col-md-6">
                             <div class="card h-100 border border-1 shadow-sm rounded-4 overflow-hidden border-top-orange-3" style="border-radius: 20px !important; transition: all 0.3s ease;">
                                 <div class="position-relative overflow-hidden">
-                                    <img src="<?= ASSETS_URL ?>img/<?= $v->image ?>" class="card-img-top" alt="<?= $v->name_id ?>" style="height: 280px; object-fit: cover;">
+                                    <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/<?= $v->image ?>" class="card-img-top" alt="<?= $v->name_id ?>" style="height: 280px; object-fit: cover;">
                                     <div class="card-img-overlay d-flex align-items-end p-0" style="background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%);">
                                         <div class="w-100 p-4 text-center">
                                             <h5 class="fw-bold mb-0 text-white text-uppercase tracking-wider" 
@@ -1120,7 +1120,7 @@
                                 <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden border-top-orange-3">
                                     <div style="height: 200px; overflow: hidden;">
                                         <?php if ($portfolio->cover_image) : ?>
-                                            <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $portfolio->title_id ?>">
+                                            <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $portfolio->title_id ?>">
                                         <?php else : ?>
                                             <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center">
                                                 <i class="<?= $portfolio->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 80px;"></i>
@@ -1178,7 +1178,7 @@
                   <?php 
                     $logoFile = $ptr->logo;
                     $logoUrl = ASSETS_URL . 'img/partners/' . $logoFile;
-                    echo '<img src="' . $logoUrl . '" alt="' . $ptr->name . '" style="max-height: 80px; width: auto;" onerror="this.src=\'' . ASSETS_URL . 'img/Logo-GoSirk-01.png\'; this.style.opacity=\'0.3\';">';
+                    echo '<img loading="lazy" decoding="async" src="' . $logoUrl . '" alt="' . $ptr->name . '" style="max-height: 80px; width: auto;" onerror="this.src=\'' . ASSETS_URL . 'img/Logo-GoSirk-01.png\'; this.style.opacity=\'0.3\';">';
                   ?>
                 </div>
             <?php 
@@ -1307,7 +1307,7 @@
                     </div>
                 </div>
                 <div class="position-absolute bottom-0 end-0 p-4 opacity-25">
-                     <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 80px; filter: brightness(0) invert(1);">
+                     <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 80px; filter: brightness(0) invert(1);">
                 </div>
             </div>
         </div>

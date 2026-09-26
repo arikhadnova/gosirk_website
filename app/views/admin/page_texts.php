@@ -93,7 +93,7 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
 </form>
 
 <!-- Default texts come from the same file the website uses -->
-<script src="<?= ASSETS_URL ?>js/translations.js?v=<?= time() ?>"></script>
+<script src="<?= asset_v('js/translations.js') ?>"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     const get = (lang, key) => key.split('.').reduce((o, k) => (o && o[k] !== undefined ? o[k] : undefined), (typeof resources !== 'undefined' ? resources[lang]?.translation : undefined));

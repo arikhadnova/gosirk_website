@@ -45,5 +45,28 @@ require_once __DIR__ . '/core/FormRules.php';
 require_once __DIR__ . '/core/PageImages.php';
 require_once __DIR__ . '/core/AdminNav.php';
 require_once __DIR__ . '/core/PrivacyPolicy.php';
+require_once __DIR__ . '/core/ImageOptimizer.php';
 require_once __DIR__ . '/core/Upload.php';
 require_once __DIR__ . '/core/Mail.php';
+
+/**
+ * URL of a file in assets/ with a version that only changes when the file changes,
+ * so browsers can cache CSS/JS/images between pages and still get updates right after a deploy.
+ */
+function asset_v($relative) {
+    $file = dirname(__DIR__) . '/assets/' . ltrim($relative, '/');
+    return ASSETS_URL . ltrim($relative, '/') . '?v=' . (is_file($file) ? filemtime($file) : '1');
+}
+
+/**
+ * Google "Material Symbols" icon font, limited to the icons the site uses and the one style it
+ * uses (FILL 0, weight 400, grade 0, size 48). The full font is ~4 MB; this subset is a few KB.
+ * Using a new icon? Add its name here (alphabetical order is required by Google Fonts).
+ */
+const MATERIAL_ICONS = ['analytics', 'arrow_forward', 'calendar_today', 'check_circle', 'chevron_left', 'chevron_right', 'description', 'docs', 'download', 'eco', 'event_available', 'fact_check', 'folder_off', 'folder_open', 'format_quote', 'group', 'groups', 'handshake', 'hub', 'image', 'insights', 'library_books', 'lock', 'lock_reset', 'mail', 'manage_search', 'map', 'menu_book', 'person', 'query_stats', 'search', 'target', 'track_changes', 'verified'];
+
+function material_symbols_url() {
+    $icons = MATERIAL_ICONS;
+    sort($icons);
+    return 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0&icon_names=' . implode(',', $icons) . '&display=block';
+}

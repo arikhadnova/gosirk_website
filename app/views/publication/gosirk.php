@@ -57,7 +57,7 @@
                     <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden pub-card">
                         <div class="pub-cover-container">
                             <?php if ($pub->thumbnail) : ?>
-                                <img src="<?= ASSETS_URL ?>img/publications/<?= $pub->thumbnail ?>" class="w-100 h-100" style="object-fit: cover; display: block;" alt="<?= $pub->title_id ?>" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>img/placeholder-book.png';">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/publications/<?= $pub->thumbnail ?>" class="w-100 h-100" style="object-fit: cover; display: block;" alt="<?= $pub->title_id ?>" onerror="this.onerror=null; this.src='<?= ASSETS_URL ?>img/placeholder-book.png';">
                             <?php else : ?>
                                 <div class="w-100 h-100 d-flex align-items-center justify-content-center bg-light">
                                     <i class="fas fa-book fa-4x text-muted opacity-25"></i>
@@ -112,21 +112,6 @@
             <?php endif; ?>
         </div>
 
-        <?php if (!empty($publications) && count($publications) > 12) : ?>
-        <!-- Pagination -->
-        <nav aria-label="Page navigation" class="mt-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                </li>
-            </ul>
-        </nav>
-<?php endif; ?>
     </div>
 </section>
 

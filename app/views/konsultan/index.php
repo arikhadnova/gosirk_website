@@ -556,7 +556,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_policy">Policy</span>
-                            <img src="<?= PageImages::attr('konsultan.service_1') ?>" alt="Policy Advisory">
+                            <img loading="lazy" decoding="async" src="<?= PageImages::attr('konsultan.service_1') ?>" alt="Policy Advisory">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service1_title">Advisori Kebijakan</h4>
@@ -568,7 +568,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_finance">Finance</span>
-                            <img src="<?= PageImages::attr('konsultan.service_2') ?>" alt="Financial Innovation">
+                            <img loading="lazy" decoding="async" src="<?= PageImages::attr('konsultan.service_2') ?>" alt="Financial Innovation">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service2_title">Inovasi Pembiayaan</h4>
@@ -580,7 +580,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_ops">Operations</span>
-                            <img src="<?= PageImages::attr('konsultan.service_3') ?>" alt="Operational Systems">
+                            <img loading="lazy" decoding="async" src="<?= PageImages::attr('konsultan.service_3') ?>" alt="Operational Systems">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service3_title">Sistem Operasional</h4>
@@ -592,7 +592,7 @@
                     <div class="service-card shadow-sm border-0">
                         <div class="service-img-wrapper">
                             <span class="badge-scope" data-i18n="konsultan.scope_partner">Partnership</span>
-                            <img src="<?= PageImages::attr('konsultan.service_4') ?>" alt="PPP Facilitation">
+                            <img loading="lazy" decoding="async" src="<?= PageImages::attr('konsultan.service_4') ?>" alt="PPP Facilitation">
                         </div>
                         <div class="card-body">
                             <h4 class="fw-bold mb-3 h5" data-i18n="konsultan.service4_title">Fasilitasi KPS (PPP)</h4>
@@ -622,7 +622,7 @@
                                     <?php 
                                         $image = $article->image ? ASSETS_URL . 'img/blog/' . $article->image : ASSETS_URL . 'img/IMG_8084.jpg';
                                     ?>
-                                    <img src="<?= $image ?>" class="img-fluid w-100 h-100 object-fit-cover shadow-sm" alt="<?= $article->title_id ?>">
+                                    <img loading="lazy" decoding="async" src="<?= $image ?>" class="img-fluid w-100 h-100 object-fit-cover shadow-sm" alt="<?= $article->title_id ?>">
                                 </div>
                                 <div class="article-content">
                                     <h3 class="h4 fw-bold mb-3"><?= $article->title_id ?></h3>

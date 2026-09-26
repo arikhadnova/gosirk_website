@@ -130,11 +130,11 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="col-lg-4 col-md-6">
                 <?php if ($card['video']): ?>
                 <div class="highlight-card shadow-sm highlight-video" role="button" data-bs-toggle="modal" data-bs-target="#highlightVideoModal" data-video-id="<?= htmlspecialchars($card['ytId']) ?>" aria-label="Putar video">
-                    <img src="https://img.youtube.com/vi/<?= htmlspecialchars($card['ytId']) ?>/hqdefault.jpg" alt="<?= htmlspecialchars($card['caption'] ?: 'Video') ?>" loading="lazy">
+                    <img loading="lazy" decoding="async" src="https://img.youtube.com/vi/<?= htmlspecialchars($card['ytId']) ?>/hqdefault.jpg" alt="<?= htmlspecialchars($card['caption'] ?: 'Video') ?>" loading="lazy">
                     <div class="highlight-play"><i class="fas fa-play"></i></div>
                 <?php else: ?>
                 <div class="highlight-card shadow-sm">
-                    <img src="<?= ASSETS_URL ?>img/portfolio/<?= htmlspecialchars($card['image']) ?>" alt="<?= htmlspecialchars($card['caption'] ?: 'Sorotan') ?>" loading="lazy">
+                    <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= htmlspecialchars($card['image']) ?>" alt="<?= htmlspecialchars($card['caption'] ?: 'Sorotan') ?>" loading="lazy">
                 <?php endif; ?>
                     <?php if ($card['caption'] !== ''): ?>
                     <div class="highlight-overlay">

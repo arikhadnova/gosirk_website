@@ -59,9 +59,13 @@
 
     // Phones: the tab row scrolls, so bring the active tab into view
     const tabs = document.querySelector('.hub-tabs'), activeTab = tabs?.querySelector('.hub-tab.active');
-    if (tabs && activeTab && tabs.scrollWidth > tabs.clientWidth) {
-        tabs.scrollLeft = activeTab.offsetLeft - tabs.offsetLeft - (tabs.clientWidth - activeTab.offsetWidth) / 2;
-    }
+    const centerTab = () => {
+        if (tabs && activeTab && tabs.scrollWidth > tabs.clientWidth) {
+            tabs.scrollLeft = activeTab.offsetLeft - (tabs.clientWidth - activeTab.offsetWidth) / 2; // .hub-tabs is the offsetParent
+        }
+    };
+    centerTab();
+    window.addEventListener('load', centerTab); // again once fonts/icons have their final width
 })();
 </script>
 

@@ -32,7 +32,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Admin CSS -->
-    <link rel="stylesheet" href="<?= BASE_URL; ?>assets/css/admin.css?v=<?= time() ?>">
+    <link rel="stylesheet" href="<?= asset_v('css/admin.css') ?>">
     <!-- SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- CKEditor 5 -->
@@ -48,7 +48,7 @@
     <!-- Sidebar -->
     <div id="sidebar-wrapper" class="bg-white">
         <div class="sidebar-heading d-flex align-items-center justify-content-center position-relative">
-             <img src="<?= BASE_URL; ?>assets/img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 40px;">
+             <img loading="lazy" decoding="async" src="<?= BASE_URL; ?>assets/img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 40px;">
              <button class="btn d-md-none border-0 p-0 text-muted position-absolute" id="sidebar-close" style="right: 1.5rem;">
                 <i class="fas fa-times fs-4"></i>
              </button>
@@ -142,7 +142,7 @@
                                         <p class="mb-0 fw-bold small text-dark"><?= $_SESSION['user_name'] ?? 'Admin' ?></p>
                                         <p class="mb-0 text-muted extra-small" style="font-size: 10px;"><?= $_SESSION['user_role'] ?? 'Super Admin' ?></p>
                                     </div>
-                                    <img src="<?= (isset($_SESSION['user_photo']) && $_SESSION['user_photo']) ? ASSETS_URL . 'img/profile/' . $_SESSION['user_photo'] . '?v=' . time() : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user_name'] ?? 'Admin') . '&background=FF7E5F&color=fff&size=200' ?>" 
+                                    <img loading="lazy" decoding="async" src="<?= (isset($_SESSION['user_photo']) && $_SESSION['user_photo']) ? asset_v('img/profile/' . $_SESSION['user_photo']) : 'https://ui-avatars.com/api/?name=' . urlencode($_SESSION['user_name'] ?? 'Admin') . '&background=FF7E5F&color=fff&size=200' ?>" 
                                          class="rounded-circle border nav-profile-img" 
                                          style="width: 38px; height: 38px; object-fit: cover; background: #eee;">
                                 </div>
@@ -166,13 +166,26 @@
         <div class="container-fluid px-lg-5 py-4 <?= $navCtx ? 'in-hub' : '' ?>">
         <?php if ($navCtx) : $hub = $navCtx['hub']; ?>
             <!-- Page hub: every editor of this page as tabs -->
+            <?php $hubFacts = AdminNav::status($hub); $hubUrl = preg_replace('#^https?://#', '', rtrim(BASE_URL, '/')) . '/' . $hub['public']; ?>
             <div class="hub-header">
-                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3">
-                    <div>
+                <div class="hub-head">
+                    <div class="hub-icon"><i class="fas <?= $hub['icon'] ?>"></i></div>
+                    <div class="hub-name">
                         <div class="hub-group"><?= AdminNav::GROUPS[$hub['group']] ?></div>
-                        <h1 class="hub-title"><i class="fas <?= $hub['icon'] ?> me-2"></i><?= htmlspecialchars($hub['label']) ?></h1>
+                        <h1 class="hub-title"><?= htmlspecialchars($hub['label']) ?></h1>
+                        <a href="<?= BASE_URL . $hub['public'] ?>" target="_blank" class="hub-url"><?= htmlspecialchars(rtrim($hubUrl, '/')) ?> <i class="fas fa-arrow-up-right-from-square"></i></a>
                     </div>
-                    <a href="<?= BASE_URL . $hub['public'] ?>" target="_blank" class="btn btn-light btn-action btn-sm"><i class="fas fa-external-link-alt"></i> Lihat halaman</a>
+                    <?php if ($hubFacts) : ?>
+                        <div class="hub-facts">
+                            <?php foreach ($hubFacts as $f) : ?>
+                                <a href="<?= BASE_URL . $f['url'] ?>" class="hub-fact">
+                                    <span><?= $f['label'] ?></span>
+                                    <strong class="<?= $f['ok'] === true ? 'is-ok' : ($f['ok'] === false ? 'is-muted' : '') ?>"><?= $f['value'] ?></strong>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                    <a href="<?= BASE_URL . $hub['public'] ?>" target="_blank" class="btn btn-light btn-action btn-sm hub-view"><i class="fas fa-external-link-alt"></i> Lihat halaman</a>
                 </div>
                 <nav class="hub-tabs" aria-label="Bagian halaman">
                     <?php foreach ($hub['tabs'] as $i => $tab) : ?>

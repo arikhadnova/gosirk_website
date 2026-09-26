@@ -54,7 +54,7 @@
                             <div class="d-flex align-items-center">
                                 <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px; overflow: hidden;">
                                     <?php if ($u->photo) : ?>
-                                        <img src="<?= ASSETS_URL . 'img/profile/' . $u->photo . '?v=' . time() ?>" class="w-100 h-100 object-fit-cover">
+                                        <img src="<?= asset_v('img/profile/' . $u->photo) ?>" class="w-100 h-100 object-fit-cover">
                                     <?php else : ?>
                                         <i class="fas fa-user text-muted opacity-50"></i>
                                     <?php endif; ?>

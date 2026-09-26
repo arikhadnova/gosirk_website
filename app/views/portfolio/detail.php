@@ -89,10 +89,13 @@
         left: 20px;
         right: 20px;
         z-index: 3;
-        background: transparent;
-        border-radius: 0;
-        padding: 0.75rem 1rem;
+        right: auto;
+        max-width: calc(100% - 40px);
+        background: rgba(255, 255, 255, .9);
+        border-radius: 999px;
+        padding: 0.45rem 1rem;
         margin-bottom: 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, .12);
     }
     .hero-image-container .breadcrumb-overlay .breadcrumb-item + .breadcrumb-item::before {
         color: rgba(0,0,0,0.5);
@@ -244,7 +247,7 @@
                 </ol>
             </nav>
             <?php if($portfolio->cover_image): ?>
-                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" alt="<?= $portfolio->title_id ?>">
+                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $portfolio->cover_image ?>" alt="<?= $portfolio->title_id ?>">
             <?php else: ?>
                 <div class="display-1 text-muted"><i class="<?= $portfolio->icon_name ?: 'fas fa-project-diagram' ?>"></i></div>
             <?php endif; ?>
@@ -265,7 +268,7 @@
             <div class="project-logos-wrapper">
                 <?php foreach($project_logos as $logo): ?>
                 <div class="project-logo-item">
-                    <img src="<?= ASSETS_URL ?>img/portfolio/<?= $logo ?>" alt="Partner Logo">
+                    <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $logo ?>" alt="Partner Logo">
                 </div>
                 <?php endforeach; ?>
             </div>

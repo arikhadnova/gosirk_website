@@ -15,7 +15,7 @@
     }
     .detail-title {
         font-weight: 800;
-        font-size: 2.8rem;
+        font-size: clamp(1.7rem, 5.5vw, 2.8rem);
         line-height: 1.2;
         margin-bottom: 20px;
     }
@@ -255,7 +255,7 @@
             <div class="col-lg-6">
                 <div class="hero-img-placeholder mt-4 mt-lg-0 overflow-hidden shadow-sm">
                     <?php if ($s->image) : ?>
-                        <img src="<?= ASSETS_URL ?>img/gi/<?= $s->image ?>" class="w-100 h-100 object-fit-cover">
+                        <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/gi/<?= $s->image ?>" class="w-100 h-100 object-fit-cover">
                     <?php else : ?>
                         <span class="material-symbols-outlined" style="font-size: 80px;">image</span>
                     <?php endif; ?>
@@ -309,7 +309,7 @@
                         ?>
                         <div class="col-lg-4 col-md-6">
                             <div class="highlight-card shadow-sm">
-                                <img src="<?= ASSETS_URL ?>img/gi/<?= $h['image'] ?>" alt="Highlight">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/gi/<?= $h['image'] ?>" alt="Highlight">
                                 <div class="highlight-overlay">
                                     <p class="small mb-0" data-lang-id="<?= htmlspecialchars($h['caption'] ?? '') ?>" data-lang-en="<?= htmlspecialchars($h['caption'] ?? '') ?>">
                                         <?= $h['caption'] ?>

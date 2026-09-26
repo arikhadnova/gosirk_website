@@ -82,3 +82,14 @@
     .hero-full.hero-gi { padding-bottom: 110px; }
     .hero-full-actions .btn { padding: 10px 22px !important; font-size: .9rem !important; }
 }
+
+/* ---- Site-wide phone fixes (this file is loaded on every public page) ---- */
+/* Decorative shapes placed partly outside their cards must never make the page scroll sideways
+   (clip, unlike hidden, keeps the sticky navbar working) */
+html, body { overflow-x: clip; }
+@media (max-width: 575px) {
+    /* Large column gaps (g-5) are wider than the container padding on phones and made pages scroll sideways */
+    .row.g-5, .row.gx-5 { --bs-gutter-x: 1.5rem; }
+    /* Small buttons stay comfortable to tap */
+    .btn.btn-sm { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+}

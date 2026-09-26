@@ -65,7 +65,9 @@ if (!isset($settings)) {
                 </div>
             </div>
             <div class="copyright">
-                &copy; <?= date('Y') ?> <?= $settings['footer_copyright'] ?? 'PT Gocircular Solution Indonesia' ?>
+                <?php // the setting may already start with "© 2025": always show the current year once
+                $copyright = preg_replace('/^\s*(©|&copy;|\(c\))?\s*\d{4}\s*/iu', '', $settings['footer_copyright'] ?? 'PT Gocircular Solution Indonesia'); ?>
+                &copy; <?= date('Y') ?> <?= $copyright ?>
                 &middot; <a href="<?= BASE_URL ?>privacy" class="text-reset" data-i18n="common.privacy_link">Kebijakan Privasi</a>
             </div>
         </div>

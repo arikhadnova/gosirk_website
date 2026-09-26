@@ -19,7 +19,7 @@ $ggcLogoUrl = $ggcLogo && filter_var($ggcLogo, FILTER_VALIDATE_URL) ? $ggcLogo :
     <div class="row align-items-center">
       <div class="col-lg-6">
         <div class="hero-logo-wrapper mb-4">
-          <img src="<?= htmlspecialchars($ggcLogoUrl, ENT_QUOTES) ?>?v=<?= time() ?>" alt="GoSirk Green Community" class="img-fluid" style="max-height: 200px;">
+          <img loading="lazy" decoding="async" src="<?= htmlspecialchars($ggcLogoUrl, ENT_QUOTES) ?>" alt="GoSirk Green Community" class="img-fluid" style="max-height: 200px;">
         </div>
         <p class="lead text-secondary mb-4 fs-4" style="max-width: 500px;" data-lang-id="<?= $heroGGC->subtitle_id ?>" data-lang-en="<?= $heroGGC->subtitle_en ?>">
           <?= $heroGGC->subtitle_id ?>
@@ -34,7 +34,7 @@ $ggcLogoUrl = $ggcLogo && filter_var($ggcLogo, FILTER_VALIDATE_URL) ? $ggcLogo :
             <div class="hero-visual-bg bg-success rounded-circle opacity-50"></div>
             <div class="hero-image-slider hero-image-slider-<?= $heroTransition ?> rounded-5 shadow-lg position-relative z-1 overflow-hidden">
               <?php foreach (array_slice($ggcHeroImages, 0, 5) as $index => $slide): ?>
-                <img src="<?= htmlspecialchars($slide, ENT_QUOTES) ?>" class="hero-image-slide <?= $index === 0 ? 'active' : '' ?>" alt="Community Growth">
+                <img loading="lazy" decoding="async" src="<?= htmlspecialchars($slide, ENT_QUOTES) ?>" class="hero-image-slide <?= $index === 0 ? 'active' : '' ?>" alt="Community Growth">
               <?php endforeach; ?>
             </div>
         </div>
@@ -159,7 +159,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <div class="bg-light p-2 rounded-5 shadow-sm overflow-hidden">
-            <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="img-fluid rounded-4 shadow" alt="About GGC">
+            <img loading="lazy" decoding="async" src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="img-fluid rounded-4 shadow" alt="About GGC">
         </div>
       </div>
       <div class="col-lg-6">
@@ -194,7 +194,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="<?= PageImages::attr('ggc.program_1') ?>" alt="Pelatihan Pengolahan Sampah">
+            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_1') ?>" alt="Pelatihan Pengolahan Sampah">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-success text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p1_badge">Pemberdayaan</div>
           </div>
           <div class="program-card-content text-center">
@@ -209,7 +209,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="<?= PageImages::attr('ggc.program_2') ?>" alt="Pelatihan Kader (PRA)">
+            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_2') ?>" alt="Pelatihan Kader (PRA)">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-primary text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p2_badge">Edukasi</div>
           </div>
           <div class="program-card-content text-center">
@@ -224,7 +224,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="<?= PageImages::attr('ggc.program_3') ?>" alt="Pendampingan & Edukasi">
+            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_3') ?>" alt="Pendampingan & Edukasi">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-orange text-white rounded-pill small fw-bold" style="background-color: var(--ggc-orange);" data-i18n="ggc.programs.p3_badge">Pendampingan</div>
           </div>
           <div class="program-card-content text-center">
@@ -239,7 +239,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="<?= PageImages::attr('ggc.program_4') ?>" alt="Pengurangan Emisi">
+            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_4') ?>" alt="Pengurangan Emisi">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-info text-white rounded-pill small fw-bold" data-i18n="ggc.programs.p4_badge">Lingkungan</div>
           </div>
           <div class="program-card-content text-center">
@@ -254,7 +254,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
       <div class="col-lg-4 col-md-6">
         <div class="program-card">
           <div class="program-card-img-wrapper">
-            <img src="<?= PageImages::attr('ggc.program_5') ?>" alt="Penanaman Bibit">
+            <img loading="lazy" decoding="async" src="<?= PageImages::attr('ggc.program_5') ?>" alt="Penanaman Bibit">
             <div class="position-absolute top-0 start-0 m-3 px-3 py-1 bg-warning text-dark rounded-pill small fw-bold" data-i18n="ggc.programs.p5_badge">Ketahanan Pangan</div>
           </div>
           <div class="program-card-content text-center">
@@ -284,7 +284,7 @@ $aboutImageUrl = $aboutImage && filter_var($aboutImage, FILTER_VALIDATE_URL) ? $
         <?php foreach ($data['actions'] as $item) : ?>
           <div class="col-lg-4 col-md-6">
             <div class="gallery-item shadow-sm">
-              <img src="<?= (filter_var($item->image, FILTER_VALIDATE_URL)) ? $item->image : ASSETS_URL . 'img/' . $item->image ?>" alt="<?= $item->title_id ?>">
+              <img loading="lazy" decoding="async" src="<?= (filter_var($item->image, FILTER_VALIDATE_URL)) ? $item->image : ASSETS_URL . 'img/' . $item->image ?>" alt="<?= $item->title_id ?>">
               <div class="gallery-overlay d-flex flex-column justify-content-end p-4">
                   <h5 class="text-white fw-bold mb-1" 
                       data-lang-id="<?= $item->title_id ?>" 

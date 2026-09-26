@@ -28,7 +28,7 @@
             <div class="row g-0">
                 <div class="col-lg-6">
                     <div class="project-img-container h-100">
-                        <img src="<?= PageImages::attr('partnership.project') ?>" class="img-fluid h-100 w-100 object-fit-cover" alt="Ongoing Project">
+                        <img loading="lazy" decoding="async" src="<?= PageImages::attr('partnership.project') ?>" class="img-fluid h-100 w-100 object-fit-cover" alt="Ongoing Project">
                     </div>
                 </div>
                 <div class="col-lg-6 p-4 p-md-5 d-flex flex-column justify-content-center">
@@ -49,10 +49,10 @@
                         Inisiatif kolaboratif untuk mempercepat kemandirian pengelolaan sampah di tingkat desa melalui penerapan skema bisnis sirkular yang terintegrasi, pemberdayaan UMKM lokal, dan edukasi masif kepada masyarakat.
                     </p>
                     <div class="d-flex align-items-center gap-4 mb-4 flex-wrap">
-                        <img src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" style="max-height: 40px; width: auto;">
-                        <img src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" style="max-height: 40px; width: auto;">
-                        <img src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" style="max-height: 40px; width: auto;">
-                        <img src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" style="max-height: 40px; width: auto;">
+                        <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_1') ?>" alt="GoSirk" style="max-height: 40px; width: auto;">
+                        <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_2') ?>" alt="CLOCC" style="max-height: 40px; width: auto;">
+                        <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_3') ?>" alt="Sirk Norge" style="max-height: 40px; width: auto;">
+                        <img loading="lazy" decoding="async" src="<?= PageImages::attr('clocc.logo_4') ?>" alt="Pemkab Tabanan" style="max-height: 40px; width: auto;">
                     </div>
                     <div>
                         <a href="<?= BASE_URL ?>implementasi_partner#program-clocc" class="btn btn-primary rounded-pill px-4" style="background-color: #FF8F56; border: none;" data-i18n="partnership.see_detail">See Details</a>
@@ -79,9 +79,9 @@
                     <div class="col-lg-5">
                         <div class="rounded-4 overflow-hidden shadow-sm mb-4 mb-lg-0">
                             <?php if (isset($settings['ps_comm_img'])) : ?>
-                                <img src="<?= ASSETS_URL ?>img/<?= $settings['ps_comm_img'] ?>" class="img-fluid" alt="Community Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/<?= $settings['ps_comm_img'] ?>" class="img-fluid" alt="Community Partnership">
                             <?php else : ?>
-                                <img src="<?= ASSETS_URL ?>img/IMG_8084.jpg" class="img-fluid" alt="Community Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/IMG_8084.jpg" class="img-fluid" alt="Community Partnership">
                             <?php endif; ?>
                         </div>
                     </div>
@@ -122,7 +122,7 @@
                                     <div class="card h-100 border-0 shadow-sm rounded-4 program-card">
                                         <div class="program-img-wrapper">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
@@ -181,9 +181,9 @@
                     <div class="col-lg-5 order-1 order-lg-2">
                         <div class="rounded-4 overflow-hidden shadow-sm mb-4 mb-lg-0">
                             <?php if (isset($settings['ps_acad_img'])) : ?>
-                                <img src="<?= ASSETS_URL ?>img/<?= $settings['ps_acad_img'] ?>" class="img-fluid" alt="Academic Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/<?= $settings['ps_acad_img'] ?>" class="img-fluid" alt="Academic Partnership">
                             <?php else : ?>
-                                <img src="<?= ASSETS_URL ?>img/pexels-fauxels-3184416.jpg" class="img-fluid" alt="Academic Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/pexels-fauxels-3184416.jpg" class="img-fluid" alt="Academic Partnership">
                             <?php endif; ?>
                         </div>
                     </div>
@@ -199,7 +199,7 @@
                                     <div class="card h-100 border-0 shadow-sm rounded-4 program-card">
                                         <div class="program-img-wrapper">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
@@ -233,9 +233,9 @@
                     <div class="col-lg-5">
                         <div class="rounded-4 overflow-hidden shadow-sm mb-4 mb-lg-0">
                             <?php if (isset($settings['ps_prog_img'])) : ?>
-                                <img src="<?= ASSETS_URL ?>img/<?= $settings['ps_prog_img'] ?>" class="img-fluid" alt="Program Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/<?= $settings['ps_prog_img'] ?>" class="img-fluid" alt="Program Partnership">
                             <?php else : ?>
-                                <img src="<?= ASSETS_URL ?>img/Gocircular-Indonesia-Compro-1536x864.png" class="img-fluid" alt="Program Partnership">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Gocircular-Indonesia-Compro-1536x864.png" class="img-fluid" alt="Program Partnership">
                             <?php endif; ?>
                         </div>
                     </div>
@@ -276,7 +276,7 @@
                                     <div class="card h-100 border-0 shadow-sm rounded-4 program-card">
                                         <div class="program-img-wrapper">
                                             <?php if ($p->cover_image) : ?>
-                                                <img src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
+                                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/portfolio/<?= $p->cover_image ?>" class="card-img-top" alt="<?= $p->title_id ?>">
                                             <?php else : ?>
                                                 <div class="w-100 h-100 bg-secondary bg-opacity-10 d-flex align-items-center justify-content-center"><i class="<?= $p->icon_name ?: 'fas fa-folder' ?> text-muted opacity-25" style="font-size: 64px;"></i></div>
                                             <?php endif; ?>
@@ -317,7 +317,7 @@
                     <?php $found = false; foreach ($partners as $partner) : ?>
                         <?php if ($partner->category == 'contribution') : $found = true; ?>
                             <div class="swiper-slide text-center">
-                                    <img src="<?= ASSETS_URL ?>img/partners/<?= $partner->logo ?>" alt="<?= $partner->name ?>" class="img-fluid" 
+                                    <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/partners/<?= $partner->logo ?>" alt="<?= $partner->name ?>" class="img-fluid" 
                                          style="max-height: 80px; width: auto; transition: all 0.3s;">
                             </div>
                         <?php endif; ?>
@@ -351,7 +351,7 @@
                 </div>
             </div>
             <div class="position-absolute bottom-0 end-0 p-4 opacity-25">
-                 <img src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 80px; filter: brightness(0) invert(1);">
+                 <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/Logo-GoSirk-01.png" alt="GoSirk" style="max-height: 80px; filter: brightness(0) invert(1);">
             </div>
         </div>
     </div>

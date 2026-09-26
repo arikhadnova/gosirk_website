@@ -102,6 +102,17 @@ class Upload {
     const MAX_SIDE = 1920;
     const WEBP_QUALITY = 82;
 
+    // Largest side per folder, based on how big the images are shown on the site
+    const MAX_SIDE_BY_FOLDER = [
+        'partners' => 480, 'profile' => 480,                                      // logos, avatars
+        'services' => 1280, 'gi' => 1280, 'portfolio' => 1280, 'blog' => 1280, 'publications' => 1280, // cards
+    ];
+
+    public static function maxSideFor($path) {
+        $folder = basename(dirname($path));
+        return self::MAX_SIDE_BY_FOLDER[$folder] ?? self::MAX_SIDE;
+    }
+
     /** Optimise an uploaded image in place. Returns the (possibly new) file name; on any problem the original stays. */
     public static function optimizeImage($path) {
         $name = basename($path);
@@ -134,7 +145,7 @@ class Upload {
                 }
             }
 
-            $scale = min(1, self::MAX_SIDE / max($w, $h));
+            $scale = min(1, self::maxSideFor($path) / max($w, $h));
             if ($scale < 1) {
                 $nw = max(1, (int) round($w * $scale));
                 $nh = max(1, (int) round($h * $scale));
@@ -167,6 +178,56 @@ class Upload {
             error_log('[GoSirk] Optimasi gambar gagal (' . $name . '): ' . $e->getMessage());
             return $name;
         }
+    }
+
+    /**
+     * Shrink an existing image in place: same file name and format (so nothing in the database changes).
+     * Scales down to MAX_SIDE and re-encodes; the file is only replaced when it gets at least 10% smaller.
+     * Returns the number of bytes saved (0 = left as it was).
+     */
+    public static function shrinkInPlace($path) {
+        $ext = strtolower(pathinfo($path, PATHINFO_EXTENSION));
+        if (!in_array($ext, ['jpg', 'jpeg', 'png', 'webp'], true) || !is_file($path)) return 0;
+        $info = @getimagesize($path);
+        if (!$info || $info[0] < 1) return 0;
+        [$w, $h] = $info;
+        $before = filesize($path);
+
+        $limit = self::iniBytes('memory_limit');
+        if ($limit > 0 && $limit < 256 * 1048576 && $w * $h * 5 > $limit / 2) @ini_set('memory_limit', '256M');
+        $limit = self::iniBytes('memory_limit');
+        if ($limit > 0 && $w * $h * 5 > $limit - memory_get_usage() - 16 * 1048576) return 0;
+
+        $loaders = [IMAGETYPE_JPEG => 'imagecreatefromjpeg', IMAGETYPE_PNG => 'imagecreatefrompng', IMAGETYPE_WEBP => 'imagecreatefromwebp'];
+        $img = isset($loaders[$info[2]]) && function_exists($loaders[$info[2]]) ? @$loaders[$info[2]]($path) : false;
+        if (!$img) return 0;
+
+        if ($info[2] === IMAGETYPE_JPEG && function_exists('exif_read_data')) {
+            $angle = [3 => 180, 6 => -90, 8 => 90][@exif_read_data($path)['Orientation'] ?? 1] ?? 0;
+            if ($angle && ($r = imagerotate($img, $angle, 0))) { imagedestroy($img); $img = $r; [$w, $h] = [imagesx($img), imagesy($img)]; }
+        }
+        $scale = min(1, self::maxSideFor($path) / max($w, $h));
+        if ($scale < 1) {
+            $nw = max(1, (int) round($w * $scale)); $nh = max(1, (int) round($h * $scale));
+            $resized = imagecreatetruecolor($nw, $nh);
+            imagealphablending($resized, false); imagesavealpha($resized, true);
+            imagecopyresampled($resized, $img, 0, 0, 0, 0, $nw, $nh, $w, $h);
+            imagedestroy($img); $img = $resized;
+        } elseif ($info[2] === IMAGETYPE_PNG) {
+            imagesavealpha($img, true);
+        }
+
+        $tmp = $path . '.tmp';
+        if ($info[2] === IMAGETYPE_JPEG) { imageinterlace($img, true); $ok = imagejpeg($img, $tmp, 80); }
+        elseif ($info[2] === IMAGETYPE_PNG) { $ok = imagepng($img, $tmp, 9); }
+        else { $ok = imagewebp($img, $tmp, self::WEBP_QUALITY); }
+        imagedestroy($img);
+
+        clearstatcache();
+        if (!$ok || !is_file($tmp) || filesize($tmp) === 0 || filesize($tmp) > $before * 0.9) { @unlink($tmp); return 0; }
+        $saved = $before - filesize($tmp);
+        rename($tmp, $path);
+        return $saved;
     }
 
     /**

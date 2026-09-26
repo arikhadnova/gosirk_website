@@ -169,7 +169,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="hero-img-wrapper">
-                        <img src="<?= ASSETS_URL ?>img/IMG_8084.jpg" alt="Service Detail">
+                        <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/IMG_8084.jpg" alt="Service Detail">
                         <div class="position-absolute translate-middle-y end-0 me-n3 top-50 bg-white p-4 rounded-4 shadow-lg d-none d-xl-block" style="width: 200px;">
                             <div class="d-flex align-items-center gap-2 mb-2">
                                 <span class="material-symbols-outlined text-success">verified</span>

@@ -25,7 +25,7 @@
                     <div class="card h-100 article-card border-0 shadow-sm rounded-4 overflow-hidden">
                         <div class="article-image" style="height: 220px; overflow: hidden;">
                             <?php if ($item->image) : ?>
-                                <img src="<?= ASSETS_URL ?>img/blog/<?= $item->image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $item->title_id ?>">
+                                <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/blog/<?= $item->image ?>" class="w-100 h-100 object-fit-cover" alt="<?= $item->title_id ?>">
                             <?php else : ?>
                                 <div style="height: 100%; background-color: #f3eff5; display: flex; align-items: center; justify-content: center;">
                                     <i class="fas fa-book text-muted opacity-25 display-4"></i>
@@ -56,19 +56,7 @@
             <?php endif; ?>
         </div>
 
-        <nav aria-label="Page navigation" class="mt-5">
-            <ul class="pagination justify-content-center">
-                <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"><i class="fas fa-chevron-left"></i></a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#"><i class="fas fa-chevron-right"></i></a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+</div>
 </section>
 
 <style>

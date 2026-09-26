@@ -163,5 +163,5 @@ document.getElementById('contactForm')?.addEventListener('submit', function(e) {
 
 <!-- BANNER -->
 <div class="banner-section text-center">
-    <img src="<?= PageImages::attr('contact.banner') ?>" alt="Banner GoSirk" class="img-fluid w-75 mx-auto d-block mb-5">
+    <img loading="lazy" decoding="async" src="<?= PageImages::attr('contact.banner') ?>" alt="Banner GoSirk" class="img-fluid w-75 mx-auto d-block mb-5">
 </div>

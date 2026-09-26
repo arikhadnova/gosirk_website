@@ -20,7 +20,7 @@ $impactItems = $data['impacts'] ?? [];
           <div class="hero-visual-bg bg-success rounded-circle opacity-50"></div>
           <div class="hero-image-slider hero-image-slider-<?= $heroTransition ?> rounded-5 shadow-lg position-relative z-1 overflow-hidden">
             <?php foreach (array_slice($gnpHeroImages, 0, 5) as $index => $slide): ?>
-              <img src="<?= htmlspecialchars($slide, ENT_QUOTES) ?>" class="hero-image-slide <?= $index === 0 ? 'active' : '' ?>" alt="Composting organic waste">
+              <img loading="lazy" decoding="async" src="<?= htmlspecialchars($slide, ENT_QUOTES) ?>" class="hero-image-slide <?= $index === 0 ? 'active' : '' ?>" alt="Composting organic waste">
             <?php endforeach; ?>
           </div>
         </div>
@@ -28,7 +28,7 @@ $impactItems = $data['impacts'] ?? [];
       <div class="col-lg-6">
         <div class="ps-lg-5">
           <div class="hero-logo-wrapper mb-4 text-start">
-            <img src="<?= htmlspecialchars($gnpLogoUrl, ENT_QUOTES) ?>?v=<?= time() ?>" alt="Go Ngompos Project" class="img-fluid" style="max-height: 180px;">
+            <img loading="lazy" decoding="async" src="<?= htmlspecialchars($gnpLogoUrl, ENT_QUOTES) ?>" alt="Go Ngompos Project" class="img-fluid" style="max-height: 180px;">
           </div>
           <p class="lead text-secondary text-start mb-4 fs-4" style="max-width: 520px;"
              data-lang-id="<?= htmlspecialchars($heroGnp->subtitle_id ?? 'Gerakan pengolahan sampah organik menjadi kompos dari rumah, sekolah, kantor, dan komunitas.') ?>"
@@ -143,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
     <div class="row align-items-center g-5">
       <div class="col-lg-6">
         <div class="bg-light p-2 rounded-5 shadow-sm overflow-hidden">
-          <img src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="img-fluid rounded-4 shadow" alt="Compost and plants">
+          <img loading="lazy" decoding="async" src="<?= htmlspecialchars($aboutImageUrl, ENT_QUOTES) ?>" class="img-fluid rounded-4 shadow" alt="Compost and plants">
         </div>
       </div>
       <div class="col-lg-6">
@@ -190,7 +190,7 @@ if ((!$programsSection || (int) $programsSection->is_active === 1) && $programs)
         <div class="program-card">
           <div class="program-card-img-wrapper">
             <?php if ($p->image) : ?>
-              <img src="<?= htmlspecialchars(GnpProgram_model::imageUrl($p->image)) ?>" alt="<?= htmlspecialchars($p->title_id) ?>" loading="lazy">
+              <img loading="lazy" decoding="async" src="<?= htmlspecialchars(GnpProgram_model::imageUrl($p->image)) ?>" alt="<?= htmlspecialchars($p->title_id) ?>" loading="lazy">
             <?php endif; ?>
             <?php if ($p->badge_id) : ?>
               <div class="position-absolute top-0 start-0 m-3 px-3 py-1 text-white rounded-pill small fw-bold" style="<?= $badgeStyle ?>"
