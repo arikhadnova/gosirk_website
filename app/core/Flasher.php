@@ -11,6 +11,16 @@ class Flasher {
                 $aksi .= ', tetapi ada file yang gagal diupload';
             }
         }
+        // Surface automatic translations that failed: the English site keeps the old English (or the Indonesian text)
+        $translateErrors = class_exists('Translator') ? Translator::takeFailures() : [];
+        if ($translateErrors && $tipe === 'success') {
+            foreach (array_unique($translateErrors) as $text) {
+                $errors['translate'][] = 'Terjemahan otomatis gagal untuk "' . htmlspecialchars($text) . '"';
+            }
+            $errors['translate'][] = 'Versi bahasa Inggris belum ikut berubah. Buka edit, klik toggle <strong>EN</strong>, lalu isi teks Inggrisnya (atau kosongkan agar diterjemahkan ulang saat disimpan).';
+            $tipe = 'warning';
+            $aksi .= ', tetapi terjemahan bahasa Inggris gagal';
+        }
         $_SESSION['flash'] = [
             'pesan' => $pesan,
             'aksi' => $aksi,

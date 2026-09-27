@@ -1,6 +1,21 @@
 <?php
 
 class Translator {
+    // Texts that could not be translated in this request; Flasher shows them to the admin
+    private static $failures = [];
+
+    public static function takeFailures() {
+        $failures = self::$failures;
+        self::$failures = [];
+        return $failures;
+    }
+
+    private static function fail($text) {
+        $plain = trim(preg_replace('/\s+/u', ' ', html_entity_decode(strip_tags((string) $text), ENT_QUOTES, 'UTF-8')));
+        self::$failures[] = mb_strlen($plain) > 60 ? mb_substr($plain, 0, 60) . '...' : $plain;
+        return $text;
+    }
+
     /**
      * Translates text from Indonesian to English using a free service.
      * 
@@ -30,7 +45,7 @@ class Translator {
                 // Usually 429 (rate limited) from the free endpoint: the English version falls back to the original text
                 $status = isset($http_response_header[0]) ? $http_response_header[0] : (error_get_last()['message'] ?? 'tidak ada respons');
                 error_log('[GoSirk] Terjemahan otomatis gagal (' . $status . '), teks EN memakai teks asli: ' . mb_substr($text, 0, 60));
-                return $text; // Fallback to original
+                return self::fail($text); // Fallback to original
             }
             
             $result = json_decode($response);
@@ -43,9 +58,9 @@ class Translator {
                 return $translatedText;
             }
             
-            return $text;
+            return self::fail($text);
         } catch (Exception $e) {
-            return $text;
+            return self::fail($text);
         }
     }
 }
