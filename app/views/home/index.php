@@ -274,9 +274,14 @@
             <div class="card-body p-4 d-flex flex-column">
               <h6 class="fw-bold mb-1" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h6>
               <p class="text-muted small mb-3"><?= $p->client_name ?: '&nbsp;' ?></p>
-              <p class="card-text small text-secondary flex-grow-1" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
+              <p class="card-text small text-secondary mb-2" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>">
                 <?= $p->subtitle_id ?>
               </p>
+              <?php $descId = trim(strip_tags((string) $p->description_id)); $descEn = trim(strip_tags((string) $p->description_en)); ?>
+              <?php if ($descId !== '') : ?>
+                <p class="card-text small text-muted mb-0" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;" data-lang-id="<?= htmlspecialchars($descId) ?>" data-lang-en="<?= htmlspecialchars($descEn ?: $descId) ?>"><?= htmlspecialchars($descId) ?></p>
+              <?php endif; ?>
+              <div class="flex-grow-1"></div>
               <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="btn btn-outline-secondary btn-sm rounded-pill align-self-end mt-3 px-3" data-i18n="home.common.read_more">Selengkapnya</a>
             </div>
           </div>

@@ -130,6 +130,10 @@
                                         <div class="card-body p-4">
                                             <h5 class="fw-bold mb-2" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h5>
                                             <p class="text-muted small mb-0 fs-13" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>"><?= $p->subtitle_id ?></p>
+                                            <?php $descId = trim(strip_tags((string) $p->description_id)); $descEn = trim(strip_tags((string) $p->description_en)); ?>
+                                            <?php if ($descId !== '') : ?>
+                                              <p class="small text-secondary mt-2 mb-0 fs-13" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;" data-lang-id="<?= htmlspecialchars($descId) ?>" data-lang-en="<?= htmlspecialchars($descEn ?: $descId) ?>"><?= htmlspecialchars($descId) ?></p>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="card-footer bg-transparent border-0 px-4 pb-4">
                                             <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="text-primary fw-bold text-decoration-none small" data-i18n="partnership.see_detail">Selengkapnya <i class="fas fa-chevron-right ms-1"></i></a>
@@ -207,6 +211,10 @@
                                         <div class="card-body p-4">
                                             <h5 class="fw-bold mb-2" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h5>
                                             <p class="text-muted small mb-0 fs-13" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>"><?= $p->subtitle_id ?></p>
+                                            <?php $descId = trim(strip_tags((string) $p->description_id)); $descEn = trim(strip_tags((string) $p->description_en)); ?>
+                                            <?php if ($descId !== '') : ?>
+                                              <p class="small text-secondary mt-2 mb-0 fs-13" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;" data-lang-id="<?= htmlspecialchars($descId) ?>" data-lang-en="<?= htmlspecialchars($descEn ?: $descId) ?>"><?= htmlspecialchars($descId) ?></p>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="card-footer bg-transparent border-0 px-4 pb-4">
                                             <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="text-primary fw-bold text-decoration-none small" data-i18n="partnership.see_detail">Selengkapnya <i class="fas fa-chevron-right ms-1"></i></a>
@@ -284,6 +292,10 @@
                                         <div class="card-body p-4">
                                             <h5 class="fw-bold mb-2" data-lang-id="<?= $p->title_id ?>" data-lang-en="<?= $p->title_en ?>"><?= $p->title_id ?></h5>
                                             <p class="text-muted small mb-0 fs-13" data-lang-id="<?= $p->subtitle_id ?>" data-lang-en="<?= $p->subtitle_en ?>"><?= $p->subtitle_id ?></p>
+                                            <?php $descId = trim(strip_tags((string) $p->description_id)); $descEn = trim(strip_tags((string) $p->description_en)); ?>
+                                            <?php if ($descId !== '') : ?>
+                                              <p class="small text-secondary mt-2 mb-0 fs-13" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;" data-lang-id="<?= htmlspecialchars($descId) ?>" data-lang-en="<?= htmlspecialchars($descEn ?: $descId) ?>"><?= htmlspecialchars($descId) ?></p>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="card-footer bg-transparent border-0 px-4 pb-4">
                                             <a href="<?= BASE_URL ?>portfolio/detail/<?= $p->id ?>" class="text-primary fw-bold text-decoration-none small" data-i18n="partnership.see_detail">Selengkapnya <i class="fas fa-chevron-right ms-1"></i></a>
