@@ -24,17 +24,17 @@
                     <!-- Basic Info -->
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Judul Proyek</label>
-                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= $portfolio->title_id; ?>" <?= FormRules::attrs('portfolio', 'title_id', 'update') ?>><?= EnField::render('title', $portfolio->title_id ?? '', $portfolio->title_en ?? '', 'text', 1) ?>
+                        <input type="text" name="title_id" class="form-control form-control-lg" value="<?= htmlspecialchars($portfolio->title_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('portfolio', 'title_id', 'update') ?>><?= EnField::render('title', $portfolio->title_id ?? '', $portfolio->title_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Sub-judul</label>
-                        <input type="text" name="subtitle_id" class="form-control" value="<?= $portfolio->subtitle_id; ?>" <?= FormRules::attrs('portfolio', 'subtitle_id', 'update') ?>><?= EnField::render('subtitle', $portfolio->subtitle_id ?? '', $portfolio->subtitle_en ?? '', 'text', 1) ?>
+                        <input type="text" name="subtitle_id" class="form-control" value="<?= htmlspecialchars($portfolio->subtitle_id ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('portfolio', 'subtitle_id', 'update') ?>><?= EnField::render('subtitle', $portfolio->subtitle_id ?? '', $portfolio->subtitle_en ?? '', 'text', 1) ?>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Deskripsi Ringkas (di kartu)</label>
-                        <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('portfolio', 'description_id', 'update') ?>><?= $portfolio->description_id; ?></textarea><?= EnField::render('description', $portfolio->description_id ?? '', $portfolio->description_en ?? '', 'textarea', 3) ?>
+                        <textarea name="description_id" class="form-control" rows="3" <?= FormRules::attrs('portfolio', 'description_id', 'update') ?>><?= htmlspecialchars($portfolio->description_id ?? ''); ?></textarea><?= EnField::render('description', $portfolio->description_id ?? '', $portfolio->description_en ?? '', 'textarea', 3) ?>
                     </div>
 
                     <hr class="my-4 border-dashed">
@@ -45,7 +45,7 @@
                             <label class="form-label small fw-bold text-dark">Ikon (FontAwesome)</label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text bg-light border-end-0"><i class="fas fa-icons text-muted"></i></span>
-                                <input type="text" name="icon_name" class="form-control border-start-0" value="<?= $portfolio->icon_name; ?>" id="iconInput" <?= FormRules::attrs('portfolio', 'icon_name', 'update') ?>>
+                                <input type="text" name="icon_name" class="form-control border-start-0" value="<?= htmlspecialchars($portfolio->icon_name ?? '', ENT_QUOTES); ?>" id="iconInput" <?= FormRules::attrs('portfolio', 'icon_name', 'update') ?>>
                             </div>
                             <div class="d-flex align-items-center gap-2">
                                 <div id="iconPreview" class="bg-light rounded p-2 text-center" style="width: 40px;"><i class="<?= $portfolio->icon_name ?: 'fas fa-question text-muted'; ?>"></i></div>
@@ -75,9 +75,9 @@
                                 <div class="input-group">
                                     <span class="input-group-text bg-light">
                                         <img src="<?= ASSETS_URL; ?>img/portfolio/<?= $logo; ?>" style="max-height: 20px;">
-                                        <input type="hidden" name="existing_project_logos[]" value="<?= $logo; ?>">
+                                        <input type="hidden" name="existing_project_logos[]" value="<?= htmlspecialchars($logo, ENT_QUOTES); ?>">
                                     </span>
-                                    <input type="text" class="form-control form-control-sm" value="<?= $logo; ?>" readonly>
+                                    <input type="text" class="form-control form-control-sm" value="<?= htmlspecialchars($logo, ENT_QUOTES); ?>" readonly>
                                     <button type="button" class="btn btn-sm btn-outline-danger remove-logo"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
@@ -104,7 +104,7 @@
                 <div class="card-body p-4">
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark"><i class="fas fa-info-circle me-1 text-primary"></i> 1. TENTANG PROYEK (Isi Detail)</label>
-                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" <?= FormRules::attrs('portfolio', 'detail_content_id', 'update') ?>><?= $portfolio->detail_content_id; ?></textarea><?= EnField::render('detail_content', $portfolio->detail_content_id ?? '', $portfolio->detail_content_en ?? '', 'editor', 10) ?>
+                        <textarea name="detail_content_id" id="editor_detail" class="form-control" rows="10" <?= FormRules::attrs('portfolio', 'detail_content_id', 'update') ?>><?= htmlspecialchars($portfolio->detail_content_id ?? ''); ?></textarea><?= EnField::render('detail_content', $portfolio->detail_content_id ?? '', $portfolio->detail_content_en ?? '', 'editor', 10) ?>
                     </div>
 
                     <?php
@@ -142,7 +142,7 @@
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Nama Klien</label>
-                        <input type="text" name="client_name" class="form-control" value="<?= $portfolio->client_name; ?>" <?= FormRules::attrs('portfolio', 'client_name', 'update') ?>>
+                        <input type="text" name="client_name" class="form-control" value="<?= htmlspecialchars($portfolio->client_name ?? '', ENT_QUOTES); ?>" <?= FormRules::attrs('portfolio', 'client_name', 'update') ?>>
                     </div>
                 </div>
             </div>

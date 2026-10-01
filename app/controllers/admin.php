@@ -102,8 +102,8 @@ class Admin extends Controller {
         $idNow = (string) ($_POST[$field . '_id'] ?? $idValue);
 
         if ($en === '') return Translator::translate($idValue);
-        if ($en !== $enBefore) return $en;
-        if ($idBefore === null || trim($idBefore) !== trim($idNow)) {
+        if (!$this->sameText($en, $enBefore)) return $en;
+        if ($idBefore === null || !$this->sameText($idBefore, $idNow)) {
             $translated = Translator::translate($idValue);
             // The translator returns the Indonesian text when it fails (e.g. rate limited):
             // keep the previous English then - slightly outdated English beats Indonesian on the English site
@@ -111,6 +111,12 @@ class Admin extends Controller {
             return $failed && $en !== '' ? $en : $translated;
         }
         return $en;
+    }
+
+    // Same visible text: rich-text editors re-serialize HTML (spacing, &nbsp;, tags) without any real edit
+    private function sameText($a, $b) {
+        $norm = fn($t) => trim(preg_replace('/\s+/u', ' ', str_replace("\u{00A0}", ' ', html_entity_decode(strip_tags(str_replace('>', '> ', (string) $t)), ENT_QUOTES, 'UTF-8'))));
+        return $norm($a) === $norm($b);
     }
 
     /**
@@ -1066,6 +1072,7 @@ class Admin extends Controller {
             $approach_id = $old_portfolio->approach_id;
             $approach_en = $old_portfolio->approach_en;
 
+            // Fields that are not in the edit form (years, tags, targets, metrics) keep their stored value
             $data = [
                 'id' => $id,
                 'title_id' => $_POST['title_id'],
@@ -1081,20 +1088,20 @@ class Admin extends Controller {
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],
-                'year_start' => $_POST['year_start'] ?? '',
-                'year_end' => $_POST['year_end'] ?? '',
+                'year_start' => $_POST['year_start'] ?? $old_portfolio->year_start,
+                'year_end' => $_POST['year_end'] ?? $old_portfolio->year_end,
                 'show_home' => isset($_POST['show_home']) ? 1 : 0,
                 'show_partnership' => isset($_POST['show_partnership']) ? 1 : 0,
                 'show_gi' => isset($_POST['show_gi']) ? 1 : 0,
                 'client_name' => $_POST['client_name'],
-                'tags' => $_POST['tags'] ?? '',
+                'tags' => $_POST['tags'] ?? $old_portfolio->tags,
                 'video_url' => '',
                 'detail_content_id' => $_POST['detail_content_id'] ?? '',
                 'detail_content_en' => $this->en('detail_content', $_POST['detail_content_id'] ?? ''),
-                'targets_id' => $_POST['targets_id'] ?? '',
-                'targets_en' => $this->en('targets', $_POST['targets_id'] ?? ''),
-                'metrics_id' => $_POST['metrics_id'] ?? '',
-                'metrics_en' => $this->en('metrics', $_POST['metrics_id'] ?? ''),
+                'targets_id' => $_POST['targets_id'] ?? $old_portfolio->targets_id,
+                'targets_en' => isset($_POST['targets_id']) ? $this->en('targets', $_POST['targets_id']) : $old_portfolio->targets_en,
+                'metrics_id' => $_POST['metrics_id'] ?? $old_portfolio->metrics_id,
+                'metrics_en' => isset($_POST['metrics_id']) ? $this->en('metrics', $_POST['metrics_id']) : $old_portfolio->metrics_en,
                 'approach_id' => $approach_id,
                 'approach_en' => $approach_en,
                 'highlights' => json_encode($highlights),
