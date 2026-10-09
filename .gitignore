@@ -13,3 +13,10 @@ Thumbs.db
 # Server-side record of the image optimizer (Admin > Situs > Optimasi Gambar)
 /app/storage/optimized_server.json
 /assets/img/**/*.opt.webp
+
+# Files uploaded from the admin (Upload::file names them gs_<id>.<ext>). They live only on the server:
+# the auto-deploy removes files git does not know about unless they are ignored here, as with .env.
+# Uploads already committed stay tracked; new ones are never added to the repo.
+/assets/**/gs_*
+/app/storage/**/gs_*
+/public/**/gs_*
