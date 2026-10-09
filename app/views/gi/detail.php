@@ -311,8 +311,8 @@
                             <div class="highlight-card shadow-sm">
                                 <img loading="lazy" decoding="async" src="<?= ASSETS_URL ?>img/gi/<?= $h['image'] ?>" alt="Highlight">
                                 <div class="highlight-overlay">
-                                    <p class="small mb-0" data-lang-id="<?= htmlspecialchars($h['caption'] ?? '') ?>" data-lang-en="<?= htmlspecialchars($h['caption'] ?? '') ?>">
-                                        <?= $h['caption'] ?>
+                                    <p class="small mb-0" data-lang-id="<?= htmlspecialchars($h['caption'] ?? '') ?>" data-lang-en="<?= htmlspecialchars(($h['caption_en'] ?? '') ?: ($h['caption'] ?? '')) ?>">
+                                        <?= htmlspecialchars($h['caption'] ?? '') ?>
                                     </p>
                                 </div>
                             </div>

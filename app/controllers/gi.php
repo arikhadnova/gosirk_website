@@ -5,7 +5,7 @@ class gi extends Controller {
         $portfolioModel = $this->model('Portfolio_model');
         $data = [
             'hero' => $this->model('Hero_model')->getByPage('gi'),
-            'portfolios' => $portfolioModel->getAll(),
+            'portfolios' => $portfolioModel->sortForPage($portfolioModel->getAll(), 'gi'),
             'impacts' => $this->model('Impact_model')->getByPage('gi'),
             'articles' => $this->model('Article_model')->getByType('library'),
             'services' => $this->model('GiService_model')->getAll(),

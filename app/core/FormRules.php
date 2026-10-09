@@ -53,7 +53,7 @@ class FormRules {
         ],
         'gi_video' => [
             'url'            => ['URL Video YouTube', 'required|url|youtube|max:255'],
-            'order_priority' => ['Urutan Prioritas', 'int|min_value:0'],
+            'order_priority' => ['Urutan Tampil', 'int|min_value:0'],
         ],
         'gi_video_section' => [
             'title_id'    => ['Judul', 'max:255'],

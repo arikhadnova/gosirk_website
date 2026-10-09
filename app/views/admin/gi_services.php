@@ -26,7 +26,7 @@
                     <th>Judul Layanan</th>
                     <th>Kategori</th>
 
-                    <th class="text-center">Prioritas</th>
+                    <th class="text-center">Urutan Tampil</th>
                     <th class="text-end pe-4">Aksi</th>
                 </tr>
             </thead>

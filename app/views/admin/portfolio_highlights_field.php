@@ -9,7 +9,7 @@ $renderHighlightRow = function ($h = []) {
     $video = $type === 'video' ? ($h['video_url'] ?? '') : '';
     ?>
     <div class="p-3 bg-light rounded-3 mb-2 highlight-row">
-        <div class="row g-2 align-items-center">
+        <div class="row g-2 align-items-end"><!-- bottom-aligned: the caption column has its translate button on top -->
             <div class="col-md-2">
                 <select name="highlight_types[]" class="form-select form-select-sm highlight-type">
                     <option value="image" <?= $type === 'image' ? 'selected' : ''; ?>>Foto</option>
@@ -29,7 +29,13 @@ $renderHighlightRow = function ($h = []) {
                 </div>
             </div>
             <div class="col-md-4">
-                <input type="text" name="highlight_captions[]" class="form-control form-control-sm" value="<?= htmlspecialchars($h['caption'] ?? ''); ?>" placeholder="Keterangan (opsional)...">
+                <?php $caption = $h['caption'] ?? ''; $captionEn = $h['caption_en'] ?? ''; ?>
+                <!-- Indonesian caption, and its English version in EN mode (empty = translated automatically on save) -->
+                <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti keterangan ID dengan terjemahan keterangan EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti keterangan EN dengan terjemahan keterangan ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
+                <input type="text" name="highlight_captions[]" class="form-control form-control-sm id-only caption-id" value="<?= htmlspecialchars($caption); ?>" placeholder="Keterangan (opsional)...">
+                <input type="text" name="highlight_captions_en[]" class="form-control form-control-sm en-only" data-en-row value="<?= htmlspecialchars($captionEn); ?>" placeholder="Caption (EN), kosongkan untuk terjemahan otomatis">
+                <input type="hidden" name="highlight_captions_id_was[]" value="<?= htmlspecialchars($caption); ?>">
+                <input type="hidden" class="caption-en-was" name="highlight_captions_en_was[]" value="<?= htmlspecialchars($captionEn); ?>">
             </div>
             <div class="col-md-1 text-end">
                 <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-trash"></i></button>
@@ -42,7 +48,8 @@ $renderHighlightRow = function ($h = []) {
 <div class="mb-0">
     <label class="form-label small fw-bold text-dark mb-1"><i class="fas fa-images me-1 text-primary"></i> <?= htmlspecialchars($highlightFieldLabel) ?></label>
     <small class="text-muted extra-small d-block mb-3">Tampil sebagai grid 3 kolom. Setiap item bisa berupa foto atau link video YouTube.</small>
-    <div id="highlights-container">
+    <!-- data-lang-aware: the page's ID | EN toggle also switches the captions (pages without other English fields get one too) -->
+    <div id="highlights-container" data-lang-aware>
         <?php foreach ($highlightItems as $h) { $renderHighlightRow($h); } ?>
     </div>
     <template id="highlight-row-template"><?php $renderHighlightRow(); ?></template>

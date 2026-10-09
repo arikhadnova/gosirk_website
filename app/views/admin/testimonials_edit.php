@@ -36,12 +36,12 @@
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
-                            <input type="text" name="role_id" class="form-control bg-light border-0" value="<?= $testimonial->role_id ?>" <?= FormRules::attrs('testimonial', 'role_id', 'update') ?>>
+                            <input type="text" name="role_id" class="form-control bg-light border-0" value="<?= $testimonial->role_id ?>" <?= FormRules::attrs('testimonial', 'role_id', 'update') ?>><?= EnField::render('role', $testimonial->role_id ?? '', $testimonial->role_en ?? '', 'text', 1) ?>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
-                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" <?= FormRules::attrs('testimonial', 'content_id', 'update') ?>><?= $testimonial->content_id ?></textarea>
+                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" <?= FormRules::attrs('testimonial', 'content_id', 'update') ?>><?= $testimonial->content_id ?></textarea><?= EnField::render('content', $testimonial->content_id ?? '', $testimonial->content_en ?? '', 'textarea', 4) ?>
                         </div>
                         <div class="col-12">
                             <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>

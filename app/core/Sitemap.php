@@ -6,7 +6,7 @@
 class Sitemap {
     // Public pages that always exist
     const PAGES = [
-        '', 'about', 'gi', 'ggc', 'go_ngompos_project', 'implementasi_partner', 'konsultan', 'partnership',
+        '', 'about', 'gi', 'ggc', 'go_ngompos_project', 'implementasi_partner', 'konsultan', 'partnership', 'portfolio',
         'contact', 'collaboration', 'blog', 'library', 'publication', 'publication/gosirk', 'publication/reference', 'home/impact', 'privacy',
     ];
 

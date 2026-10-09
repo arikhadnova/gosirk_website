@@ -96,10 +96,15 @@ class Admin extends Controller {
         $idValue = (string) $idValue;
         if (!array_key_exists($field . '_en', $_POST)) return Translator::translate($idValue);
 
-        $en = trim((string) $_POST[$field . '_en']);
-        $enBefore = trim((string) ($_POST[$field . '_en_was'] ?? ''));
-        $idBefore = $_POST[$field . '_id_was'] ?? null;
-        $idNow = (string) ($_POST[$field . '_id'] ?? $idValue);
+        return $this->enFor($idValue, $_POST[$field . '_en'], $_POST[$field . '_id_was'] ?? null, $_POST[$field . '_en_was'] ?? '', $_POST[$field . '_id'] ?? $idValue);
+    }
+
+    // The rules of en() for one value: English typed now, Indonesian and English as the form showed them
+    private function enFor($idValue, $enNow, $idBefore, $enBefore, $idNow = null) {
+        $idValue = (string) $idValue;
+        $en = trim((string) $enNow);
+        $enBefore = trim((string) $enBefore);
+        $idNow = (string) ($idNow ?? $idValue);
 
         if ($en === '') return Translator::translate($idValue);
         if (!$this->sameText($en, $enBefore)) return $en;
@@ -160,10 +165,14 @@ class Admin extends Controller {
     public function translate() {
         header('Content-Type: application/json');
         $text = (string) ($_POST['text'] ?? '');
-        $out = trim($text) === '' ? '' : Translator::translate($text);
-        $failed = trim(strip_tags($out)) === trim(strip_tags($text)) && trim($text) !== '';
+        // Indonesian -> English by default; to=id turns English text into Indonesian (fields holding English)
+        [$from, $to] = ($_POST['to'] ?? 'en') === 'id' ? ['en', 'id'] : ['id', 'en'];
+        Translator::takeFailures();
+        $out = trim($text) === '' ? '' : Translator::translate($text, $from, $to);
+        // Only an unreachable service is a failure: the same text back is a real answer (names, "Customizable")
+        $failed = (bool) Translator::takeFailures();
         echo json_encode(['status' => $failed ? 'error' : 'success', 'text' => $out,
-            'message' => $failed ? 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi, atau tulis versi Inggris sendiri.' : '']);
+            'message' => $failed ? 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi, atau tulis terjemahannya sendiri.' : '']);
         exit;
     }
 
@@ -875,20 +884,90 @@ class Admin extends Controller {
     public function portfolio($action = null, $id = null) {
         if ($action === 'create') return $this->portfolio_create();
         if ($action === 'edit' && $id) return $this->portfolio_edit($id);
+        $fixed = $this->portfolioModel->repairSwappedLanguages();
+        if ($fixed) Flasher::setFlash($fixed . ' portofolio', 'diperbaiki: teks Indonesia yang tersimpan di kolom Inggris sudah dipindahkan ke kolom Indonesia dan diterjemahkan.', 'info');
+        // ?lokasi=<place>: only the portfolios of that place, in its website order, to drag into a new order
+        $location = $_GET['lokasi'] ?? '';
+        if (!isset(Portfolio_model::LOCATIONS[$location])) $location = '';
+        $_SESSION['portfolio_lokasi'] = $location; // saving/cancelling a portfolio returns to this view
         $data = [
             'title' => 'Kelola Portofolio',
             'active' => 'portfolio',
-            'portfolios' => $this->portfolioModel->getAll()
+            'location' => $location,
+            'partner_types' => $this->model('PartnerType_model')->map(),
+            'portfolios' => $location ? $this->portfolioModel->getForLocation($location) : $this->portfolioModel->getAll()
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/portfolio', $data);
         $this->views('layouts/admin_footer');
     }
 
+    // "Tipe Partner" dropdown of the portfolio form (AJAX): add or rename a type (code empty = new). Returns all types.
+    public function partner_types_save() {
+        header('Content-Type: application/json');
+        $types = $this->model('PartnerType_model');
+        $code = trim($_POST['code'] ?? '');
+        $labelId = trim($_POST['label_id'] ?? '');
+        $labelEn = trim($_POST['label_en'] ?? '');
+        if ($labelId === '' || mb_strlen($labelId) > 100 || mb_strlen($labelEn) > 100 || ($code !== '' && !$types->exists($code))) {
+            echo json_encode(['status' => 'error', 'message' => $labelId === '' ? 'Nama tipe (ID) wajib diisi.' : 'Data tipe tidak valid.']);
+            exit;
+        }
+        if ($labelEn === '') $labelEn = Translator::translate($labelId);
+        if ($code === '') {
+            $code = $types->add($labelId, $labelEn);
+            $this->activityLogModel->log('CREATE', 'Portfolio', "Menambahkan tipe partner '{$labelId}'");
+        } else {
+            $types->update($code, $labelId, $labelEn);
+            $this->activityLogModel->log('UPDATE', 'Portfolio', "Mengubah tipe partner '{$labelId}'");
+        }
+        echo json_encode(['status' => 'success', 'code' => $code, 'types' => $types->getAll()]);
+        exit;
+    }
+
+    // Delete a type that no portfolio uses (AJAX)
+    public function partner_types_delete() {
+        header('Content-Type: application/json');
+        $types = $this->model('PartnerType_model');
+        $code = trim($_POST['code'] ?? '');
+        $used = $code !== '' ? $types->usage($code) : 0;
+        if ($code === '' || !$types->exists($code) || $used) {
+            echo json_encode(['status' => 'error', 'message' => $used ? "Tipe ini masih dipakai oleh $used portofolio. Ganti tipe portofolio tersebut dulu." : 'Tipe tidak ditemukan.']);
+            exit;
+        }
+        $types->delete($code);
+        $this->activityLogModel->log('DELETE', 'Portfolio', "Menghapus tipe partner '{$code}'");
+        echo json_encode(['status' => 'success', 'types' => $types->getAll()]);
+        exit;
+    }
+
+    // The portfolio list as the admin last left it (place chosen in "Tampilkan & atur urutan untuk")
+    private function portfolioListUrl() {
+        $location = $_SESSION['portfolio_lokasi'] ?? '';
+        return BASE_URL . 'admin/portfolio' . (isset(Portfolio_model::LOCATIONS[$location]) ? '?lokasi=' . rawurlencode($location) : '');
+    }
+
+    // Drag-and-drop order of one place from the portfolio list (AJAX): location + ids in the new order
+    public function portfolio_reorder() {
+        header('Content-Type: application/json');
+        $location = $_POST['location'] ?? '';
+        $ids = array_filter(array_map('intval', (array) ($_POST['ids'] ?? [])));
+        if (!isset(Portfolio_model::LOCATIONS[$location]) || !$ids) {
+            echo json_encode(['status' => 'error', 'message' => 'Urutan tidak terkirim.']);
+            exit;
+        }
+        $this->portfolioModel->saveLocationOrder($location, $ids);
+        $this->activityLogModel->log('UPDATE', 'Portfolio', 'Mengubah urutan portofolio di ' . Portfolio_model::LOCATIONS[$location]);
+        echo json_encode(['status' => 'success']);
+        exit;
+    }
+
     public function portfolio_create() {
         $data = [
             'title' => 'Tambah Portofolio Baru',
-            'active' => 'portfolio'
+            'active' => 'portfolio',
+            'back_url' => $this->portfolioListUrl(),
+            'partner_types' => $this->model('PartnerType_model')->getAll()
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/portfolio_create', $data);
@@ -963,10 +1042,10 @@ class Admin extends Controller {
             if ($this->portfolioModel->add($data)) {
                 $this->activityLogModel->log('CREATE', 'Portfolio', "Menambahkan portofolio baru '{$_POST['title_id']}'");
                 Flasher::setFlash('Portofolio', 'berhasil ditambahkan', 'success');
-                header('Location: ' . BASE_URL . 'admin/portfolio');
+                header('Location: ' . $this->portfolioListUrl());
             } else {
                 Flasher::setFlash('Portofolio', 'gagal ditambahkan', 'danger');
-                header('Location: ' . BASE_URL . 'admin/portfolio');
+                header('Location: ' . $this->portfolioListUrl());
             }
         }
     }
@@ -975,7 +1054,9 @@ class Admin extends Controller {
         $data = [
             'title' => 'Edit Portofolio',
             'active' => 'portfolio',
-            'portfolio' => $this->portfolioModel->getById($id)
+            'portfolio' => $this->portfolioModel->getById($id),
+            'back_url' => $this->portfolioListUrl(),
+            'partner_types' => $this->model('PartnerType_model')->getAll()
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/portfolio_edit', $data);
@@ -989,11 +1070,14 @@ class Admin extends Controller {
 
         foreach ($types as $i => $type) {
             $caption = trim($_POST['highlight_captions'][$i] ?? '');
+            // English caption: same rules as the other English fields (typed English kept, empty translated)
+            $captionEn = $caption === '' ? '' : $this->enFor($caption, $_POST['highlight_captions_en'][$i] ?? '',
+                $_POST['highlight_captions_id_was'][$i] ?? null, $_POST['highlight_captions_en_was'][$i] ?? '');
 
             if ($type === 'video') {
                 $url = trim($_POST['highlight_videos'][$i] ?? '');
                 if ($url !== '' && $this->youtubeId($url)) {
-                    $highlights[] = ['type' => 'video', 'video_url' => $url, 'caption' => $caption];
+                    $highlights[] = ['type' => 'video', 'video_url' => $url, 'caption' => $caption, 'caption_en' => $captionEn];
                 }
                 continue;
             }
@@ -1012,7 +1096,7 @@ class Admin extends Controller {
                 }
             }
             if ($image !== '') {
-                $highlights[] = ['type' => 'image', 'image' => $image, 'caption' => $caption];
+                $highlights[] = ['type' => 'image', 'image' => $image, 'caption' => $caption, 'caption_en' => $captionEn];
             }
         }
 
@@ -1111,10 +1195,10 @@ class Admin extends Controller {
             if ($this->portfolioModel->update($data)) {
                 $this->activityLogModel->log('UPDATE', 'Portfolio', "Memperbarui portofolio '{$_POST['title_id']}'");
                 Flasher::setFlash('Portofolio', 'berhasil diperbarui', 'success');
-                header('Location: ' . BASE_URL . 'admin/portfolio');
+                header('Location: ' . $this->portfolioListUrl());
             } else {
                 Flasher::setFlash('Portofolio', 'gagal diperbarui', 'danger');
-                header('Location: ' . BASE_URL . 'admin/portfolio');
+                header('Location: ' . $this->portfolioListUrl());
             }
         }
     }
@@ -1129,10 +1213,10 @@ class Admin extends Controller {
             $name = $portfolio ? $portfolio->title_id : 'Unknown Portfolio';
             $this->activityLogModel->log('DELETE', 'Portfolio', "Menghapus portofolio '{$name}'");
             Flasher::setFlash('Portofolio', 'berhasil dihapus', 'success');
-            header('Location: ' . BASE_URL . 'admin/portfolio');
+            header('Location: ' . $this->portfolioListUrl());
         } else {
             Flasher::setFlash('Portofolio', 'gagal dihapus', 'danger');
-            header('Location: ' . BASE_URL . 'admin/portfolio');
+            header('Location: ' . $this->portfolioListUrl());
         }
     }
 
@@ -2327,8 +2411,8 @@ class Admin extends Controller {
             }
 
             // Auto-translate
-            $data['role_en'] = Translator::translate($data['role_id']);
-            $data['content_en'] = Translator::translate($data['content_id']);
+            $data['role_en'] = $this->en('role', $data['role_id']);
+            $data['content_en'] = $this->en('content', $data['content_id']);
 
             if ($this->testimonialModel->add($data)) {
                 $this->activityLogModel->log('CREATE', 'Testimonials', "Menambahkan testimoni baru dari '{$data['client_name']}'");
@@ -2372,8 +2456,8 @@ class Admin extends Controller {
             }
 
             // Auto-translate
-            $data['role_en'] = Translator::translate($data['role_id']);
-            $data['content_en'] = Translator::translate($data['content_id']);
+            $data['role_en'] = $this->en('role', $data['role_id']);
+            $data['content_en'] = $this->en('content', $data['content_id']);
 
             if ($this->testimonialModel->update($data)) {
                 $this->activityLogModel->log('UPDATE', 'Testimonials', "Memperbarui testimoni dari '{$data['client_name']}'");
@@ -2432,8 +2516,8 @@ class Admin extends Controller {
     public function faqs_store() {
         $this->validateForm('faq', 'store');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST['question_en'] = Translator::translate($_POST['question_id']);
-            $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
+            $_POST['question_en'] = $this->en('question', $_POST['question_id']);
+            $_POST['answer_en'] = $this->en('answer', $_POST['answer_id']);
 
             if ($this->faqModel->add($_POST)) {
                 $this->activityLogModel->log('CREATE', 'FAQ', "Menambahkan FAQ baru '{$_POST['question_id']}'");
@@ -2462,8 +2546,8 @@ class Admin extends Controller {
     public function faqs_update() {
         $this->validateForm('faq', 'update');
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $_POST['question_en'] = Translator::translate($_POST['question_id']);
-            $_POST['answer_en'] = Translator::translate($_POST['answer_id']);
+            $_POST['question_en'] = $this->en('question', $_POST['question_id']);
+            $_POST['answer_en'] = $this->en('answer', $_POST['answer_id']);
 
             if ($this->faqModel->update($_POST)) {
                 $this->activityLogModel->log('UPDATE', 'FAQ', "Memperbarui FAQ '{$_POST['question_id']}'");
@@ -2536,9 +2620,11 @@ class Admin extends Controller {
                         ];
                         $uploaded_file = Upload::file($file_data, 'img/gi');
                         if ($uploaded_file) {
+                            $caption = trim($_POST['highlight_captions'][$key] ?? '');
                             $highlights[] = [
                                 'image' => $uploaded_file,
-                                'caption' => $_POST['highlight_captions'][$key] ?? ''
+                                'caption' => $caption,
+                                'caption_en' => $caption === '' ? '' : $this->enFor($caption, $_POST['highlight_captions_en'][$key] ?? '', null, '')
                             ];
                         }
                     }
@@ -2622,9 +2708,13 @@ class Admin extends Controller {
             if (isset($_POST['existing_highlight_imgs'])) {
                 foreach ($_POST['existing_highlight_imgs'] as $key => $img) {
                     if (!empty($img)) {
+                        $caption = trim($_POST['existing_highlight_captions'][$key] ?? '');
                         $highlights[] = [
                             'image' => $img,
-                            'caption' => $_POST['existing_highlight_captions'][$key] ?? ''
+                            'caption' => $caption,
+                            // English caption: same rules as the other English fields (typed English kept, empty translated)
+                            'caption_en' => $caption === '' ? '' : $this->enFor($caption, $_POST['existing_highlight_captions_en'][$key] ?? '',
+                                $_POST['existing_highlight_captions_id_was'][$key] ?? null, $_POST['existing_highlight_captions_en_was'][$key] ?? '')
                         ];
                     }
                 }
@@ -2644,9 +2734,11 @@ class Admin extends Controller {
                         
                         $uploaded_file = Upload::file($file_data, 'img/gi');
                         if ($uploaded_file) {
+                            $caption = trim($_POST['highlight_captions'][$key] ?? '');
                             $highlights[] = [
                                 'image' => $uploaded_file,
-                                'caption' => $_POST['highlight_captions'][$key] ?? ''
+                                'caption' => $caption,
+                                'caption_en' => $caption === '' ? '' : $this->enFor($caption, $_POST['highlight_captions_en'][$key] ?? '', null, '')
                             ];
                         }
                     }

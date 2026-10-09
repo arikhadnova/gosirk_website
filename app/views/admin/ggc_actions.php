@@ -69,7 +69,7 @@
 
 <!-- Add Modal -->
 <div class="modal fade" id="addActionModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <form action="<?= BASE_URL ?>admin/ggc_actions_store" method="POST" enctype="multipart/form-data">
             <div class="modal-content border-0 shadow rounded-4">
                 <div class="modal-header border-bottom p-4">
@@ -107,7 +107,7 @@
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editActionModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
         <form action="<?= BASE_URL ?>admin/ggc_actions_update" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" id="edit-id">
             <div class="modal-content border-0 shadow rounded-4">

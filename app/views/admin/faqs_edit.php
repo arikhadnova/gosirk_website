@@ -35,11 +35,11 @@
                             <h6 class="fw-bold text-primary mb-3">Konten FAQ</h6>
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small">Pertanyaan</label>
-                                <input type="text" name="question_id" class="form-control bg-light border-0" value="<?= $faq->question_id ?>" <?= FormRules::attrs('faq', 'question_id', 'update') ?>>
+                                <input type="text" name="question_id" class="form-control bg-light border-0" value="<?= $faq->question_id ?>" <?= FormRules::attrs('faq', 'question_id', 'update') ?>><?= EnField::render('question', $faq->question_id ?? '', $faq->question_en ?? '', 'text', 1) ?>
                             </div>
                             <div>
                                 <label class="form-label fw-bold extra-small">Jawaban</label>
-                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" <?= FormRules::attrs('faq', 'answer_id', 'update') ?>><?= $faq->answer_id ?></textarea>
+                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" <?= FormRules::attrs('faq', 'answer_id', 'update') ?>><?= $faq->answer_id ?></textarea><?= EnField::render('answer', $faq->answer_id ?? '', $faq->answer_en ?? '', 'textarea', 4) ?>
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan diperbarui otomatis saat disimpan.</small>

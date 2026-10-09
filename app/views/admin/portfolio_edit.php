@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
     <div class="d-flex align-items-center gap-3">
-        <a href="<?= BASE_URL; ?>admin/portfolio" class="btn btn-outline-secondary rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+        <a href="<?= htmlspecialchars($back_url ?? BASE_URL . 'admin/portfolio') ?>" class="btn btn-outline-secondary rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
             <i class="fas fa-arrow-left"></i>
         </a>
         <div>
@@ -131,14 +131,7 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
-                        <label class="form-label fw-bold">Tipe Partner (Badge)</label>
-                        <select name="partner_type" class="form-select rounded-3">
-                            <option value="GOVERNMENT" <?= $portfolio->partner_type == 'GOVERNMENT' ? 'selected' : ''; ?>>Government</option>
-                            <option value="COMMUNITY" <?= $portfolio->partner_type == 'COMMUNITY' ? 'selected' : ''; ?>>Community</option>
-                            <option value="EDUCATION" <?= $portfolio->partner_type == 'EDUCATION' ? 'selected' : ''; ?>>Education/Academic</option>
-                            <option value="CORPORATE" <?= $portfolio->partner_type == 'CORPORATE' ? 'selected' : ''; ?>>Corporate/CSR</option>
-                            <option value="NGO" <?= $portfolio->partner_type == 'NGO' ? 'selected' : ''; ?>>NGO/Foundation</option>
-                        </select>
+                        <?php $selectedType = $portfolio->partner_type; require __DIR__ . '/partner_type_field.php'; ?>
                     </div>
                     <div class="mb-4">
                         <label class="form-label fw-bold">Nama Klien</label>
@@ -217,7 +210,7 @@
                     <button type="submit" class="btn btn-warning w-100 fw-bold py-3 rounded-pill shadow-sm">
                         <i class="fas fa-save me-2"></i> SIMPAN PERUBAHAN
                     </button>
-                    <a href="<?= BASE_URL; ?>admin/portfolio" class="btn btn-link text-white text-decoration-none mt-3 d-block small">Batalkan</a>
+                    <a href="<?= htmlspecialchars($back_url ?? BASE_URL . 'admin/portfolio') ?>" class="btn btn-link text-white text-decoration-none mt-3 d-block small">Batalkan</a>
                 </div>
             </div>
         </div>

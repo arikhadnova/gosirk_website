@@ -85,7 +85,11 @@
                                         <img src="<?= ASSETS_URL; ?>img/gi/<?= $h['image']; ?>" class="rounded border" style="width: 60px; height: 60px; object-fit: cover;">
                                         <input type="hidden" name="existing_highlight_imgs[]" value="<?= $h['image']; ?>">
                                         <div class="flex-grow-1">
-                                            <input type="text" name="existing_highlight_captions[]" class="form-control form-control-sm" value="<?= $h['caption'] ?? ''; ?>" placeholder="Keterangan foto...">
+                                            <?php $cap = $h['caption'] ?? ''; $capEn = $h['caption_en'] ?? ''; ?>
+                                            <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti keterangan ID dengan terjemahan keterangan EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti keterangan EN dengan terjemahan keterangan ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div><input type="text" name="existing_highlight_captions[]" class="form-control form-control-sm id-only caption-id" value="<?= htmlspecialchars($cap); ?>" placeholder="Keterangan foto...">
+                                            <input type="text" name="existing_highlight_captions_en[]" class="form-control form-control-sm en-only" data-en-row value="<?= htmlspecialchars($capEn); ?>" placeholder="Caption (EN), kosongkan untuk terjemahan otomatis">
+                                            <input type="hidden" name="existing_highlight_captions_id_was[]" value="<?= htmlspecialchars($cap); ?>">
+                                            <input type="hidden" class="caption-en-was" name="existing_highlight_captions_en_was[]" value="<?= htmlspecialchars($capEn); ?>">
                                         </div>
                                         <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-trash"></i></button>
                                     </div>
@@ -98,7 +102,7 @@
                                     <div class="mb-2">
                                         <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
                                     </div>
-                                    <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Keterangan foto baru...">
+                                    <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti keterangan ID dengan terjemahan keterangan EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti keterangan EN dengan terjemahan keterangan ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div><input type="text" name="highlight_captions[]" class="form-control form-control-sm id-only caption-id" placeholder="Keterangan foto baru..."><input type="text" name="highlight_captions_en[]" class="form-control form-control-sm en-only" data-en-row placeholder="Caption (EN), kosongkan untuk terjemahan otomatis">
                                     <div class="text-end mt-1">
                                         <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-times"></i></button>
                                     </div>
@@ -136,8 +140,9 @@
                         <small class="text-muted extra-small d-block mt-2">Biarkan kosong jika tidak ingin mengubah gambar.</small>
                     </div>
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Urutan Prioritas</label>
+                        <label class="form-label fw-bold small text-dark">Urutan Tampil</label>
                         <input type="number" name="order_priority" class="form-control" value="<?= $service->order_priority; ?>" <?= FormRules::attrs('gi_service', 'order_priority', 'update') ?>>
+                        <small class="text-muted extra-small">Angka lebih kecil tampil lebih dulu.</small>
                     </div>
                     <hr class="my-3 border-dashed">
                     <div class="mb-4">
@@ -220,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="mb-2">
                     <input type="file" name="highlight_imgs[]" class="form-control form-control-sm">
                 </div>
-                <input type="text" name="highlight_captions[]" class="form-control form-control-sm" placeholder="Keterangan foto baru...">
+                <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti keterangan ID dengan terjemahan keterangan EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti keterangan EN dengan terjemahan keterangan ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div><input type="text" name="highlight_captions[]" class="form-control form-control-sm id-only caption-id" placeholder="Keterangan foto baru..."><input type="text" name="highlight_captions_en[]" class="form-control form-control-sm en-only" data-en-row placeholder="Caption (EN), kosongkan untuk terjemahan otomatis">
                 <div class="text-end mt-1">
                     <button type="button" class="btn btn-sm btn-link text-danger remove-highlight p-0"><i class="fas fa-times"></i></button>
                 </div>

@@ -36,6 +36,11 @@ class AdminNav {
                 $hero('home'),
                 $impact('home', 'Impact Footprint'),
                 $t('Layanan Kami', 'admin/services', ['active' => 'services'], 'fa-concierge-bell'),
+                // The service cards on Home are edited where each service page keeps them; these tabs only link
+                // there (the match never applies, so the editors stay in their own page hub)
+                $t('Kartu Capacity Building', 'admin/gi_services', ['active' => 'home_link'], 'fa-chalkboard-teacher'),
+                $t('Kartu Implementasi Partner', 'admin/services_pd', ['active' => 'home_link'], 'fa-layer-group'),
+                $t('Kartu Konsultansi', 'admin/services_cs', ['active' => 'home_link'], 'fa-layer-group'),
             ], $common('home', 'home', 'home'))],
             'about' => ['group' => 'pages', 'label' => 'About Us', 'icon' => 'fa-info-circle', 'public' => 'about', 'tabs' => array_merge([
                 $section('about'),

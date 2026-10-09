@@ -4,7 +4,7 @@
  * Used by portfolio/detail and implentasi_partner/index.
  *
  * Expects (set by the including view):
- *   $highlightItems        array of ['type' => 'image'|'video', 'image' => file, 'video_url' => url, 'caption' => text]
+ *   $highlightItems        array of ['type' => 'image'|'video', 'image' => file, 'video_url' => url, 'caption' => text, 'caption_en' => text]
  *   $highlightHeading      HTML for the section heading
  *   $highlightSectionClass extra classes for the <section> (optional)
  * Images live in assets/img/portfolio/. Renders nothing when there are no valid items.
@@ -15,7 +15,8 @@ foreach ($highlightItems ?? [] as $h) {
     $ytId = $isVideo ? $this->youtubeId($h['video_url'] ?? '') : null;
     if ($isVideo && !$ytId) continue;
     if (!$isVideo && empty($h['image'])) continue;
-    $highlightCards[] = ['video' => $isVideo, 'ytId' => $ytId, 'image' => $h['image'] ?? '', 'caption' => trim($h['caption'] ?? '')];
+    $caption = trim($h['caption'] ?? '');
+    $highlightCards[] = ['video' => $isVideo, 'ytId' => $ytId, 'image' => $h['image'] ?? '', 'caption' => $caption, 'caption_en' => trim($h['caption_en'] ?? '') ?: $caption];
 }
 if (!$highlightCards) return;
 
@@ -138,7 +139,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <?php endif; ?>
                     <?php if ($card['caption'] !== ''): ?>
                     <div class="highlight-overlay">
-                        <p class="small mb-0"><?= htmlspecialchars($card['caption']) ?></p>
+                        <p class="small mb-0" data-lang-id="<?= htmlspecialchars($card['caption']) ?>" data-lang-en="<?= htmlspecialchars($card['caption_en']) ?>"><?= htmlspecialchars($card['caption']) ?></p>
                     </div>
                     <?php endif; ?>
                 </div>

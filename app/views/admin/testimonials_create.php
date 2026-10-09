@@ -35,12 +35,12 @@
                         
                         <div class="col-md-6">
                             <label class="form-label fw-bold small">Jabatan</label>
-                            <input type="text" name="role_id" class="form-control bg-light border-0" placeholder="Contoh: Kepala Desa" <?= FormRules::attrs('testimonial', 'role_id', 'store') ?>>
+                            <input type="text" name="role_id" class="form-control bg-light border-0" placeholder="Contoh: Kepala Desa" <?= FormRules::attrs('testimonial', 'role_id', 'store') ?>><?= EnField::render('role', '', '', 'text', 1) ?>
                         </div>
 
                         <div class="col-12">
                             <label class="form-label fw-bold small">Testimoni</label>
-                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis testimoni dalam bahasa Indonesia..." <?= FormRules::attrs('testimonial', 'content_id', 'store') ?>></textarea>
+                            <textarea name="content_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis testimoni dalam bahasa Indonesia..." <?= FormRules::attrs('testimonial', 'content_id', 'store') ?>></textarea><?= EnField::render('content', '', '', 'textarea', 4) ?>
                         </div>
                         <div class="col-12">
                             <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

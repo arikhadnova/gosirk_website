@@ -254,8 +254,9 @@
         </div>
 
         <div class="portfolio-hero-content">
-            <span class="status-badge" data-lang-id="<?= strtoupper($portfolio->partner_type) ?>" data-lang-en="<?= strtoupper($portfolio->partner_type) ?>">
-                <?= strtoupper($portfolio->partner_type) ?>
+            <?php $badgeId = $partner_type->label_id ?? $portfolio->partner_type; $badgeEn = $partner_type->label_en ?? $badgeId; ?>
+            <span class="status-badge" data-lang-id="<?= htmlspecialchars($badgeId) ?>" data-lang-en="<?= htmlspecialchars($badgeEn) ?>">
+                <?= htmlspecialchars($badgeId) ?>
             </span>
             <h1 class="portfolio-title" data-lang-id="<?= htmlspecialchars($portfolio->title_id) ?>" data-lang-en="<?= htmlspecialchars($portfolio->title_en) ?>">
                 <?= $portfolio->title_id ?>

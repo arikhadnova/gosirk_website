@@ -1,6 +1,6 @@
 <div class="admin-header-section mb-4">
     <div class="d-flex align-items-center gap-3">
-        <a href="<?= BASE_URL; ?>admin/portfolio" class="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+        <a href="<?= htmlspecialchars($back_url ?? BASE_URL . 'admin/portfolio') ?>" class="btn btn-light rounded-circle p-0 d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
             <i class="fas fa-arrow-left text-muted"></i>
         </a>
         <div>
@@ -103,14 +103,7 @@
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-4">
-                        <label class="form-label small fw-bold text-dark">Tipe Partner (Badge)</label>
-                        <select name="partner_type" class="form-select">
-                            <option value="GOVERNMENT">Government</option>
-                            <option value="COMMUNITY">Community</option>
-                            <option value="EDUCATION">Education/Academic</option>
-                            <option value="CORPORATE">Corporate/CSR</option>
-                            <option value="NGO">NGO/Foundation</option>
-                        </select>
+                        <?php $selectedType = null; require __DIR__ . '/partner_type_field.php'; ?>
                     </div>
                     <div class="mb-4">
                         <label class="form-label small fw-bold text-dark">Nama Klien</label>
@@ -192,7 +185,7 @@
                     <button type="submit" class="btn btn-primary w-100 fw-bold py-3">
                         <i class="fas fa-save me-2"></i> PUBLIKASIKAN PROYEK
                     </button>
-                    <a href="<?= BASE_URL; ?>admin/portfolio" class="btn btn-light w-100 py-2 mt-2 text-muted small">Batalkan</a>
+                    <a href="<?= htmlspecialchars($back_url ?? BASE_URL . 'admin/portfolio') ?>" class="btn btn-light w-100 py-2 mt-2 text-muted small">Batalkan</a>
                 </div>
             </div>
         </div>

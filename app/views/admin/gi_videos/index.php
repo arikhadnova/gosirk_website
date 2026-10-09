@@ -59,7 +59,7 @@
                 <tr>
                     <th class="ps-4" style="width: 150px;">Thumbnail</th>
                     <th>URL YouTube</th>
-                    <th class="text-center">Prioritas</th>
+                    <th class="text-center">Urutan Tampil</th>
                     <th class="text-end pe-4">Aksi</th>
                 </tr>
             </thead>

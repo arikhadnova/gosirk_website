@@ -139,7 +139,8 @@ const resources = {
                     "cb_title": "Capacity Building (GoSirk Institute)",
                     "pd_title": "Mitra Pengembangan Proyek dan Implementasi",
                     "cs_title": "Konsultansi & Advisory Strategis",
-                    "empty": "Belum ada portofolio tersedia saat ini."
+                    "empty": "Belum ada portofolio tersedia saat ini.",
+                    "show_all": "Lihat semua portofolio"
                 },
                 "pd": {
                     "title": "Pengembangan Program dan Implementasi Partner",
@@ -1112,7 +1113,8 @@ const resources = {
                     "cb_title": "Capacity Building (GoSirk Institute)",
                     "pd_title": "Project Development and Implementing Partners",
                     "cs_title": "Consultancy & Strategic Advisory Services",
-                    "empty": "Portfolio currently unavailable."
+                    "empty": "Portfolio currently unavailable.",
+                    "show_all": "View all portfolios"
                 },
                 "pd": {
                     "title": "Program Development and Implementing Partner",

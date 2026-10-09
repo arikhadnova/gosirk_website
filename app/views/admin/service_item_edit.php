@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Prioritas Urutan</label>
+                        <label class="form-label fw-bold small text-dark">Urutan Tampil</label>
                         <input type="number" name="order_priority" class="form-control" value="<?= $item->order_priority ?>" <?= FormRules::attrs('service_item', 'order_priority', 'update') ?>>
                         <small class="text-muted extra-small">Angka lebih kecil tampil lebih dulu.</small>
                     </div>

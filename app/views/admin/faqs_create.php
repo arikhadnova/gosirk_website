@@ -35,11 +35,11 @@
                             <h6 class="fw-bold text-primary mb-3">Konten FAQ</h6>
                             <div class="mb-3">
                                 <label class="form-label fw-bold extra-small">Pertanyaan</label>
-                                <input type="text" name="question_id" class="form-control bg-light border-0" placeholder="Contoh: Apa itu GoSirk?" <?= FormRules::attrs('faq', 'question_id', 'store') ?>>
+                                <input type="text" name="question_id" class="form-control bg-light border-0" placeholder="Contoh: Apa itu GoSirk?" <?= FormRules::attrs('faq', 'question_id', 'store') ?>><?= EnField::render('question', '', '', 'text', 1) ?>
                             </div>
                             <div>
                                 <label class="form-label fw-bold extra-small">Jawaban</label>
-                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis jawaban lengkap dalam bahasa Indonesia..." <?= FormRules::attrs('faq', 'answer_id', 'store') ?>></textarea>
+                                <textarea name="answer_id" class="form-control bg-light border-0" rows="4" placeholder="Tulis jawaban lengkap dalam bahasa Indonesia..." <?= FormRules::attrs('faq', 'answer_id', 'store') ?>></textarea><?= EnField::render('answer', '', '', 'textarea', 4) ?>
                             </div>
                             <div class="mt-3">
                                 <small class="text-muted"><i class="fas fa-magic me-1"></i> Versi Bahasa Inggris akan dibuat otomatis.</small>

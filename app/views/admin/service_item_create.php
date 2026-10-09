@@ -58,8 +58,9 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label fw-bold small text-dark">Prioritas Urutan</label>
-                        <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('service_item', 'order_priority', 'store') ?>>
+                        <label class="form-label fw-bold small text-dark">Urutan Tampil</label>
+                        <input type="number" name="order_priority" class="form-control" value="0" <?= FormRules::attrs('service_item', 'order_priority', 'store') ?>
+                        <small class="text-muted extra-small">Angka lebih kecil tampil lebih dulu.</small>>
                         <small class="text-muted extra-small">Item dengan angka lebih kecil akan muncul pertama.</small>
                     </div>
 

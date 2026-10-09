@@ -891,7 +891,7 @@ body {
    UI polish: one look for every admin screen
    (scoped to the content area, so the sidebar/topbar keep their own styles)
    ====================================================================== */
-#page-content-wrapper > .container-fluid > * { max-width: 1600px; }
+#page-content-wrapper > .container-fluid > *:not(.modal) { max-width: 1600px; } /* a .modal covers the whole screen: capping it pushed dialogs left */
 
 /* Buttons: pill shape, two sizes (40px / 34px) */
 #page-content-wrapper > .container-fluid .btn:not(.btn-link):not(.btn-close) {
@@ -964,10 +964,33 @@ body {
 #page-content-wrapper > .container-fluid .btn.quick-action-btn.quick-action-btn { justify-content: space-between; border-radius: 12px !important; padding: .8rem 1.1rem !important; }
 
 /* Page-wide ID | EN toggle (EnField), in the page header */
-.hub-lang { display: flex; align-items: center; gap: .75rem; }
+.hub-lang { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem .75rem; min-width: 0; }
 .hub-lang .btn-group .btn { min-width: 48px; }
 .hub-lang .lang-translate { font-size: .8rem; font-weight: 600; min-height: 0 !important; white-space: nowrap; }
 .lang-en-mode .en-input, .lang-en-mode .en-input + .ck-editor .ck-editor__editable { background: #f5f9ff !important; border-color: #bfd4f6 !important; }
+.lang-en-mode .en-input, .lang-en-mode .en-input + .ck-editor { box-shadow: 0 0 0 2px #0d6efd; border-radius: .375rem; }
+.lang-en-mode [data-en-row] { background: #f5f9ff !important; border-color: #bfd4f6 !important; box-shadow: 0 0 0 2px #0d6efd; }
+/* caption rows have no label line: their translate button keeps its own small row above the input */
+.id-field-tools.caption-tools { position: static !important; height: auto !important; margin-bottom: .25rem !important; }
+.id-field-tools.caption-tools .id-translate-one { position: static !important; }
+.en-field-label { display: inline-block; font-size: .72rem; font-weight: 700; color: #fff; background: #0d6efd; border-radius: .375rem; padding: .15rem .6rem; margin-top: .25rem; }
+.hub-lang .en-mode-badge { background: #0d6efd; color: #fff; font-weight: 600; }
+.hub-lang .lang-translate { font-size: .8rem; font-weight: 600; border-radius: 999px; }
+.hub-lang .lang-review { color: #b45309; font-size: .8rem; font-weight: 600; }
+.en-field-label .en-stale-hint { font-weight: 700; color: #fff; text-decoration: underline; }
+.id-field-tools { display: flex; justify-content: flex-end; margin-bottom: .25rem; }
+/* From tablet up the button sits on the field label's line (right side) instead of taking a row of its own */
+@media (min-width: 576px) {
+    .id-field-tools { position: relative; height: 0; margin-bottom: 0; }
+    .id-field-tools .id-translate-one { position: absolute; right: 0; bottom: .5rem; }
+    .id-field-tools.stacked { height: auto; margin-bottom: .25rem; }
+    .id-field-tools.stacked .id-translate-one { position: static; }
+}
+.id-field-tools .id-translate-one { background: #f1f5f9; border: 1px solid #e2e8f0; color: #0b5ed7; font-size: .7rem; font-weight: 600; border-radius: 999px; padding: .05rem .55rem; cursor: pointer; }
+.id-field-tools .id-translate-one:hover { background: #e7f0ff; }
+.id-field-tools .id-translate-one:disabled { opacity: .6; cursor: wait; }
+.id-change-note { margin-top: .35rem; padding: .35rem .6rem; font-size: .78rem; color: #92400e; background: #fffbeb; border: 1px solid #fde68a; border-radius: .375rem; }
+.id-change-note .btn-link { font-size: .78rem; font-weight: 600; min-height: 0 !important; }
 .hub-fact strong.is-warn { color: #b45309; }
 
 /* List rows with both languages (e.g. GI program points): the header ID | EN toggle picks which one shows */

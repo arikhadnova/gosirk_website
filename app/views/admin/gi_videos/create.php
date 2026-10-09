@@ -26,8 +26,9 @@
                 <small class="text-muted extra-small d-block mt-2">Jika kosong, thumbnail akan diambil otomatis dari YouTube.</small>
             </div>
             <div class="mb-4">
-                <label class="form-label fw-bold small text-dark">Urutan Prioritas</label>
+                <label class="form-label fw-bold small text-dark">Urutan Tampil</label>
                 <input type="number" name="order_priority" class="form-control" value="0" style="max-width: 160px;" <?= FormRules::attrs('gi_video', 'order_priority', 'store') ?>>
+                <small class="text-muted extra-small">Angka lebih kecil tampil lebih dulu.</small>
             </div>
             <div class="d-flex align-items-center gap-3 pt-2">
                 <button type="submit" class="btn btn-primary rounded-pill px-4 py-2 fw-bold shadow-sm">

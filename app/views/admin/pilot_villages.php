@@ -64,8 +64,8 @@
 
 <!-- Add Modal -->
 <div class="modal fade" id="addVillageModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="<?= BASE_URL ?>admin/pilot_villages_store" method="POST" enctype="multipart/form-data">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="<?= BASE_URL ?>admin/pilot_villages_store" method="POST" enctype="multipart/form-data" class="w-100">
             <div class="modal-content border-0 shadow rounded-4">
                 <div class="modal-header border-bottom p-4">
                     <h5 class="modal-title fw-bold">Tambah Desa Pilot</h5>
@@ -96,8 +96,8 @@
 
 <!-- Edit Modal -->
 <div class="modal fade" id="editVillageModal" tabindex="-1">
-    <div class="modal-dialog">
-        <form action="<?= BASE_URL ?>admin/pilot_villages_update" method="POST" enctype="multipart/form-data">
+    <div class="modal-dialog modal-dialog-centered">
+        <form action="<?= BASE_URL ?>admin/pilot_villages_update" method="POST" enctype="multipart/form-data" class="w-100">
             <input type="hidden" name="id" id="edit-id">
             <div class="modal-content border-0 shadow rounded-4">
                 <div class="modal-header border-bottom p-4">
