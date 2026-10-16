@@ -38,12 +38,19 @@
     </div>
 </div>
 
+<?php if (!empty($home_without_section)) : ?>
+<div class="alert alert-warning small py-2 mb-3">
+    <i class="fas fa-exclamation-triangle me-1"></i>
+    <?= count($home_without_section) ?> portofolio dicentang tampil di Home tapi belum punya <strong>Section di Home</strong>, jadi belum tampil di Home:
+    <?= implode(', ', array_map(fn($p) => '<a href="' . BASE_URL . 'admin/portfolio/edit/' . (int) $p->id . '">' . htmlspecialchars($p->title_id) . '</a>', $home_without_section)) ?>.
+</div>
+<?php endif; ?>
+
 <?php if ($location) : ?>
 <div class="alert alert-info small py-2 mb-3" id="sortHint">
     <i class="fas fa-arrows-alt me-1"></i>
     Urutan di bawah sama dengan urutan di <strong><?= htmlspecialchars($locLabel) ?></strong> pada website.
     <?php if (count($portfolios) > 1) : ?>Geser baris (pegang ikon <i class="fas fa-grip-vertical"></i>) untuk mengubahnya; urutan langsung tersimpan dan hanya berlaku di tempat ini.<?php endif; ?>
-    <?php if ($location === 'home') : ?>Home menampilkan 9 teratas; semuanya tampil di halaman <a href="<?= BASE_URL ?>portfolio" target="_blank">Portofolio</a>.<?php endif; ?>
     Portofolio baru otomatis masuk di urutan paling akhir.
 </div>
 <?php else : ?>

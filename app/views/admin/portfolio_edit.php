@@ -156,6 +156,15 @@
                                     <small class="text-muted">Tampil di section Portfolio & Partnership.</small>
                                 </div>
                             </label>
+                            <div id="cat_home" class="ms-4 ps-3 border-start mb-3">
+                                <label class="form-label extra-small fw-bold text-muted">Section di Home</label>
+                                <select name="home_category" class="form-select form-select-sm">
+                                    <option value="">-- Pilih Section Home --</option>
+                                    <?php foreach (Portfolio_model::SECTIONS as $key => $label) : ?>
+                                        <option value="<?= $key ?>" <?= Portfolio_model::homeSection($portfolio) === $key ? 'selected' : ''; ?>><?= htmlspecialchars($label) ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
                         </div>
                         
                         <!-- Partnership -->
@@ -263,6 +272,7 @@
 
     // Conditional Category Display
     const toggles = [
+        { check: 'check_home', target: 'cat_home', required: true },
         { check: 'check_partnership', target: 'cat_partnership' },
         { check: 'check_gi', target: 'cat_gi' }
     ];
@@ -273,6 +283,8 @@
         
         const updateVisibility = () => {
             section.style.display = checkbox.checked ? 'block' : 'none';
+            // a portfolio on Home without a section would not be listed there
+            if (t.required) section.querySelector('select').required = checkbox.checked;
         };
 
         checkbox.addEventListener('change', updateVisibility);

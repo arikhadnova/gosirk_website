@@ -255,30 +255,38 @@
       <p class="text-muted" data-i18n="home.portfolio.subtitle">Portofolio kerja sama kami mencerminkan komitmen GoSirk dalam memperluas dampak melalui kolaborasi strategis.</p>
     </div>
 
-    <!-- Portfolios marked "show on home", in the order set for Home: the first 3 x 3, all of them on /portfolio -->
-    <div class="row g-4" id="homePortfolioGrid">
-      <?php
-      $homeTotal = count($portfolios ?? []);
-      $homePortfolios = array_slice($portfolios ?? [], 0, 9);
-      foreach ($homePortfolios as $p) :
+    <!-- Portfolios marked "show on home", grouped in the same numbered sections as GoSirk Institute,
+         each in the order set for it in the admin (Portfolio › "Home › ...") -->
+    <?php
+    $homeSectionTitles = [
+      'daerah' => '1. Peningkatan Kapasitas Pengelolaan Sampah Tingkat Daerah',
+      'desa' => '2. Pendampingan Optimalisasi Pengelolaan Sampah Tingkat Desa',
+      'kampanye' => '3. Kampanye Edukasi dan Perubahan Perilaku Masyarakat',
+      'modul' => '4. Penyusunan Modul Pelatihan dan Toolkit Pengelolaan Sampah',
+      'webinar' => '5. Penyelenggaraan Webinar dan Pengembangan E-learning',
+      'akademik' => '6. Kemitraan Akademik & Dukungan Penelitian',
+    ];
+    ?>
+    <div class="d-flex flex-column gap-5" id="homePortfolioGrid">
+      <?php $n = 0; foreach (Portfolio_model::SECTIONS as $section => $label) : $n++;
+        $sectionItems = array_filter($portfolios ?? [], fn($p) => Portfolio_model::homeSection($p) === $section);
       ?>
-        <?php require dirname(__DIR__) . '/partials/portfolio_card.php'; ?>
-      <?php endforeach; ?>
-
-      <?php if (empty($homePortfolios)) : ?>
-        <div class="col-12 text-center p-5">
-          <p class="text-muted fst-italic" data-i18n="home.portfolio.empty">Belum ada portofolio tersedia saat ini.</p>
+        <div class="portfolio-group">
+          <?php if ($n > 1) : ?><hr class="mb-5 text-muted opacity-25"><?php endif; ?>
+          <h5 class="fw-bold mb-4" data-i18n="gi.cat<?= $n ?>_title"><?= htmlspecialchars($homeSectionTitles[$section] ?? $label) ?></h5>
+          <div class="row g-4">
+            <?php foreach ($sectionItems as $p) : ?>
+              <?php require dirname(__DIR__) . '/partials/portfolio_card.php'; ?>
+            <?php endforeach; ?>
+            <?php if (empty($sectionItems)) : ?>
+              <div class="col-12 text-center py-4">
+                <p class="text-muted fst-italic mb-0" data-i18n="gi.no_portfolio">Portofolio belum tersedia.</p>
+              </div>
+            <?php endif; ?>
+          </div>
         </div>
-      <?php endif; ?>
+      <?php endforeach; ?>
     </div>
-
-    <?php if ($homeTotal > 9) : ?>
-      <div class="text-center mt-5">
-        <a href="<?= BASE_URL ?>portfolio" class="btn btn-outline-secondary rounded-pill px-4">
-          <span data-i18n="home.portfolio.show_all">Lihat semua portofolio</span> (<?= $homeTotal ?>)
-        </a>
-      </div>
-    <?php endif; ?>
 
   </div>
 </section>

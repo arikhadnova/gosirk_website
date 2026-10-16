@@ -895,7 +895,9 @@ class Admin extends Controller {
             'active' => 'portfolio',
             'location' => $location,
             'partner_types' => $this->model('PartnerType_model')->map(),
-            'portfolios' => $location ? $this->portfolioModel->getForLocation($location) : $this->portfolioModel->getAll()
+            'portfolios' => $location ? $this->portfolioModel->getForLocation($location) : $this->portfolioModel->getAll(),
+            // ticked for Home but in none of its sections, so Home does not list them
+            'home_without_section' => array_values(array_filter($this->portfolioModel->getAll(), fn($p) => $p->show_home && Portfolio_model::homeSection($p) === null)),
         ];
         $this->views('layouts/admin_header', $data);
         $this->views('admin/portfolio', $data);
@@ -1015,7 +1017,7 @@ class Admin extends Controller {
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image ?: '',
                 'main_category' => '',
-                'home_category' => $_POST['home_category'] ?? NULL,
+                'home_category' => isset(Portfolio_model::SECTIONS[$_POST['home_category'] ?? '']) ? $_POST['home_category'] : NULL,
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],
@@ -1168,7 +1170,7 @@ class Admin extends Controller {
                 'icon_name' => $_POST['icon_name'],
                 'cover_image' => $cover_image,
                 'main_category' => $old_portfolio->main_category,
-                'home_category' => $_POST['home_category'] ?? $old_portfolio->home_category,
+                'home_category' => isset(Portfolio_model::SECTIONS[$_POST['home_category'] ?? '']) ? $_POST['home_category'] : $old_portfolio->home_category,
                 'partnership_category' => $_POST['partnership_category'] ?? NULL,
                 'gi_category' => $_POST['gi_category'] ?? NULL,
                 'partner_type' => $_POST['partner_type'],

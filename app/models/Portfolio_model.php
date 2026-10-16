@@ -11,7 +11,12 @@ class Portfolio_model {
      * Key => label in the admin. A portfolio appears in a place when it matches inLocation().
      */
     const LOCATIONS = [
-        'home' => 'Home',
+        'home.daerah' => 'Home › 1. Peningkatan Kapasitas Daerah',
+        'home.desa' => 'Home › 2. Pendampingan Desa',
+        'home.kampanye' => 'Home › 3. Kampanye Perubahan Perilaku',
+        'home.modul' => 'Home › 4. Penyusunan Modul & Toolkit',
+        'home.webinar' => 'Home › 5. Webinar & E-learning',
+        'home.akademik' => 'Home › 6. Academic Partnership',
         'partnership.community' => 'Partnership › Community Partnership',
         'partnership.academic' => 'Partnership › Academic Partnership',
         'partnership.program' => 'Partnership › Program Partnership',
@@ -22,6 +27,16 @@ class Portfolio_model {
         'gi.webinar' => 'GoSirk Institute › 5. Webinar & E-learning',
         'gi.akademik' => 'GoSirk Institute › 6. Academic Partnership',
         'implementasi_partner' => 'Implementasi Partner',
+    ];
+
+    /** The numbered sections of the portfolio lists on Home and GoSirk Institute (headings: gi.cat1_title ...) */
+    const SECTIONS = [
+        'daerah' => '1. Peningkatan Kapasitas Daerah',
+        'desa' => '2. Pendampingan Desa',
+        'kampanye' => '3. Kampanye Perubahan Perilaku',
+        'modul' => '4. Penyusunan Modul & Toolkit',
+        'webinar' => '5. Webinar & E-learning',
+        'akademik' => '6. Academic Partnership',
     ];
 
     public function __construct() {
@@ -47,18 +62,28 @@ class Portfolio_model {
         }
     }
 
-    /** Does the portfolio appear in this place on the website? */
+    /**
+     * Section of a portfolio on Home. Portfolios saved before Home had sections (no or an old home_category)
+     * use their GoSirk Institute section; null when neither is set.
+     */
+    public static function homeSection($p) {
+        if (isset(self::SECTIONS[$p->home_category ?? ''])) return $p->home_category;
+        return isset(self::SECTIONS[$p->gi_category ?? '']) ? $p->gi_category : null;
+    }
+
+    /** Does the portfolio appear in this place on the website? ('home' alone: anywhere on Home) */
     public static function inLocation($p, $location) {
         [$page, $category] = array_pad(explode('.', $location, 2), 2, null);
-        if ($page === 'home') return (bool) $p->show_home;
+        if ($page === 'home') return $p->show_home && ($category === null || self::homeSection($p) === $category);
         if ($page === 'partnership') return $p->show_partnership && $p->partnership_category === $category;
         if ($page === 'gi') return $p->show_gi && $p->gi_category === $category;
         if ($page === 'implementasi_partner') return $p->partner_type === 'partner' || $p->show_partnership;
         return false;
     }
 
-    // Place of a portfolio on a page: the page itself, or its category tab (partnership, gi)
+    // Place of a portfolio on a page: the page itself, or its category tab / section (partnership, gi, home)
     private static function locationOn($p, $page) {
+        if ($page === 'home') return 'home.' . self::homeSection($p);
         if ($page === 'partnership') return 'partnership.' . $p->partnership_category;
         if ($page === 'gi') return 'gi.' . $p->gi_category;
         return $page;
@@ -75,11 +100,17 @@ class Portfolio_model {
     /**
      * Portfolios in the order set for a page ('home', 'partnership', 'gi', 'implementasi_partner').
      * On pages with category tabs every portfolio sits in one tab, so one sorted list gives each tab its order.
+     * Home lists its sections one after another, so there the section comes first. Home portfolios not sorted
+     * in their section yet keep the order the whole of Home had before it had sections.
      */
     public function sortForPage(array $items, $page) {
         $map = $this->positionMap();
-        $pos = fn($p) => $map[self::locationOn($p, $page)][(int) $p->id] ?? PHP_INT_MAX;
-        usort($items, fn($a, $b) => $pos($a) <=> $pos($b)); // stable: unsorted ones keep the default order
+        $rank = array_flip(array_keys(self::SECTIONS));
+        $key = fn($p) => [
+            $page === 'home' ? ($rank[self::homeSection($p) ?? ''] ?? count($rank)) : 0,
+            $map[self::locationOn($p, $page)][(int) $p->id] ?? $map[$page][(int) $p->id] ?? PHP_INT_MAX,
+        ];
+        usort($items, fn($a, $b) => $key($a) <=> $key($b)); // stable: unsorted ones keep the default order
         return $items;
     }
 
@@ -87,7 +118,7 @@ class Portfolio_model {
     public function getForLocation($location) {
         $page = explode('.', $location, 2)[0];
         $items = array_values(array_filter($this->getAll(), fn($p) => self::inLocation($p, $location)));
-        return $this->sortForPage($items, $page === 'partnership' || $page === 'gi' ? $page : $location);
+        return $this->sortForPage($items, $page);
     }
 
     /** Save the order chosen in the admin list for one place */
