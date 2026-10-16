@@ -26,6 +26,7 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
     .pt-input:focus { border-color: #dfe5ee !important; background: #fff !important; }
     .pt-dot { width: 7px; height: 7px; border-radius: 50%; background: #f59f00; display: inline-block; }
     .pt-reset { font-size: .75rem; }
+    .pt-label .id-field-tools { margin: 0 !important; }
 </style>
 
 <div class="admin-header-section mb-4">
@@ -68,7 +69,10 @@ $human = fn($s) => ucfirst(trim(str_replace(['_', '.'], [' ', ' · '], $s)));
                                 <div class="pt-label" title="<?= htmlspecialchars($key) ?>">
                                     <span><?= htmlspecialchars($human($rest)) ?></span>
                                     <span class="pt-dot d-none" title="Sudah diubah"></span>
-                                    <button type="button" class="btn btn-link p-0 text-muted text-decoration-none ms-auto pt-reset d-none">Kembalikan</button>
+                                    <span class="ms-auto d-flex align-items-center gap-2">
+                                        <button type="button" class="btn btn-link p-0 text-muted text-decoration-none pt-reset d-none">Kembalikan</button>
+                                        <span class="id-field-tools caption-tools"><button type="button" class="id-translate-one pt-translate id-only" data-dir="id" title="Ganti teks ID dengan terjemahan teks EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one pt-translate en-only" data-dir="en" title="Ganti teks EN dengan terjemahan teks ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></span>
+                                    </span>
                                 </div>
                                 <textarea class="form-control pt-input" rows="1" data-lang="id" name="texts[<?= htmlspecialchars($key) ?>][id]"><?= htmlspecialchars($ov['id'] ?? '') ?></textarea>
                                 <textarea class="form-control pt-input d-none" rows="1" data-lang="en" name="texts[<?= htmlspecialchars($key) ?>][en]"><?= htmlspecialchars($ov['en'] ?? '') ?></textarea>
@@ -165,6 +169,32 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // Translate one text from the other language. Text the admin already changed is only replaced after asking.
+    document.querySelectorAll('.pt-translate').forEach((btn) => btn.addEventListener('click', async () => {
+        const row = btn.closest('.pt-row');
+        const to = btn.dataset.dir;
+        const target = row.querySelector(`.pt-input[data-lang="${to}"]`);
+        const source = row.querySelector(`.pt-input[data-lang="${to === 'en' ? 'id' : 'en'}"]`);
+        const [from, toLabel] = to === 'en' ? ['ID', 'EN'] : ['EN', 'ID'];
+        if (source.value.trim() === '') { Swal.fire({ icon: 'info', title: `Teks ${from} masih kosong` }); return; }
+        if (target.value.trim() !== target.dataset.default.trim() && target.value.trim() !== '') {
+            const r = await Swal.fire({ icon: 'question', title: `Ganti teks ${toLabel}?`, text: `Teks ${toLabel} yang sudah kamu ubah akan diganti dengan terjemahan dari teks ${from}.`,
+                showCancelButton: true, confirmButtonText: 'Ya, ganti', cancelButtonText: 'Batal', confirmButtonColor: '#0D4A7C' });
+            if (!r.isConfirmed) return;
+        }
+        btn.disabled = true;
+        try {
+            const fd = new FormData(); fd.append('text', source.value); fd.append('to', to);
+            const res = await fetch('<?= BASE_URL ?>admin/translate', { method: 'POST', body: fd }).then((r) => r.json());
+            if (res.status !== 'success') throw new Error();
+            target.value = res.text;
+            autosize(target);
+            markRow(row);
+        } catch (e) {
+            Swal.fire({ icon: 'warning', title: 'Belum diterjemahkan', text: 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi.' });
+        }
+        btn.disabled = false;
+    }));
 
     // Search opens the sections that contain matches
     document.getElementById('textSearch').addEventListener('input', (e) => {

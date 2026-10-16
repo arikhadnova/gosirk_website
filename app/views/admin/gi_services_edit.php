@@ -43,15 +43,18 @@
                             foreach($points as $pi => $p): $pe = $pointsEn[$pi] ?? [];
                             ?>
                                 <div class="p-3 bg-light rounded-3 mb-2 point-row"
-                                     data-title-was="<?= htmlspecialchars($p['title'] ?? '', ENT_QUOTES) ?>" data-desc-was="<?= htmlspecialchars($p['desc'] ?? '', ENT_QUOTES) ?>"
-                                     data-title-en-was="<?= htmlspecialchars($pe['title'] ?? '', ENT_QUOTES) ?>" data-desc-en-was="<?= htmlspecialchars($pe['desc'] ?? '', ENT_QUOTES) ?>">
+                                     data-title-was="<?= htmlspecialchars($p['title'] ?? '', ENT_QUOTES) ?>" data-desc-was="<?= htmlspecialchars($p['desc'] ?? '', ENT_QUOTES) ?>">
                                     <div class="mb-2">
-                                        <input type="text" name="point_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent id-only" value="<?= $p['title'] ?? ''; ?>" placeholder="Judul Materi / Poin">
-                                        <input type="text" name="point_titles_en[]" class="form-control form-control-sm fw-bold border-0 bg-transparent en-only" value="<?= htmlspecialchars($pe['title'] ?? '', ENT_QUOTES) ?>" placeholder="English title (kosongkan untuk terjemahan otomatis)">
+                                        <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti judul ID dengan terjemahan judul EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti judul EN dengan terjemahan judul ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
+                                        <input type="text" name="point_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent id-only caption-id" value="<?= $p['title'] ?? ''; ?>" placeholder="Judul Materi / Poin">
+                                        <input type="text" name="point_titles_en[]" data-en-row class="form-control form-control-sm fw-bold border-0 bg-transparent en-only" value="<?= htmlspecialchars($pe['title'] ?? '', ENT_QUOTES) ?>" placeholder="English title (kosongkan untuk terjemahan otomatis)">
+                                        <input type="hidden" class="caption-en-was" value="<?= htmlspecialchars($pe['title'] ?? '', ENT_QUOTES) ?>">
                                     </div>
                                     <div class="mb-0">
-                                        <textarea name="point_descs[]" class="form-control form-control-sm border-0 bg-transparent id-only" rows="2" placeholder="Deskripsi materi..."><?= $p['desc'] ?? ''; ?></textarea>
-                                        <textarea name="point_descs_en[]" class="form-control form-control-sm border-0 bg-transparent en-only" rows="2" placeholder="English description (kosongkan untuk terjemahan otomatis)"><?= htmlspecialchars($pe['desc'] ?? '') ?></textarea>
+                                        <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti deskripsi ID dengan terjemahan deskripsi EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti deskripsi EN dengan terjemahan deskripsi ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
+                                        <textarea name="point_descs[]" class="form-control form-control-sm border-0 bg-transparent id-only caption-id" rows="2" placeholder="Deskripsi materi..."><?= $p['desc'] ?? ''; ?></textarea>
+                                        <textarea name="point_descs_en[]" data-en-row class="form-control form-control-sm border-0 bg-transparent en-only" rows="2" placeholder="English description (kosongkan untuk terjemahan otomatis)"><?= htmlspecialchars($pe['desc'] ?? '') ?></textarea>
+                                        <input type="hidden" class="caption-en-was" value="<?= htmlspecialchars($pe['desc'] ?? '', ENT_QUOTES) ?>">
                                     </div>
                                     <div class="text-end">
                                         <button type="button" class="btn btn-sm btn-link text-danger remove-point p-0 text-decoration-none extra-small">Hapus</button>
@@ -207,12 +210,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const pointTemplate = `
         <div class="p-3 bg-light rounded-3 mb-2 point-row">
             <div class="mb-2">
-                <input type="text" name="point_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent id-only" placeholder="Judul Materi / Poin">
-                <input type="text" name="point_titles_en[]" class="form-control form-control-sm fw-bold border-0 bg-transparent en-only" placeholder="English title (kosongkan untuk terjemahan otomatis)">
+                <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti judul ID dengan terjemahan judul EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti judul EN dengan terjemahan judul ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
+                <input type="text" name="point_titles[]" class="form-control form-control-sm fw-bold border-0 bg-transparent id-only caption-id" placeholder="Judul Materi / Poin">
+                <input type="text" name="point_titles_en[]" data-en-row class="form-control form-control-sm fw-bold border-0 bg-transparent en-only" placeholder="English title (kosongkan untuk terjemahan otomatis)">
             </div>
             <div class="mb-0">
-                <textarea name="point_descs[]" class="form-control form-control-sm border-0 bg-transparent id-only" rows="2" placeholder="Deskripsi materi..."></textarea>
-                <textarea name="point_descs_en[]" class="form-control form-control-sm border-0 bg-transparent en-only" rows="2" placeholder="English description (kosongkan untuk terjemahan otomatis)"></textarea>
+                <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one caption-translate id-only" data-dir="id" title="Ganti deskripsi ID dengan terjemahan deskripsi EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button><button type="button" class="id-translate-one caption-translate en-only" data-dir="en" title="Ganti deskripsi EN dengan terjemahan deskripsi ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
+                <textarea name="point_descs[]" class="form-control form-control-sm border-0 bg-transparent id-only caption-id" rows="2" placeholder="Deskripsi materi..."></textarea>
+                <textarea name="point_descs_en[]" data-en-row class="form-control form-control-sm border-0 bg-transparent en-only" rows="2" placeholder="English description (kosongkan untuk terjemahan otomatis)"></textarea>
             </div>
             <div class="text-end">
                 <button type="button" class="btn btn-sm btn-link text-danger remove-point p-0 text-decoration-none extra-small">Hapus</button>
@@ -248,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('points_json').value = JSON.stringify(points);
         // English rows (same order as the Indonesian ones) + what they were, see Admin::pointsEn()
         const pointsEn = [];
+        const enWas = (row, name) => row.querySelector(`[name="${name}"]`).parentElement.querySelector('.caption-en-was')?.value || '';
         document.querySelectorAll('.point-row').forEach(row => {
             const title = row.querySelector('input[name="point_titles[]"]').value;
             const desc = row.querySelector('textarea[name="point_descs[]"]').value;
@@ -256,7 +262,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 title: row.querySelector('input[name="point_titles_en[]"]')?.value || '',
                 desc: row.querySelector('textarea[name="point_descs_en[]"]')?.value || '',
                 title_was: row.dataset.titleWas ?? null, desc_was: row.dataset.descWas ?? null,
-                title_en_was: row.dataset.titleEnWas || '', desc_en_was: row.dataset.descEnWas || '',
+                title_en_was: enWas(row, 'point_titles_en[]'), desc_en_was: enWas(row, 'point_descs_en[]'),
             });
         });
         let enField = form.querySelector('input[name="program_points_en"]');

@@ -22,9 +22,11 @@
         <div class="card-body p-4">
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="privacy-id">
+                    <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one privacy-translate" data-to="id" title="Ganti isi ID dengan terjemahan isi EN"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari EN</button></div>
                     <textarea name="content_id" id="privacyContentId"><?= htmlspecialchars($data['content_id']) ?></textarea>
                 </div>
                 <div class="tab-pane fade" id="privacy-en">
+                    <div class="id-field-tools caption-tools"><button type="button" class="id-translate-one privacy-translate" data-to="en" title="Ganti isi EN dengan terjemahan isi ID"><i class="fas fa-sync-alt me-1"></i>Terjemahkan dari ID</button></div>
                     <textarea name="content_en" id="privacyContentEn"><?= htmlspecialchars($data['content_en']) ?></textarea>
                 </div>
             </div>
@@ -42,6 +44,7 @@
 </form>
 
 <script>
+    const editors = {};
     ['privacyContentId', 'privacyContentEn'].forEach((id) => {
         ClassicEditor.create(document.getElementById(id), {
             toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', '|', 'undo', 'redo'],
@@ -50,6 +53,29 @@
                 { model: 'heading2', view: 'h2', title: 'Judul bagian', class: 'ck-heading_heading2' },
                 { model: 'heading3', view: 'h3', title: 'Sub-judul', class: 'ck-heading_heading3' },
             ] },
-        }).catch((e) => console.error(e));
+        }).then((e) => { editors[id] = e; }).catch((e) => console.error(e));
     });
+
+    // Replace one language with the translation of the other
+    document.querySelectorAll('.privacy-translate').forEach((btn) => btn.addEventListener('click', async () => {
+        const to = btn.dataset.to;
+        const target = editors[to === 'en' ? 'privacyContentEn' : 'privacyContentId'];
+        const source = editors[to === 'en' ? 'privacyContentId' : 'privacyContentEn'];
+        if (!target || !source) return;
+        const [from, toLabel] = to === 'en' ? ['ID', 'EN'] : ['EN', 'ID'];
+        if (source.getData().replace(/<[^>]*>|&nbsp;/g, '').trim() === '') { Swal.fire({ icon: 'info', title: `Isi ${from} masih kosong` }); return; }
+        const r = await Swal.fire({ icon: 'question', title: `Ganti isi ${toLabel}?`, text: `Seluruh isi ${toLabel} akan diganti dengan terjemahan dari isi ${from}. Perubahan baru tersimpan setelah klik Simpan.`,
+            showCancelButton: true, confirmButtonText: 'Ya, ganti', cancelButtonText: 'Batal', confirmButtonColor: '#0D4A7C' });
+        if (!r.isConfirmed) return;
+        btn.disabled = true;
+        try {
+            const fd = new FormData(); fd.append('text', source.getData()); fd.append('to', to);
+            const res = await fetch('<?= BASE_URL ?>admin/translate', { method: 'POST', body: fd }).then((r) => r.json());
+            if (res.status !== 'success') throw new Error();
+            target.setData(res.text);
+        } catch (e) {
+            Swal.fire({ icon: 'warning', title: 'Belum diterjemahkan', text: 'Layanan terjemahan sedang sibuk. Coba lagi sebentar lagi.' });
+        }
+        btn.disabled = false;
+    }));
 </script>
